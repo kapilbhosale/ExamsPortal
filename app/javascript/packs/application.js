@@ -1,8 +1,10 @@
 import React from 'react';
 import { render } from 'react-dom';
-import ExamContainer from "../components/ExamContainer";
+import MasterApp from './MasterApp/core/MasterApp'
 
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.body.appendChild(document.createElement('div'));
-  render(<ExamContainer/>, container);
-});
+// // document.addEventListener('DOMContentLoaded', () => {
+// //   const container = document.body.appendChild(document.createElement('div'));
+// //   render(<MasterApp />, container);
+// });
+
+
