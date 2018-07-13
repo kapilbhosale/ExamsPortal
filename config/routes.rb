@@ -3,5 +3,7 @@ Rails.application.routes.draw do
   namespace :students do
     root to: 'home#index'
     get :tests, to: 'home#tests'
+    get :instructions, to: 'home#instructions', as: :exam_instructions
+    get :confirmation, to: 'home#confirmation', as: :exam_confirmation
   end
 end

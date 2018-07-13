@@ -3,6 +3,11 @@ class Students::HomeController < ApplicationController
   end
 
   def tests
+  end
 
+  def instructions
+  end
+
+  def confirmation
   end
 end
