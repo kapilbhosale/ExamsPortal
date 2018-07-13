@@ -1,2 +1,4 @@
-<!--https://jeremykratz.com/blog/using-react-with-rails-and-webpack/-->
-<h3>Available Tests</h3>
+<%= content_for(:body_attributes, "data-turbolinks='false'".html_safe) %>
+<div id="react-element">
+</div>
+<%= react_component("MasterApp", props: { root_path: '/students' }, prerender: false, trace: nil) %>
