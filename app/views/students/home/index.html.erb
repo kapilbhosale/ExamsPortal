@@ -1,5 +1,4 @@
 <%= content_for(:body_attributes, "data-turbolinks='false'".html_safe) %>
 <div id="react-element">
 </div>
-<h1>Some HTML</h1>
 <%= react_component("MasterApp", props: { root_path: '/students' }, prerender: false, trace: nil) %>

@@ -5,6 +5,7 @@ import Immutable from 'immutable';
 import { withRouter } from 'react-router';
 import * as examSolverActionCreators from '../actions/examSolverActionCreators';
 import ShellLeft from "../components/ShellLeft";
+import ShellRight from "../components/ShellRight";
 
 function select(state) {
     // $$ just indicates that it's Immutable.
@@ -28,9 +29,9 @@ class ExamSolverContainer extends Component {
 
     render() {
         return (
-            <div>
-                <h1>Exam Solver Container</h1>
+            <div className="">
                 <ShellLeft />
+                <ShellRight />
             </div>
         )
     }
