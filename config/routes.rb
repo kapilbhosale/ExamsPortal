@@ -5,5 +5,6 @@ Rails.application.routes.draw do
     get :tests, to: 'home#tests'
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
+    get :subscription, to: 'home#subscription', as: :exam_subscription
   end
 end

@@ -10,4 +10,8 @@ class Students::HomeController < ApplicationController
 
   def confirmation
   end
+
+  def subscription
+
+  end
 end
