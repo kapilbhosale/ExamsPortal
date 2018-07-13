@@ -8,38 +8,38 @@ import ShellLeft from "../components/ShellLeft";
 import ShellRight from "../components/ShellRight";
 
 function select(state) {
-    // $$ just indicates that it's Immutable.
-    return {
-        $$examSolverStore: state.$$examSolverStore,
-    };
+  // $$ just indicates that it's Immutable.
+  return {
+    $$examSolverStore: state.$$examSolverStore,
+  };
 }
 
 class ExamSolverContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
+  constructor(props) {
+    super(props);
+  }
 
-    componentWillMount() {
-        this.actions().initialize();
-    }
+  componentWillMount() {
+    this.actions().initialize();
+  }
 
-    actions() {
-        return bindActionCreators(examSolverActionCreators, this.props.dispatch);
-    }
+  actions() {
+    return bindActionCreators(examSolverActionCreators, this.props.dispatch);
+  }
 
-    render() {
-        return (
-            <div className="">
-                <ShellLeft />
-                <ShellRight />
-            </div>
-        )
-    }
+  render() {
+    return (
+      <div className="">
+        <ShellLeft />
+        <ShellRight />
+      </div>
+    )
+  }
 }
 
 ExamSolverContainer.propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    $$examSolverStore: PropTypes.instanceOf(Immutable.Map).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  $$examSolverStore: PropTypes.instanceOf(Immutable.Map).isRequired,
 };
 
 export default withRouter(connect(select)(ExamSolverContainer));
