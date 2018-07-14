@@ -2,8 +2,8 @@ import Immutable from 'immutable';
 import actionTypes from '../constants/examSolverConstants';
 
 export const $$initialState = Immutable.fromJS({
-  currentQuestion: 1,
-  totalQuestions: 30,
+  currentQuestionIndex: 0,
+  totalQuestions: 13,
   questions: [{
     title: '<ol class="c4 lst-kix_t3gzkgsex1j8-0 start" start="1"><li class="c2 c3"><span class="c1 c0">Which of the following is not correct statement for periodic classification of elements? &nbsp;</span></li></ol>',
     options: [
@@ -13,7 +13,7 @@ export const $$initialState = Immutable.fromJS({
       '<p class="c2"><span class="c1 c0">For transition elements, the last electron enters into (n &ndash; 2) d &ndash; subshell.</span></p>'],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: true,
       needReview: false,
       answer: 1
     }
@@ -26,7 +26,7 @@ export const $$initialState = Immutable.fromJS({
       '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 96.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image13.png" style="width: 96.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>'],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -40,7 +40,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -54,7 +54,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -68,7 +68,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -82,7 +82,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -96,7 +96,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -110,7 +110,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -124,7 +124,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -138,7 +138,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -152,7 +152,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -166,7 +166,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -180,7 +180,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -189,9 +189,50 @@ export const $$initialState = Immutable.fromJS({
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
-    const { type, val } = action;
-    switch (type) {
-        default:
-            return $$state;
+  const { type, val } = action;
+  switch (type) {
+    case actionTypes.INCREMENT_CURRENT_QUESTION_INDEX: {
+      let questions = $$state.get('questions').toJS();
+      if (questions[val.questionIndex].answerProps.answer !== 1) {
+        questions[val.questionIndex].answerProps.isAnswered = true;
+      } else {
+        questions[val.questionIndex].answerProps.isAnswered = false;
+      }
+      let nextIndex = $$state.get('currentQuestionIndex');
+      if (($$state.get('currentQuestionIndex') + 1) < $$state.get('totalQuestions')) {
+        nextIndex = $$state.get('currentQuestionIndex') + 1;
+      }
+      return $$state.set('currentQuestionIndex', nextIndex).set('questions', Immutable.fromJS(questions));
     }
+    case actionTypes.ANSWER_QUESTION: {
+      let questions = $$state.get('questions').toJS();
+      questions[val.questionIndex].answerProps.answer = val.answerIndex;
+      return $$state.set('questions', Immutable.fromJS(questions));
+    }
+    case actionTypes.CLEAR_ANSWER: {
+      let questions = $$state.get('questions').toJS();
+      questions[val.questionIndex].answerProps.answer = 1;
+      questions[val.questionIndex].answerProps.isAnswered = false;
+      return $$state.set('questions', Immutable.fromJS(questions));
+    }
+    case actionTypes.JUMP_TO_QUESTION: {
+      return $$state.set('currentQuestionIndex', val.questionIndex);
+    }
+    case actionTypes.MARK_FOR_REVIEW: {
+      let questions = $$state.get('questions').toJS();
+      questions[val.questionIndex].answerProps.needReview = true;
+      let nextIndex = $$state.get('currentQuestionIndex');
+      if (($$state.get('currentQuestionIndex') + 1) < $$state.get('totalQuestions')) {
+        nextIndex = $$state.get('currentQuestionIndex') + 1;
+      }
+      return $$state.set('currentQuestionIndex', nextIndex).set('questions', Immutable.fromJS(questions));
+    }
+    case actionTypes.MARK_VISITED: {
+      let questions = $$state.get('questions').toJS();
+      questions[val.questionIndex].answerProps.visited = true;
+      return $$state.set('questions', Immutable.fromJS(questions));
+    }
+    default:
+      return $$state;
+  }
 }

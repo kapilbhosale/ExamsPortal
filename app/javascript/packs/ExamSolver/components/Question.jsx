@@ -1,52 +1,53 @@
 import React from 'react';
 
 class Question extends React.Component {
-    render() {
-      const { sequence, title, options } = this.props;
-        return (
-          <div className="row">
 
-            <div className="row">
-              <div className="col-lg-12">
-                <b>Question No: {sequence}</b>
-              </div>
-            </div>
+  render() {
+    const { title, options, currentQuestionIndex, answerQuestion, answerProps } = this.props;
+    return (
+      <div className="row">
 
-            <br />
+        <div className="row">
+          <div className="col-lg-12">
+            <b>Question No: { currentQuestionIndex + 1 }</b>
+          </div>
+        </div>
 
-            <div className="row">
-              <div className="col-lg-12">
-                <b>{title}</b>
-              </div>
-            </div>
+        <br />
 
-             <div className="row">
-              <div className="col-lg-12">
+        <div className="row">
+          <div className="col-lg-12">
+            <p dangerouslySetInnerHTML={{ __html: title}} />
+          </div>
+        </div>
 
-                {
-                  options.map((option, idx) => {
-                    return (
-                      <div key={idx} className="radio">
-                        <label>
-                          <input
-                            type="radio"
-                            value={option}
-                            checked={idx === 1}
-                            onChange={ () => { } }
-                            />
-                          { option }
-                        </label>
-                      </div>
-                    )
-                  })
-                }
+        <div className="row">
+          <div className="col-lg-12">
 
-              </div>
-            </div>
+            {
+              options.map((option, idx) => {
+                return (
+                  <div key={idx} className="radio">
+                    <label>
+                      <input
+                        type="radio"
+                        value={ option }
+                        checked={ answerProps.answer === option }
+                        onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
+                      />
+                      <div dangerouslySetInnerHTML={{ __html: option }} />
+                    </label>
+                  </div>
+                )
+              })
+            }
 
           </div>
-        );
-    }
+        </div>
+
+      </div>
+    );
+  }
 }
 
 export default Question;
