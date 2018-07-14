@@ -1,14 +1,15 @@
 import React from 'react';
 
 class Question extends React.Component {
+
   render() {
-    const { sequence, title, options } = this.props;
+    const { title, options, currentQuestionIndex, answerQuestion, answerProps } = this.props;
     return (
       <div className="row">
 
         <div className="row">
           <div className="col-lg-12">
-            <b>Question No: {sequence}</b>
+            <b>Question No: { currentQuestionIndex + 1 }</b>
           </div>
         </div>
 
@@ -30,9 +31,9 @@ class Question extends React.Component {
                     <label>
                       <input
                         type="radio"
-                        value={option}
-                        checked={idx === 1}
-                        onChange={ () => { } }
+                        value={ option }
+                        checked={ answerProps.answer === option }
+                        onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
                       />
                       { option }
                     </label>

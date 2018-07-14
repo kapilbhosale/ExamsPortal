@@ -2,9 +2,10 @@ import React from 'react';
 
 class ShellRight extends React.Component {
   render() {
+    const { questions, totalQuestions, jumpToQuestion } = this.props;
     return (
       <div className="col-md-3" style={{ backgroundColor: '#e7f9ff' }}>
-        <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px' }}>
+        <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px', border: 'none' }}>
           <div className="form-group">
             <span className="label label-success" style={{ margin: '5px' }}>Answered</span>
             <span className="label label-danger" style={{ margin: '5px' }}>Not answered</span>
@@ -16,21 +17,36 @@ class ShellRight extends React.Component {
             <label>Section</label>: Physics
           </div>
 
-          <div className="btn-toolbar" role="toolbar" aria-label="...">
+          <div className="btn-toolbar form-group" role="toolbar" aria-label="..." style={{ textAlign: "center" }}>
             {
-              [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50].map((number, idx) => {
+              questions.map((question, idx) => {
+                const { isAnswered, needReview, visited } = question.answerProps;
+                let dynamicClass = '';
+                if (isAnswered) {
+                  dynamicClass = 'btn-success';
+                }
+                if (visited && !isAnswered) {
+                  dynamicClass = 'btn-danger';
+                }
+                if (needReview) {
+                  dynamicClass = 'btn-primary';
+                }
                 return (
                   <button
                     key={idx}
                     type="button"
-                    className="btn btn-default"
-                    style={{ marginRight: '5px', marginLeft: '5px', marginBottom: '10px', width: '40px', height: '40px' }}
+                    className={ `btn btn-default ${dynamicClass}` }
+                    style={{ marginRight: '10px', marginLeft: '5px', marginBottom: '10px', width: '40px', height: '40px' }}
+                    onClick={ () => { jumpToQuestion(idx) }}
                   >
-                    {number}
+                    {idx + 1}
                   </button>
                 )
               })
             }
+          </div>
+          <div className="text-center">
+            <button type="button" className="btn btn-success" >Submit Test</button>
           </div>
         </div>
       </div>

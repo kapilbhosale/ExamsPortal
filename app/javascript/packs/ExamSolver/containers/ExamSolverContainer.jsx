@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types'; import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Immutable from 'immutable';
@@ -20,7 +21,7 @@ class ExamSolverContainer extends Component {
   }
 
   componentWillMount() {
-    this.actions().initialize();
+    this.actions();
   }
 
   actions() {
@@ -28,10 +29,22 @@ class ExamSolverContainer extends Component {
   }
 
   render() {
+    const { $$examSolverStore } = this.props;
+    const questions = $$examSolverStore.get('questions').toJS();
+    const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex');
+    const totalQuestions = $$examSolverStore.get('totalQuestions');
     return (
       <div className="">
-        <ShellLeft />
-        <ShellRight />
+        <ShellLeft
+          questions={questions}
+          currentQuestionIndex={currentQuestionIndex}
+          { ...this.actions() }
+          />
+        <ShellRight
+          questions={ questions }
+          totalQuestions={ totalQuestions }
+          { ...this.actions() }
+        />
       </div>
     )
   }
