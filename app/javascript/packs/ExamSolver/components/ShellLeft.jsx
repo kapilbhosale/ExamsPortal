@@ -4,11 +4,12 @@ import Question from './Question'
 
 class ShellLeft extends React.Component {
   render() {
-    const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited, jumpToQuestion } = this.props;
+    const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
+            jumpToQuestion, submitTest } = this.props;
     const currentQuestion = questions[currentQuestionIndex];
     return (
       <div className="col-md-9">
-        <SectionList totalQuestions={questions.length} />
+        <SectionList totalQuestions={questions.length} submitTest={submitTest} />
         <hr/>
         <Question
           { ...currentQuestion }

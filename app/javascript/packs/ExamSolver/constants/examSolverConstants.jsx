@@ -7,6 +7,7 @@ const actionTypes = mirrorCreator([
   'JUMP_TO_QUESTION',
   'MARK_FOR_REVIEW',
   'MARK_VISITED',
+  'SUBMIT_TEST',
 ]);
 
 export default actionTypes;

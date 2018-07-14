@@ -64,3 +64,15 @@ function markVisit(questionIndex) {
     val: { questionIndex: questionIndex },
   }
 }
+
+
+export function submitTest() {
+  return (dispatch, getState) => {
+    window.location = '/students/summary'
+    // dispatch({
+    //   type: actionTypes.SUBMIT_TEST,
+    //   val: {},
+    // });
+  };
+}
+
