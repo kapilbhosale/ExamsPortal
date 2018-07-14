@@ -1,7 +1,6 @@
 import React from 'react';
 import SectionList from './SectionList'
 import Question from './Question'
-import Countdown from 'react-countdown-now';
 
 class ShellLeft extends React.Component {
   render() {
@@ -9,8 +8,7 @@ class ShellLeft extends React.Component {
     const currentQuestion = questions[currentQuestionIndex];
     return (
       <div className="col-md-9">
-        <SectionList />
-        <Countdown date={Date.now() + (questions.length * 60 * 1000) } />
+        <SectionList totalQuestions={questions.length} />
         <hr/>
         <Question
           { ...currentQuestion }
