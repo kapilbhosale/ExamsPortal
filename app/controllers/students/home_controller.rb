@@ -1,5 +1,6 @@
 class Students::HomeController < ApplicationController
   def index
+    @styles = 'p.error {color: red;}'
   end
 
   def tests

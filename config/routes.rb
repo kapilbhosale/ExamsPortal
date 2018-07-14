@@ -6,5 +6,7 @@ Rails.application.routes.draw do
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
     get :subscription, to: 'home#subscription', as: :exam_subscription
+
+    resources :mock_tests
   end
 end

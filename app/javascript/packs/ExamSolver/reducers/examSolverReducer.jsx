@@ -5,7 +5,7 @@ export const $$initialState = Immutable.fromJS({
   currentQuestion: 1,
   totalQuestions: 30,
   questions: [{
-    title: 'What is your name?',
+    title: '<p class="error">This question must appear in RED.</p>',
     options: ['Akshay', 'Abhay', 'Kapil', 'Deepak'],
     answerProps: {
       isAnswered: false,
