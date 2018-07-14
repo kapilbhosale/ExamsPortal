@@ -12,6 +12,8 @@ class Students::HomeController < ApplicationController
   end
 
   def subscription
+  end
 
+  def summary
   end
 end
