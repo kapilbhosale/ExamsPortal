@@ -2,7 +2,7 @@ import React from 'react';
 
 class ShellRight extends React.Component {
   render() {
-    const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex } = this.props;
+    const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex, submitTest } = this.props;
     return (
       <div className="col-md-3" style={{ backgroundColor: '#e7f9ff' }}>
         <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px', border: 'none' }}>
@@ -11,6 +11,7 @@ class ShellRight extends React.Component {
             <span className="label label-danger" style={{ margin: '5px' }}>Not answered</span>
             <span className="label label-primary" style={{ margin: '5px' }}>Marked</span>
             <span className="label label-default" style={{ margin: '5px' }}>Not visited</span>
+            <span className="label label-warning" style={{ margin: '5px' }}>Current</span>
           </div>
 
           <div className="form-group">
@@ -50,7 +51,7 @@ class ShellRight extends React.Component {
             }
           </div>
           <div className="text-center">
-            <button type="button" className="btn btn-success" >Submit Test</button>
+            <button type="button" className="btn btn-success" onClick={ () => { submitTest() }}>Submit Test</button>
           </div>
         </div>
       </div>

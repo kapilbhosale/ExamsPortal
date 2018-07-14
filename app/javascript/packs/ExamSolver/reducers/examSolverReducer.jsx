@@ -3,7 +3,7 @@ import actionTypes from '../constants/examSolverConstants';
 
 export const $$initialState = Immutable.fromJS({
   currentQuestionIndex: 0,
-  totalQuestions: 2,
+  totalQuestions: 13,
   questions: [{
     title: '<ol class="c4 lst-kix_t3gzkgsex1j8-0 start" start="1"><li class="c2 c3"><span class="c1 c0">Which of the following is not correct statement for periodic classification of elements? &nbsp;</span></li></ol>',
     options: [
@@ -13,7 +13,7 @@ export const $$initialState = Immutable.fromJS({
       '<p class="c2"><span class="c1 c0">For transition elements, the last electron enters into (n &ndash; 2) d &ndash; subshell.</span></p>'],
     answerProps: {
       isAnswered: false,
-      visited: false,
+      visited: true,
       needReview: false,
       answer: 1
     }
@@ -40,7 +40,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -54,7 +54,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -68,7 +68,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -82,7 +82,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -96,7 +96,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -110,7 +110,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -124,7 +124,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -138,7 +138,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -152,7 +152,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -166,7 +166,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
@@ -180,7 +180,7 @@ export const $$initialState = Immutable.fromJS({
     ],
     answerProps: {
       isAnswered: false,
-      viewed: false,
+      visited: false,
       needReview: false,
       answer: 1
     }
