@@ -17,7 +17,7 @@ class Question extends React.Component {
 
         <div className="row">
           <div className="col-lg-12">
-            <b>{title}</b>
+            <p dangerouslySetInnerHTML={{ __html: title}} />
           </div>
         </div>
 
@@ -35,7 +35,7 @@ class Question extends React.Component {
                         checked={ answerProps.answer === option }
                         onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
                       />
-                      { option }
+                      <div dangerouslySetInnerHTML={{ __html: option }} />
                     </label>
                   </div>
                 )

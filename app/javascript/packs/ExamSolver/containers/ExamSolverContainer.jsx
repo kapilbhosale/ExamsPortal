@@ -43,6 +43,7 @@ class ExamSolverContainer extends Component {
         <ShellRight
           questions={ questions }
           totalQuestions={ totalQuestions }
+          currentQuestionIndex={currentQuestionIndex}
           { ...this.actions() }
         />
       </div>

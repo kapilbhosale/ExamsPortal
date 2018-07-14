@@ -2,7 +2,7 @@ import React from 'react';
 
 class ShellRight extends React.Component {
   render() {
-    const { questions, totalQuestions, jumpToQuestion } = this.props;
+    const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex } = this.props;
     return (
       <div className="col-md-3" style={{ backgroundColor: '#e7f9ff' }}>
         <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px', border: 'none' }}>
@@ -22,14 +22,18 @@ class ShellRight extends React.Component {
               questions.map((question, idx) => {
                 const { isAnswered, needReview, visited } = question.answerProps;
                 let dynamicClass = '';
-                if (isAnswered) {
-                  dynamicClass = 'btn-success';
-                }
-                if (visited && !isAnswered) {
-                  dynamicClass = 'btn-danger';
-                }
-                if (needReview) {
-                  dynamicClass = 'btn-primary';
+                if (idx !== currentQuestionIndex) {
+                  if (isAnswered) {
+                    dynamicClass = 'btn-success';
+                  }
+                  if (visited && !isAnswered) {
+                    dynamicClass = 'btn-danger';
+                  }
+                  if (needReview) {
+                    dynamicClass = 'btn-primary';
+                  }
+                } else {
+                  dynamicClass = "btn-warning"
                 }
                 return (
                   <button

@@ -1,15 +1,16 @@
 import React from 'react';
 import SectionList from './SectionList'
 import Question from './Question'
-import {clearAnswer} from "../actions/examSolverActionCreators";
+import Countdown from 'react-countdown-now';
 
 class ShellLeft extends React.Component {
   render() {
-    const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited } = this.props;
+    const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited, jumpToQuestion } = this.props;
     const currentQuestion = questions[currentQuestionIndex];
     return (
       <div className="col-md-9">
         <SectionList />
+        <Countdown date={Date.now() + (questions.length * 60 * 1000) } />
         <hr/>
         <Question
           { ...currentQuestion }
@@ -32,7 +33,7 @@ class ShellLeft extends React.Component {
           </div>
 
           <div className="col-md-4">
-            <button type="button" className="btn btn-primary" onClick={ () => { saveAndNext(currentQuestionIndex) }}>
+            <button type="button" className="btn btn-primary" onClick={ () => { jumpToQuestion(currentQuestionIndex - 1) }}>
               Previous
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
