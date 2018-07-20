@@ -1,9 +1,9 @@
 <div class="container">
-  <table class="table table-striped">
+  <table id="exportTable" class="table table-striped">
     <thead>
     <tr>
-      <th>Sr. No.</th>
-      <th>Student Name</th>
+      <th>SrNo</th>
+      <th>StudentName</th>
       <th>Batch</th>
       <th>Marks</th>
       <th>rank</th>
@@ -27,4 +27,74 @@
     <% end  %>
     </tbody>
   </table>
+  <button id="exportButton" class="btn btn-lg btn-danger clearfix"><span class="fa fa-file-pdf-o"></span> Export to PDF</button>
 </div>
+
+<!-- you need to include the shieldui css and js assets in order for the components to work -->
+<link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
+<script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/shieldui-all.min.js"></script>
+<script type="text/javascript" src="http://www.shieldui.com/shared/components/latest/js/jszip.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(function ($) {
+    $("#exportButton").click(function () {
+      // parse the HTML table element having an id=exportTable
+      var dataSource = shield.DataSource.create({
+        data: "#exportTable",
+        schema: {
+          type: "table",
+          fields: {
+            SrNo: {type: String},
+            StudentName: {type: String},
+            Batch: {type: String},
+            Marks: {type: String},
+            rank: {type: String},
+            correct: {type: String},
+            wrong: {type: String},
+          }
+        }
+      });
+
+      // when parsing is done, export the data to PDF
+      dataSource.read().then(function (data) {
+        var pdf = new shield.exp.PDFDocument({
+          author: "PrepBootstrap",
+          created: new Date()
+        });
+
+        pdf.addPage("a4", "portrait");
+
+        pdf.table(
+          5,
+          5,
+          data,
+          [
+            {field: "SrNo", title: "Sr NO.", width: 50},
+            {field: "StudentName", title: "Student ", width: 200},
+            {field: "Batch", title: "Batch", width: 100},
+            {field: "Marks", title: "Marks ", width: 50},
+            {field: "rank", title: "rank", width: 50},
+            {field: "correct", title: "correct ", width: 50},
+            {field: "wrong" , title: "correct ", width: 50},
+          ],
+          {
+            margins: {
+              top: 50,
+              left: 2
+            }
+          }
+        );
+
+        pdf.saveAs({
+          fileName: "StudentReport"
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  #exportButton {
+    border-radius: 0;
+  }
+</style>
