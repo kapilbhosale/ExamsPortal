@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :mock_tests
   end
   namespace :admin do
+    root to: 'dashboard#show'
+    resource :dashboard
     resources :reports
   end
 end
