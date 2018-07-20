@@ -20,6 +20,10 @@ class ExamSolverContainer extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.actions().initialize();
+  }
+
   componentWillMount() {
     this.actions();
   }

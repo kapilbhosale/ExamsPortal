@@ -76,3 +76,15 @@ export function submitTest() {
   };
 }
 
+export function initialize() {
+  return (dispatch, getState) => {
+    $.ajax({
+      url: '/students/exam_data',
+      method: 'get',
+      data: {id: window.location.href },
+      success: (data) => {
+        dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data})
+      }
+    });
+  };
+}

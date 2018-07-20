@@ -8,6 +8,7 @@ const actionTypes = mirrorCreator([
   'MARK_FOR_REVIEW',
   'MARK_VISITED',
   'SUBMIT_TEST',
+  'LOAD_EXAM_DATA',
 ]);
 
 export default actionTypes;

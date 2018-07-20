@@ -17,4 +17,360 @@ class Students::HomeController < ApplicationController
 
   def summary
   end
+
+  def questions_data_0
+    {
+      currentQuestionIndex: 0,
+      totalQuestions: 13,
+      questions: [{
+                    title: '<ol class="c4 lst-kix_t3gzkgsex1j8-0 start" start="1"><li class="c2 c3"><span class="c1 c0">Which of the following is not correct statement for periodic classification of elements? &nbsp;</span></li></ol>',
+                    options: [
+                      '<p class="c2"><span class="c1 c0">The properties of elements are the periodic functions of their atomic number.</span></p>',
+                      '<p class="c2"><span class="c1 c0">Non &ndash; metallic elements are less in number than metallic elements.</span></p>',
+                      '<p class="c2"><span class="c1 c0">The first ionization energies of elements along a period do not vary in regular manner with increase in atomic number.</span></p>',
+                      '<p class="c2"><span class="c1 c0">For transition elements, the last electron enters into (n &ndash; 2) d &ndash; subshell.</span></p>'],
+                    answerProps: {
+                      isAnswered: false,
+                      visited: true,
+                      needReview: false,
+                      answer: 1
+                    }
+                  },{ # 2
+                      title: '<ol class="c4 lst-kix_z66j5kez7t2d-0 start" start="2"><li class="c2 c3"><span class="c1 c0">A sudden large jump between the values of second and third ionization energies of an element would be associated with which of the following electronic configuration? &nbsp; </span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 111.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image18.png" style="width: 111.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 111.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image21.png" style="width: 111.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                        '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 88.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image7.png" style="width: 88.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 96.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image13.png" style="width: 96.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>'],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{
+                    title: '<ol class="c4 lst-kix_ghjdfzl651et-0 start" start="3"><li class="c2 c3"><span class="c1 c0">Which one of the following groupings represents a collection of isoelectronic species? &nbsp;(At. Nos .: Cs &ndash; 55, Br &ndash; 35)</span></li></ol>',
+                    options: [
+                      '<p class="c2"><span class="c0"></span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 103.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image23.png" style="width: 103.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c7">&nbsp;</span><span class="c1 c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                      '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 79.00px; height: 23.00px;"><img alt="" src="assets/images_exam_1/image2.png" style="width: 79.00px; height: 23.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                      '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 72.00px; height: 23.00px;"><img alt="" src="assets/images_exam_1/image17.png" style="width: 72.00px; height: 23.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                      '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 83.00px; height: 23.00px;"><img alt="" src="assets/images_exam_1/image14.png" style="width: 83.00px; height: 23.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>'
+                    ],
+                    answerProps: {
+                      isAnswered: false,
+                      visited: false,
+                      needReview: false,
+                      answer: 1
+                    }
+                  },{
+                    title: '<ol class="c4 lst-kix_ytqu4jrtcbsv-0 start" start="4"><li class="c2 c3"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 22.97px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image4.png" style="width: 22.97px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;and </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 24.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image1.png" style="width: 24.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;ions are isoelectronic. Which of the statements is not correct? &nbsp; </span></li></ol>',
+                    options: [
+                      '<p class="c2"><span class="c0"> Both </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 23.00px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image4.png" style="width: 23.00px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;and </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 24.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image1.png" style="width: 24.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;ions contain 18 electrons.</span></p>',
+                      '<p class="c2"><span class="c0"> Both </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 23.00px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image4.png" style="width: 23.00px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;and </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 24.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image1.png" style="width: 24.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;ions have same configuration.</span></p>',
+                      '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 23.00px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image4.png" style="width: 23.00px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;ion is bigger than </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 24.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image1.png" style="width: 24.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;ion is ionic size.</span></p>',
+                      '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 24.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image1.png" style="width: 24.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;ion is bigger than </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 23.00px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image4.png" style="width: 23.00px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;ion in size.</span></p>'
+                    ],
+                    answerProps: {
+                      isAnswered: false,
+                      visited: false,
+                      needReview: false,
+                      answer: 1
+                    }
+                  },{ # 5
+                      title: '<ol class="c4 lst-kix_f5lbk9pt02k3-0 start" start="5"><li class="c2 c3"><span class="c1 c0">Which of the following statements regarding the variation of atomic radii in the periodic table is not true?</span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> In a group, there is continuous increase in size with increase in atomic number.</span></p>',
+                        '<p class="c2"><span class="c1 c0"> In 4f &ndash; series, there is a continuous decrease in size with increase in atomic number.</span></p>',
+                        '<p class="c2"><span class="c1 c0"> the size of inert gases is larger than halogens.</span></p>',
+                        '<p class="c2"><span class="c0"> In 3</span><span class="c0 c8">rd</span><span class="c1 c0">&nbsp;period, the size of atoms increases with increase in atomic number.</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 6
+                      title: '<ol class="c4 lst-kix_16jwsyg2bo35-0 start" start="6"><li class="c2 c3"><span class="c1 c0">Which of the following is not a periodic property for the elements? </span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> Electronegativity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Atomic size</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Occurrence in nature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Ionization energy</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 7
+                      title: '<ol class="c4 lst-kix_lrbu2hc8h017-0 start" start="7"><li class="c2 c3"><span class="c1 c0">Which of the following statements is true about the variation of density of elements in the periodic table? </span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> In a period from left to right density first increases upto the middle and then strts decreasing.</span></p>',
+                        '<p class="c2"><span class="c1 c0"> In a group on moving down the density decreases from top to bottom.</span></p>',
+                        '<p class="c2"><span class="c1 c0"> A less closely packed solid has higher density.</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Density of elements is not a periodic property.</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 8
+                      title: '<ol class="c4 lst-kix_5ltos5434750-0 start" start="8"><li class="c2 c3"><span class="c1 c0">The correct order of acidic character of oxides in third period of periodic table is &nbsp;</span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 171.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image16.png" style="width: 171.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 171.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image15.png" style="width: 171.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 171.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image20.png" style="width: 171.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 171.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image11.png" style="width: 171.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 9
+                      title: '<ol class="c4 lst-kix_39wbwk7b1djn-0 start" start="9"><li class="c2 c3"><span class="c0">Consider the isoelectronic species, </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 88.00px; height: 24.00px;"><img alt="" src="assets/images_exam_1/image22.png" style="width: 88.00px; height: 24.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0">&nbsp;and </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 27.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image24.png" style="width: 27.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c0 c1">&nbsp;the correct order of increasing length of their radii is.</span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 119.00px; height: 20.00px;"><img alt="" src="assets/images_exam_1/image9.png" style="width: 119.00px; height: 20.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 131.00px; height: 22.00px;"><img alt="" src="assets/images_exam_1/image6.png" style="width: 131.00px; height: 22.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 125.00px; height: 21.00px;"><img alt="" src="assets/images_exam_1/image5.png" style="width: 125.00px; height: 21.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c0"> </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 132.00px; height: 22.00px;"><img alt="" src="assets/images_exam_1/image8.png" style="width: 132.00px; height: 22.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 10
+                      title: '<ol class="c4 lst-kix_8bnlqh6lso62-0 start" start="10"><li class="c2 c3"><span class="c1 c0">The first ionization enthalpies of Na, Mg, Al and Si are in the order.</span></li></ol>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> &nbsp;Na &lt; Mg &gt; Al &lt; Si&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Na &gt; Mg &gt; Al &gt; Si</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Na &lt; Mg &lt; Al &lt; Si&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Na &gt; Mg&gt; Al &lt; Si</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 11
+                      title: '<ol class="c4 lst-kix_psjm00bsbse0-0 start" start="22"><li class="c2 c3"><span class="c1 c0">Part of the periodic table showing p &ndash; block is depicted below. What are the elements shown in thezig &ndash; zag boxes called? What is the nature of the elements outside this boundary on the right side of the table?</span></li></ol><p class="c9"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 76.00px; height: 73.00px;"><img alt="C:\\Documents and Settings\\DEV\\Local Settings\\Temporary Internet Files\\Content.Word\\3-46.bmp" src="assets/images_exam_1/image10.png" style="width: 76.00px; height: 73.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> Metalloids, non &ndash; metals</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Transition elements, metalloids</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Metals, non &ndash; metals</span></p>',
+                        '<p class="c2"><span class="c1 c0"> Non &ndash; metals, noble gases</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 12
+                      title: '<ol class="c4 lst-kix_mpfdnljw2ui-0 start" start="28"><li class="c2 c3"><span class="c1 c0">What are the two radii shown as &lsquo;a&rsquo; and &lsquo;b&rsquo; in the figure known as? &nbsp;</span></li></ol><p class="c9"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 126.00px; height: 60.00px;"><img alt="C:\\Documents and Settings\\DEV\\Local Settings\\Temporary Internet Files\\Content.Word\\3-50.bmp" src="assets/images_exam_1/image19.png" style="width: 126.00px; height: 60.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                      options: [
+                        '<p class="c2"><span class="c1 c0"> a = Atomic radius, b = Molecular radius</span></p>',
+                        '<p class="c2"><span class="c1 c0"> a = Covalent radius, b = van der Waals&rsquo; radius</span></p>',
+                        '<p class="c2"><span class="c1 c0"> a = Ionic radius, b = Covalent radius</span></p>',
+                        '<p class="c2"><span class="c1 c0"> a = Covalent radius, b = Atomic radius</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  },{ # 13
+                      title: '<ol class="c4 lst-kix_avs0v18voip7-0 start" start="30"><li class="c2 c3"><span class="c1 c0">In the given graph, a periodic property &reg; is plotted against atomic numbers (Z) of the lements. Which property is shown in the graph and how is it correlated with reactivity of the elements? &nbsp;</span></li></ol><p class="c9"><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 124.00px; height: 98.00px;"><img alt="C:\\Documents and Settings\\DEV\\Local Settings\\Temporary Internet Files\\Content.Word\\3-51.bmp" src="assets/images_exam_1/image12.png" style="width: 124.00px; height: 98.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span></p>',
+                      options: [
+                        '<p class="c2"><span class="c0"> Ionisation enthalpy in a group, reactivity dectreases from a</span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 19.00px; height: 15.00px;"><img alt="" src="assets/images_exam_1/image3.png" style="width: 19.00px; height: 15.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;e.</span></p>',
+                        '<p class="c2"><span class="c0"> Ionisation enthalpy in a group, reactivity increases from a </span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 19.00px; height: 15.00px;"><img alt="" src="assets/images_exam_1/image3.png" style="width: 19.00px; height: 15.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;e.</span></p>',
+                        '<p class="c2"><span class="c0"> Atomic radius in a group, reactivity decreases from &nbsp;a</span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 19.00px; height: 15.00px;"><img alt="" src="assets/images_exam_1/image3.png" style="width: 19.00px; height: 15.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">&nbsp;e.</span></p>',
+                        '<p class="c2"><span class="c0"> Metallic character in a group, reactivity increases from a</span><span style="overflow: hidden; display: inline-block; margin: 0.00px 0.00px; border: 0.00px solid #000000; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px); width: 19.00px; height: 15.00px;"><img alt="" src="assets/images_exam_1/image3.png" style="width: 19.00px; height: 15.00px; margin-left: 0.00px; margin-top: 0.00px; transform: rotate(0.00rad) translateZ(0px); -webkit-transform: rotate(0.00rad) translateZ(0px);" title=""></span><span class="c1 c0">e</span></p>'
+                      ],
+                      answerProps: {
+                        isAnswered: false,
+                        visited: false,
+                        needReview: false,
+                        answer: 1
+                      }
+                  }
+      ],
+    }
+  end
+
+  def questions_data_1
+    {
+      currentQuestionIndex: 0,
+      totalQuestions: 10,
+      questions: [
+      {
+          title: '<p>Which of the following match is the correct? <br> I. STDs – Sexually Transmitted Diseases <br> II. VD – Venerable Disease <br> III. RTI – Reproductive Tract Infection</p>',
+          options: [
+            '<p>a)I and II</p>',
+            '<p>b)II and IV</p>',
+            '<p>c)I and III</p>',
+            '<p>d)I, II and III</p>'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'Study of population trends is:',
+          options: [
+            'a)Kalography',
+            'b)Psychobiology',
+            'c)Biography',
+            'd)Demograghy'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'One of the legal methods of birth control is:',
+          options: [
+            'a)By abstaining from coitus from day 10 to 17 of the menstrual cycle',
+            'b)By having coitus at the time of day break',
+            'c)By a premature ejaculation during coitus',
+            'd)Absorption by taking an approximate medicine'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'Greatest biological problems faced by human beings is:',
+          options: [
+            'a)Population explosion',
+            'b)Depletion of ozone layer',
+            'c)Depletion of natural resources',
+            'd)Land erosion'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'The prenatal technique to determine the genetic disorders in a foetus is called',
+          options: [
+            'a)Laparoscopy',
+            'b)Amniocentesis',
+            'c)Abstinence',
+            'd)Coitus interruptus'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'July 11 is :',
+          options: [
+            'a)World Environment day',
+            'b)World Population day',
+            'c)World AIDS day',
+            'd)World Education day'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'Most thickly populated country is:',
+          options: [
+            'a)Bangladesh',
+            'b)Australia',
+            'c)U.S.A',
+            'd)India'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'What is the function of copper T?',
+          options: [
+            'a)Prevents mutation',
+            'b)Prevents fertilization',
+            'c)Prevents zygote formation',
+            'd)(B) and (C)'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'Spermicidal cream used on the coating of condoms, diaphragms, cervical cap and vaults are',
+          options: [
+            'a)For lubrication',
+            'b)For shining',
+            'c)For increasing effectiveness',
+            'd)None of the above'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+        {
+          title: 'The prenatal technique to determine the genetic disorders in a foetus is called',
+          options: [
+            'a)Laparoscopy',
+            'b)Amniocentesis',
+            'c)Abstinence',
+            'd)Coitus interruptus'
+          ],
+          answerProps: {
+            isAnswered: false,
+            visited: false,
+            needReview: false,
+            answer: 1
+          }
+        },
+      ],
+    }
+  end
+
+  def exam_data
+    puts "params: \n\n--------- #{params.inspect}"
+    exam_id = params[:id].split('?')[1]
+    question_data = questions_data_0 if exam_id.nil?
+    question_data = questions_data_1 if exam_id == '1'
+    render json: question_data
+  end
 end

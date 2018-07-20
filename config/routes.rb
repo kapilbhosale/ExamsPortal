@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
     get :subscription, to: 'home#subscription', as: :exam_subscription
     get :summary, to: 'home#summary', as: :exam_summary
-
+    get :exam_data, to: 'home#exam_data'
     resources :mock_tests
   end
 end

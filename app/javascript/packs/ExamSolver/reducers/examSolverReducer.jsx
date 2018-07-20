@@ -232,6 +232,9 @@ export default function examSolverReducer($$state = $$initialState, action) {
       questions[val.questionIndex].answerProps.visited = true;
       return $$state.set('questions', Immutable.fromJS(questions));
     }
+    case actionTypes.LOAD_EXAM_DATA: {
+      return $$state.set('questions', Immutable.fromJS(val.questions)).set('currentQuestionIndex', val.currentQuestionIndex);
+    }
     default:
       return $$state;
   }
