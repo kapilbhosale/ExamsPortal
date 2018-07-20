@@ -42,6 +42,16 @@ export function jumpToQuestion(questionIndex) {
   };
 }
 
+export function previousQuestion(questionIndex) {
+  return (dispatch, getState) => {
+    dispatch(markVisit(questionIndex));
+    dispatch({
+      type: actionTypes.JUMP_TO_QUESTION,
+      val: { questionIndex: questionIndex - 1 },
+    });
+  };
+}
+
 export function markForReview(questionIndex) {
   return (dispatch, getState) => {
     dispatch(markVisit(questionIndex));

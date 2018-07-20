@@ -198,6 +198,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
       } else {
         questions[val.questionIndex].answerProps.isAnswered = false;
       }
+      questions[val.questionIndex].answerProps.needReview = false;
       let nextIndex = $$state.get('currentQuestionIndex');
       if (($$state.get('currentQuestionIndex') + 1) < $$state.get('totalQuestions')) {
         nextIndex = $$state.get('currentQuestionIndex') + 1;
