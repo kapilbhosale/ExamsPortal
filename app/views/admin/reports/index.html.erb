@@ -2,7 +2,7 @@
   <table class="table table-striped">
     <thead>
     <tr>
-      <th>Id</th>
+      <th>Sr. No.</th>
       <th>Student Name</th>
       <th>Batch</th>
       <th>Marks</th>
@@ -15,7 +15,7 @@
     <% @students.each do |student| %>
     <tr>
       <% total = 90 %>
-      <% correct = rand(90) %>
+      <% correct = student[:marks]/2 %>
       <td><%= student[:id] %></td>
       <td><%= student[:name] %></td>
       <td><%= student[:batch] %></td>
