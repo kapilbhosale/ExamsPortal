@@ -212,7 +212,7 @@ class Students::HomeController < ApplicationController
       currentQuestionIndex: 0,
       totalQuestions: 10,
       questions: [
-      {
+        {
           title: '<p>Which of the following match is the correct? <br> I. STDs – Sexually Transmitted Diseases <br> II. VD – Venerable Disease <br> III. RTI – Reproductive Tract Infection</p>',
           options: [
             '<p>a)I and II</p>',
@@ -366,6 +366,7 @@ class Students::HomeController < ApplicationController
     }
   end
 
+
   def questions_data_2
     {
       currentQuestionIndex: 0,
@@ -415,7 +416,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three identical cars A , B , and C are moving at the same speed on three bridges. The car A goes on a plane bridge , B on a bridge convex upward and C goes on a bridge concave upward. Let F</span><span class="c4 c10">A</span><span class="c4">&nbsp;, F</span><span class="c4 c10">B</span><span class="c4">&nbsp;and F</span><span class="c4 c10">C</span><span class="c0">&nbsp;be the normal forces exerted by the cars on the bridges when they are at the middle of bridges . Then </span></p>',
+          title: '<p><span>4.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Three identical cars A , B , and C are moving at the same speed on three bridges. The car A goes on a plane bridge , B on a bridge convex upward and C goes on a bridge concave upward. Let F</span><span class="c4 c10">A</span><span class="c4">&nbsp;, F</span><span class="c4 c10">B</span><span class="c4">&nbsp;and F</span><span class="c4 c10">C</span><span class="c0">&nbsp;be the normal forces exerted by the cars on the bridges when they are at the middle of bridges . Then </span></p>',
           options: [
             '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F</span><span class="c4 c10">A</span><span class="c0">&nbsp;is max.of the 3 forces</span></p>',
             '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;F</span><span class="c4 c10">B</span><span class="c0">&nbsp;is max. of the 3 forces</span></p>',
@@ -443,7 +444,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c19"><span class="c0">6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A car is moving &nbsp;with maximum speed on a curved banked road. The statements is/are correct</span></p>
+          title: '<p><span>6.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A car is moving &nbsp;with maximum speed on a curved banked road. The statements is/are correct</span></p>
             <p class="c2"><span class="c0">A) &nbsp;the weight mg of car acting vertically downwards &nbsp;is &nbsp; &nbsp;balanced by the vertical component of normal reaction ( N cos &#x1d703; ) B) normal reaction N between the car and road acts at right angles to road surface</span></p>
             <p class="c2 c19"><span class="c0">C) the horizontal component of normal reaction (N sin &#x1d703;) &nbsp; is directed towards the centre of curve and it provides the necessary centripetal force&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
           options: [
@@ -487,7 +488,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">9.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;On a dry road , the max. speed is 5</span><img src="images/image1.png"><span class="c0">&nbsp;m/s.The max.speed on wet road is 5 m/s. If the coefficient of friction for dry road is &mu; then , that for wet road is</span></p>',
+          title: '<p ><span>9.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;On a dry road , the max. speed is 5</span><img src="assets/images_exam_2/image1.png"><span class="c0">&nbsp;m/s.The max.speed on wet road is 5 m/s. If the coefficient of friction for dry road is &mu; then , that for wet road is</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&mu; / 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &mu; / 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
@@ -501,11 +502,11 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">10.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two bodies of masses m</span><span class="c4 c10">1</span><span class="c4">&nbsp;and m</span><span class="c4 c10">2</span><span class="c4">&nbsp;are moving in circle of radii r</span><span class="c4 c10">1</span><span class="c4">&nbsp;and r</span><span class="c4 c10">2</span><span class="c0">&nbsp;respectively. They make one revolution in same time Their angular speeds are in the ratio</span></p>',
+          title: '<p class=""><span class="c4">10.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two bodies of masses m</span><span class="c4 c10">1</span><span class="c4">&nbsp;and m</span><span class="c4 c10">2</span><span class="c4">&nbsp;are moving in circle of radii r</span><span class="c4 c10">1</span><span class="c4">&nbsp;and r</span><span class="c4 c10">2</span><span class="c0">&nbsp;respectively. They make one revolution in same time Their angular speeds are in the ratio</span></p>',
           options: [
             '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m</span><span class="c4 c10">1 </span><span class="c4">: m</span><span class="c4 c10">2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m</span><span class="c4 c10">1</span><span class="c4">&nbsp;r</span><span class="c4 c10">1 </span><span class="c4">: m</span><span class="c4 c10">2</span><span class="c4">r</span><span class="c4 c13 c10">2 &nbsp; &nbsp; &nbsp; </span></p>',
-            '<p class="c2"><span class="c4">c) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image2.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
+            '<p class="c2"><span class="c4">c) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image2.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
             '<p class="c2"><span class="c0">d) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 : 1</span></p>'
           ],
           answerProps: {
@@ -543,11 +544,11 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">13.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If distance between the earth and sun is increased by 3 times , then attraction between them will </span></p>',
+          title: '<p class=""><span class="c0">13.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If distance between the earth and sun is increased by 3 times , then attraction between them will </span></p>',
           options: [
-            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrease by </span><img src="images/image3.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrease by </span><img src="assets/images_exam_2/image3.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remain same</span></p>',
-            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrease by </span><img src="images/image4.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decrease by </span><img src="assets/images_exam_2/image4.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increase by 3</span></p>',
           ],
           answerProps: {
@@ -557,9 +558,9 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">14.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;According to kepler&rsquo;s second law , line joining the planet to the sun sweeps out equal areas in equal time intervals. This suggests that for the planet.</span></p>',
+          title: '<p class=""><span class="c0">14.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;According to kepler&rsquo;s second law , line joining the planet to the sun sweeps out equal areas in equal time intervals. This suggests that for the planet.</span></p>',
           options: [
-            '<p class="c2 c6"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radial accn is zero&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class=""><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radial accn is zero&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tangential accn is zero</span></p>',
             '<p class="c2"><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Transverse accn is zero&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All of the above</span></p>',
@@ -571,7 +572,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">15.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The weight of body on the moon&rsquo;s surface is less than that on earth surface because :</span></p>',
+          title: '<p class=""><span class="c0">15.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The weight of body on the moon&rsquo;s surface is less than that on earth surface because :</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Moon has no atmosphere&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Moon is far from earth</span></p>',
@@ -585,7 +586,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">16.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The radius of the earth is about 6400 km and that of mars is 3200 km .The mass of the earth is about 10 times the mass of mars .An object weighs 200 N on the surface of earth . Its weight on the surface of mars will be</span></p>',
+          title: '<p class=""><span class="c0">16.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The radius of the earth is about 6400 km and that of mars is 3200 km .The mass of the earth is about 10 times the mass of mars .An object weighs 200 N on the surface of earth . Its weight on the surface of mars will be</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;80 N</span></p>',
             '<p class="c2"><span class="c0">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;40 N&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; </span></p>',
@@ -613,7 +614,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">18.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The earth (mass =6 x10</span><span class="c4 c15">24</span><span class="c4">kg) revolves round the sun with an angular velocity of 2&times;10 </span><span class="c4 c15">- 7</span><span class="c4">&nbsp;rad/s in a circular orbit of radius 1.5 &times;10 </span><span class="c4 c15">8</span><span class="c0">&nbsp;km The gravitational force exerted by the sun on the earth , in newton , is</span></p>',
+          title: '<p class=""><span class="c4">18.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The earth (mass =6 x10</span><span class="c4 c15">24</span><span class="c4">kg) revolves round the sun with an angular velocity of 2&times;10 </span><span class="c4 c15">- 7</span><span class="c4">&nbsp;rad/s in a circular orbit of radius 1.5 &times;10 </span><span class="c4 c15">8</span><span class="c0">&nbsp;km The gravitational force exerted by the sun on the earth , in newton , is</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zero &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;18&times;10</span><span class="c4 c13 c15">25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
@@ -629,10 +630,10 @@ class Students::HomeController < ApplicationController
         },{
           title: '<p class="c2"><span class="c5 c8">19.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;An artificial satellite stays in the orbit around the earth because</span></p>',
           options: [
-            '<p class="c2 c6"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on it is balanced by the attraction of the planets</span></p>',
-            '<p class="c2 c6"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The fuel in the satellite burns and releases hot gases which produce thrust</span></p>',
-            '<p class="c2 c6"><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on it is just balanced by the viscous force on it produced by the atmosphere</span></p>',
-            '<p class="c2 c6"><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on in produces necessary centripetal force</span></p>'
+            '<p class=""><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on it is balanced by the attraction of the planets</span></p>',
+            '<p class=""><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The fuel in the satellite burns and releases hot gases which produce thrust</span></p>',
+            '<p class=""><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on it is just balanced by the viscous force on it produced by the atmosphere</span></p>',
+            '<p class=""><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Earth&rsquo;s attraction on in produces necessary centripetal force</span></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -641,12 +642,12 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">20.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If </span><img src="images/image5.png"><span class="c0">&nbsp;is the mean density of the earth and R is its radius , then critical speed of a satellite revolving very close to the surface of earth is</span></p>',
+          title: '<p class=""><span class="c4">20.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If </span><img src="assets/images_exam_2/image5.png"><span class="c0">&nbsp;is the mean density of the earth and R is its radius , then critical speed of a satellite revolving very close to the surface of earth is</span></p>',
           options: [
-            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image6.png"><span class="c0">&nbsp; &nbsp; &nbsp;</span></p>',
-            '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image7.png"><span class="c0">&nbsp; &nbsp; &nbsp;</span></p>',
-            '<p class="c2"><span class="c4">c) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image8.png"></p>',
-            '<p class="c2"><span class="c4">&nbsp;d) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image9.png"></p>'
+            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image6.png"><span class="c0">&nbsp; &nbsp; &nbsp;</span></p>',
+            '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image7.png"><span class="c0">&nbsp; &nbsp; &nbsp;</span></p>',
+            '<p class="c2"><span class="c4">c) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image8.png"></p>',
+            '<p class="c2"><span class="c4">&nbsp;d) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image9.png"></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -655,12 +656,12 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">21.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The relay satellite transmits TV programme continuously from one part of the world to another because its</span></p>',
+          title: '<p class=""><span class="c0">21.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The relay satellite transmits TV programme continuously from one part of the world to another because its</span></p>',
           options: [
             '<p class="c2"><span class="c5">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period is greater than the period of rotation of the earth</span></p>',
             '<p class="c2"><span class="c8 c5">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period is less than the period of the earth about its axis</span></p>',
-            '<p class="c2 c6"><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period has no relation with the period of the earth about its axis</span></p>',
-            '<p class="c2 c6"><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period is equal to the period of rotations of the earth about its axis</span></p>'
+            '<p class=""><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period has no relation with the period of the earth about its axis</span></p>',
+            '<p class=""><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Period is equal to the period of rotations of the earth about its axis</span></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -683,12 +684,12 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">23.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of universal gravitational constant G in M.K.S. system is </span><img src="images/image10.png"><span class="c0">&nbsp;Its value in C.G.S. system is</span></p>',
+          title: '<p class=""><span class="c4">23.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The value of universal gravitational constant G in M.K.S. system is </span><img src="assets/images_exam_2/image10.png"><span class="c0">&nbsp;Its value in C.G.S. system is</span></p>',
           options: [
-            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image11.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
-            '<p class="c2"><span class="c4">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image12.png"></p>',
-            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image13.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
-            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image14.png"></p>'
+            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image11.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class="c2"><span class="c4">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image12.png"></p>',
+            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image13.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image14.png"></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -699,10 +700,10 @@ class Students::HomeController < ApplicationController
         },{
           title: '<p class="c2"><span class="c0">The angular velocity of rotation of a star (of mass M and radius R) at which the matter starts to escape from its equator is</span></p>',
           options: [
-            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image15.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
-            '<p class="c2"><span class="c4">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image16.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
-            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image17.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
-            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image18.png"></p>'
+            '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image15.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
+            '<p class="c2"><span class="c4">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image16.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
+            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image17.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
+            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image18.png"></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -711,11 +712,11 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">25.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A stone tied to string performs horizontal circle.During the motion,</span></p>',
+          title: '<p class=""><span class="c0">25.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A stone tied to string performs horizontal circle.During the motion,</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear and angular momentum are constant</span></p>',
-            '<p class="c2 c6"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear momentum is const. but angular momentum is changing</span></p>',
-            '<p class="c2 c6"><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angular momentum is constant but linear momentum is changing</span></p>',
+            '<p class=""><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;linear momentum is const. but angular momentum is changing</span></p>',
+            '<p class=""><span class="c0">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;angular momentum is constant but linear momentum is changing</span></p>',
             '<p class="c2"><span class="c0">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;both linear and angular momentum are changing</span></p>'
           ],
           answerProps: {
@@ -725,12 +726,12 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">26.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A body of mass m slides down on an inclined plane and reaches the bottom with a velocity &#39;v&#39;. If the same mass </span><span class="c5">were in the form of a ring which rolls down on the inclined</span><span class="c0">&nbsp;plane , then the velocity of the ring at the bottom will be</span></p>',
+          title: '<p class=""><span class="c4">26.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A body of mass m slides down on an inclined plane and reaches the bottom with a velocity &#39;v&#39;. If the same mass </span><span class="c5">were in the form of a ring which rolls down on the inclined</span><span class="c0">&nbsp;plane , then the velocity of the ring at the bottom will be</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
-            '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image19.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
-            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image20.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
-            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="images/image21.png"></p>'
+            '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image19.png"><span class="c0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
+            '<p class="c2"><span class="c4">c)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image20.png"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
+            '<p class="c2"><span class="c4">d)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><img src="assets/images_exam_2/image21.png"></p>'
           ],
           answerProps: {
             isAnswered: false,
@@ -739,7 +740,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">27.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the absence of external force the centre of mass of the system will move</span></p>',
+          title: '<p class=""><span class="c0">27.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;In the absence of external force the centre of mass of the system will move</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Zero velocity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; </span></p>',
             '<p class="c2"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; constant velocity</span></p>',
@@ -767,7 +768,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">29.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generally most of the mass of the flywheel is placed on the rim</span></p>',
+          title: '<p class=""><span class="c0">29.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Generally most of the mass of the flywheel is placed on the rim</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to decrease M.I.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
             '<p class="c2"><span class="c0">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to obtain equilibrium</span></p>',
@@ -795,7 +796,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">31.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A body has rotational energy by virtue of its motion is 1000 kgm</span><span class="c4 c15">2</span><span class="c0">&nbsp;has an angular speed of 20 rad/sec in anti clock wise direction.The body has rotational inertial about the axis is </span></p>',
+          title: '<p class=""><span class="c4">31.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A body has rotational energy by virtue of its motion is 1000 kgm</span><span class="c4 c15">2</span><span class="c0">&nbsp;has an angular speed of 20 rad/sec in anti clock wise direction.The body has rotational inertial about the axis is </span></p>',
           options: [
             '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;20 kgm</span><span class="c4 c13 c15">2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c4">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5 kgm</span><span class="c4 c13 c15">2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></p>',
@@ -809,7 +810,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">32.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two diff. masses 1 kg and 2 kg are moving with velocities 2 m/s &amp; 8 m/s towards each other due to gravitational influence. Their centre of mass has a velocity of</span></p>',
+          title: '<p class=""><span class="c0">32.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two diff. masses 1 kg and 2 kg are moving with velocities 2 m/s &amp; 8 m/s towards each other due to gravitational influence. Their centre of mass has a velocity of</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.8 m/s</span></p>',
             '<p class="c2"><span class="c0">b) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zero</span></p>',
@@ -823,7 +824,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">33.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Centre of mass of a homogenous semicircular plate of radius &#39;r&#39; lies</span></p>',
+          title: '<p class=""><span class="c0">33.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Centre of mass of a homogenous semicircular plate of radius &#39;r&#39; lies</span></p>',
           options: [
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outside the plate</span></p>',
             '<p class="c2"><span class="c0">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;on the circumference of the plate</span></p>',
@@ -837,7 +838,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">34.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The total angular momentum of a body is equal to angular momentum of its centre of mass if the body has</span></p>',
+          title: '<p class=""><span class="c0">34.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The total angular momentum of a body is equal to angular momentum of its centre of mass if the body has</span></p>',
           options:[
             '<p class="c2"><span class="c0">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;only translational motion&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c0">b) only rotational motion</span></p>',
@@ -851,7 +852,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">35.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A heavy disc is rotating with uniform angular velocity w about its own axis. A piece of wax sticks to it. The angular velocity of the disc will</span></p>',
+          title: '<p class=""><span class="c0">35.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A heavy disc is rotating with uniform angular velocity w about its own axis. A piece of wax sticks to it. The angular velocity of the disc will</span></p>',
           options:[
             '<p class="c2"><span class="c8 c5">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;increase &nbsp;</span></p>',
             '<p class="c2"><span class="c8 c5">b) decrease </span></p>',
@@ -865,7 +866,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c4">36.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two circular uniform discs A and B are of equal masses and thickness but made of metal with densities d</span><span class="c4 c10">A</span><span class="c4">&nbsp;and d</span><span class="c4 c10">B</span><span class="c4">&nbsp;(d</span><span class="c4 c10">A</span><span class="c4">&nbsp;&gt; d</span><span class="c4 c10">B</span><span class="c4">). If their M.I. about an axis passing through their centre &amp; perpendicular to circular faces be I</span><span class="c4 c10">A</span><span class="c4">&nbsp;and I</span><span class="c4 c10">B</span><span class="c0">&nbsp;then</span></p>',
+          title: '<p class=""><span class="c4">36.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Two circular uniform discs A and B are of equal masses and thickness but made of metal with densities d</span><span class="c4 c10">A</span><span class="c4">&nbsp;and d</span><span class="c4 c10">B</span><span class="c4">&nbsp;(d</span><span class="c4 c10">A</span><span class="c4">&nbsp;&gt; d</span><span class="c4 c10">B</span><span class="c4">). If their M.I. about an axis passing through their centre &amp; perpendicular to circular faces be I</span><span class="c4 c10">A</span><span class="c4">&nbsp;and I</span><span class="c4 c10">B</span><span class="c0">&nbsp;then</span></p>',
           options:[
             '<p class="c2"><span class="c4">a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I</span><span class="c4 c10">A</span><span class="c4 c15">&nbsp;</span><span class="c4">= I</span><span class="c4 c13 c10">B &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></p>',
             '<p class="c2"><span class="c4">b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I</span><span class="c4 c10">A</span><span class="c4 c15">&nbsp;</span><span class="c4">&gt; I</span><span class="c4 c13 c10">B &nbsp; &nbsp; &nbsp; &nbsp; </span></p>',
@@ -879,7 +880,7 @@ class Students::HomeController < ApplicationController
             answer: 1
           }
         },{
-          title: '<p class="c2 c6"><span class="c0">37.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The total energy of a linear harmonic oscillator is directly proportional to</span></p>',
+          title: '<p class=""><span class="c0">37.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The total energy of a linear harmonic oscillator is directly proportional to</span></p>',
           options:[
             '<p class="c2"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;it mass only</span></p>',
             '<p class="c2"><span class="c0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;the square of its amplitude only</span></p>',
@@ -896,6 +897,7 @@ class Students::HomeController < ApplicationController
       ],
     }
   end
+
 
   def exam_data
     puts "params: \n\n--------- #{params.inspect}"
