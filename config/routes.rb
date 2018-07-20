@@ -11,4 +11,7 @@ Rails.application.routes.draw do
     get :exam_data, to: 'home#exam_data'
     resources :mock_tests
   end
+  namespace :admin do
+    resources :reports
+  end
 end

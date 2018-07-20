@@ -1,0 +1,30 @@
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Student Name</th>
+      <th>Batch</th>
+      <th>Marks</th>
+      <th>rank</th>
+      <th>correct</th>
+      <th>wrong</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @students.each do |student| %>
+    <tr>
+      <% total = 90 %>
+      <% correct = rand(90) %>
+      <td><%= student[:id] %></td>
+      <td><%= student[:name] %></td>
+      <td><%= student[:batch] %></td>
+      <td><%= student[:marks] %></td>
+      <td><%= student[:rank] %></td>
+      <td><%= correct %></td>
+      <td><%= total - correct %></td>
+    </tr>
+    <% end  %>
+    </tbody>
+  </table>
+</div>
