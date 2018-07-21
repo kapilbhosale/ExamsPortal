@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Openomr</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <style type="text/css">
+    .col-login {
+      max-width: 24rem;
+    }
+    .mx-auto {
+      margin-right: auto !important;
+    }
+    .p-6 {
+      padding: 2rem !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="page-main">
+      <div class="my-3 my-md-5">
+        <div class="container text-centerererererer">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

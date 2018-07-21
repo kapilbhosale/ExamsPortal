@@ -17,10 +17,18 @@
         <li><a href="<%= students_exam_subscription_path %>">External Students</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Kalpak Bhosale</a></li>
-        <li>
-          <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
-        </li>
+        <% if admin_signed_in? %>
+          <li><a href="#"><%= current_admin&.name%></a>
+            <%= link_to '<i class="dropdown-icon fe fe-power"></i> Sign Out'.html_safe, destroy_admin_session_path, method: :delete%>
+          </li>
+          <li>
+            <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
+          </li>
+        <% else %>
+          <li>
+            <%= link_to '<i class="dropdown-icon fe fe-power"></i> Sign In'.html_safe, new_admin_session_path, method: :get%>
+          </li>
+        <% end %>
       </ul>
     </div>
   </div>
