@@ -15,7 +15,7 @@ class Devise::RegistrationsController < DeviseController
   # POST /resource
   def create
     build_resource(sign_up_params)
-    ActiveRecord::Base.transaction do
+    #ActiveRecord::Base.transaction do
       resource.save
       yield resource if block_given?
       if resource.persisted?
@@ -34,7 +34,7 @@ class Devise::RegistrationsController < DeviseController
         set_minimum_password_length
         respond_with resource
       end
-    end
+    #end
   end
 
   # GET /resource/edit
