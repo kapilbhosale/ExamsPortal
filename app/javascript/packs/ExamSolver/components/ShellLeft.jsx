@@ -3,16 +3,21 @@ import SectionList from './SectionList'
 import Question from './Question'
 
 class ShellLeft extends React.Component {
+
+  currentQuestion() {
+    const  { currentQuestionIndex, questions } = this.props;
+    return questions[currentQuestionIndex];
+  }
+
   render() {
     const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
-            jumpToQuestion, submitTest } = this.props;
-    const currentQuestion = questions[currentQuestionIndex];
+            submitTest, previousQuestion } = this.props;
     return (
       <div className="col-md-9">
         <SectionList totalQuestions={questions.length} submitTest={submitTest} />
         <hr/>
         <Question
-          { ...currentQuestion }
+          { ...this.currentQuestion() }
           currentQuestionIndex={currentQuestionIndex}
           answerQuestion={ answerQuestion }
           markVisited={ markVisited }
@@ -32,7 +37,7 @@ class ShellLeft extends React.Component {
           </div>
 
           <div className="col-md-4">
-            <button type="button" className="btn btn-primary" onClick={ () => { jumpToQuestion(currentQuestionIndex - 1) }}>
+            <button type="button" className="btn btn-primary" onClick={ () => { previousQuestion(currentQuestionIndex) }}>
               Previous
             </button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
