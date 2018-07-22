@@ -19,7 +19,7 @@ class Devise::RegistrationsController < DeviseController
       resource.save
       yield resource if block_given?
       if resource.persisted?
-        UserMailer.with(user: resource).welcome_email.deliver_now
+        #UserMailer.with(user: resource).welcome_email.deliver_now
         if resource.active_for_authentication?
           set_flash_message! :notice, :signed_up
           sign_up(resource_name, resource)
