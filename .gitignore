@@ -33,7 +33,7 @@
 /node_modules
 yarn-debug.log*
 .yarn-integrity
-
+/erd.pdf
 
 .idea/*.*
 .idea/*
