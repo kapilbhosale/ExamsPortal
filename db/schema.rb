@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 2018_07_24_121401) do
+
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +35,7 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+
   create_table "exams", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -42,6 +45,47 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_exams_on_name"
+
+  create_table "batches", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "student_batches", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_student_batches_on_batch_id"
+    t.index ["student_id"], name: "index_student_batches_on_student_id"
+  end
+
+  create_table "students", force: :cascade do |t|
+    t.integer "roll_number", null: false
+    t.string "name", null: false
+    t.string "mother_name"
+    t.date "date_of_birth"
+    t.integer "gender", limit: 2, default: 0
+    t.float "ssc_marks"
+    t.string "student_mobile", limit: 20
+    t.string "parent_mobile", limit: 20, null: false
+    t.text "address"
+    t.string "college"
+    t.string "photo"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_students_on_category_id"
+    t.index ["name"], name: "index_students_on_name"
+    t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+
   end
 
 end

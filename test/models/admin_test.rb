@@ -3,6 +3,7 @@
 # Table name: admins
 #
 #  id                     :bigint(8)        not null, primary key
+
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
 #  email                  :string           default(""), not null
@@ -22,6 +23,7 @@
 #  index_admins_on_email                 (email) UNIQUE
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #
+
 
 require 'test_helper'
 
