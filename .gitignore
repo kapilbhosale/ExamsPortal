@@ -37,3 +37,6 @@ yarn-debug.log*
 
 .idea/*.*
 .idea/*
+
+# Ignore application configuration
+/config/application.yml
