@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
 ActiveRecord::Schema.define(version: 2018_07_24_121401) do
-
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,17 +33,6 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
-
-  create_table "exams", force: :cascade do |t|
-    t.string "name", null: false
-    t.text "description"
-    t.integer "no_of_questions"
-    t.integer "time_in_minutes"
-    t.boolean "published"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_exams_on_name"
-
   create_table "batches", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -56,6 +43,17 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "exams", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "no_of_questions"
+    t.integer "time_in_minutes"
+    t.boolean "published"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_exams_on_name"
   end
 
   create_table "student_batches", force: :cascade do |t|
@@ -85,7 +83,6 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
-
   end
 
 end

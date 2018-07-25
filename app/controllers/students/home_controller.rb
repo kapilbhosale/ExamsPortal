@@ -366,7 +366,6 @@ class Students::HomeController < ApplicationController
     }
   end
 
-
   def questions_data_2
     {
       currentQuestionIndex: 0,
