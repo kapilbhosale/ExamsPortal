@@ -13,4 +13,8 @@ class Batch < ApplicationRecord
   has_many  :students, through: :student_batches
 
   validates :name, presence: true
+
+  def self.all_batches
+    Batch.all{|batch| [batch.id, batch.name]}
+  end
 end

@@ -20,11 +20,15 @@
 #
 
 class Student < ApplicationRecord
-  belongs_to :category
+  belongs_to :category, optional: true
   has_many   :student_batches
   has_many   :batches, through: :student_batches
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}
-  validates  :ssc_marks, numericality: true
+  validates  :ssc_marks, numericality: true, allow_nil: true
+
+  def self.suggest_roll_number
+    self.last&.roll_number.to_i + 1
+  end
 end
