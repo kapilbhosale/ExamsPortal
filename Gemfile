@@ -74,7 +74,6 @@ group :development do
   gem 'pry'
   gem 'pry-nav'
 
-  gem 'annotate'
   gem 'rails-erd'
 
 
