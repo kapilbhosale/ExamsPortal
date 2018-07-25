@@ -1,0 +1,33 @@
+<div class="col-12">
+  <div class="card" style="border: none;">
+    <div class="card-header text-center">
+      <h4>Creative Coaching Classes</h4>
+      <p>'Sharda Bhavan', Shyam Nagar, Nanded</p>
+    </div>
+    <% if @students.present? %>
+      <table class="table table-bordered table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th>Roll Number</th>
+            <th>Batch(s)</th>
+            <th>Name</th>
+            <th>Parent Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @students.each do |student| %>
+            <tr>
+              <td><%= student.roll_number %></td>
+              <td><%= student&.batches&.each&.map(&:name).join(', ') %>
+              </td>
+              <td><%= student.name %></td>
+              <td><%= student.parent_mobile %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <div class="alert alert-info">No students were found.</div>
+    <% end %>
+  </div>
+</div>

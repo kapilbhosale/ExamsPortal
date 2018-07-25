@@ -1,0 +1,93 @@
+<div class="row">
+  <div class="col-lg-8">
+    <form class="card">
+      <div class="card-header">
+        <h3 class="card-title">Student Details</h3>
+      </div>
+
+      <% if @student.present? %>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 ">
+              <div class="form-group">
+                <div class="media">
+                  <span class="avatar avatar-xxl mr-6" style="background-image: url(<%=@student.photo.url(:profile) if @student.photo?%>)"></span>
+                  <div class="media-body">
+                    <h4 class="m-0"><%= @student.name %></h4>
+                    <p class="text-muted mb-0">Roll Number: <%= @student.roll_number %></p>
+                    <p class="text-muted mb-0"></p>
+                  </div>
+                </div>
+                <div class="table-responsive">
+                  <table class="table card-table table-vcenter text-nowrap">
+                    <tr>
+                      <td>
+                        <label class="form-label">Date of Birth</label>
+                      </td>
+                      <td>
+                        <%= @student&.date_of_birth&.strftime("%d-%b-%Y") %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label class="form-label">Gender</label>
+                      </td>
+                      <td>
+                        <%= @student.gender == 0 ? 'Male' : 'Female' %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label class="form-label">Mother's Name</label>
+                      </td>
+                      <td>
+                        <%= @student.mother_name %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <label class="form-label">SSC Marks</label></td><td><%= @student.ssc_marks %>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">Address</label></td>
+                      <td><%= @student.address %></td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">Student Mobile</label></td>
+                      <td><%= @student.student_mobile %></td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">Parent Mobile</label></td>
+                      <td><%= @student.parent_mobile %></td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">Category</label></td>
+                      <td><%= @student&.category&.name %></td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">College</label></td>
+                      <td><%= @student&.college %></td>
+                    </tr>
+                    <tr>
+                      <td><label class="form-label">Batch</label></td>
+                      <td><%= @student.batches&.each&.map(&:name).join(', ') %>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="card-body">
+          <p> Student not found. </p>
+        </div>
+      <% end %>
+      <div class="card-footer text-right">
+        <a href='/admin/students' class="btn btn-primary">Back</a>
+      </div>
+    </form>
+  </div>
+</div>

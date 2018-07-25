@@ -1,9 +1,0 @@
-<%= content_for(:body_attributes, "data-turbolinks='false'".html_safe) %>
-<div id="react-element">
-</div>
-
-<style type="text/css">
-  <%= @styles %>
-</style>
-
-<%= react_component("MasterApp", props: { root_path: '/students', kapil: 'value' }, prerender: false, trace: nil) %>

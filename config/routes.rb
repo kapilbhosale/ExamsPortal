@@ -21,5 +21,11 @@ Rails.application.routes.draw do
     resource :dashboard
     resources :reports
     resources :exams
+    resources :students do
+      root to: 'students#index'
+    end
+    resources :batches do
+      root to: 'batches#index'
+    end
   end
 end
