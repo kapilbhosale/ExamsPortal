@@ -44,6 +44,12 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem "react_on_rails", "= 10.0.2"
 gem 'devise'
+gem 'kaminari'
+gem 'ransack'
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -67,6 +73,10 @@ group :development do
 
   gem 'annotate'
   gem 'rails-erd'
+
+
+
+  gem 'pry'
 
 end
 
