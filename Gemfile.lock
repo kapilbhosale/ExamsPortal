@@ -315,10 +315,8 @@ DEPENDENCIES
   mini_magick
   pg
   pry
-<<<<<<< HEAD
   pry-nav
-=======
->>>>>>> kaminari, ransack, carrierwave, mini-magick, wicked_pdf, wkhtmltopdf-binary gems added
+ wkhtmltopdf-binary gems added
   puma (~> 3.11)
   rails (~> 5.2.0)
   rails-erd
