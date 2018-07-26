@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PDF</title>
+  <%= stylesheet_link_tag "http://#{request.host_with_port}/#{asset_path("application.css")}", rel: "stylesheet", media: "all" %>
+  <style type="text/css">
+    .table, .tr, .td, .table thead th{
+      border: 0.5pt solid #dee2e6;
+      font-size: 12px;
+    }
+    .table td, .table th {
+      border: 0.5pt solid #dee2e6;
+      padding: 0.55rem;
+      vertical-align: top;
+
+    }
+  </style>
+</head>
+<body style="background-color: white;">
+  <%= yield %>
+</body>
+</html>
