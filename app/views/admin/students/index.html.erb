@@ -3,67 +3,63 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-2">
-          <h5>Students</h5>
-        </div>
-        <div class="col-md-5" >
-          <%= search_form_for @search, url: admin_students_path do |f| %>
-            <div class="field">
-              <%= f.label :name_cont, "Name " %>
-              <%= f.text_field :name_cont, class: 'my-form-control', placeholder: 'Search...'%>
-              <%= f.submit "Search", class: 'btn btn-primary'%>
-            </div>
-            <div class="actions"></div>
-          <% end %>
-        </div>
-        <div class="col-md-2.5">
-          <div >
-            <%= form_tag admin_students_path, method: :get, id: 'limit_form' do %>
-              Show
-              <%= select_tag :limit, options_for_select([5, 10, 15, 20, 50], selected: params[:limit] || 10), class: 'my-form-control' %> students per page
-            <% end %>
-          </div>
-        </div>
-        <div class="col-md-2 text-right">
-          <%= link_to '<i class="icon fe fe-user-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
+          <h5 class="pt-3">Students</h5>
         </div>
       </div>
-      <div class="table-responsive">
-        <% if @students.present? %>
-          <%= form_for :student, url: admin_students_path, method: :get, id: 'student_form' do |form| %>
-            <table class="table card-table table-vcenter text-nowrap">
-              <thead>
-                <tr>
-                  <th><%= sort_link(@search, :roll_number) %></th>
-                  <th>Batch(s)</th>
-                  <th><%= sort_link(@search, :name) %></th>
-                  <th>Parent Mobile</th>
-                  <th><%= link_to '<i class="icon fe fe-file"></i> Download PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank'%>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @students.each do |student| %>
-                  <tr>
-                    <td><%= student.roll_number %></td>
-                    <td><%= student&.batches&.each&.map(&:name).join(', ') %>
-                    </td>
-                    <td><%= link_to student.name, admin_student_path(student) %></td>
-                    <td><%= student.parent_mobile %></td>
-                    <td>
-                      <!--TODO:: check other options for it. -->
-                      <%= link_to '', admin_student_path(student), 'data-toggle'=>'tooltip', title: 'Show', class: 'glyphicon glyphicon-th-list' %> &nbsp;
-                      <%= link_to '<i class="glyphicon glyphicon-edit"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp;
-                      <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>&nbsp;
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
+      <div class="card-body">
+        <div class="col-md-5 mb-3">
+          <%= search_form_for @search, url: admin_students_path, class:"form-inline my-2 my-lg-0" do |f| %>
+            <span class="p-2">Name</span>
+            <%= f.text_field :name_cont, placeholder: 'Search...', class: 'form-control mr-sm-2' %>
+            <%= f.submit "Search", class: 'btn btn-outline-success my-2 my-sm-0'%>
           <% end %>
-          <%= paginate @students %>
-        <% else %>
-          <div class="alert alert-info">No students were found.</div>
-        <% end %>
+        </div>
+        <div class="col-md-5 mb-3">
+          <%= form_tag admin_students_path, method: :get, id: 'limit_form', class:"form-inline my-2 my-lg-0" do %>
+            <span class="p-2">Show</span>
+            <%= select_tag :limit, options_for_select([5, 10, 15, 20, 50], selected: params[:limit] || 10), class: 'form-control' %> <span class="p-2">Students per page</span>
+          <% end %>
+        </div>
+        <div class="col-md-2 p-2 mb-3">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
+        </div>
+        <div class="table-responsive">
+          <% if @students.present? %>
+            <%= form_for :student, url: admin_students_path, method: :get, id: 'student_form' do |form| %>
+              <table class="table card-table table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th><%= sort_link(@search, :roll_number) %></th>
+                    <th>Batch(s)</th>
+                    <th><%= sort_link(@search, :name) %></th>
+                    <th>Parent Mobile</th>
+                    <th><%= link_to '<i class="icon fe fe-file"></i> Download PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank'%>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @students.each do |student| %>
+                    <tr>
+                      <td><%= student.roll_number %></td>
+                      <td><%= student&.batches&.each&.map(&:name).join(', ') %>
+                      </td>
+                      <td><%= link_to student.name, admin_student_path(student) %></td>
+                      <td><%= student.parent_mobile %></td>
+                      <td>
+                        <%= link_to '', admin_student_path(student), 'data-toggle'=>'tooltip', title: 'Show', class: 'glyphicon glyphicon-th-list' %> &nbsp;
+                        <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp;
+                        <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>&nbsp;
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+            <%= paginate @students %>
+          <% else %>
+            <div class="alert alert-info">No students were found.</div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
