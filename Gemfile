@@ -69,15 +69,9 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'hirb'
   gem 'figaro'
-
   gem 'awesome_print'
-  gem 'pry'
   gem 'pry-nav'
-
   gem 'rails-erd'
-
-
-
   gem 'pry'
 
 end

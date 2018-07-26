@@ -97,7 +97,7 @@
                 <% @student_data[:batches].each do |batch|%>
                   <label class="selectgroup-item">
                     <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" <% if @student.student_batches.find_by(batch_id: batch.id).present? %>checked="" <% end %>class="selectgroup-input" >
-                    <span class="selectgroup-button"><%= batch.name.titlecase %></span>
+                    <span class="selectgroup-button"><%= batch.name.upcase %></span>
                   </label>
                 <% end %>
               </div>
