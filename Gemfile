@@ -51,6 +51,9 @@ gem 'mini_magick'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 
+gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
+gem 'zip-zip' # will load compatibility for old rubyzip API.
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
