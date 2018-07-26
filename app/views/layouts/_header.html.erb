@@ -1,39 +1,44 @@
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-      </button>
-      <a class="navbar-brand" href="#">SmartExams</a>
-    </div>
+<nav class="navbar navbar-expand-lg navbar-default">
+  <a class="navbar-brand" href="#">Smart Exam</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="<%= students_tests_path %>">My Exams <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Mock Tests</a></li>
-        <li><a href="#">Question Bank</a></li>
-        <li><a href="/admin/reports">Reports</a></li>
-        <li><a href="<%= students_exam_subscription_path %>">External Students</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <% if admin_signed_in? %>
-          <li class="list-item">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="<%= students_tests_path %>">My Exams <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Mock Tests</a></li>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Question Bank</a></li>
+      </li>
+      <li class="nav-item">
+        <a href="/admin/reports">Reports</a>
+      </li>
+      <li class="nav-item">
+        <a href="<%= students_exam_subscription_path %>">External Students</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav text-right">
+      <% if admin_signed_in? %>
+          <li class="nav-item">
             <a href="#" ><%= current_admin&.name%></a>
           </li>
-          <li class="list-item">
+          <li class="nav-item">
             <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, class: 'nav-link'%>
           </li>
-          <li class="list-item">
+          <li class="nav-item">
             <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
           </li>
         <% else %>
-          <li class="list-item">
+          <li class="nav-item">
             <%= link_to 'Sign In', new_admin_session_path, method: :get%>
           </li>
-          <li class="list-item"><%= link_to 'Sign Up', new_admin_registration_path, method: :get%></li>
+          <li class="nav-item"><%= link_to 'Sign Up', new_admin_registration_path, method: :get%></li>
         <% end %>
-      </ul>
-    </div>
+    </ul>
   </div>
 </nav>
