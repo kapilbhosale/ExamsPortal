@@ -37,11 +37,13 @@ class ExamSolverContainer extends Component {
     const questions = $$examSolverStore.get('questions').toJS();
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex');
     const totalQuestions = $$examSolverStore.get('totalQuestions');
+    const startedAt = $$examSolverStore.get('startedAt');
     return (
       <div className="">
         <ShellLeft
           questions={questions}
           currentQuestionIndex={currentQuestionIndex}
+          startedAt={startedAt}
           { ...this.actions() }
           />
         <ShellRight

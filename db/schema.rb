@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_27_124905) do
+ActiveRecord::Schema.define(version: 2018_07_27_153956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -110,6 +110,17 @@ ActiveRecord::Schema.define(version: 2018_07_27_124905) do
     t.index ["option_id"], name: "index_student_question_answers_on_option_id"
     t.index ["question_id"], name: "index_student_question_answers_on_question_id"
     t.index ["student_id"], name: "index_student_question_answers_on_student_id"
+  end
+  
+  create_table "student_exams", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "exam_id"
+    t.datetime "started_at", null: false
+    t.datetime "ended_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_student_exams_on_exam_id"
+    t.index ["student_id"], name: "index_student_exams_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|

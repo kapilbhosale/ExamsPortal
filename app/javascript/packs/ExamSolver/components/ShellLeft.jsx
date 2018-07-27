@@ -11,17 +11,21 @@ class ShellLeft extends React.Component {
 
   render() {
     const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
-            submitTest, previousQuestion } = this.props;
+            submitTest, previousQuestion, startedAt } = this.props;
     return (
       <div className="col-md-9">
-        <SectionList totalQuestions={questions.length} submitTest={submitTest} />
+        <SectionList
+          totalQuestions={questions.length}
+          submitTest={submitTest}
+          startedAt={startedAt}
+          />
         <hr/>
-        <Question
+        { this.currentQuestion() && <Question
           { ...this.currentQuestion() }
           currentQuestionIndex={currentQuestionIndex}
           answerQuestion={ answerQuestion }
           markVisited={ markVisited }
-          />
+          /> }
         <hr />
 
         <div className="row">

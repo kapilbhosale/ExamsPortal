@@ -900,10 +900,18 @@ class Students::HomeController < ApplicationController
 
   def exam_data
     puts "params: \n\n--------- #{params.inspect}"
-    exam_id = params[:id].split('?')[1]
+
+    exam_id =  params[:id]
+    student_id = params[:student_id] || 1
+    student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
+    unless student_exam
+    	student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
+    end
+
     question_data = questions_data_0 if exam_id.nil?
     question_data = questions_data_1 if exam_id == '1'
     question_data = questions_data_2 if exam_id == '2'
-    render json: question_data
+    # Insert an entry in student_exams with start time as current time
+    render json: question_data.merge(started_at: student_exam.started_at)
   end
 end
