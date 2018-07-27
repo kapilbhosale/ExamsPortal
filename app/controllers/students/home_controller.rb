@@ -53,7 +53,8 @@ class Students::HomeController < ApplicationController
       currentQuestionIndex: 0,
       totalQuestions: exam.no_of_questions,
       questions: questions,
-      startedAt: student_exam.started_at
+      startedAt: student_exam.started_at,
+      timeInMinutes: exam.time_in_minutes,
     }
   end
 end

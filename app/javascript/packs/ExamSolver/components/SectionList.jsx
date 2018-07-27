@@ -12,11 +12,11 @@ class ShellList extends React.Component {
   }
 
   dateForCountdown() {
-    const { startedAt } = this.props;
+    const { startedAt, timeInMinutes } = this.props;
     console.log('startedAt: ' + startedAt);
     const startedSince = Date.now() - new Date(startedAt);
     console.log('startedSince: ' + startedSince);
-    const endTime = Date.now() + (this.props.totalQuestions * 60 * 1000);
+    const endTime = Date.now() + (timeInMinutes * 60 * 1000);
     console.log('endTime:' + endTime);
     return (endTime - startedSince);
   }

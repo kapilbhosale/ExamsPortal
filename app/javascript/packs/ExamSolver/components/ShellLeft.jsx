@@ -11,7 +11,7 @@ class ShellLeft extends React.Component {
 
   render() {
     const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
-            submitTest, previousQuestion, startedAt, examFinished } = this.props;
+            submitTest, previousQuestion, startedAt, examFinished, timeInMinutes } = this.props;
     return (
       <div className="col-md-9">
         <SectionList
@@ -19,6 +19,7 @@ class ShellLeft extends React.Component {
           submitTest={submitTest}
           startedAt={startedAt}
           examFinished={ examFinished }
+          timeInMinutes={ timeInMinutes }
           />
         <hr/>
         { this.currentQuestion() && <Question
