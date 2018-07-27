@@ -18,21 +18,27 @@
     </ul>
     <ul class="navbar-nav text-right">
       <% if admin_signed_in? %>
-          <li class="nav-item">
-            <a href="#" ><%= current_admin&.name%></a>
-          </li>
-          <li class="nav-item">
-            <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, class: 'nav-link'%>
-          </li>
-          <li class="nav-item">
-            <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
-          </li>
-        <% else %>
-          <li class="nav-item">
-            <%= link_to 'Sign In', new_admin_session_path, method: :get%>
-          </li>
-          <li class="nav-item"><%= link_to 'Sign Up', new_admin_registration_path, method: :get%></li>
-        <% end %>
+      <li class="nav-item">
+        <a href="#" ><%= current_admin&.name%></a>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Sign Outt', destroy_admin_session_path, method: :delete %>
+      </li>
+      <li class="nav-item">
+        <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
+      </li>
+      <% end %>
+      <% if student_signed_in? %>
+      <li class="nav-item">
+        <a href="#" ><%= current_student&.name%></a>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Sign Out', destroy_student_session_path, method: :delete, class: 'nav-link'%>
+      </li>
+      <li class="nav-item">
+        <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
+      </li>
+      <% end %>
     </ul>
   </div>
 </nav>
