@@ -52,7 +52,8 @@ class Students::HomeController < ApplicationController
     render json: {
       currentQuestionIndex: 0,
       totalQuestions: exam.no_of_questions,
-      questions: questions
+      questions: questions,
+      startedAt: student_exam.started_at
     }
   end
 end
