@@ -1,3 +1,28 @@
 // Place all the styles related to the students/home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#navigation-map {
+  @media (max-width: 575px) {
+    position: absolute !important;
+    bottom: 0 !important;
+    margin-bottom: 50px !important;
+  }
+  @media screen and (max-width: 990px) and (min-width: 576px) {
+    position: absolute !important;
+    bottom: 0 !important;
+    margin-bottom: 120px !important;
+  }
+}
+
+.margin-t-b-10 {
+  margin: 0 2px 10px 0;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.text-center {
+  text-align: center;
+}

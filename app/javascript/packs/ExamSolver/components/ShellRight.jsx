@@ -4,21 +4,41 @@ class ShellRight extends React.Component {
   render() {
     const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex, submitTest } = this.props;
     return (
-      <div className="col-md-3" style={{ backgroundColor: '#e7f9ff' }}>
-        <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px', border: 'none' }}>
-          <div className="form-group">
-            <span className="label label-success" style={{ margin: '5px' }}>Answered</span>
-            <span className="label label-danger" style={{ margin: '5px' }}>Not answered</span>
-            <span className="label label-primary" style={{ margin: '5px' }}>Marked</span>
-            <span className="label label-default" style={{ margin: '5px' }}>Not visited</span>
-            <span className="label label-warning" style={{ margin: '5px' }}>Current</span>
+      <div className="col-md-3 col-sm-12 col-xs-12">
+        <div className="panel collapse" id="navigation-map" style={{ backgroundColor: '#e7f9ff' }}>
+          <div className="row form-group">
+            <div className='col-md-5 col-sm-3 col-xs-3'>
+              <span className="label label-success margin-5">
+                Answered
+              </span>
+            </div>
+            <div className='col-md-5 col-sm-3 col-xs-3'>
+              <span className="label label-primary margin-5">
+                Marked
+              </span>
+            </div>
+            <div className='col-md-5 col-sm-3 col-xs-3'>
+              <span className="label label-default margin-5">
+                Not visited
+              </span>
+            </div>
+            <div className='col-md-5 col-sm-3 col-xs-3'>
+              <span className="label label-warning margin-5">
+                Current
+              </span>
+            </div>
+            <div className='col-md-5 col-sm-3 col-xs-3'>
+              <span className="label label-danger margin-5">
+                Not answered
+              </span>
+            </div>
           </div>
 
           <div className="form-group">
             <label>Section</label>: Physics
           </div>
 
-          <div className="btn-toolbar form-group" role="toolbar" aria-label="..." style={{ textAlign: "center" }}>
+          <div className="btn-toolbar form-group text-center" role="toolbar" aria-label="...">
             {
               questions.map((question, idx) => {
                 const { isAnswered, needReview, visited } = question.answerProps;
@@ -51,7 +71,9 @@ class ShellRight extends React.Component {
             }
           </div>
           <div className="text-center">
-            <button type="button" className="btn btn-success" onClick={ () => { submitTest() }}>Submit Test</button>
+            <button type="button" className="btn btn-success" onClick={ () => { submitTest() }}>
+              Submit Test
+            </button>
           </div>
         </div>
       </div>
