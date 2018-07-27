@@ -21,4 +21,6 @@ class Exam < ApplicationRecord
 
   has_many :exam_questions
   has_many :questions, through: :exam_questions
+
+  has_one :style, as: :component, dependent: :destroy
 end

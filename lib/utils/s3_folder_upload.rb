@@ -29,6 +29,10 @@ module Utils
       @s3_base_path      = s3_base_path
     end
 
+    def self.get_base_path
+      "https://s3.#{ENV['AWS_REGION']}.amazonaws.com/#{ENV['S3_BUCKET']}"
+    end
+
     # public: Upload files from the folder to S3
     #
     # thread_count - How many threads you want to use (defaults to 5)

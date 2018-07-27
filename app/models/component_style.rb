@@ -15,4 +15,5 @@
 #
 
 class ComponentStyle < ApplicationRecord
+  belongs_to :component, polymorphic: true
 end

@@ -10,7 +10,7 @@ class Admin::ExamsController < Admin::BaseController
   def create
     @exam = Exam.new(exam_params)
     if @exam.save
-      extract_zip(params[:questions_zip].tempfile) if params[:questions_zip].present?
+      Exams::Upload.new(@exam, params[:questions_zip].tempfile).call
       redirect_to admin_exams_path
     else
       render 'new'
