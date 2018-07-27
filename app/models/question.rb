@@ -13,8 +13,12 @@
 class Question < ApplicationRecord
   has_many :exam_questions
   has_many :exams, through: :exam_questions
-  has_many :options
+  has_many :options, dependent: :destroy
   has_one :style, as: :component, dependent: :destroy
+
+  def css_style
+    ComponentStyle.where(component: self).first.style rescue ''
+  end
 
   enum difficulty_level: {default: 0, easy: 1, medium: 2, difficult: 3, very_difficult: 4}
 end
