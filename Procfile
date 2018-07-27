@@ -1,1 +1,2 @@
-web: webpack && bundle exec rails s
+web: bundle exec rails s
+webpack: bin/webpack-dev-server
