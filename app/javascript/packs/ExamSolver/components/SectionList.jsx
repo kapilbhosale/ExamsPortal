@@ -3,7 +3,11 @@ import Countdown from 'react-countdown-now';
 
 class ShellList extends React.Component {
   render() {
-    const { submitTest } = this.props;
+    const { submitTest, startedAt } = this.props;
+    const startedSince = Date.now() - new Date(startedAt);
+    console.log('startedSince: ' + startedSince);
+    const endTime = Date.now() + (this.props.totalQuestions * 60 * 1000);
+    console.log('endTime:' + endTime);
     return (
       <div className="row">
         <div className="col-md-1" style={{ paddingTop: '10px' }}>
@@ -19,7 +23,7 @@ class ShellList extends React.Component {
         <div className="col-md-2">
           <span style={{ fontSize: '30px' }}>
             <Countdown
-              date={Date.now() + (this.props.totalQuestions * 60 * 1000) }
+              date={ endTime - startedSince }
               daysInHours
               onComplete={ () => { submitTest() }}
             />
