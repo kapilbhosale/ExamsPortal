@@ -54,6 +54,7 @@ class MasterRoutes extends Component {
 
   render() {
     const { $$masterStore, dispatch, location } = this.props;
+    const examId = $$masterStore.get('id');
     return (
       <div>
         <MasterShell location={ location } $$masterStore={ $$masterStore } dispatch={ dispatch }>
@@ -61,6 +62,7 @@ class MasterRoutes extends Component {
             <RenderRoute
               exact
               path='/'
+              {  ...{examId} }
               component={ ExamSolver }
             />
           </Switch>

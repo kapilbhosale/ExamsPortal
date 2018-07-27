@@ -88,11 +88,11 @@ export function submitTest() {
 
 export function initialize() {
   return (dispatch, getState) => {
-    const store = getState().$$examSolverStore.toJS()
+    const store = getState().$$examSolverStore;
     $.ajax({
       url: '/students/exam_data',
       method: 'get',
-      data: { id: parseInt(store.location.search.match(/\d+/)[0]) },
+      data: { id: store.get('examId') },
       success: (data) => {
         dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data})
       }
