@@ -18,4 +18,9 @@
 
 class Exam < ApplicationRecord
   validates_presence_of :name, :no_of_questions, :time_in_minutes
+
+  has_many :exam_questions
+  has_many :questions, through: :exam_questions
+
+  has_one :style, as: :component, dependent: :destroy
 end
