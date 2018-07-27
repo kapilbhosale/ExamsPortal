@@ -35,9 +35,10 @@
           <td><%= exam.created_at.to_date %></td>
           <td><%= exam.published %></td>
           <td>
-            Add Q |
-            <button type="button" class="btn-add-exam btn btn-primary pull-right" data-toggle="modal" data-target="#examModal" style="margin-bottom: 10px">Edit</button>
-            Delete
+            &nbsp;
+            <button type="button" class="btn-add-exam btn btn-primary" data-toggle="modal" data-target="#examModal" style="margin-bottom: 10px">Edit</button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn-add-exam btn btn-danger" data-toggle="modal" data-target="#examModal" style="margin-bottom: 10px">Delete</button>
           </td>
         </tr>
       <% end %>

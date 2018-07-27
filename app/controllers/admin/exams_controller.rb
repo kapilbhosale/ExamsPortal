@@ -22,7 +22,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def change_question_answer
-    
+
   end
 
   private
