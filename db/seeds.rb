@@ -138,4 +138,10 @@ practice_data = [
   }
 ]
 
-subject = Subject.
+subject = Subject.find_or_create_by(name: 'Biology')
+practice_data.each do |section_data|
+  section = Section.find_or_create_by(subject: subject, name: section_data[:section], weightage: section_data[:weitage])
+  section_data[:topics].each do |topic|
+    Topic.find_or_create_by(section: section, name: topic)
+  end
+end
