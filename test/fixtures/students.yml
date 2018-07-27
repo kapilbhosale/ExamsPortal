@@ -2,21 +2,31 @@
 #
 # Table name: students
 #
-#  id             :bigint(8)        not null, primary key
-#  address        :text
-#  college        :string
-#  date_of_birth  :date
-#  gender         :integer          default(0)
-#  mother_name    :string
-#  name           :string           not null
-#  parent_mobile  :string(20)       not null
-#  photo          :string
-#  roll_number    :integer          not null
-#  ssc_marks      :float
-#  student_mobile :string(20)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
-#  category_id    :bigint(8)
+#  id                     :bigint(8)        not null, primary key
+#  address                :text
+#  college                :string
+#  current_sign_in_at     :datetime
+#  current_sign_in_ip     :inet
+#  date_of_birth          :date
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  gender                 :integer          default(0)
+#  last_sign_in_at        :datetime
+#  last_sign_in_ip        :inet
+#  mother_name            :string
+#  name                   :string           not null
+#  parent_mobile          :string(20)       not null
+#  photo                  :string
+#  remember_created_at    :datetime
+#  reset_password_sent_at :datetime
+#  reset_password_token   :string
+#  roll_number            :integer          not null
+#  sign_in_count          :integer          default(0), not null
+#  ssc_marks              :float
+#  student_mobile         :string(20)
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
+#  category_id            :bigint(8)
 #
 # Indexes
 #
