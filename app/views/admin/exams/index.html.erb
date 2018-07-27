@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-6"> <h4> Available Exams </h4></div>
+    <div class="col-lg-6"> <h4> Available Exams Here</h4></div>
     <div class="col-lg-6">
       <a href="<%= new_admin_exam_path %>">
         <button type="button" class="btn-add-exam btn btn-primary pull-right" data-toggle="modal" data-target="#examModal" style="margin-bottom: 10px">Add Exam</button>
@@ -36,7 +36,7 @@
           <td><%= exam.published %></td>
           <td>
             Add Q |
-            Edit |
+            <button type="button" class="btn-add-exam btn btn-primary pull-right" data-toggle="modal" data-target="#examModal" style="margin-bottom: 10px">Edit</button>
             Delete
           </td>
         </tr>
@@ -50,4 +50,4 @@
   </table>
 </div>
 
-<%#= render partial: 'admin/exams/new' %>
+<%= render partial: 'admin/exams/new' %>
