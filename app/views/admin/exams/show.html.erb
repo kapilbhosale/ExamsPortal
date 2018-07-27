@@ -1,0 +1,29 @@
+<%= @exam.name %>
+<%= @exam.description %>
+<%= @exam.no_of_questions %>
+<%= @exam.time_in_minutes %>
+<%= @exam.published %>
+<hr>
+
+<% @exam.questions.each_with_index do |question, index| %>
+  <style type="text/css">
+    <%= question.css_style %>
+  </style>
+  <div style="background: white; padding: 10px; border-bottom: #0a0c0d">
+    <div>
+      <p> <b> Question: <%= index + 1%> </b> </p>
+      <%= raw(question.title) %>
+    </div>
+    <div>
+      <p> <b> Options:</b> </p>
+      <% question.options.each_with_index do |option, index| %>
+        <div>
+        <label class="radio-inline">
+          <input type="radio" name="optradio-<%=question.id%>" <%=  option.is_answer ? 'checked' : ''%> >
+          <%= raw(option.data) %>
+        </label>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

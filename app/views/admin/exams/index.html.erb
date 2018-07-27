@@ -27,7 +27,7 @@
       <% @exams.each_with_index do |exam, index| %>
         <tr>
           <td><%= index + 1 %></td>
-          <td><%= exam.name %></td>
+          <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
           <td><%= exam.description.first(100) %> ...</td>
           <td><%= exam.no_of_questions %></td>
           <td><%= exam.questions.count rescue 0 %></td>

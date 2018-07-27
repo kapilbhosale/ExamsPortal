@@ -17,6 +17,10 @@ class Admin::ExamsController < Admin::BaseController
     end
   end
 
+  def show
+    @exam = Exam.find_by(id: params[:id])
+  end
+
   private
 
   def exam_params
