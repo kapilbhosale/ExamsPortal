@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_121401) do
+ActiveRecord::Schema.define(version: 2018_07_27_121755) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -33,6 +34,15 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "answer_options", force: :cascade do |t|
+    t.bigint "question_id"
+    t.text "option"
+    t.boolean "is_answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_answer_options_on_question_id"
+  end
+
   create_table "batches", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -45,6 +55,24 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "component_styles", force: :cascade do |t|
+    t.string "component_type"
+    t.bigint "component_id"
+    t.text "style"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["component_type", "component_id"], name: "index_component_styles_on_component_type_and_component_id"
+  end
+
+  create_table "exam_questions", force: :cascade do |t|
+    t.bigint "exam_id"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_exam_questions_on_exam_id"
+    t.index ["question_id"], name: "index_exam_questions_on_question_id"
+  end
+
   create_table "exams", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -54,6 +82,14 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_exams_on_name"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.text "title"
+    t.text "explanation"
+    t.integer "difficulty_level", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "student_batches", force: :cascade do |t|
