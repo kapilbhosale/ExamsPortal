@@ -31,6 +31,9 @@ export function clearAnswer(questionIndex) {
   };
 }
 
+export function examFinished() {
+  window.location = '/students/summary';
+}
 
 export function jumpToQuestion(questionIndex) {
   return (dispatch, getState) => {
@@ -77,8 +80,9 @@ function markVisit(questionIndex) {
 
 
 export function submitTest() {
+  console.log('submitTest called');
   return (dispatch, getState) => {
-    window.location = '/students/summary'
+    window.location = '/students/summary';
     // dispatch({
     //   type: actionTypes.SUBMIT_TEST,
     //   val: {},

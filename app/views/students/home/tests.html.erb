@@ -1,26 +1,29 @@
 <div class="container">
   <h4> Available Exams </h4>
   <hr>
-  <div class="row">
-
-    <% @exams.each do |exam| %>
-      <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-        <div class="card">
-          <%= image_tag 'bio', class: 'card-img-top', width: '200px'%>
-          <div class="card-body">
-            <h5 class="card-title"> <%= exam.name %> </h5>
-            <p class="card-text"></p>
-            <ul>
-              <li><%= exam.description %></li>
-              <li>No of questions: <b><%= exam.no_of_questions %></b></li>
-            </ul>
-            <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">Appear Exam</a>
+    <% if @exams.size == 0 %>
+      <p> No exams available right now. Please try after some time. </p>
+    <% else %>
+      <div class="row">
+      <% @exams.each do |exam| %>
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+          <div class="card">
+            <%= image_tag 'bio', class: 'card-img-top', width: '200px'%>
+            <div class="card-body">
+              <h5 class="card-title"> <%= exam.name %> </h5>
+              <p class="card-text"></p>
+              <ul>
+                <li><%= exam.description %></li>
+                <li>No of questions: <b><%= exam.no_of_questions %></b></li>
+              </ul>
+              <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">Appear Exam</a>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
+     </div>
     <% end %>
 
-  </div>
   <hr>
   <p> Note: Mock Exams and questions updating soon.. </p>
 
