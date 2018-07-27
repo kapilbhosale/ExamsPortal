@@ -1,14 +1,14 @@
 <div class="container">
 
 <div class="row" style="text-align: center;">
-  <h4>Neet Exam Practice</h4>
+  <h4><%= @exam.name %></h4>
 </div>
 <div class="row" style="text-align: center;">
   <h3>Biology: Diversity of Living Organisms - Full Mock Test</h3>
 </div>
 <div class="row">
   <div class="col-md-2 pull-left" style="padding-left: 0;">
-    <h5>Duration: 45 MINS</h5>
+    <h5>Duration: <%= @exam.time_in_minutes %> MINS</h5>
   </div>
   <div class="col-md-2 pull-right">
     <h5> Maximum Marks: 60 </h5>
@@ -76,7 +76,7 @@
 
 <div class="row">
   <div class="col-md-2 pull-right">
-    <a href="/students/exam/<%= @exam_id %>"><button class="btn btn-success">I am ready to begin</button></a>
+    <a href="/students/exam/<%= @exam.id %>"><button class="btn btn-success">I am ready to begin</button></a>
   </div>
 </div>
 
