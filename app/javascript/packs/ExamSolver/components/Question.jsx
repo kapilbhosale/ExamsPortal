@@ -3,12 +3,14 @@ import React from 'react';
 class Question extends React.Component {
 
   render() {
-    const { title, options, currentQuestionIndex, answerQuestion, answerProps } = this.props;
+    const { title, options, currentQuestionIndex, answerQuestion, answerProps, cssStyle} = this.props;
     return (
-      <div className="row">
-
+      <div>
+        <style>
+          { cssStyle }
+        </style>
         <div className="row">
-          <div className="col-lg-12">
+          <div className="col-md-12">
             <b>Question No: { currentQuestionIndex + 1 }</b>
           </div>
         </div>
@@ -16,13 +18,15 @@ class Question extends React.Component {
         <br />
 
         <div className="row">
-          <div className="col-lg-12">
+          <div className="col-md-12" style={{ fontSize: '20px'}}>
             <p dangerouslySetInnerHTML={{ __html: title}} />
           </div>
         </div>
 
+        <br/>
+
         <div className="row">
-          <div className="col-lg-12">
+          <div className="col-md-12">
 
             {
               options.map((option, idx) => {
@@ -31,11 +35,11 @@ class Question extends React.Component {
                     <label>
                       <input
                         type="radio"
-                        value={ option }
-                        checked={ answerProps.answer === option }
+                        value={ option.id }
+                        checked={ parseInt(answerProps.answer) === option.id }
                         onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
                       />
-                      <div dangerouslySetInnerHTML={{ __html: option }} />
+                      <div dangerouslySetInnerHTML={{ __html: option.data }} />
                     </label>
                   </div>
                 )
@@ -44,7 +48,6 @@ class Question extends React.Component {
 
           </div>
         </div>
-
       </div>
     );
   }

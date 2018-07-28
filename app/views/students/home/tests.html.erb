@@ -1,70 +1,29 @@
 <div class="container">
   <h4> Available Exams </h4>
   <hr>
-  <div class="row">
-    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-      <div class="card">
-        <%= image_tag 'bio', class: 'card-img-top', width: '200px'%>
-        <div class="card-body">
-          <h5 class="card-title">Demo Test</h5>
-          <p class="card-text"></p>
-          <ul>
-            <li>Sample Question</li>
-            <li>No of questions: <b>13</b></li>
-          </ul>
-          <a href="<%= students_exam_instructions_path %>" class="btn btn-primary">Appear Exam</a>
+    <% if @exams.size == 0 %>
+      <p> No exams available right now. Please try after some time. </p>
+    <% else %>
+      <div class="row">
+      <% @exams.each do |exam| %>
+        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+          <div class="card">
+            <%= image_tag 'bio', class: 'card-img-top', width: '200px'%>
+            <div class="card-body">
+              <h5 class="card-title"> <%= exam.name %> </h5>
+              <p class="card-text"></p>
+              <ul>
+                <li><%= exam.description %></li>
+                <li>No of questions: <b><%= exam.no_of_questions %></b></li>
+              </ul>
+              <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">Appear Exam</a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      <% end %>
+     </div>
+    <% end %>
 
-    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-      <div class="card">
-        <%= image_tag 'bio', class: 'card-img-top', width: '200px' %>
-        <div class="card-body">
-          <h5 class="card-title">REPRODUCTIVE HEALTH</h5>
-          <p class="card-text"></p>
-          <ul>
-            <li>reproductive health</li>
-            <li>No of questions: <b>10  </b></li>
-          </ul>
-          <a href="/students?1" class="btn btn-primary">Appear Exam</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-      <div class="card">
-        <%= image_tag 'phy', class: 'card-img-top', width: '200px', height: 120 %>
-        <div class="card-body">
-          <h5 class="card-title">PHYSICS Exam</h5>
-          <p class="card-text"></p>
-          <ul>
-            <li>Section Topic 1 to 4</li>
-            <li>No of questions: <b>37 </b></li>
-          </ul>
-          <a href="/students?2" class="btn btn-primary">Appear Exam</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-      <div class="card">
-        <%= image_tag 'phy', class: 'card-img-top', width: '200px', height: 120 %>
-        <div class="card-body">
-          <h5 class="card-title">Electrodynamics</h5>
-          <p class="card-text"></p>
-          <ul>
-            <li>Capacitance</li>
-            <li>Current Electricity</li>
-            <li>Electro Magnetic Induction</li>
-            <li>Electro Magnetic Field</li>
-            <li>Electrostatics</li>
-          </ul>
-          <a href="<%= students_exam_instructions_path %>" class="btn btn-primary">Appear Exam</a>
-        </div>
-      </div>
-    </div>
-
-  </div>
   <hr>
   <p> Note: Mock Exams and questions updating soon.. </p>
 

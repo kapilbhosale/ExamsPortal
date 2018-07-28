@@ -25,19 +25,22 @@
         <%= render 'layouts/header' %>
         <div class="container">
           <% flash.each do |key, value| %>
-            <div class="alert alert-<%= key %>">
+            <div id="alert" class="alert alert-<%= key == 'notice' ? 'success' : 'warning' %>">
               <%= value %>
             </div>
           <% end %>
         </div>
-
         <%= yield :top_content %>
-
         <div class="container">
           <h1><%= yield :header %></h1>
           <%= yield %>
         </div>
       </div>
     </div>
+    <script type="text/javascript">
+      $(function(){
+        $('#alert').fadeIn(1000).delay(2500).fadeOut(2000);
+      });
+    </script>
   </body>
 </html>

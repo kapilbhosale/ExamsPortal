@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_24_121401) do
+ActiveRecord::Schema.define(version: 2018_07_28_081314) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -45,6 +46,24 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "component_styles", force: :cascade do |t|
+    t.string "component_type"
+    t.bigint "component_id"
+    t.text "style"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["component_type", "component_id"], name: "index_component_styles_on_component_type_and_component_id"
+  end
+
+  create_table "exam_questions", force: :cascade do |t|
+    t.bigint "exam_id"
+    t.bigint "question_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_exam_questions_on_exam_id"
+    t.index ["question_id"], name: "index_exam_questions_on_question_id"
+  end
+
   create_table "exams", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -56,6 +75,45 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.index ["name"], name: "index_exams_on_name"
   end
 
+  create_table "options", force: :cascade do |t|
+    t.bigint "question_id"
+    t.text "data"
+    t.boolean "is_answer"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "practice_questions", force: :cascade do |t|
+    t.bigint "topic_id"
+    t.bigint "question_id"
+    t.string "hash"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hash"], name: "index_practice_questions_on_hash"
+    t.index ["question_id"], name: "index_practice_questions_on_question_id"
+    t.index ["topic_id"], name: "index_practice_questions_on_topic_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.text "title"
+    t.text "explanation"
+    t.integer "difficulty_level", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.bigint "subject_id"
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "weightage", default: 0
+    t.index ["name_map"], name: "index_sections_on_name_map"
+    t.index ["subject_id"], name: "index_sections_on_subject_id"
+  end
+
   create_table "student_batches", force: :cascade do |t|
     t.bigint "student_id"
     t.bigint "batch_id"
@@ -63,6 +121,39 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.datetime "updated_at", null: false
     t.index ["batch_id"], name: "index_student_batches_on_batch_id"
     t.index ["student_id"], name: "index_student_batches_on_student_id"
+  end
+
+  create_table "student_exam_answers", force: :cascade do |t|
+    t.bigint "student_exam_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_student_exam_answers_on_option_id"
+    t.index ["question_id"], name: "index_student_exam_answers_on_question_id"
+    t.index ["student_exam_id"], name: "index_student_exam_answers_on_student_exam_id"
+  end
+
+  create_table "student_exams", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "exam_id"
+    t.datetime "started_at", null: false
+    t.datetime "ended_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_student_exams_on_exam_id"
+    t.index ["student_id"], name: "index_student_exams_on_student_id"
+  end
+
+  create_table "student_question_answers", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_student_question_answers_on_option_id"
+    t.index ["question_id"], name: "index_student_question_answers_on_question_id"
+    t.index ["student_id"], name: "index_student_question_answers_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|
@@ -80,9 +171,38 @@ ActiveRecord::Schema.define(version: 2018_07_24_121401) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
+    t.string "raw_password"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name_map"], name: "index_subjects_on_name_map"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.bigint "section_id"
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name_map"], name: "index_topics_on_name_map"
+    t.index ["section_id"], name: "index_topics_on_section_id"
   end
 
 end

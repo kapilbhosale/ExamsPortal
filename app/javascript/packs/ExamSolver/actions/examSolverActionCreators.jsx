@@ -31,6 +31,9 @@ export function clearAnswer(questionIndex) {
   };
 }
 
+export function examFinished() {
+  window.location = '/students/summary';
+}
 
 export function jumpToQuestion(questionIndex) {
   return (dispatch, getState) => {
@@ -77,23 +80,49 @@ function markVisit(questionIndex) {
 
 
 export function submitTest() {
+  console.log('submitTest called');
   return (dispatch, getState) => {
-    window.location = '/students/summary'
-    // dispatch({
-    //   type: actionTypes.SUBMIT_TEST,
-    //   val: {},
-    // });
+    const store = getState().$$examSolverStore;
+    $.ajax({
+      url: '/students/submit/' + store.get('examId'),
+      method: 'put',
+      data: { id: store.get('examId') },
+      success: (data) => { window.location = '/students/summary/' + store.get('examId'); }
+    });
   };
+}
+
+export function syncAnswers() {
+  return (dispatch, getState) => {
+    console.log('sync to localStorage');
+    const store = getState().$$examSolverStore;
+    console.log(store.get('questions').toJS());
+    localStorage.setItem(`1-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
+
+    // $.ajax({
+    //   url: '/students/sync/' + store.get('examId'),
+    //   method: 'put',
+    //   data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
+    //   success: (data) => { console.log('success sync!'); },
+    //   error: (data) => { console.log('error sync!'); },
+    // });
+  }
 }
 
 export function initialize() {
   return (dispatch, getState) => {
+    const store = getState().$$examSolverStore;
     $.ajax({
       url: '/students/exam_data',
       method: 'get',
-      data: {id: window.location.href },
+      data: { id: store.get('examId') },
       success: (data) => {
-        dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data})
+        const localData = localStorage.getItem(`1-${store.get('examId')}-store`);
+        if (localData) {
+          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
+        } else {
+          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
+        }
       }
     });
   };

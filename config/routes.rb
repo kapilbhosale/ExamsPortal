@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admin
+  devise_for :student
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'students/home#tests'
 
@@ -9,8 +10,11 @@ Rails.application.routes.draw do
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
     get :subscription, to: 'home#subscription', as: :exam_subscription
-    get :summary, to: 'home#summary', as: :exam_summary
+    get "summary/:exam_id", to: 'home#summary', as: :exam_summary
     get :exam_data, to: 'home#exam_data'
+    get "exam/:id", to: 'home#exam'
+    put "sync/:exam_id/", to: 'home#sync'
+    put "submit/:exam_id/", to: 'home#submit'
     resources :mock_tests
   end
 
@@ -21,6 +25,7 @@ Rails.application.routes.draw do
     resource :dashboard
     resources :reports
     resources :exams
+    resources :practice_questions
     resources :students do
       root to: 'students#index'
     end
