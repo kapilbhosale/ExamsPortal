@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resource :dashboard
     resources :reports
     resources :exams
+    resources :practice_questions
     resources :students do
       root to: 'students#index'
     end

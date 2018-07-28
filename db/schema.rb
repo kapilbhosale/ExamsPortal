@@ -83,12 +83,34 @@ ActiveRecord::Schema.define(version: 2018_07_28_062452) do
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 
+  create_table "practice_questions", force: :cascade do |t|
+    t.bigint "topic_id"
+    t.bigint "question_id"
+    t.string "hash"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hash"], name: "index_practice_questions_on_hash"
+    t.index ["question_id"], name: "index_practice_questions_on_question_id"
+    t.index ["topic_id"], name: "index_practice_questions_on_topic_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.text "title"
     t.text "explanation"
     t.integer "difficulty_level", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "sections", force: :cascade do |t|
+    t.bigint "subject_id"
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "weightage", default: 0
+    t.index ["name_map"], name: "index_sections_on_name_map"
+    t.index ["subject_id"], name: "index_sections_on_subject_id"
   end
 
   create_table "student_batches", force: :cascade do |t|
@@ -161,6 +183,24 @@ ActiveRecord::Schema.define(version: 2018_07_28_062452) do
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name_map"], name: "index_subjects_on_name_map"
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.bigint "section_id"
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name_map"], name: "index_topics_on_name_map"
+    t.index ["section_id"], name: "index_topics_on_section_id"
   end
 
 end
