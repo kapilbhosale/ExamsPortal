@@ -48,6 +48,7 @@ class ExamSolverContainer extends Component {
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
+    const modal = $$examSolverStore.get('modal');
     const customStyles = {
   content : {
     top                   : '50%',
@@ -61,7 +62,7 @@ class ExamSolverContainer extends Component {
     return (
       <div className="">
        <Modal
-          isOpen={false}
+          isOpen={modal}
           onAfterOpen={() => {}}
           onRequestClose={() => {}}
           style={customStyles}

@@ -3,14 +3,6 @@ import Countdown from 'react-countdown-now';
 
 class ShellList extends React.Component {
 
-  componentDidUpdate() {
-    // console.log('this.dateForCountdown()' + this.dateForCountdown());
-    // console.log('Date.now()' +  Date.now());
-    if (this.dateForCountdown() <= Date.now()) {
-      this.props.examFinished();
-    }
-  }
-
   dateForCountdown() {
     const { startedAt, timeInMinutes } = this.props;
     // console.log('startedAt: ' + startedAt);
@@ -22,7 +14,7 @@ class ShellList extends React.Component {
   }
 
   render() {
-    const { submitTest, onTick } = this.props;
+    const { submitTest, onTick, timeIsUp } = this.props;
     return (
       <div className="row">
         <div className="col-md-1" style={{ paddingTop: '10px' }}>
@@ -40,7 +32,7 @@ class ShellList extends React.Component {
             <Countdown
               date={ this.dateForCountdown() }
               daysInHours
-              onComplete={ () => { submitTest() }}
+              onComplete={ () => { timeIsUp() }}
               onTick={ () => { onTick(this.dateForCountdown()) } }
             />
           </span>

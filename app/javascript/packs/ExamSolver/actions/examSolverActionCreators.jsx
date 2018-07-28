@@ -110,6 +110,14 @@ export function syncAnswers() {
   }
 }
 
+export function timeIsUp() {
+  console.log('timeIsUp');
+  return (dispatch, getState) => {
+    syncWithBackend();
+    dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
+  }
+}
+
 export function syncWithBackend() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
