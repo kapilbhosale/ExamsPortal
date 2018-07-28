@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import * as examSolverActionCreators from '../actions/examSolverActionCreators';
 import ShellLeft from "../components/ShellLeft";
 import ShellRight from "../components/ShellRight";
+import Modal from 'react-modal';
 
 function select(state) {
   // $$ just indicates that it's Immutable.
@@ -47,8 +48,37 @@ class ExamSolverContainer extends Component {
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
+    const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
     return (
       <div className="">
+       <Modal
+          isOpen={false}
+          onAfterOpen={() => {}}
+          onRequestClose={() => {}}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+        Time is up. Please click ok to continue and view results.
+        <br/>
+        <br/>
+        <div className="text-center">
+          <button
+            className="btn btn-default btn-primary"
+            onClick={ this.actions().submitTest }
+            >
+            OK
+          </button>
+        </div>
+        </Modal>
         <ShellLeft
           questions={questions}
           currentQuestionIndex={currentQuestionIndex}

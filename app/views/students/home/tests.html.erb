@@ -16,7 +16,26 @@
                 <li><%= exam.description %></li>
                 <li>No of questions: <b><%= exam.no_of_questions %></b></li>
               </ul>
-              <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">Appear Exam</a>
+              <% student_exam = @student_exams.try(:[], exam.id) %>
+              <% if current_student && student_exam %>
+                  <% if student_exam.ended_at.present? %>
+                    <a href="/students/summary/<%= exam.id %>" class="btn btn-success">
+                      View Result
+                    </a>
+                  <% elsif student_exam.started_at.present? %>
+                    <a href="/students/exam/<%= exam.id %>" class="btn btn-success">
+                      Continue Exam
+                    </a>
+                  <% else %>
+                    <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">
+                      Appear Exam
+                    </a>
+                  <% end %>
+              <% else %>
+                <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">
+                  Appear Exam
+                </a>
+              <% end %>
             </div>
           </div>
         </div>

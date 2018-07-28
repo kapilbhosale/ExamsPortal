@@ -8,6 +8,9 @@ class Students::HomeController < Students::BaseController
 
   def tests
   	@exams = Exam.all
+    if current_student
+      @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
+    end
   end
 
   def exam
@@ -26,11 +29,11 @@ class Students::HomeController < Students::BaseController
 
   def summary
     @exam = Exam.find params[:exam_id]
-    @student_exam = StudentExam.find_by(student_id: 1, exam_id: @exam.id)
+    @student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: @exam.id)
   end
 
   def sync
-    student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
+    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
   	params[:questions].each do |index, input_question|
       if input_question[:answerProps][:answer].to_i > 0
         student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
@@ -44,7 +47,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def submit
-    student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
+    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     render :ok unless student_exam
     student_exam.update!(ended_at: Time.current)
   end
@@ -52,7 +55,7 @@ class Students::HomeController < Students::BaseController
   def exam_data
     exam_id =  params[:id]
     exam = Exam.find params[:id]
-    student_id = params[:student_id] || 1
+    student_id = current_student.id
 
     student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
     unless student_exam

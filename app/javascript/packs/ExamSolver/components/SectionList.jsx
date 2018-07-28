@@ -22,7 +22,7 @@ class ShellList extends React.Component {
   }
 
   render() {
-    const { submitTest } = this.props;
+    const { submitTest, onTick } = this.props;
     return (
       <div className="row">
         <div className="col-md-1" style={{ paddingTop: '10px' }}>
@@ -41,6 +41,7 @@ class ShellList extends React.Component {
               date={ this.dateForCountdown() }
               daysInHours
               onComplete={ () => { submitTest() }}
+              onTick={ () => { onTick(this.dateForCountdown()) } }
             />
           </span>
         </div>
