@@ -12,13 +12,10 @@
             <a class="nav-link" href="<%= students_tests_path %>">My Exams <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Mock Tests</a>
+            <a class="nav-link" href="/students/mock_tests">Mock Tests</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Question Bank</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/reports">Reports</a>
           </li>
           <li  >
             <a class="nav-link" href="<%= students_exam_subscription_path %>">External Students</a>
@@ -38,10 +35,7 @@
         </li>
         <% else %>
         <li class="nav-item text-right">
-          <%= link_to 'Sign In(Admin)', new_admin_session_path, method: :get, class: 'nav-link' %>
-        </li>
-        <li class="nav-item text-right">
-          <%= link_to 'Sign In(Student)', new_student_session_path, method: :get, class: 'nav-link' %>
+          <%= link_to 'Sign In', new_student_session_path, method: :get, class: 'nav-link' %>
         </li>
         <% end %>
     </ul>

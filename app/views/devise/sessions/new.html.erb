@@ -45,7 +45,9 @@
     </div>
     <% end %>
     <div class="text-center text-muted">
-      Don't have account yet? <a href="./sign_up">Sign up</a>
+      <% if resource_name == "admin" %>
+        Don't have account yet? <a href="./sign_up">Sign up</a>
+      <% end %>
     </div>
   </div>
 </div>

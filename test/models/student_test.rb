@@ -17,6 +17,7 @@
 #  name                   :string           not null
 #  parent_mobile          :string(20)       not null
 #  photo                  :string
+#  raw_password           :string
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string

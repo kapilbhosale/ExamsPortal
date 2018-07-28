@@ -1,5 +1,5 @@
-class Students::HomeController < ApplicationController
-
+class Students::HomeController < Students::BaseController
+  before_action :authenticate_student!, except: [:tests]
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
 
   def index

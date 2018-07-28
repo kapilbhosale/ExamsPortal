@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
       if current_admin
         '/admin/reports'
       else
-        '/students'
+        '/students/tests'
       end
     end
 end
