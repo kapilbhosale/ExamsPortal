@@ -19,4 +19,11 @@
 class StudentExam < ApplicationRecord
   belongs_to  :student
   belongs_to  :exam
+  has_many :student_exam_answers
+
+  def correct_answers_count
+  	student_exam_answers.select do |sea|
+  		sea.option.is_answer
+  	end.size
+	end
 end
