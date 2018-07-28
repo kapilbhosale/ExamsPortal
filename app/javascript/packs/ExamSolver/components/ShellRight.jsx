@@ -5,6 +5,7 @@ class ShellRight extends React.Component {
     const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex, submitTest } = this.props;
     const closeNav = () => {
       document.getElementById("mySidenav").style.width = "0";
+      document.getElementById("mySidenav").style.paddingLeft = 0;
     }
 
     return (

@@ -73,9 +73,11 @@ class ExamSolverContainer extends Component {
     const openNav = () => {
       if (isMobileDevice()) {
         document.getElementById("mySidenav").style.width = "100%";
+        document.getElementById("mySidenav").style.paddingLeft = "50px";
       }
       else {
         document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("mySidenav").style.paddingLeft = "50px";
       }
     };
     
@@ -114,7 +116,7 @@ class ExamSolverContainer extends Component {
           { ...this.actions() }
         />
         <div className='row'>
-          <div className="bottom-menu margin-bottom-20">
+          <div className="bottom-menu margin-bottom-10 text-center">
             <button
               type="button"
               className="btn btn-primary mark-review-btn margin-left-5"
