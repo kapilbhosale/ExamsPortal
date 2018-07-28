@@ -77,6 +77,7 @@ module Exams
 
         rows = table.search('tr')
         # assuming that there will be only 4 rows in question, as per defined structure.
+        question_val = rows[0].at('td').text.strip
         question = rows[0].at('td').children.to_s.strip
         answer = rows[2].text.strip
         explanation = rows[3].at('td').children.to_s.strip
@@ -86,7 +87,7 @@ module Exams
           options: options,
           answer: answer,
           explanation: explanation
-        }
+        } if question_val.present?
       end
     end
 
@@ -103,12 +104,23 @@ module Exams
           create_option_params << {
             question: question,
             data: replace_local_img_with_s3(option),
-            is_answer: question_data[:answer].to_i == index + 1
+            is_answer: answer_input(question_data[:answer]) == index + 1
           }
         end
         Option.create!(create_option_params)
         ComponentStyle.create!(component: question, style: @style)
       end
+    end
+
+    def answer_input(input)
+      input.downcase!
+      return 1 if input == 'a'
+      return 2 if input == 'b'
+      return 3 if input == 'c'
+      return 4 if input == 'd'
+      return 5 if input == 'e'
+      return 6 if input == 'f'
+      input.to_i
     end
 
     def replace_local_img_with_s3(html_code)
