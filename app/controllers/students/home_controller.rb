@@ -22,20 +22,25 @@ class Students::HomeController < ApplicationController
   end
 
   def summary
+    @exam = Exam.find params[:exam_id]
+    @student_exam = StudentExam.find_by(student_id: 1, exam_id: @exam.id)
   end
 
-  def submit
-  	Rails.logger.info "Submit:#{params.inspect}"
+  def sync
+    student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
   	params[:questions].each do |index, input_question|
-  		student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
   		student_exam_answer = StudentExamAnswer.find_or_create_by!(student_exam_id: student_exam.id, question_id: input_question[:id])
   		student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
   	end
   end
 
-  def exam_data
-    puts "params: \n\n--------- #{params.inspect}"
+  def submit
+    student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
+    render :ok unless student_exam
+    student_exam.update!(ended_at: Time.current)
+  end
 
+  def exam_data
     exam_id =  params[:id]
     exam = Exam.find params[:id]
     student_id = params[:student_id] || 1

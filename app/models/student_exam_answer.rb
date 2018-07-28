@@ -17,4 +17,6 @@
 #
 
 class StudentExamAnswer < ApplicationRecord
+	belongs_to :student_exam
+	belongs_to :option
 end

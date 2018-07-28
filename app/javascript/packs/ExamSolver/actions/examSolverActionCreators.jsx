@@ -82,11 +82,13 @@ function markVisit(questionIndex) {
 export function submitTest() {
   console.log('submitTest called');
   return (dispatch, getState) => {
-    window.location = '/students/summary';
-    // dispatch({
-    //   type: actionTypes.SUBMIT_TEST,
-    //   val: {},
-    // });
+    const store = getState().$$examSolverStore;
+    $.ajax({
+      url: '/students/submit/' + store.get('examId'),
+      method: 'get',
+      data: { id: store.get('examId') },
+      success: (data) => { window.location = '/students/summary/' + store.get('examId'); }
+    });
   };
 }
 
@@ -96,7 +98,7 @@ export function syncAnswers() {
     const store = getState().$$examSolverStore;
     console.log(store.get('questions').toJS());
     $.ajax({
-      url: '/students/submit/' + store.get('examId'),
+      url: '/students/sync/' + store.get('examId'),
       method: 'get',
       data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
       success: (data) => { console.log('success sync!'); },

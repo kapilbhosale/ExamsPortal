@@ -10,9 +10,10 @@ Rails.application.routes.draw do
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
     get :subscription, to: 'home#subscription', as: :exam_subscription
-    get :summary, to: 'home#summary', as: :exam_summary
+    get "summary/:exam_id", to: 'home#summary', as: :exam_summary
     get :exam_data, to: 'home#exam_data'
     get "exam/:id", to: 'home#exam'
+    get "sync/:exam_id/", to: 'home#sync'
     get "submit/:exam_id/", to: 'home#submit'
     resources :mock_tests
   end
