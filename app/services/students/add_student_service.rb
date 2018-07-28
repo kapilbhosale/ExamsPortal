@@ -12,7 +12,7 @@ module Students
     def call
       rand_password  =('0'..'9').to_a.shuffle.first(6).join
       email_id = student_params[:roll_number] + '@smartexam.com'
-      student_params.merge!({email: email_id, password: rand_password})
+      student_params.merge!({email: email_id, password: rand_password, raw_password: rand_password})
       @student = Student.new(student_params)
       build_batches
       @student.save!

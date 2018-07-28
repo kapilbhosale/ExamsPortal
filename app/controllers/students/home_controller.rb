@@ -1,4 +1,6 @@
-class Students::HomeController < ApplicationController
+class Students::HomeController < Students::BaseController
+  before_action :authenticate_student!, except: [:tests]
+
   def index
     @styles = ''
   end
