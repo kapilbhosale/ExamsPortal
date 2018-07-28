@@ -7,14 +7,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div class="navbar-nav-scroll">
         <ul class="navbar-nav bd-navbar-nav flex-row">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/students">Manage Students</a></li>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/batches">Manage Batches</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Data
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/admin/students">Manage Students</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/admin/batches">Manage Batches</a>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/admin/reports">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/exams">Exams</a>
           </li>
         </ul>
       </div>
@@ -24,7 +31,7 @@
           <a href="#" class="nav-link" ><%= current_admin&.name%></a>
         </li>
         <li class="nav-item">
-          <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, class: 'nav-link'%>
+          <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, class:"nav-link"%>
         </li>
         <li class="nav-item">
           <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>

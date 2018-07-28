@@ -24,6 +24,15 @@ class Students::HomeController < ApplicationController
   def summary
   end
 
+  def submit
+  	Rails.logger.info "Submit:#{params.inspect}"
+  	params[:questions].each do |index, input_question|
+  		student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
+  		student_exam_answer = StudentExamAnswer.find_or_create_by!(student_exam_id: student_exam.id, question_id: input_question[:id])
+  		student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+  	end
+  end
+
   def exam_data
     puts "params: \n\n--------- #{params.inspect}"
 
@@ -38,13 +47,14 @@ class Students::HomeController < ApplicationController
 
     questions = exam.questions.map do |question|
     	{
+    		id: question.id,
     		title: question.title,
-    		options: question.options.map { |o| o.data },
+    		options: question.options.map { |o| { id: o.id, data: o.data } },
     		answerProps: {
           isAnswered: false,
           visited: false,
           needReview: false,
-          answer: 1
+          answer: StudentExamAnswer.find_by(question_id: question.id, student_exam_id: student_exam.id)&.option_id
         }
     	}
     end
@@ -53,7 +63,8 @@ class Students::HomeController < ApplicationController
       currentQuestionIndex: 0,
       totalQuestions: exam.no_of_questions,
       questions: questions,
-      startedAt: student_exam.started_at
+      startedAt: student_exam.started_at,
+      timeInMinutes: exam.time_in_minutes,
     }
   end
 end

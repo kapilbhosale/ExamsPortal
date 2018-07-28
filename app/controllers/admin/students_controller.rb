@@ -1,6 +1,5 @@
-class Admin::StudentsController < ApplicationController
-  before_action :authenticate_admin!
-  layout 'admin/dashboard'
+class Admin::StudentsController < Admin::BaseController
+
   def index
     @search = Student.includes(:student_batches).includes(:batches).search(params[:q])
     @students = @search.result.order(created_at: :asc)&.page(params[:page])&.per(params[:limit] || 10)

@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_27_192323) do
+ActiveRecord::Schema.define(version: 2018_07_28_062452) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -123,6 +122,17 @@ ActiveRecord::Schema.define(version: 2018_07_27_192323) do
     t.index ["student_id"], name: "index_student_batches_on_student_id"
   end
 
+  create_table "student_exam_answers", force: :cascade do |t|
+    t.bigint "student_exam_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_student_exam_answers_on_option_id"
+    t.index ["question_id"], name: "index_student_exam_answers_on_question_id"
+    t.index ["student_exam_id"], name: "index_student_exam_answers_on_student_exam_id"
+  end
+
   create_table "student_exams", force: :cascade do |t|
     t.bigint "student_id"
     t.bigint "exam_id"
@@ -160,6 +170,16 @@ ActiveRecord::Schema.define(version: 2018_07_27_192323) do
     t.bigint "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet "current_sign_in_ip"
+    t.inet "last_sign_in_ip"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admin
+  devise_for :student
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'students/home#tests'
 
@@ -12,6 +13,7 @@ Rails.application.routes.draw do
     get :summary, to: 'home#summary', as: :exam_summary
     get :exam_data, to: 'home#exam_data'
     get "exam/:id", to: 'home#exam'
+    get "submit/:exam_id/", to: 'home#submit'
     resources :mock_tests
   end
 

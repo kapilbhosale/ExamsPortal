@@ -1,5 +1,5 @@
 class Admin::ReportsController < Admin::BaseController
-  layout 'admin/dashboard'
+
   def index
     @test = {name: "Mock Test 2018", marks: 180, date: '15 July 2018'}
     @students = [

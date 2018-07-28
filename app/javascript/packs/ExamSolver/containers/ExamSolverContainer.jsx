@@ -24,6 +24,14 @@ class ExamSolverContainer extends Component {
     this.actions().initialize();
   }
 
+  componentWillReceiveProps(nextProps){
+    const prevStore = this.props.$$examSolverStore;
+    const nextStore = nextProps.$$examSolverStore;
+    if(prevStore.get('questions') !== nextStore.get('questions')){
+      this.actions().syncAnswers();
+    }
+  }
+
   componentWillMount() {
     this.actions();
   }
@@ -38,12 +46,14 @@ class ExamSolverContainer extends Component {
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex');
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
+    const timeInMinutes = $$examSolverStore.get('timeInMinutes');
     return (
       <div className="">
         <ShellLeft
           questions={questions}
           currentQuestionIndex={currentQuestionIndex}
           startedAt={startedAt}
+          timeInMinutes={timeInMinutes}
           { ...this.actions() }
           />
         <ShellRight

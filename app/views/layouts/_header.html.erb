@@ -20,33 +20,31 @@
           <li class="nav-item">
             <a class="nav-link" href="/admin/reports">Reports</a>
           </li>
-          <li class="nav-item">
+          <li  >
             <a class="nav-link" href="<%= students_exam_subscription_path %>">External Students</a>
           </li>
         </ul>
       </div>
       <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
-        <% if admin_signed_in? %>
+        <% if student_signed_in? %>
         <li class="nav-item">
-          <a href="#" class="nav-link" ><%= current_admin&.name%></a>
+          <a href="#" class="nav-link" ><%= current_student&.name%></a>
         </li>
         <li class="nav-item">
-          <%= link_to 'Sign Out', destroy_admin_session_path, method: :delete, class: 'nav-link'%>
+          <%= link_to 'Sign Out', destroy_student_session_path, method: :delete, class:"nav-link"%>
         </li>
         <li class="nav-item">
           <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
         </li>
         <% else %>
         <li class="nav-item text-right">
-          <%= link_to 'Sign In', new_admin_session_path, method: :get, class: 'nav-link' %>
+          <%= link_to 'Sign In(Admin)', new_admin_session_path, method: :get, class: 'nav-link' %>
         </li>
         <li class="nav-item text-right">
-          <%= link_to 'Sign Up', new_admin_registration_path, method: :get, class: 'nav-link' %>
+          <%= link_to 'Sign In(Student)', new_student_session_path, method: :get, class: 'nav-link' %>
         </li>
         <% end %>
-      </ul>
-    </div>
-  </nav>
-</div>
-
+    </ul>
+  </div>
+</nav>
 
