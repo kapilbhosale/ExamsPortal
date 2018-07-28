@@ -94,16 +94,18 @@ export function submitTest() {
 
 export function syncAnswers() {
   return (dispatch, getState) => {
-    console.log('sync is called');
+    console.log('sync to localStorage');
     const store = getState().$$examSolverStore;
     console.log(store.get('questions').toJS());
-    $.ajax({
-      url: '/students/sync/' + store.get('examId'),
-      method: 'put',
-      data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
-      success: (data) => { console.log('success sync!'); },
-      error: (data) => { console.log('error sync!'); },
-    });
+    localStorage.setItem(`1-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
+
+    // $.ajax({
+    //   url: '/students/sync/' + store.get('examId'),
+    //   method: 'put',
+    //   data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
+    //   success: (data) => { console.log('success sync!'); },
+    //   error: (data) => { console.log('error sync!'); },
+    // });
   }
 }
 
@@ -115,7 +117,12 @@ export function initialize() {
       method: 'get',
       data: { id: store.get('examId') },
       success: (data) => {
-        dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data})
+        const localData = localStorage.getItem(`1-${store.get('examId')}-store`);
+        if (localData) {
+          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
+        } else {
+          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
+        }
       }
     });
   };
