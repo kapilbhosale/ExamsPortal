@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import * as examSolverActionCreators from '../actions/examSolverActionCreators';
 import ShellLeft from "../components/ShellLeft";
 import ShellRight from "../components/ShellRight";
+import Modal from 'react-modal';
 
 function select(state) {
   // $$ just indicates that it's Immutable.
@@ -48,6 +49,17 @@ class ExamSolverContainer extends Component {
     const startedAt = $$examSolverStore.get('startedAt');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
 
+    const modal = $$examSolverStore.get('modal');
+    const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
     const $win = $(window);
     const MEDIAQUERY = {
       desktopXL: 1200,
@@ -66,22 +78,28 @@ class ExamSolverContainer extends Component {
         document.getElementById("mySidenav").style.width = "280px";
       }
     }
-    function markForReviewText() {
-      debugger
-      console.log('device: '+isMobileDevice());
-      if (isMobileDevice()) {
-        return (
-          <span >
-            Mark for Review
-            <i className="fa fa-caret-right"></i>
-          </span>
-        );
-      }
-      return (<span>Mark for Review & next</span>);
-    }
-
+    
     return (
-      <div className="row">
+      <div className="">
+       <Modal
+          isOpen={modal}
+          onAfterOpen={() => {}}
+          onRequestClose={() => {}}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+        Time is up. Please click ok to continue and view results.
+        <br/>
+        <br/>
+        <div className="text-center">
+          <button
+            className="btn btn-default btn-primary"
+            onClick={ this.actions().submitTest }
+            >
+            OK
+          </button>
+        </div>
+        </Modal>
         <ShellLeft
           questions={questions}
           currentQuestionIndex={currentQuestionIndex}

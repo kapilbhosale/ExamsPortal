@@ -78,34 +78,64 @@ function markVisit(questionIndex) {
   }
 }
 
-
+// Bad piece of code. Don't try to blame. You're responsible.
 export function submitTest() {
-  console.log('submitTest called');
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
+    const dataJSON = JSON.parse(localStorage.getItem(`1-${store.get('examId')}-store`));
     $.ajax({
-      url: '/students/submit/' + store.get('examId'),
+      url: '/students/sync/' + store.get('examId'),
       method: 'put',
-      data: { id: store.get('examId') },
-      success: (data) => { window.location = '/students/summary/' + store.get('examId'); }
+      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      success: (data) => {
+        $.ajax({
+          url: '/students/submit/' + store.get('examId'),
+          method: 'put',
+          data: { id: store.get('examId') },
+          success: (data) => {
+            window.location = '/students/summary/' + store.get('examId');
+          }
+        });
+      },
+      error: (data) => { console.log('error sync!'); },
     });
   };
 }
 
 export function syncAnswers() {
   return (dispatch, getState) => {
-    console.log('sync to localStorage');
     const store = getState().$$examSolverStore;
     console.log(store.get('questions').toJS());
     localStorage.setItem(`1-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
+  }
+}
 
-    // $.ajax({
-    //   url: '/students/sync/' + store.get('examId'),
-    //   method: 'put',
-    //   data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
-    //   success: (data) => { console.log('success sync!'); },
-    //   error: (data) => { console.log('error sync!'); },
-    // });
+export function timeIsUp() {
+  console.log('timeIsUp');
+  return (dispatch, getState) => {
+    syncWithBackend();
+    dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
+  }
+}
+
+export function syncWithBackend() {
+  return (dispatch, getState) => {
+    const store = getState().$$examSolverStore;
+    const dataJSON = JSON.parse(localStorage.getItem(`1-${store.get('examId')}-store`));
+    $.ajax({
+      url: '/students/sync/' + store.get('examId'),
+      method: 'put',
+      async: false,
+      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      success: (data) => { console.log('success sync!'); },
+      error: (data) => { console.log('error sync!'); },
+    });
+  }
+}
+
+export function onTick(e) {
+  return (dispatch, getState) => {
+    console.log(e);
   }
 }
 
