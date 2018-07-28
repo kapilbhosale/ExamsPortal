@@ -31,11 +31,11 @@ class Question extends React.Component {
                     <label>
                       <input
                         type="radio"
-                        value={ option }
-                        checked={ answerProps.answer === option }
+                        value={ option.id }
+                        checked={ parseInt(answerProps.answer) === option.id }
                         onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
                       />
-                      <div dangerouslySetInnerHTML={{ __html: option }} />
+                      <div dangerouslySetInnerHTML={{ __html: option.data }} />
                     </label>
                   </div>
                 )

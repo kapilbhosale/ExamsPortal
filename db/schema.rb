@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_27_153956) do
+ActiveRecord::Schema.define(version: 2018_07_28_062452) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -99,6 +98,17 @@ ActiveRecord::Schema.define(version: 2018_07_27_153956) do
     t.datetime "updated_at", null: false
     t.index ["batch_id"], name: "index_student_batches_on_batch_id"
     t.index ["student_id"], name: "index_student_batches_on_student_id"
+  end
+
+  create_table "student_exam_answers", force: :cascade do |t|
+    t.bigint "student_exam_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_student_exam_answers_on_option_id"
+    t.index ["question_id"], name: "index_student_exam_answers_on_question_id"
+    t.index ["student_exam_id"], name: "index_student_exam_answers_on_student_exam_id"
   end
 
   create_table "student_exams", force: :cascade do |t|

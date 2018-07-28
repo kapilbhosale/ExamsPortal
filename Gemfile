@@ -73,7 +73,6 @@ group :development do
   gem 'pry-nav'
   gem 'rails-erd'
   gem 'pry'
-
 end
 
 group :test do
