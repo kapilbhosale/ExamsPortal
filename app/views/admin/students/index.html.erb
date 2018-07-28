@@ -34,6 +34,7 @@
                     <th><%= sort_link(@search, :roll_number) %></th>
                     <th>Batch(s)</th>
                     <th><%= sort_link(@search, :name) %></th>
+                    <th><%= sort_link(@search, :email) %></th>
                     <th>Parent Mobile</th>
                     <th><%= link_to '<i class="icon fe fe-file"></i> Download PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank'%>
                     </th>
@@ -46,6 +47,7 @@
                       <td><%= student&.batches&.each&.map(&:name).join(', ') %>
                       </td>
                       <td><%= link_to student.name, admin_student_path(student) %></td>
+                      <td><%= link_to student.email, admin_student_path(student) %></td>
                       <td><%= student.parent_mobile %></td>
                       <td>
                         <%= link_to '', admin_student_path(student), 'data-toggle'=>'tooltip', title: 'Show', class: 'glyphicon glyphicon-th-list' %> &nbsp;

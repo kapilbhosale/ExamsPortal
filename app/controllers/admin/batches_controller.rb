@@ -1,6 +1,5 @@
-class Admin::BatchesController < ApplicationController
-  before_action :authenticate_admin!
-  layout 'admin/dashboard'
+class Admin::BatchesController < Admin::BaseController
+
   def index
     @batches = Batch.all
   end
