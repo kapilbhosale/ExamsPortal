@@ -24,6 +24,14 @@ class ExamSolverContainer extends Component {
     this.actions().initialize();
   }
 
+  componentWillReceiveProps(nextProps){
+    const prevStore = this.props.$$examSolverStore;
+    const nextStore = nextProps.$$examSolverStore;
+    if(prevStore.get('questions') !== nextStore.get('questions')){
+      this.actions().syncAnswers();
+    }
+  }
+
   componentWillMount() {
     this.actions();
   }

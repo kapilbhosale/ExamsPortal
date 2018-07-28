@@ -90,6 +90,21 @@ export function submitTest() {
   };
 }
 
+export function syncAnswers() {
+  return (dispatch, getState) => {
+    console.log('sync is called');
+    const store = getState().$$examSolverStore;
+    console.log(store.get('questions').toJS());
+    $.ajax({
+      url: '/students/submit/' + store.get('examId'),
+      method: 'get',
+      data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
+      success: (data) => { console.log('success sync!'); },
+      error: (data) => { console.log('error sync!'); },
+    });
+  }
+}
+
 export function initialize() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
