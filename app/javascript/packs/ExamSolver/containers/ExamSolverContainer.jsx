@@ -37,6 +37,38 @@ class ExamSolverContainer extends Component {
     const questions = $$examSolverStore.get('questions').toJS();
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex');
     const totalQuestions = $$examSolverStore.get('totalQuestions');
+    const $win = $(window);
+    const MEDIAQUERY = {
+      desktopXL: 1200,
+      desktop: 992,
+      tablet: 768,
+      mobile: 575,
+    };
+    function isMobileDevice() {
+      return $win.width() < MEDIAQUERY.mobile;
+    }
+    const openNav = () => {
+      if (isMobileDevice()) {
+        document.getElementById("mySidenav").style.width = "100%";
+      }
+      else {
+        document.getElementById("mySidenav").style.width = "280px";
+      }
+    }
+    function markForReviewText() {
+      debugger
+      console.log('device: '+isMobileDevice());
+      if (isMobileDevice()) {
+        return (
+          <span >
+            Mark for Review
+            <i className="fa fa-caret-right"></i>
+          </span>
+        );
+      }
+      return (<span>Mark for Review & next</span>);
+    }
+
     return (
       <div className="row">
         <ShellLeft
@@ -50,6 +82,31 @@ class ExamSolverContainer extends Component {
           currentQuestionIndex={currentQuestionIndex}
           { ...this.actions() }
         />
+        <div className='row'>
+          <div className="bottom-menu margin-bottom-20">
+            <button
+              type="button"
+              className="btn btn-primary mark-review-btn margin-left-5"
+            >
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary clear-response-btn margin-left-5"
+            >
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary previous-btn margin-left-5"
+            >
+            </button>
+            <button
+              type="button"
+              className="btn btn-success save-next-btn margin-left-5"
+            >
+            </button>
+            <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>
+        </div>
+        </div>
       </div>
     )
   }
