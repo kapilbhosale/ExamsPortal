@@ -75,9 +75,9 @@ class ExamSolverContainer extends Component {
         document.getElementById("mySidenav").style.width = "100%";
       }
       else {
-        document.getElementById("mySidenav").style.width = "280px";
+        document.getElementById("mySidenav").style.width = "350px";
       }
-    }
+    };
     
     return (
       <div className="">

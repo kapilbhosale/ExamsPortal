@@ -25,12 +25,14 @@ class ShellLeft extends React.Component {
           />
         <hr/>
         <div className='row'>
-          <Question
-            { ...this.currentQuestion() }
-            currentQuestionIndex={currentQuestionIndex}
-            answerQuestion={ answerQuestion }
-            markVisited={ markVisited }
+          {
+            this.currentQuestion() && <Question
+              { ...this.currentQuestion() }
+              currentQuestionIndex={currentQuestionIndex}
+              answerQuestion={ answerQuestion }
+              markVisited={ markVisited }
             />
+          }
         </div>
 
       </div>
