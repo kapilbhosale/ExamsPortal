@@ -13,7 +13,7 @@ class ShellLeft extends React.Component {
     const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
             submitTest, previousQuestion, startedAt, examFinished, timeInMinutes, onTick, timeIsUp } = this.props;
     return (
-      <div className="col-md-9">
+      <div className="col-md-7 col-sm-6 col-xs-12">
         <SectionList
           totalQuestions={questions.length}
           submitTest={submitTest}
@@ -24,38 +24,13 @@ class ShellLeft extends React.Component {
           timeIsUp={ timeIsUp }
           />
         <hr/>
-        { this.currentQuestion() && <Question
-          { ...this.currentQuestion() }
-          currentQuestionIndex={currentQuestionIndex}
-          answerQuestion={ answerQuestion }
-          markVisited={ markVisited }
-          /> }
-        <hr />
-
-        <div className="row">
-
-          <div className="col-md-8">
-            <button type="button" className="btn btn-primary" onClick={ () => { markForReview(currentQuestionIndex) }}>
-              Mark for Review & Next
-            </button>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" className="btn btn-primary" onClick={ () => { clearAnswer(currentQuestionIndex) }}>
-              Clear Response
-            </button>
-          </div>
-
-          <div className="col-md-4">
-            { currentQuestionIndex != 0 &&
-                <button type="button" className="btn btn-primary" onClick={ () => { previousQuestion(currentQuestionIndex) }}>
-                  Previous
-                </button>
-            }
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <button type="button" className="btn btn-success" onClick={ () => { saveAndNext(currentQuestionIndex) }}>
-              Save & Next
-            </button>
-          </div>
-
+        <div className='row'>
+          <Question
+            { ...this.currentQuestion() }
+            currentQuestionIndex={currentQuestionIndex}
+            answerQuestion={ answerQuestion }
+            markVisited={ markVisited }
+            />
         </div>
 
       </div>

@@ -3,55 +3,85 @@ import React from 'react';
 class ShellRight extends React.Component {
   render() {
     const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex, submitTest } = this.props;
+    const closeNav = () => {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+
     return (
-      <div className="col-md-3" style={{ backgroundColor: '#e7f9ff' }}>
-        <div className="panel" style={{ backgroundColor: '#e7f9ff', marginTop: '15px', border: 'none' }}>
-          <div className="form-group">
-            <span className="label label-success" style={{ margin: '5px' }}>Answered</span>
-            <span className="label label-danger" style={{ margin: '5px' }}>Not answered</span>
-            <span className="label label-primary" style={{ margin: '5px' }}>Marked</span>
-            <span className="label label-default" style={{ margin: '5px' }}>Not visited</span>
-            <span className="label label-warning" style={{ margin: '5px' }}>Current</span>
-          </div>
+      <div >
+        <div className='navigation-map'>
+          <div className='sidenav panel' id="mySidenav">
+            <a href="javascript:void(0)" className="closebtn pull-left" onClick={ () => { closeNav() }}>&times;</a>
+            <div className="row form-group">
 
-          <div className="form-group">
-            <label>Section</label>: Physics
-          </div>
+              <div className='col-md-5 col-sm-4 col-xs-4'>
+                <span className="label label-success margin-5">
+                  Answered
+                </span>
+              </div>
+              <div className='col-md-5 col-sm-4 col-xs-4'>
+                <span className="label label-primary margin-5">
+                  Marked
+                </span>
+              </div>
+              <div className='col-md-5 col-sm-4 col-xs-4'>
+                <span className="label label-default margin-5">
+                  Not visited
+                </span>
+              </div>
+              <div className='col-md-5 col-sm-4 col-xs-4'>
+                <span className="label label-warning margin-5">
+                  Current
+                </span>
+              </div>
+              <div className='col-md-5 col-sm-4 col-xs-4'>
+                <span className="label label-danger margin-5">
+                  Not answered
+                </span>
+              </div>
+            </div>
 
-          <div className="btn-toolbar form-group" role="toolbar" aria-label="..." style={{ textAlign: "center" }}>
-            {
-              questions.map((question, idx) => {
-                const { isAnswered, needReview, visited } = question.answerProps;
-                let dynamicClass = '';
-                if (idx !== currentQuestionIndex) {
-                  if (isAnswered) {
-                    dynamicClass = 'btn-success';
+            <div className="form-group">
+              <label>Section</label>: Physics
+            </div>
+
+            <div className="btn-toolbar form-group text-center" role="toolbar" aria-label="...">
+              {
+                questions.map((question, idx) => {
+                  const { isAnswered, needReview, visited } = question.answerProps;
+                  let dynamicClass = '';
+                  if (idx !== currentQuestionIndex) {
+                    if (isAnswered) {
+                      dynamicClass = 'btn-success';
+                    }
+                    if (visited && !isAnswered) {
+                      dynamicClass = 'btn-danger';
+                    }
+                    if (needReview) {
+                      dynamicClass = 'btn-primary';
+                    }
+                  } else {
+                    dynamicClass = "btn-warning"
                   }
-                  if (visited && !isAnswered) {
-                    dynamicClass = 'btn-danger';
-                  }
-                  if (needReview) {
-                    dynamicClass = 'btn-primary';
-                  }
-                } else {
-                  dynamicClass = "btn-warning"
-                }
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={ `btn btn-default ${dynamicClass}` }
-                    style={{ marginRight: '10px', marginLeft: '5px', marginBottom: '10px', width: '40px', height: '40px' }}
-                    onClick={ () => { jumpToQuestion(idx) }}
-                  >
-                    {idx + 1}
-                  </button>
-                )
-              })
-            }
-          </div>
-          <div className="text-center">
-            <button type="button" className="btn btn-success" onClick={ () => { submitTest() }}>Submit Test</button>
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      className={ `btn btn-default ${dynamicClass}` }
+                      style={{ marginRight: '10px', marginLeft: '5px', marginBottom: '10px', width: '40px', height: '40px' }}
+                      onClick={ () => { jumpToQuestion(idx) }}
+                    >
+                      {idx + 1}
+                    </button>
+                  )
+                })
+              }
+            </div>
+            <div className="text-center">
+              <button type="button" className="btn btn-success" onClick={ () => { submitTest() }}>
+                Submit Test
+              </button>
+            </div>
           </div>
         </div>
       </div>
