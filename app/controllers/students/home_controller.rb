@@ -1,4 +1,7 @@
 class Students::HomeController < ApplicationController
+
+  skip_before_action :verify_authenticity_token, only: [:sync, :submit]
+
   def index
     @styles = ''
   end
@@ -29,8 +32,14 @@ class Students::HomeController < ApplicationController
   def sync
     student_exam = StudentExam.find_by(student_id: params[:student_id] || 1, exam_id: params[:exam_id])
   	params[:questions].each do |index, input_question|
-  		student_exam_answer = StudentExamAnswer.find_or_create_by!(student_exam_id: student_exam.id, question_id: input_question[:id])
-  		student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+      if input_question[:answerProps][:answer].to_i > 0
+        student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
+        if student_exam_answer
+  		    student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+        else
+           StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+        end
+      end
   	end
   end
 
@@ -55,6 +64,7 @@ class Students::HomeController < ApplicationController
     		id: question.id,
     		title: question.title,
     		options: question.options.map { |o| { id: o.id, data: o.data } },
+        cssStyle: question.css_style,
     		answerProps: {
           isAnswered: false,
           visited: false,
@@ -66,7 +76,7 @@ class Students::HomeController < ApplicationController
 
     render json: {
       currentQuestionIndex: 0,
-      totalQuestions: exam.no_of_questions,
+      totalQuestions: exam.questions.size,
       questions: questions,
       startedAt: student_exam.started_at,
       timeInMinutes: exam.time_in_minutes,

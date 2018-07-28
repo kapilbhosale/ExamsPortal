@@ -43,9 +43,11 @@ class ShellLeft extends React.Component {
           </div>
 
           <div className="col-md-4">
-            <button type="button" className="btn btn-primary" onClick={ () => { previousQuestion(currentQuestionIndex) }}>
-              Previous
-            </button>
+            { currentQuestionIndex != 0 &&
+                <button type="button" className="btn btn-primary" onClick={ () => { previousQuestion(currentQuestionIndex) }}>
+                  Previous
+                </button>
+            }
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <button type="button" className="btn btn-success" onClick={ () => { saveAndNext(currentQuestionIndex) }}>
               Save & Next

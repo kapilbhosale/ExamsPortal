@@ -58,6 +58,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('questions', Immutable.fromJS(val.questions))
                     .set('currentQuestionIndex', val.currentQuestionIndex)
                     .set('startedAt', val.startedAt)
+                    .set('totalQuestions', val.totalQuestions)
                     .set('timeInMinutes', val.timeInMinutes);
     }
     default:

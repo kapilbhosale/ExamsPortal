@@ -85,7 +85,7 @@ export function submitTest() {
     const store = getState().$$examSolverStore;
     $.ajax({
       url: '/students/submit/' + store.get('examId'),
-      method: 'get',
+      method: 'put',
       data: { id: store.get('examId') },
       success: (data) => { window.location = '/students/summary/' + store.get('examId'); }
     });
@@ -99,7 +99,7 @@ export function syncAnswers() {
     console.log(store.get('questions').toJS());
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
-      method: 'get',
+      method: 'put',
       data: { questions: store.get('questions').toJS(), exam_id: store.get('examId') },
       success: (data) => { console.log('success sync!'); },
       error: (data) => { console.log('error sync!'); },
