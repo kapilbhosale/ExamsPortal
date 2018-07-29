@@ -80,7 +80,8 @@ class ExamSolverContainer extends Component {
         document.getElementById("mySidenav").style.paddingLeft = "50px";
       }
     };
-    
+
+    const actions = this.actions();
     return (
       <div className="">
        <Modal
@@ -120,21 +121,25 @@ class ExamSolverContainer extends Component {
             <button
               type="button"
               className="btn btn-primary mark-review-btn margin-left-5"
+              onClick={ () => { actions.markForReview(currentQuestionIndex) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-primary clear-response-btn margin-left-5"
+              onClick={ () => { actions.clearAnswer(currentQuestionIndex) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-primary previous-btn margin-left-5"
+              onClick={ () => { actions.previousQuestion(currentQuestionIndex) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-success save-next-btn margin-left-5"
+              onClick={ () => { actions.saveAndNext(currentQuestionIndex) } }
             >
             </button>
             <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>

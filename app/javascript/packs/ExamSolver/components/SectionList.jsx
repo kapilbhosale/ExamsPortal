@@ -27,7 +27,6 @@ class ShellList extends React.Component {
               date={ this.dateForCountdown() }
               daysInHours
               onComplete={ () => { timeIsUp() }}
-              onTick={ () => { onTick(this.dateForCountdown()) } }
             />
           </span>
         </div>
