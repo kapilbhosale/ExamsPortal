@@ -47,7 +47,7 @@ module Exams
 
     def upload_images_folder
       images_folder = "#{@tmp_dir_path}/images"
-      uploader = S3FolderUpload.new(images_folder, "exam#{exam.id}/images")
+      uploader = Exams::S3FolderUpload.new(images_folder, "exam#{exam.id}/images")
       uploader.upload!
     end
 
@@ -124,7 +124,7 @@ module Exams
     end
 
     def replace_local_img_with_s3(html_code)
-      s3_path_to_replace = "#{S3FolderUpload.get_base_path}/exam#{exam.id}/images/"
+      s3_path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/exam#{exam.id}/images/"
       html_code.gsub('images/', s3_path_to_replace)
     end
 

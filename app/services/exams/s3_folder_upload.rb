@@ -1,4 +1,4 @@
-module Utils
+module Exams
   class S3FolderUpload
     attr_reader :folder_path, :total_files, :s3_bucket, :include_folder, :s3_base_path
     attr_accessor :files
@@ -86,7 +86,3 @@ module Utils
     end
   end
 end
-
-# Sample usage:
-# uploader = S3FolderUpload.new('local-dir-path', 's3-path')
-# uploader.upload!
