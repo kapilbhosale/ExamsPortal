@@ -1,0 +1,34 @@
+<div class="col-12">
+  <div class="card" style="border: none;">
+    <div class="card-header text-center">
+      <h4>Creative Coaching Classes</h4>
+      <p>'Sharda Bhavan', Shyam Nagar, Nanded</p>
+    </div>
+      <table class="table table-bordered table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th>SrNo</th>
+            <th>StudentName</th>
+            <th>Batch</th>
+            <th>Marks</th>
+            <th>rank</th>
+            <th>correct</th>
+            <th>wrong</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @student_exams.each do |student_exam| %>
+    <tr>
+      <td><%= student_exam.student.roll_number %></td>
+      <td><%= student_exam.student.name %></td>
+      <td><%=  %></td>
+      <td><%=  student_exam.correct_answers_count %></td>
+      <td><%=  %></td>
+      <td><%=  student_exam.correct_answers_count%></td>
+      <td><%=  student_exam.exam.no_of_questions - student_exam.correct_answers_count%></td>
+    </tr>
+    <% end  %>
+        </tbody>
+      </table>
+  </div>
+</div>
