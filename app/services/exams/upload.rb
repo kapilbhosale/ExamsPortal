@@ -47,7 +47,7 @@ module Exams
 
     def upload_images_folder
       images_folder = "#{@tmp_dir_path}/images"
-      uploader = Utils::S3FolderUpload.new(images_folder, "exam#{exam.id}/images")
+      uploader = S3FolderUpload.new(images_folder, "exam#{exam.id}/images")
       uploader.upload!
     end
 
