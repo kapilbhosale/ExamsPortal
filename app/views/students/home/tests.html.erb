@@ -18,7 +18,7 @@
               </ul>
               <% student_exam = @student_exams.try(:[], exam.id) %>
               <% if current_student && student_exam %>
-                  <% if student_exam.ended_at.present? %>
+                  <% if student_exam.ended_at.present? || ((student_exam.started_at + student_exam.exam.time_in_minutes.minutes) < Time.current) %>
                     <a href="/students/summary/<%= exam.id %>" class="btn btn-success">
                       View Result
                     </a>
