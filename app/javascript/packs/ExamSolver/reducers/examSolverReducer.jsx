@@ -16,7 +16,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
   switch (type) {
     case actionTypes.INCREMENT_CURRENT_QUESTION_INDEX: {
       let questions = $$state.get('questions').toJS();
-      if (questions[val.questionIndex].answerProps.answer !== 1) {
+      if (questions[val.questionIndex].answerProps.answer !== null) {
         questions[val.questionIndex].answerProps.isAnswered = true;
       } else {
         questions[val.questionIndex].answerProps.isAnswered = false;

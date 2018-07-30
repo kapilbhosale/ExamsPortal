@@ -42,8 +42,8 @@ class ShellRight extends React.Component {
               </div>
             </div>
 
-            <div className="form-group">
-              <label>Section</label>: Physics
+            <div className="form-group text-center">
+              Navigation Map
             </div>
 
             <div className="btn-toolbar form-group text-center" role="toolbar" aria-label="...">
