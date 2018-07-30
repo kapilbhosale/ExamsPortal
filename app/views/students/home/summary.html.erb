@@ -19,7 +19,7 @@
         <td style="border: 1px solid #ddd;"><%= @student_exam.student_exam_answers.count %></td>
         <td style="border: 1px solid #ddd;"><%= @exam.no_of_questions - @student_exam.student_exam_answers.count %></td>
         <td style="border: 1px solid #ddd;"><%= @student_exam.correct_answers_count %></td></td>
-        <td style="border: 1px solid #ddd;"><%= distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) %></td>
+        <td style="border: 1px solid #ddd;"><%= distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available" %></td>
       </tr>
     </table>
   </div>
