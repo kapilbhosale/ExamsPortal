@@ -8,6 +8,7 @@ export const $$initialState = Immutable.fromJS({
   startedAt: new Date(),
   timeInMinutes: 0,
   modal: false,
+  studentId: 0,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -60,6 +61,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
                     .set('currentQuestionIndex', val.currentQuestionIndex)
                     .set('startedAt', val.startedAt)
                     .set('totalQuestions', val.totalQuestions)
+                    .set('studentId', val.studentId)
                     .set('timeInMinutes', val.timeInMinutes);
     }
     case actionTypes.SHOW_TIME_UP_MODAL:

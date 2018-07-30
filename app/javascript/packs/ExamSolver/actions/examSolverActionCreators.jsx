@@ -82,7 +82,7 @@ function markVisit(questionIndex) {
 export function submitTest() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    const dataJSON = JSON.parse(localStorage.getItem(`1-${store.get('examId')}-store`));
+    const dataJSON = JSON.parse(localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`));
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
@@ -105,13 +105,13 @@ export function submitTest() {
 export function syncAnswers() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    console.log(store.get('questions').toJS());
-    localStorage.setItem(`1-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
+    // console.log(store.get('questions').toJS());
+    localStorage.setItem(`${store.get('studentId')}-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
   }
 }
 
 export function timeIsUp() {
-  console.log('timeIsUp');
+  // console.log('timeIsUp');
   return (dispatch, getState) => {
     syncWithBackend();
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
@@ -121,7 +121,7 @@ export function timeIsUp() {
 export function syncWithBackend() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    const dataJSON = JSON.parse(localStorage.getItem(`1-${store.get('examId')}-store`));
+    const dataJSON = JSON.parse(localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`));
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
@@ -135,7 +135,7 @@ export function syncWithBackend() {
 
 export function onTick(e) {
   return (dispatch, getState) => {
-    console.log(e);
+    // console.log(e);
   }
 }
 
@@ -147,7 +147,7 @@ export function initialize() {
       method: 'get',
       data: { id: store.get('examId') },
       success: (data) => {
-        const localData = localStorage.getItem(`1-${store.get('examId')}-store`);
+        const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
         if (localData) {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
         } else {

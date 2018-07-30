@@ -83,6 +83,7 @@ class Students::HomeController < Students::BaseController
       questions: questions,
       startedAt: student_exam.started_at,
       timeInMinutes: exam.time_in_minutes,
+      studentId: current_student.id,
     }
   end
 end
