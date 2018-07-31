@@ -16,8 +16,9 @@
   <body>
     <div class="page">
       <div class="page-main">
+      <%= render 'layouts/admin/dashboard_header' %>
+      <div class="row">&nbsp;</div>
         <div class="container">
-          <%= render 'layouts/admin/dashboard_header' %>
           <% flash.each do |key, value| %>
             <div id="alert" class="alert alert-<%= key == 'notice' ? 'success' : 'warning' %>">
               <%= value %>

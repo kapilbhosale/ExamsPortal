@@ -1,42 +1,64 @@
-
-<div class="container">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Smart Exam</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="navbar-nav-scroll">
-        <ul class="navbar-nav bd-navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="<%= students_tests_path %>">My Exams <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/students/mock_tests">Mock Tests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Question Bank</a>
-          </li>
-          <li  >
-            <a class="nav-link" href="<%= students_exam_subscription_path %>">External Students</a>
-          </li>
-          <% if student_signed_in? %>
-            <li class="nav-item">
-              <a href="#" class="nav-link" ><%= current_student&.name%></a>
-            </li>
-            <li class="nav-item">
-              <%= link_to 'Sign Out', destroy_student_session_path, method: :delete, class:"nav-link"%>
-            </li>
-            <li class="nav-item">
-              <%= image_tag 'img_avatar', alt: 'Avatar', style: "width:50px; border-radius: 50%" %>
-            </li>
+<div class="header py-4">
+  <div class="container">
+    <div class="d-flex">
+      <a class="header-brand" href="./index.html">
+      Smart Exams
+      </a>
+        <div class="d-flex order-lg-2 ml-auto">
+        <% if student_signed_in? %>
+          <div class="dropdown">
+            <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+              <span class="avatar" style="background-image: url(<%= asset_path('img_avatar.png')%>)"></span>
+              <span class="ml-2 d-none d-lg-block">
+                <span class="text-default"><%= current_student&.name%></span>
+                <small class="text-muted d-block mt-1">Student</small>
+              </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+              <a class="dropdown-item" href="#">
+                <i class="dropdown-icon fe fe-user"></i> Profile
+              </a>
+              <a class="dropdown-item" href="#">
+                <i class="dropdown-icon fe fe-settings"></i> Settings
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">
+                <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+              </a>
+              <%= link_to '<i class="dropdown-icon fe fe-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
+            </div>
+          </div>
           <% else %>
-            <li class="nav-item text-right">
-              <%= link_to 'Sign In', new_student_session_path, method: :get, class: 'nav-link' %>
-            </li>
-          <% end %>
+        <li class="nav-item" style="float: right;">
+            <%= link_to 'Sign In &nbsp; <i class="fa fa-user-o"></i>'.html_safe, new_student_session_path, method: :get, class: 'nav-link' %>
+          </li>
+      <% end %>
+        </div>
+      <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+        <span class="header-toggler-icon"></span>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg order-lg-first">
+        <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+          <li class="nav-item">
+            <a href="<%= students_tests_path %>" class="nav-link active"><i class="fe fe-monitor"></i> My Exams</a>
+          </li>
+          <li class="nav-item">
+            <a href="/students/mock_tests" class="nav-link"><i class="fe fe-airplay"></i> Mock Tests</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link"><i class="fe fe-book"></i> Question Bank</a>
+          </li>
+          <li class="nav-item">
+            <a href="<%= students_exam_subscription_path %>" class="nav-link"><i class="fe fe-users"></i> External Students</a>
+          </li>
         </ul>
       </div>
     </div>
-  </nav>
+  </div>
 </div>
