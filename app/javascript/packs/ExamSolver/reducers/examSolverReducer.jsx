@@ -9,6 +9,12 @@ export const $$initialState = Immutable.fromJS({
   timeInMinutes: 0,
   modal: false,
   studentId: 0,
+  questionsCountByStatus: {
+    answered: 0,
+    notVisited: 0,
+    notAnswered: 0,
+    marked: 0,
+  }
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -66,6 +72,11 @@ export default function examSolverReducer($$state = $$initialState, action) {
     }
     case actionTypes.SHOW_TIME_UP_MODAL:
       return $$state.set('modal', val);
+    case actionTypes.UPDATE_QUESTIONS_COUNT:
+      return $$state.setIn(['questionsCountByStatus', 'answered'], val.questionCounts.answered)
+                    .setIn(['questionsCountByStatus', 'notVisited'], val.questionCounts.notVisited)
+                    .setIn(['questionsCountByStatus', 'notAnswered'], val.questionCounts.notAnswered)
+                    .setIn(['questionsCountByStatus', 'marked'], val.questionCounts.marked);
     default:
       return $$state;
   }

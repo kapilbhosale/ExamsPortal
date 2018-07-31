@@ -2,7 +2,16 @@ import React from 'react';
 
 class ShellRight extends React.Component {
   render() {
-    const { questions, totalQuestions, jumpToQuestion, currentQuestionIndex, submitTest } = this.props;
+    const { 
+      questions,
+      totalQuestions,
+      jumpToQuestion,
+      currentQuestionIndex,
+      submitTest,
+      answeredQuestions,
+      notAnsweredQuestions,
+      markedQuestions,
+      notVisitedQuestions } = this.props;
     const closeNav = () => {
       document.getElementById("mySidenav").style.width = "0";
       document.getElementById("mySidenav").style.paddingLeft = 0;
@@ -17,17 +26,17 @@ class ShellRight extends React.Component {
 
               <div className='col-md-5 col-sm-4 col-xs-4'>
                 <span className="label label-success margin-5">
-                  Answered
+                  { `Answered (${answeredQuestions})` }
                 </span>
               </div>
               <div className='col-md-5 col-sm-4 col-xs-4'>
                 <span className="label label-primary margin-5">
-                  Marked
+                  { `Marked (${markedQuestions})` }
                 </span>
               </div>
               <div className='col-md-5 col-sm-4 col-xs-4'>
                 <span className="label label-default margin-5">
-                  Not visited
+                  { `Not visited (${notVisitedQuestions})`}
                 </span>
               </div>
               <div className='col-md-5 col-sm-4 col-xs-4'>
@@ -37,7 +46,7 @@ class ShellRight extends React.Component {
               </div>
               <div className='col-md-5 col-sm-4 col-xs-4'>
                 <span className="label label-danger margin-5">
-                  Not answered
+                  { `Not answered (${notAnsweredQuestions})` }
                 </span>
               </div>
             </div>

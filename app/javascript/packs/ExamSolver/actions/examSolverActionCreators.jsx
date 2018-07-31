@@ -7,6 +7,12 @@ export function saveAndNext(questionIndex) {
       type: actionTypes.INCREMENT_CURRENT_QUESTION_INDEX,
       val: { questionIndex: questionIndex },
     });
+    const globalState = getState();
+    const { $$examSolverStore } = globalState;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
+    const questionsCount = getQuestionsCount(questions);
+    dispatch(updateQuestionsCount(questionsCount));
   };
 }
 
@@ -17,6 +23,12 @@ export function answerQuestion(questionIndex, answerIndex) {
       type: actionTypes.ANSWER_QUESTION,
       val: { questionIndex: questionIndex, answerIndex: answerIndex },
     });
+    const globalState = getState();
+    const { $$examSolverStore } = globalState;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
+    const questionsCount = getQuestionsCount(questions);
+    dispatch(updateQuestionsCount(questionsCount));
   };
 }
 
@@ -42,6 +54,12 @@ export function jumpToQuestion(questionIndex) {
       type: actionTypes.JUMP_TO_QUESTION,
       val: { questionIndex: questionIndex },
     });
+    const globalState = getState();
+    const { $$examSolverStore } = globalState;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
+    const questionsCount = getQuestionsCount(questions);
+    dispatch(updateQuestionsCount(questionsCount));
   };
 }
 
@@ -62,12 +80,24 @@ export function markForReview(questionIndex) {
       type: actionTypes.MARK_FOR_REVIEW,
       val: { questionIndex: questionIndex },
     });
+    const globalState = getState();
+    const { $$examSolverStore } = globalState;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
+    const questionsCount = getQuestionsCount(questions);
+    dispatch(updateQuestionsCount(questionsCount));
   };
 }
 
 export function markVisited(questionIndex) {
   return (dispatch, getState) => {
     dispatch(markVisit(questionIndex));
+    const globalState = getState();
+    const { $$examSolverStore } = globalState;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
+    const questionsCount = getQuestionsCount(questions);
+    dispatch(updateQuestionsCount(questionsCount));
   };
 }
 
@@ -157,3 +187,55 @@ export function initialize() {
     });
   };
 }
+
+export function updateQuestionsCount(questionCounts) {
+  console.log('q count =>'+questionCounts);
+  return {
+    type: actionTypes.UPDATE_QUESTIONS_COUNT,
+    val: { questionCounts: questionCounts },
+  }
+}
+
+
+
+  function getQuestionsCount(questions) {
+    const notVisited = notVisitedQuestions(questions);
+    const answered = answeredQuestions(questions);
+    const marked = markedQuestions(questions);
+    const notAnswered = questions.length - answered;
+    return (
+      {
+        answered: answered,
+        notAnswered: notAnswered,
+        marked: marked,
+        notVisited: notVisited
+      }
+    );
+  }
+
+function notVisitedQuestions(questions) {
+    const notVisited = questions.map((question) => {
+      if (!question.answerProps.visited) {
+        return 1;
+      }
+    })
+    return notVisited.filter(f => f === 1).length;
+  }
+
+  function answeredQuestions(questions) {
+    const answered = questions.map((question) => {
+      if (question.answerProps.isAnswered) {
+        return 1;
+      }
+    })
+    return answered.filter(f => f === 1).length;
+  }
+
+  function markedQuestions(questions) {
+    const marked = questions.map((question) => {
+      if (question.answerProps.needReview) {
+        return 1;
+      }
+    })
+    return marked.filter(f => f === 1).length;
+  }
