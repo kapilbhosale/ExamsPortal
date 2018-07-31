@@ -22,6 +22,12 @@ class ExamSolverContainer extends Component {
   }
 
   componentDidMount() {
+    if ($(window).width() < 575) {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+    else {
+      document.getElementById("mySidenav").style.width = "350px";
+    }
     this.actions().initialize();
   }
 
