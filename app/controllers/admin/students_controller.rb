@@ -3,7 +3,7 @@ class Admin::StudentsController < Admin::BaseController
   def index
     @@default_limit = 10
     @search = Student.includes(:batches).search(params[:q])
-    @students = @search.result.order(created_at: :desc)&.page(params[:page])&.per(params[:limit] || @@default_limit)
+    @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || @@default_limit)
     params.permit(:q, :limit)
     respond_to do |format|
       format.html do
