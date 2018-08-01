@@ -11,33 +11,39 @@
             <%= link_to 'Download PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
           </button>
         </div>
-        <table id="exportTable" class="table table-striped">
-          <thead>
+        <div class="col-12">
+          <table id="exportTable" class="table table-striped">
+            <thead>
             <tr>
-              <th><%= sort_link(@search, :student_id) %></th>
+              <th><%= sort_link(@response[:search], :student_id) %></th>
               <th>StudentName</th>
+              <th>Batch</th>
               <th>Marks</th>
-              <th>rank</th>
+              <th><%= sort_link(@response[:search], :rank) %></th>
               <th>correct</th>
               <th>wrong</th>
             </tr>
-          </thead>
-          <tbody>
-          <% @student_exams.each do |student_exam| %>
+            </thead>
+            <tbody>
+            <% @response[:student_exams_hash].each do |student_exam| %>
             <tr>
-              <td><%= student_exam.student.roll_number %></td>
-              <td><%= student_exam.student.name %></td>
-              <td><%=  student_exam.correct_answers_count %></td>
-              <td><%=  student_exam.correct_answers_count%></td>
-              <td><%=  student_exam.exam.no_of_questions - student_exam.correct_answers_count%></td>
+              <td><%= student_exam[:roll_number] %></td>
+              <td><%= student_exam[:name] %></td>
+              <td><%=  %></td>
+              <td><%=  student_exam[:marks] %></td>
+              <td><%=  student_exam[:rank]%></td>
+              <td><%=  student_exam[:correct]%></td>
+              <td><%=  student_exam[:wrong]%></td>
             </tr>
-          <% end  %>
-          </tbody>
-        </table>
+            <% end  %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- you need to include the shieldui css and js assets in order for the components to work -->
 <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />

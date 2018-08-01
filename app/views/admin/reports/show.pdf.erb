@@ -17,15 +17,15 @@
           </tr>
         </thead>
         <tbody>
-          <% @student_exams.each do |student_exam| %>
+          <% @response[:student_exams_hash].each do |student_exam| %>
     <tr>
-      <td><%= student_exam.student.roll_number %></td>
-      <td><%= student_exam.student.name %></td>
+      <td><%= student_exam[:roll_number] %></td>
+      <td><%= student_exam[:name] %></td>
       <td><%=  %></td>
-      <td><%=  student_exam.correct_answers_count %></td>
-      <td><%=  %></td>
-      <td><%=  student_exam.correct_answers_count%></td>
-      <td><%=  student_exam.exam.no_of_questions - student_exam.correct_answers_count%></td>
+      <td><%=  student_exam[:marks] %></td>
+      <td><%=  student_exam[:rank]%></td>
+      <td><%=  student_exam[:correct]%></td>
+      <td><%=  student_exam[:wrong]%></td>
     </tr>
     <% end  %>
         </tbody>

@@ -23,32 +23,26 @@ class Admin::ReportsController < Admin::BaseController
   end
 
   def show
-    # <% @students.each do |student| %>
-    # <tr>
-    #   <% total = 90 %>
-    #   <% correct = student[:marks]/2 %>
-    #   <td><%= student[:id] %></td>
-    #   <td><%= student[:name] %></td>
-    #   <td><%= student[:batch] %></td>
-    #   <td><%= student[:marks] %></td>
-    #   <td><%= student[:rank] %></td>
-    #   <td><%= correct %></td>
-    #   <td><%= total - correct %></td>
-    # </tr>
-    # <% end  %>
-
-    #@exam = Exam.find_by(id: params[:id])
-    @search = StudentExam.where(exam_id: params[:id]).search(params[:q])
-    @student_exams = @search.result
+    @response = Reports::ShowExamReportService.new(params[:id], params[:q]).prepare_report
     respond_to do |format|
       format.html do
+        set_flash
       end
       format.pdf do
         render pdf: "student information",
                template: "admin/reports/show.pdf.erb",
-               locals: {students: @student_exams},
+               locals: {students: @response[:student_exams]},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
+    end
+  end
+
+  private
+
+  def set_flash
+    if @response[:status] == false
+      key = :warning
+      flash[key] = @response[:message]
     end
   end
 end
