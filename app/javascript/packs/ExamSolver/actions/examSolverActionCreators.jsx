@@ -11,8 +11,7 @@ export function saveAndNext(questionIndex) {
     const { $$examSolverStore } = globalState;
     const store = $$examSolverStore;
     const questions = store.get('questions').toJS();
-    const questionsCount = getQuestionsCount(questions);
-    dispatch(updateQuestionsCount(questionsCount));
+    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -27,8 +26,7 @@ export function answerQuestion(questionIndex, answerIndex) {
     const { $$examSolverStore } = globalState;
     const store = $$examSolverStore;
     const questions = store.get('questions').toJS();
-    const questionsCount = getQuestionsCount(questions);
-    dispatch(updateQuestionsCount(questionsCount));
+    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -58,8 +56,7 @@ export function jumpToQuestion(questionIndex) {
     const { $$examSolverStore } = globalState;
     const store = $$examSolverStore;
     const questions = store.get('questions').toJS();
-    const questionsCount = getQuestionsCount(questions);
-    dispatch(updateQuestionsCount(questionsCount));
+    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -84,8 +81,7 @@ export function markForReview(questionIndex) {
     const { $$examSolverStore } = globalState;
     const store = $$examSolverStore;
     const questions = store.get('questions').toJS();
-    const questionsCount = getQuestionsCount(questions);
-    dispatch(updateQuestionsCount(questionsCount));
+    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -96,8 +92,7 @@ export function markVisited(questionIndex) {
     const { $$examSolverStore } = globalState;
     const store = $$examSolverStore;
     const questions = store.get('questions').toJS();
-    const questionsCount = getQuestionsCount(questions);
-    dispatch(updateQuestionsCount(questionsCount));
+    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -188,21 +183,38 @@ export function initialize() {
   };
 }
 
-export function updateQuestionsCount(questionCounts) {
-  console.log('q count =>'+questionCounts);
+export function updateQuestionsCount(questions) {
+  const questionCounts = getQuestionsCount(questions);
   return {
     type: actionTypes.UPDATE_QUESTIONS_COUNT,
     val: { questionCounts: questionCounts },
-  }
+  };
 }
 
 
-
   function getQuestionsCount(questions) {
-    const notVisited = notVisitedQuestions(questions);
-    const answered = answeredQuestions(questions);
-    const marked = markedQuestions(questions);
-    const notAnswered = questions.length - answered;
+    let notVisited = 0;
+    let answered = 0;
+    let marked = 0;
+    let notAnswered = 0;
+    debugger
+    if (questions.length > 0) {
+      questions.map((question) => {
+        const answer_props = question.answerProps;
+        if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
+          notAnswered = notAnswered + 1;
+        }
+        if (!answer_props.visited) {
+          notVisited = notVisited + 1;
+        }
+        if (answer_props.isAnswered) {
+          answered = answered + 1;
+        }
+        if (question.answerProps.needReview) {
+          marked = marked + 1;
+        }
+      })
+    }
     return (
       {
         answered: answered,
@@ -211,31 +223,4 @@ export function updateQuestionsCount(questionCounts) {
         notVisited: notVisited
       }
     );
-  }
-
-function notVisitedQuestions(questions) {
-    const notVisited = questions.map((question) => {
-      if (!question.answerProps.visited) {
-        return 1;
-      }
-    })
-    return notVisited.filter(f => f === 1).length;
-  }
-
-  function answeredQuestions(questions) {
-    const answered = questions.map((question) => {
-      if (question.answerProps.isAnswered) {
-        return 1;
-      }
-    })
-    return answered.filter(f => f === 1).length;
-  }
-
-  function markedQuestions(questions) {
-    const marked = questions.map((question) => {
-      if (question.answerProps.needReview) {
-        return 1;
-      }
-    })
-    return marked.filter(f => f === 1).length;
   }
