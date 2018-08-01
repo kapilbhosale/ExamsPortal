@@ -7,11 +7,8 @@ export function saveAndNext(questionIndex) {
       type: actionTypes.INCREMENT_CURRENT_QUESTION_INDEX,
       val: { questionIndex: questionIndex },
     });
-    const globalState = getState();
-    const { $$examSolverStore } = globalState;
-    const store = $$examSolverStore;
-    const questions = store.get('questions').toJS();
-    dispatch(updateQuestionsCount(questions));
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -22,11 +19,6 @@ export function answerQuestion(questionIndex, answerIndex) {
       type: actionTypes.ANSWER_QUESTION,
       val: { questionIndex: questionIndex, answerIndex: answerIndex },
     });
-    const globalState = getState();
-    const { $$examSolverStore } = globalState;
-    const store = $$examSolverStore;
-    const questions = store.get('questions').toJS();
-    dispatch(updateQuestionsCount(questions));
   };
 }
 
@@ -52,11 +44,8 @@ export function jumpToQuestion(questionIndex) {
       type: actionTypes.JUMP_TO_QUESTION,
       val: { questionIndex: questionIndex },
     });
-    const globalState = getState();
-    const { $$examSolverStore } = globalState;
-    const store = $$examSolverStore;
-    const questions = store.get('questions').toJS();
-    dispatch(updateQuestionsCount(questions));
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -77,22 +66,16 @@ export function markForReview(questionIndex) {
       type: actionTypes.MARK_FOR_REVIEW,
       val: { questionIndex: questionIndex },
     });
-    const globalState = getState();
-    const { $$examSolverStore } = globalState;
-    const store = $$examSolverStore;
-    const questions = store.get('questions').toJS();
-    dispatch(updateQuestionsCount(questions));
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
 export function markVisited(questionIndex) {
   return (dispatch, getState) => {
     dispatch(markVisit(questionIndex));
-    const globalState = getState();
-    const { $$examSolverStore } = globalState;
-    const store = $$examSolverStore;
-    const questions = store.get('questions').toJS();
-    dispatch(updateQuestionsCount(questions));
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -173,18 +156,26 @@ export function initialize() {
       data: { id: store.get('examId') },
       success: (data) => {
         const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
+        const questionCounts = JSON.parse(localData).questionsCountByStatus
+        dispatch(updateQuestionsCount(questionCounts));
         if (localData) {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
         } else {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
+          const questionCounts = {
+            answered: 0,
+            notAnswered: 0,
+            marked: 0,
+            notVisited: data.questions ? data.questions.length : 0,
+          }
+          dispatch(updateQuestionsCount(questionCounts));
         }
       }
     });
   };
 }
 
-export function updateQuestionsCount(questions) {
-  const questionCounts = getQuestionsCount(questions);
+export function updateQuestionsCount(questionCounts) {
   return {
     type: actionTypes.UPDATE_QUESTIONS_COUNT,
     val: { questionCounts: questionCounts },
@@ -192,12 +183,14 @@ export function updateQuestionsCount(questions) {
 }
 
 
-  function getQuestionsCount(questions) {
+  function getQuestionsCount(state) {
+    const { $$examSolverStore } = state;
+    const store = $$examSolverStore;
+    const questions = store.get('questions').toJS();
     let notVisited = 0;
     let answered = 0;
     let marked = 0;
     let notAnswered = 0;
-    debugger
     if (questions.length > 0) {
       questions.map((question) => {
         const answer_props = question.answerProps;
