@@ -23,17 +23,15 @@
     <div class="page">
       <div class="page-main">
         <%= render 'layouts/header' %>
-        <div class="container">
-          <% flash.each do |key, value| %>
-            <div id="alert" class="alert alert-<%= key == 'notice' ? 'success' : 'warning' %>">
-              <%= value %>
-            </div>
-          <% end %>
-        </div>
-        <%= yield :top_content %>
-        <div class="container">
-          <h1><%= yield :header %></h1>
-          <%= yield %>
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <% flash.each do |key, value| %>
+              <div id="alert" class="alert alert-<%= key == 'notice' ? 'success' : 'warning' %>">
+                <%= value %>
+              </div>
+            <% end %>
+            <%= yield %>
+          </div>
         </div>
       </div>
     </div>

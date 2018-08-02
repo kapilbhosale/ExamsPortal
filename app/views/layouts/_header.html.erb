@@ -2,15 +2,15 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="./index.html">
-      Smart Exams
+        Smart Exams
       </a>
-        <div class="d-flex order-lg-2 ml-auto">
+      <div class="d-flex order-lg-2 ml-auto">
         <% if student_signed_in? %>
           <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-              <span class="avatar" style="background-image: url(<%= asset_path('img_avatar.png')%>)"></span>
+              <span class="avatar avatar-user-photo"></span>
               <span class="ml-2 d-none d-lg-block">
-                <span class="text-default"><%= current_student&.name%></span>
+                <span class="text-default"><%= current_student.name%></span>
                 <small class="text-muted d-block mt-1">Student</small>
               </span>
             </a>
@@ -28,12 +28,12 @@
               <%= link_to '<i class="dropdown-icon fe fe-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
             </div>
           </div>
-          <% else %>
-        <li class="nav-item" style="float: right;">
+        <% else %>
+          <li class="nav-item">
             <%= link_to 'Sign In &nbsp; <i class="fa fa-user-o"></i>'.html_safe, new_student_session_path, method: :get, class: 'nav-link' %>
           </li>
-      <% end %>
-        </div>
+        <% end %>
+      </div>
       <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
         <span class="header-toggler-icon"></span>
       </a>

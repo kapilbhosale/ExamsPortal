@@ -13579,6 +13579,10 @@ Card alert
   color: #7bd235;
 }
 
+.avatar-user-photo{
+  background-image: url('img_avatar.png');
+}
+
 .product-price {
   font-size: 1rem;
 }

@@ -6,31 +6,34 @@
       </div>
       <div class="card-body">
         <div class="col-12 text-right">
-          <button class="btn btn-danger clearfix"><span class="fa fa-file-pdf-o"></span><%= link_to ' Download PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', style: "color:white; text-decoration:none;"%></button>
+          <button class="btn btn-danger clearfix">
+            <span class="fa fa-file-pdf-o"></span>
+            <%= link_to 'Download PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white', style: "text-decoration:none;"%>
+          </button>
         </div>
         <table id="exportTable" class="table table-striped">
           <thead>
-          <tr>
-            <th><%= sort_link(@search, :student_id) %></th>
-            <th>StudentName</th>
-            <th>Batch</th>
-            <th>Marks</th>
-            <th>rank</th>
-            <th>correct</th>
-            <th>wrong</th>
-          </tr>
+            <tr>
+              <th><%= sort_link(@search, :student_id) %></th>
+              <th>StudentName</th>
+              <th>Batch</th>
+              <th>Marks</th>
+              <th>rank</th>
+              <th>correct</th>
+              <th>wrong</th>
+            </tr>
           </thead>
           <tbody>
           <% @student_exams.each do |student_exam| %>
-          <tr>
-            <td><%= student_exam.student.roll_number %></td>
-            <td><%= student_exam.student.name %></td>
-            <td><%=  %></td>
-            <td><%=  student_exam.correct_answers_count %></td>
-            <td><%=  %></td>
-            <td><%=  student_exam.correct_answers_count%></td>
-            <td><%=  student_exam.exam.no_of_questions - student_exam.correct_answers_count%></td>
-          </tr>
+            <tr>
+              <td><%= student_exam.student.roll_number %></td>
+              <td><%= student_exam.student.name %></td>
+              <td><%=  %></td>
+              <td><%=  student_exam.correct_answers_count %></td>
+              <td><%=  %></td>
+              <td><%=  student_exam.correct_answers_count%></td>
+              <td><%=  student_exam.exam.no_of_questions - student_exam.correct_answers_count%></td>
+            </tr>
           <% end  %>
           </tbody>
         </table>
