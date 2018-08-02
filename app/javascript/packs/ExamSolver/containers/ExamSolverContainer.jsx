@@ -54,6 +54,10 @@ class ExamSolverContainer extends Component {
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
+    const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'answered']);
+    const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notAnswered']);
+    const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'marked']);
+    const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notVisited']);
 
     const modal = $$examSolverStore.get('modal');
     const customStyles = {
@@ -120,6 +124,10 @@ class ExamSolverContainer extends Component {
           questions={ questions }
           totalQuestions={ totalQuestions }
           currentQuestionIndex={currentQuestionIndex}
+          answeredQuestions={ answeredQuestions }
+          notAnsweredQuestions ={ notAnsweredQuestions }
+          markedQuestions={ markedQuestions }
+          notVisitedQuestions={ notVisitedQuestions }
           { ...this.actions() }
         />
         <div className='row'>

@@ -7,6 +7,8 @@ export function saveAndNext(questionIndex) {
       type: actionTypes.INCREMENT_CURRENT_QUESTION_INDEX,
       val: { questionIndex: questionIndex },
     });
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -42,6 +44,8 @@ export function jumpToQuestion(questionIndex) {
       type: actionTypes.JUMP_TO_QUESTION,
       val: { questionIndex: questionIndex },
     });
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -62,12 +66,16 @@ export function markForReview(questionIndex) {
       type: actionTypes.MARK_FOR_REVIEW,
       val: { questionIndex: questionIndex },
     });
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
 export function markVisited(questionIndex) {
   return (dispatch, getState) => {
     dispatch(markVisit(questionIndex));
+    const questionCounts = getQuestionsCount(getState());
+    dispatch(updateQuestionsCount(questionCounts));
   };
 }
 
@@ -148,12 +156,61 @@ export function initialize() {
       data: { id: store.get('examId') },
       success: (data) => {
         const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
+        const questionCounts = JSON.parse(localData).questionsCountByStatus;
+        dispatch(updateQuestionsCount(questionCounts));
         if (localData) {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
         } else {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
+          const questionCounts = {
+            answered: 0,
+            notAnswered: 0,
+            marked: 0,
+            notVisited: data.questions ? data.questions.length : 0,
+          }
+          dispatch(updateQuestionsCount(questionCounts));
         }
       }
     });
   };
+}
+
+export function updateQuestionsCount(questionCounts) {
+  return {
+    type: actionTypes.UPDATE_QUESTIONS_COUNT,
+    val: { questionCounts: questionCounts },
+  };
+}
+
+
+function getQuestionsCount(state) {
+  const { $$examSolverStore } = state;
+  const store = $$examSolverStore;
+  const questions = store.get('questions').toJS();
+  let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
+  if (questions.length > 0) {
+    questions.map((question) => {
+      const answer_props = question.answerProps;
+      if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
+        notAnswered = notAnswered + 1;
+      }
+      if (!answer_props.visited) {
+        notVisited = notVisited + 1;
+      }
+      if (answer_props.isAnswered) {
+        answered = answered + 1;
+      }
+      if (question.answerProps.needReview) {
+        marked = marked + 1;
+      }
+    })
+  }
+  return (
+    {
+      answered: answered,
+      notAnswered: notAnswered,
+      marked: marked,
+      notVisited: notVisited
+    }
+  );
 }
