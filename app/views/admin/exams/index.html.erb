@@ -13,13 +13,13 @@
       </div>
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-striped table-bordered table-hover">
+          <table class="table table-striped table-bordered table-hover table-fixed">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Question</th>
-                <th>Added Q</th>
+                <th>Added Ques</th>
                 <th>Time</th>
                 <th>Added on</th>
                 <th>status</th>
@@ -28,10 +28,10 @@
             </thead>
             <tbody>
               <% if @exams.present? %>
-                <% @exams.each_with_index do |exam, index| %>
+                <% @exams.each do |exam| %>
                   <tr>
                     <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                    <td><%= exam.description.first(100) %> ...</td>
+                    <td class="text-truncate"><%= exam.description %> ...</td>
                     <td><%= exam.no_of_questions %></td>
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>

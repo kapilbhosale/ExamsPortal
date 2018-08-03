@@ -7,45 +7,47 @@
         </div>
       </div>
       <div class="card-body">
-        <table class="table table-striped table-bordered table-hover">
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Question</th>
-            <th>Added Q</th>
-            <th>Time</th>
-            <th>Added on</th>
-            <th>status</th>
-            <th>Reports</th>
-          </tr>
-          </thead>
-          <tbody>
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered table-hover table-fixed">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Question</th>
+              <th>Added Ques</th>
+              <th>Time</th>
+              <th>Added on</th>
+              <th>status</th>
+              <th>Reports</th>
+            </tr>
+            </thead>
+            <tbody>
 
-          <% if @exams.present? %>
-            <% @exams.each_with_index do |exam, index| %>
+            <% if @exams.present? %>
+              <% @exams.each do |exam| %>
+                <tr>
+                  <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
+                  <td class="text-truncate"><%= exam.description %> ...</td>
+                  <td><%= exam.no_of_questions %></td>
+                  <td><%= exam.questions.count %></td>
+                  <td><%= exam.time_in_minutes %> mins</td>
+                  <td><%= exam.created_at.to_date %></td>
+                  <td><%= exam.published %></td>
+                  <td class="text-center">
+                    &nbsp;
+                    <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>
+                    &nbsp;&nbsp;
+                  </td>
+                </tr>
+              <% end %>
+            <% else %>
               <tr>
-                <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                <td><%= exam.description.first(100) %> ...</td>
-                <td><%= exam.no_of_questions %></td>
-                <td><%= exam.questions.count rescue 0 %></td>
-                <td><%= exam.time_in_minutes %> mins</td>
-                <td><%= exam.created_at.to_date %></td>
-                <td><%= exam.published %></td>
-                <td class="text-center">
-                  &nbsp;
-                  <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>
-                  &nbsp;&nbsp;
-                </td>
+                <td colspan="8" class="text-center">No exams found, Add exams </td>
               </tr>
             <% end %>
-          <% else %>
-            <tr>
-              <td colspan="8" style="text-align: center">No exams found, Add exams </td>
-            </tr>
-          <% end %>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
