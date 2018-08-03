@@ -40,9 +40,8 @@ class Admin::ReportsController < Admin::BaseController
   private
 
   def set_flash
-    if @response[:status] == false
-      key = :warning
-      flash[key] = @response[:message]
+    unless @response[:status]
+      flash[:error] = @response[:message]
     end
   end
 end

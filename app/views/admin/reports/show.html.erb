@@ -14,27 +14,25 @@
         <div class="col-12">
           <table id="exportTable" class="table table-striped">
             <thead>
-            <tr>
-              <th><%= sort_link(@response[:search], :student_id) %></th>
-              <th>StudentName</th>
-              <th>Batch</th>
-              <th>Marks</th>
-              <th><%= sort_link(@response[:search], :rank) %></th>
-              <th>correct</th>
-              <th>wrong</th>
-            </tr>
+              <tr>
+                <th><%= sort_link(@response[:search], :student_id) %></th>
+                <th>StudentName</th>
+                <th>Marks</th>
+                <th><%= sort_link(@response[:search], :rank) %></th>
+                <th>correct</th>
+                <th>wrong</th>
+              </tr>
             </thead>
             <tbody>
             <% @response[:student_exams_hash].each do |student_exam| %>
-            <tr>
-              <td><%= student_exam[:roll_number] %></td>
-              <td><%= student_exam[:name] %></td>
-              <td><%=  %></td>
-              <td><%=  student_exam[:marks] %></td>
-              <td><%=  student_exam[:rank]%></td>
-              <td><%=  student_exam[:correct]%></td>
-              <td><%=  student_exam[:wrong]%></td>
-            </tr>
+              <tr>
+                <td><%= student_exam[:roll_number] %></td>
+                <td><%= student_exam[:name] %></td>
+                <td><%=  student_exam[:marks] %></td>
+                <td><%=  student_exam[:rank]%></td>
+                <td><%=  student_exam[:correct]%></td>
+                <td><%=  student_exam[:wrong]%></td>
+              </tr>
             <% end  %>
             </tbody>
           </table>

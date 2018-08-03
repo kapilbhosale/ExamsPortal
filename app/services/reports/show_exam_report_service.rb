@@ -11,9 +11,8 @@ module Reports
     def prepare_report
       validate_request
       @search = StudentExam.where(exam_id: exam_id).search(q)
-      #return {status: true, message: nil, search: @search, student_exams_hash: @student_exams_hash}
       @student_exams = @search.result
-      @student_exams_hash = []
+      @student_exams_hash ||= []
       @student_exams.each do |student_exam|
         @student_exams_hash.push({roll_number: student_exam.student.roll_number,
                                   name: student_exam.student.name,
@@ -35,7 +34,7 @@ module Reports
     end
 
     def exam_exists?
-      StudentExam.where(exam_id: exam_id).present?
+      StudentExam.where(exam_id: exam_id).exists?
     end
 
     def append_student_ranks
