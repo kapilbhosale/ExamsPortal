@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2018_07_28_081314) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -143,17 +142,6 @@ ActiveRecord::Schema.define(version: 2018_07_28_081314) do
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_student_exams_on_exam_id"
     t.index ["student_id"], name: "index_student_exams_on_student_id"
-  end
-
-  create_table "student_question_answers", force: :cascade do |t|
-    t.bigint "student_id"
-    t.bigint "question_id"
-    t.bigint "option_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["option_id"], name: "index_student_question_answers_on_option_id"
-    t.index ["question_id"], name: "index_student_question_answers_on_question_id"
-    t.index ["student_id"], name: "index_student_question_answers_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|
