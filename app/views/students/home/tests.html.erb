@@ -13,7 +13,7 @@
               <h5 class="card-title"> <%= exam.name %> </h5>
               <p class="card-text"></p>
               <ul>
-                <li><%= exam.description %></li>
+                <li class="text-truncate"><%= exam.description %></li>
                 <li>No of questions: <b><%= exam.no_of_questions %></b></li>
               </ul>
               <% student_exam = @student_exams.try(:[], exam.id) %>
