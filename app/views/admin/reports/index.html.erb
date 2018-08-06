@@ -22,29 +22,28 @@
             </tr>
             </thead>
             <tbody>
-
-            <% if @exams.present? %>
-              <% @exams.each do |exam| %>
+              <% if @exams.present? %>
+                <% @exams.each do |exam| %>
+                  <tr>
+                    <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
+                    <td class="text-truncate"><%= exam.description %> ...</td>
+                    <td><%= exam.no_of_questions %></td>
+                    <td><%= exam.questions.count %></td>
+                    <td><%= exam.time_in_minutes %> mins</td>
+                    <td><%= exam.created_at.to_date %></td>
+                    <td><%= exam.published %></td>
+                    <td class="text-center">
+                      &nbsp;
+                      <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>
+                      &nbsp;&nbsp;
+                    </td>
+                  </tr>
+                <% end %>
+              <% else %>
                 <tr>
-                  <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                  <td class="text-truncate"><%= exam.description %> ...</td>
-                  <td><%= exam.no_of_questions %></td>
-                  <td><%= exam.questions.count %></td>
-                  <td><%= exam.time_in_minutes %> mins</td>
-                  <td><%= exam.created_at.to_date %></td>
-                  <td><%= exam.published %></td>
-                  <td class="text-center">
-                    &nbsp;
-                    <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>
-                    &nbsp;&nbsp;
-                  </td>
+                  <td colspan="8" class="text-center">No exams found, Add exams </td>
                 </tr>
               <% end %>
-            <% else %>
-              <tr>
-                <td colspan="8" class="text-center">No exams found, Add exams </td>
-              </tr>
-            <% end %>
             </tbody>
           </table>
         </div>
