@@ -7,7 +7,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-  	@exams = Exam.all
+    @exams = Exam.all.order(created_at: :desc)
     if current_student
       @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
     end
