@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     put "sync/:exam_id/", to: 'home#sync'
     put "submit/:exam_id/", to: 'home#submit'
     resources :mock_tests
+    get 'home/profile', to: 'home#profile'
+    patch 'home/update_profile', to: 'home#update_profile'
   end
 
 

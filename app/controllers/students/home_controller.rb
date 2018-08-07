@@ -86,4 +86,37 @@ class Students::HomeController < Students::BaseController
       studentId: current_student.id,
     }
   end
+
+  def profile
+    @student = Student.find(current_student.id)
+  end
+
+  def update_profile
+    @response = Students::UpdateStudentService.new(params, student_params).call
+    set_flash
+    redirect_to students_home_profile_path
+  end
+
+  private
+
+  def set_flash
+    key = @response[:status] ? :success : :warning
+    flash[key] = @response[:message]
+  end
+
+  def student_params
+    params.require(:student).permit(
+      :roll_number,
+      :name,
+      :mother_name,
+      :date_of_birth,
+      :gender,
+      :ssc_marks,
+      :student_mobile,
+      :parent_mobile,
+      :category_id,
+      :address,
+      :college,
+      :photo)
+  end
 end
