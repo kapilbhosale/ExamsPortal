@@ -88,7 +88,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def profile
-    @student = Student.find(current_student.id)
+    @student = Student.find_by(id: current_student.id)
   end
 
   def update_profile
