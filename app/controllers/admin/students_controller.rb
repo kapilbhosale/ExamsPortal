@@ -37,7 +37,7 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def update
-    @response = Students::UpdateStudentService.new(params, student_params).call
+    @response = Students::UpdateStudentService.new(params, student_params).update
     set_flash
     redirect_to admin_students_path
   end

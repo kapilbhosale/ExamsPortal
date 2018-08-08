@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2018_08_08_165938) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "photo"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
@@ -150,6 +151,17 @@ ActiveRecord::Schema.define(version: 2018_08_08_165938) do
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_student_exams_on_exam_id"
     t.index ["student_id"], name: "index_student_exams_on_student_id"
+  end
+
+  create_table "student_question_answers", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_student_question_answers_on_option_id"
+    t.index ["question_id"], name: "index_student_question_answers_on_question_id"
+    t.index ["student_id"], name: "index_student_question_answers_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|

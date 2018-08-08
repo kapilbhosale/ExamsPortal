@@ -53,6 +53,7 @@ gem 'wkhtmltopdf-binary'
 gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
 gem 'zip-zip' # will load compatibility for old rubyzip API.
 gem 'aws-sdk-s3'
+gem 'file_validators'
 
 gem 'newrelic_rpm'
 

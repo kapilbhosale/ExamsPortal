@@ -1,0 +1,51 @@
+<div class="my-3 my-md-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card card-profile">
+          <div class="card-header">
+          </div>
+          <div class="card-body text-center">
+            <img class="card-profile-img" src="<%=if current_admin.photo? then current_admin.photo.url(:profile) else asset_path('img_avatar.png') end %>">
+            <h3 class="mb-3"><%= current_admin.name %></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <%= form_with(model: @admin, url: admin_dashboard_update_profile_path, method: :patch, local: true, html:{class: 'card'} ) do |form |  %>
+          <div class="card-body">
+            <h3 class="card-title">Edit Profile</h3>
+            <div class="row">
+              <div class="col-sm-6 col-md-4">
+                <div class="form-group">
+                  <label class="form-label">Name</label>
+                  <%= form.text_field :name, class: 'form-control text-capitalize', disabled: true %>
+                  <input type="hidden" name="id" value="<%=@admin.id%>">
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-5">
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <%= form.text_field :email, class: 'form-control' %>
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-4">
+                <div class="form-group">
+                  <div class="form-label">Photo</div>
+                  <div class="custom-file">
+                    <%= form.file_field :photo, class: 'custom-file-input'%>
+                    <label class="custom-file-label">Upload photo</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-right">
+            <%= form.submit "Update", class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
