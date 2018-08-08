@@ -154,6 +154,6 @@ exam_concepts.each do |exam_concept|
   Section.find_or_create_by(name: exam_concept)
 end
 
-unless Rails.env.productoin?
+unless Rails.env.production?
   Admin.create!(email: 'admin@smartexams.com', password: 'p@ssword')
 end
