@@ -9,4 +9,8 @@
 #
 
 class Section < ApplicationRecord
+  has_many :exam_sections
+  has_many :exams, through: :exam_sections
+
+  has_many :questions
 end

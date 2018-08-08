@@ -2,12 +2,13 @@ class UploadExamError < StandardError; end
 
 module Exams
   class Upload
-    attr_reader :exam
+    attr_reader :exam, :section_id
     attr_accessor :tmp_zip_file
 
-    def initialize(exam, tmp_zip_file)
+    def initialize(exam, tmp_zip_file, section_id=1)
       @exam = exam
       @tmp_zip_file = tmp_zip_file
+      @section_id = section_id
     end
 
     def call
@@ -21,7 +22,7 @@ module Exams
       end
       return {status: true}
     rescue UploadExamError, ActiveRecord::RecordInvalid => ex
-      return {status: false, message: ex.message}
+      raise StandardError ex.message
     end
 
     private
@@ -96,7 +97,7 @@ module Exams
 
         title = replace_local_img_with_s3(question_data[:question])
         explanation = replace_local_img_with_s3(question_data[:explanation])
-        question = Question.create!(title: title, explanation: explanation)
+        question = Question.create!(title: title, explanation: explanation, section_id: section_id)
         ExamQuestion.create(exam: exam, question: question)
 
         create_option_params = []

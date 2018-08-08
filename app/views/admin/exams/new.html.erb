@@ -11,7 +11,7 @@
           <div class="form-group">
             <label class="control-label col-sm-2" for="name">Name:</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" id="name" placeholder="Exam Name" name="name">
+              <input type="text" class="form-control" id="name" placeholder="Exam Name" name="name" required>
             </div>
           </div>
           <div class="form-group">
@@ -23,13 +23,13 @@
           <div class="form-group">
             <label class="control-label col-sm-2" for="questions">Number of Questions:</label>
             <div class="col-sm-6">
-              <input type="number" class="form-control" id="no_of_questions" placeholder="Number of Questions in exam" name="no_of_questions">
+              <input type="number" class="form-control" id="no_of_questions" placeholder="Total Number of Questions in exam" name="no_of_questions"  required>
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2" for="time_in_minutes">Time in Mins:</label>
             <div class="col-sm-6">
-              <input type="number" class="form-control" id="time_in_minutes" placeholder="Time for exam in Minutes" name="time_in_minutes">
+              <input type="number" class="form-control" id="time_in_minutes" placeholder="Time for exam in Minutes" name="time_in_minutes"  required>
             </div>
           </div>
           <div class="form-group">
@@ -38,22 +38,24 @@
               <input type="datetime-local" class="form-control" id="available_from_time" name="available_from_time">
             </div>
           </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="questions_zip">questions Zip:</label>
-            <div class="col-sm-3">
-              <input type="file" class="form-control" id="questions_zip" name="questions_zip">
+
+          <% @sections.each do |section| %>
+            <div class="form-group">
+              <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
+              <div class="col-sm-3">
+                <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
+              </div>
             </div>
-          </div>
+          <% end %>
+
           <div class="form-group">
             <label class="control-label col-sm-2" for="publish_result">Publish Result:</label>
             <div class="custom-controls-stacked">
               <label class="custom-control custom-radio custom-control-inline">
-                <%= radio_button_tag 'publish_result', true %>
-                <span class="custom-control-label">Yes</span>
+                <input checked="checked" id="publish_result_yes" name="publish_result" type="radio" value="Yes" /> &nbsp; Yes
               </label>
               <label class="custom-control custom-radio custom-control-inline">
-                <%= radio_button_tag 'publish_result', false %>
-                <span class="custom-control-label">No</span>
+                <input id="publish_result_no" name="publish_result" type="radio" value="No" /> &nbsp; No
               </label>
             </div>
           </div>

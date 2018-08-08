@@ -1,50 +1,39 @@
-<div class="row">
-  <div class="col-12">
-    <div class="card">
-      <div class="card-header">
-        <h5>Exam Details</h5>
-      </div>
-      <div class="card-body">
-        <table class="table table-striped table-hover">
-          <tbody>
-          <tr>
-            <td class="strong">Exam Name : </td>
-            <td><%= @exam.name %></td>
-            <td class="strong">Exam Description :</td>
-            <td><%= @exam.description %></td>
-          </tr>
-          <tr>
-            <td class="strong">Total No Of Question :</td>
-            <td><%= @exam.no_of_questions %></td>
-            <td class="strong">Time in Minutes :</td>
-            <td><%= @exam.time_in_minutes %></td>
-          </tr>
-          </tbody>
-        </table>
+<style>
+  <%= @all_styles %>
+</style>
+<div>
+  <ul class="nav nav-tabs" style="padding-left: 12px">
+    <% active_section_id = 0 %>
+    <% @questions_by_section.keys.each_with_index do |section_id, index| %>
+      <% active_section_id = section_id if index == 0 %>
+      <li class="<%= index == 0 ? 'active' : ''%>"><a data-toggle="tab" href="#<%= section_id %>"><%= "#{@sections_by_id[section_id].name.humanize} (#{@questions_by_section[section_id].count})" %></a></li>
+    <% end %>
+  </ul>
 
-        <% @exam.questions.each_with_index do |question, index| %>
+  <div class="tab-content">
+    <% @questions_by_section.each do |section_id, questions| %>
+      <div id="<%= section_id %>" class="tab-pane fade in <%= section_id == active_section_id ? 'active' : '' %>">
+
+        <% questions.each_with_index do |question, index| %>
           <div style="background: white; border-bottom: 1px solid grey; padding-bottom: 5px" class="col-lg-12">
-            <style type="text/css">
-              <%= question.css_style %>
-            </style>
             <div style="padding: 10px;">
               <div>
-                <p> <b> Question: <%= index + 1%> </b> </p>
+                <p><b> Question: <%= index + 1 %> </b></p>
                 <%= raw(question.title) %>
               </div>
               <div class="col-lg-12">
                 <div class="col-lg-6">
-                  <p> <b> Options:</b> </p>
+                  <p><b> Options:</b></p>
                   <% question.options.each_with_index do |option, index| %>
                     <div>
                       <label class="radio-inline">
-                        <input type="radio" name="optradio-<%=question.id%>" <%=  option.is_answer ? 'checked' : ''%> >
+                        <input type="radio" name="optradio-<%= question.id %>" <%= option.is_answer ? 'checked' : '' %> >
                         <%= raw(option.data) %>
                       </label>
                     </div>
                   <% end %>
                   <div class="offset-lg-8 col-lg-4" style="margin-top: 10px">
-                    <button class="btn btn-primary"> change answer </button>
+                    <button class="btn btn-primary"> change answer</button>
                   </div>
                 </div>
                 <div class="col-lg-6" style="border: 1px solid green;">
@@ -56,6 +45,6 @@
           </div>
         <% end %>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

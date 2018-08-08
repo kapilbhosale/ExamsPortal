@@ -11,7 +11,7 @@
         <h5>Duration: <%= @exam.time_in_minutes %> MINS</h5>
       </div>
       <div class="col-md-2 pull-right">
-        <h5> Maximum Marks: 60 </h5>
+        <h5> Maximum Marks: <%= @exam.no_of_questions * 4 %> </h5>
       </div>
     </div>
     <div class="row">

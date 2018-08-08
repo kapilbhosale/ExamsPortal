@@ -10,10 +10,16 @@ module Exams
 
     def create
       validate_request
-      @exam = Exam.new(exam_params)
-      if @exam.save!
-        Exams::Upload.new(@exam, params[:questions_zip].tempfile).call
-        return {status: true, message: 'Exam added successfully'}
+
+      ActiveRecord::Base.transaction do
+        @exam = Exam.new(exam_params)
+        if @exam.save!
+          params[:questions_zip].each do |section_id, zip_file|
+            binding.pry
+            Exams::Upload.new(@exam, zip_file.tempfile, section_id).call
+          end
+          return {status: true, message: 'Exam added successfully'}
+        end
       end
     rescue AddExamError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
@@ -35,7 +41,8 @@ module Exams
                     :description,
                     :no_of_questions,
                     :time_in_minutes,
-                    :publish_result)
+                    :publish_result,
+                    :questions_zip)
     end
   end
 end

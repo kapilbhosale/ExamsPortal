@@ -5,9 +5,11 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def new
+    @sections = Section.all.select(:id, :name)
   end
 
   def create
+    @sections = Section.all.select(:id, :name)
     @response = Exams::AddExamService.new(params).create
     set_flash
     if @response[:status]
@@ -18,7 +20,15 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def show
-    @exam = Exam.find_by(id: params[:id])
+    exam = Exam.find_by(id: params[:id])
+    if exam.present?
+      @questions_by_section = exam.questions.group_by(&:section_id)
+      @sections_by_id = Section.all.index_by(&:id)
+      @all_styles = exam.questions.collect {|x| x.css_style}.join(' ')
+    else
+      flash[:error] = "Invalid exam id passed"
+      render :index
+    end
   end
 
   def change_question_answer

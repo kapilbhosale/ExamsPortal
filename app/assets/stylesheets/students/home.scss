@@ -131,21 +131,21 @@
 .margin-left {
   margin: 10px 0;
 
+  .summary-table {
+    border-collapse: collapse;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin-top: 50px;
+  }
 
-.summary-table {
-  border-collapse: collapse;
-  text-align: center;
-  border: 1px solid #ddd;
-  margin-top: 50px;
-}
+  .summary-table-th {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #ddd;
+  }
 
-.summary-table-th {
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid #ddd;
-}
+  .summary-table-td {
+    border: 1px solid #ddd;
 
-.summary-table-td {
-  border: 1px solid #ddd;
-
+  }
 }
