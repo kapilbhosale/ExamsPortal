@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_28_081314) do
+ActiveRecord::Schema.define(version: 2018_08_08_165938) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -52,6 +53,17 @@ ActiveRecord::Schema.define(version: 2018_07_28_081314) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["component_type", "component_id"], name: "index_component_styles_on_component_type_and_component_id"
+  end
+
+  create_table "concepts", force: :cascade do |t|
+    t.bigint "subject_id"
+    t.string "name", null: false
+    t.string "name_map", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "weightage", default: 0
+    t.index ["name_map"], name: "index_concepts_on_name_map"
+    t.index ["subject_id"], name: "index_concepts_on_subject_id"
   end
 
   create_table "exam_questions", force: :cascade do |t|
@@ -100,17 +112,13 @@ ActiveRecord::Schema.define(version: 2018_07_28_081314) do
     t.integer "difficulty_level", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "section_id", default: 1
   end
 
   create_table "sections", force: :cascade do |t|
-    t.bigint "subject_id"
-    t.string "name", null: false
-    t.string "name_map", null: false
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "weightage", default: 0
-    t.index ["name_map"], name: "index_sections_on_name_map"
-    t.index ["subject_id"], name: "index_sections_on_subject_id"
   end
 
   create_table "student_batches", force: :cascade do |t|
@@ -184,13 +192,13 @@ ActiveRecord::Schema.define(version: 2018_07_28_081314) do
   end
 
   create_table "topics", force: :cascade do |t|
-    t.bigint "section_id"
+    t.bigint "concept_id"
     t.string "name", null: false
     t.string "name_map", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["concept_id"], name: "index_topics_on_concept_id"
     t.index ["name_map"], name: "index_topics_on_name_map"
-    t.index ["section_id"], name: "index_topics_on_section_id"
   end
 
 end

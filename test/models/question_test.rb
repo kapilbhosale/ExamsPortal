@@ -8,6 +8,7 @@
 #  title            :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  section_id       :integer          default(1)
 #
 
 require 'test_helper'

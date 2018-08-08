@@ -10,7 +10,7 @@ batch_list = ['XII - A 2019', '11th - A', '11th - D', 'NEET R-A']
 
 batch_list.each do |name|
   Batch.create(name: name)
-end
+end unless Rails.env.production?
 
 #Create Categories
 category_list = ['Open', 'OBC', 'SC', 'ST', 'NT', 'VJNT']
@@ -18,28 +18,30 @@ category_list = ['Open', 'OBC', 'SC', 'ST', 'NT', 'VJNT']
 category_list.each do |name|
   Category.find_or_create_by(name: name)
 end
-batch_ids = Batch.all.map(&:id)
-#Create Students
-students = [ {roll_number: 20112, name: 'Gore Vaishnavi Raju', mother_name: 'Sunita', date_of_birth: '2001-06-20', gender: 0, ssc_marks: 94.43, student_mobile: 9665311409, parent_mobile: 9595808999, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20124, name: 'Sawant Omprakash Palaji', mother_name: 'Anuradha', date_of_birth: '2000-03-23', gender: 0, ssc_marks: 93.33, student_mobile: 9665311409, parent_mobile: 9423709872, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20025, name: 'Rathod Akhil Prakash', mother_name: 'Jijabai', date_of_birth: '2001-08-02', gender: 0, ssc_marks: 90.43, student_mobile: 9665311409, parent_mobile: 9637903374, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20098, name: 'Swami Aarati Balasaheb', mother_name: 'Gangasagar', date_of_birth: '2001-07-13', gender: 1, ssc_marks: 85.43, student_mobile: 9665311409, parent_mobile: 9923154812, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20146, name: 'Jadhav Abhishek Vilasrao', mother_name: 'Munita', date_of_birth: '2001-09-10', gender: 0, ssc_marks: 82.43, student_mobile: 9665311409, parent_mobile: 9823859795, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20087, name: 'Ramanwad Shrushti Ishwar', mother_name: 'Vandana', date_of_birth: '2001-03-19', gender: 1, ssc_marks: 77.43, student_mobile: 9665311409, parent_mobile: 9623914866, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
-           {roll_number: 20094, name: 'Rode Shital Baswantrao', mother_name: 'Damyanti', date_of_birth: '2000-10-31', gender: 1, ssc_marks: 75.43, student_mobile: 9665311409, parent_mobile: 9423140351, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1}]
-students.each do |student_hash|
-  student = Student.new(student_hash)
-  3.times do |i|
-    student.student_batches.build(student_id: student.id, batch_id:batch_ids[i])
-  end
-  student.save!
-end
 
+unless Rails.env.production?
+  batch_ids = Batch.all.map(&:id)
+  #Create Students
+  students = [ {roll_number: 20112, name: 'Gore Vaishnavi Raju', mother_name: 'Sunita', date_of_birth: '2001-06-20', gender: 0, ssc_marks: 94.43, student_mobile: 9665311409, parent_mobile: 9595808999, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20124, name: 'Sawant Omprakash Palaji', mother_name: 'Anuradha', date_of_birth: '2000-03-23', gender: 0, ssc_marks: 93.33, student_mobile: 9665311409, parent_mobile: 9423709872, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20025, name: 'Rathod Akhil Prakash', mother_name: 'Jijabai', date_of_birth: '2001-08-02', gender: 0, ssc_marks: 90.43, student_mobile: 9665311409, parent_mobile: 9637903374, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20098, name: 'Swami Aarati Balasaheb', mother_name: 'Gangasagar', date_of_birth: '2001-07-13', gender: 1, ssc_marks: 85.43, student_mobile: 9665311409, parent_mobile: 9923154812, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20146, name: 'Jadhav Abhishek Vilasrao', mother_name: 'Munita', date_of_birth: '2001-09-10', gender: 0, ssc_marks: 82.43, student_mobile: 9665311409, parent_mobile: 9823859795, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20087, name: 'Ramanwad Shrushti Ishwar', mother_name: 'Vandana', date_of_birth: '2001-03-19', gender: 1, ssc_marks: 77.43, student_mobile: 9665311409, parent_mobile: 9623914866, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1},
+             {roll_number: 20094, name: 'Rode Shital Baswantrao', mother_name: 'Damyanti', date_of_birth: '2000-10-31', gender: 1, ssc_marks: 75.43, student_mobile: 9665311409, parent_mobile: 9423140351, address: 'Sharda Bhavan, Shyam Nagar, Nanded', college: 'Science Jr. College', category_id: 1}]
+  students.each do |student_hash|
+    student = Student.new(student_hash)
+    3.times do |i|
+      student.student_batches.build(student_id: student.id, batch_id:batch_ids[i])
+    end
+    student.save
+  end
+end
 
 
 practice_data = [
   {
-    section: 'Diversity of Living Organisms',
+    concept: 'Diversity of Living Organisms',
     weitage: 14,
     topics: [
       'The Living World',
@@ -49,7 +51,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Structural Organisation in Plants & Animals',
+    concept: 'Structural Organisation in Plants & Animals',
     weitage: 5,
     topics: [
       'Morphology of Flowering Plants',
@@ -58,7 +60,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Cell: Structure and Function',
+    concept: 'Cell: Structure and Function',
     weitage: 9,
     topics: [
       'Cell-The Unit of Life',
@@ -67,7 +69,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Plant Physiology',
+    concept: 'Plant Physiology',
     weitage: 6,
     topics: [
       'Transport in Plants',
@@ -78,7 +80,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Human Physiology',
+    concept: 'Human Physiology',
     weitage: 20,
     topics: [
       'Digestion and Absorption',
@@ -91,7 +93,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Reproduction',
+    concept: 'Reproduction',
     weitage: 9,
     topics: [
       'Reproduction in Organisms',
@@ -101,7 +103,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Genetics and Evolution',
+    concept: 'Genetics and Evolution',
     weitage: 18,
     topics: [
       'Principles of Inheritance and Variation',
@@ -110,7 +112,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Biology and Human Welfare',
+    concept: 'Biology and Human Welfare',
     weitage: 9,
     topics: [
       'Human Health and Diseases',
@@ -119,7 +121,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Biotechnology and its Applications',
+    concept: 'Biotechnology and its Applications',
     weitage: 4,
     topics: [
       'Biotechnology - Principles and Processes',
@@ -127,7 +129,7 @@ practice_data = [
     ]
   },
   {
-    section: 'Ecology and Environment',
+    concept: 'Ecology and Environment',
     weitage: 6,
     topics: [
       'Organisms and Populations',
@@ -139,9 +141,15 @@ practice_data = [
 ]
 
 subject = Subject.find_or_create_by(name: 'Biology')
-practice_data.each do |section_data|
-  section = Section.find_or_create_by(subject: subject, name: section_data[:section], weightage: section_data[:weitage])
-  section_data[:topics].each do |topic|
-    Topic.find_or_create_by(section: section, name: topic)
+practice_data.each do |concept_data|
+  concept = Concept.find_or_create_by(subject: subject, name: concept_data[:concept], weightage: concept_data[:weitage])
+  concept_data[:topics].each do |topic|
+    Topic.find_or_create_by(concept: concept, name: topic)
   end
+end
+
+
+exam_concepts = %w[general physics chemistry maths biology]
+exam_concepts.each do |exam_concept|
+  Section.find_or_create_by(name: exam_concept)
 end
