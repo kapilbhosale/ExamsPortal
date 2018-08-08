@@ -153,3 +153,7 @@ exam_concepts = %w[general physics chemistry maths biology]
 exam_concepts.each do |exam_concept|
   Section.find_or_create_by(name: exam_concept)
 end
+
+unless Rails.env.productoin?
+  Admin.create!(email: 'admin@smartexams.com', password: 'p@ssword')
+end
