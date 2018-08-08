@@ -1,34 +1,38 @@
 <div class="container">
-  <div class="row" style="text-align: center;">
-    <div style="margin-bottom: 20px;"><h3>Summary of section(s) answered</h3></div>
+  <div class="row text-center">
+    <div>
+      <h6>Summary of section(s) answered &nbsp;</h6>
+    </div>
     <div class="text-muted">Your answers have been saved successfully.</div>
   </div>
-  <div class="table">
-    <table class="table-responsive" style="border-collapse: collapse; text-align: center; border: 1px solid #ddd;margin-top: 50px;">
-      <tr>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">Sections</th>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">No of questions</th>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">Answered</th>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">Not-answered</th>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">Correct</th>
-        <th style="background-color: #4CAF50;color: white;border: 1px solid #ddd;">Total Time Spent</th>
-      </tr>
-      <tr>
-        <td style="border: 1px solid #ddd;">Genereal</td>
-        <td style="border: 1px solid #ddd;"><%= @exam.no_of_questions %></td>
-        <td style="border: 1px solid #ddd;"><%= @student_exam.student_exam_answers.count %></td>
-        <td style="border: 1px solid #ddd;"><%= @exam.no_of_questions - @student_exam.student_exam_answers.count %></td>
-        <td style="border: 1px solid #ddd;"><%= @student_exam.correct_answers_count %></td></td>
-        <td style="border: 1px solid #ddd;"><%= distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available" %></td>
-      </tr>
-    </table>
-  </div>
+  <% if @response[:status]%>
+    <div class="table">
+      <table class="table-responsive summary-table">
+        <tr>
+          <th class="summary-table-th text-white">Sections</th>
+          <th class="summary-table-th text-white">No of questions</th>
+          <th class="summary-table-th text-white">Answered</th>
+          <th class="summary-table-th text-white">Not-answered</th>
+          <th class="summary-table-th text-white">Correct</th>
+          <th class="summary-table-th text-white">Total Time Spent</th>
+        </tr>
+        <tr>
+          <td class="summary-table-td">Genereal</td>
+          <td class="summary-table-td"><%= @response[:exam].no_of_questions %></td>
+          <td class="summary-table-td"><%= @response[:student_exam].student_exam_answers.count %></td>
+          <td class="summary-table-td"><%= @response[:exam].no_of_questions - @response[:student_exam].student_exam_answers.count %></td>
+          <td class="summary-table-td"><%= @response[:student_exam].correct_answers_count %></td></td>
+          <td class="summary-table-td"><%= distance_of_time_in_hours_and_minutes(@response[:student_exam].ended_at, @response[:student_exam].started_at) rescue "Not available" %></td>
+        </tr>
+      </table>
+    </div>
+  <% end %>
   <div class="row pull-right">
     <div>
-      <a href="/students/tests"><button class="btn btn-default">Continue</button></a>
+      <%=  link_to  '<button class="btn btn-default">Continue</button>'.html_safe, students_tests_path %>
     </div>
     <div class="offset-1">
-      <a href="/students/tests"><button class="btn btn-primary">View Model Answer details</button></a>
+      <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_tests_path %>
     </div>
   </div>
 </div>

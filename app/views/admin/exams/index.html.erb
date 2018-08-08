@@ -22,7 +22,7 @@
                 <th>Added Ques</th>
                 <th>Time</th>
                 <th>Added on</th>
-                <th>status</th>
+                <th>Publish Result</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -30,13 +30,13 @@
               <% if @exams.present? %>
                 <% @exams.each do |exam| %>
                   <tr>
-                    <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
+                    <td class="text-truncate"><%= link_to exam.name, admin_exam_path(exam.id) %></td>
                     <td class="text-truncate"><%= exam.description %> ...</td>
                     <td><%= exam.no_of_questions %></td>
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
-                    <td><%= exam.published %></td>
+                    <td class="text-capitalize"><%= exam.publish_result ? 'Yes' : 'No' %></td>
                     <td>
                       &nbsp;
                       <%= link_to '', '#', 'data-toggle': "modal", 'data-target': '#examModal', class: 'glyphicon glyphicon-pencil'%> &nbsp;
