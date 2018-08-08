@@ -8,6 +8,7 @@
 #  title            :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  section_id       :integer          default(1)
 #
 
 class Question < ApplicationRecord
@@ -15,6 +16,7 @@ class Question < ApplicationRecord
   has_many :exams, through: :exam_questions
   has_many :options, dependent: :destroy
   has_one :style, as: :component, dependent: :destroy
+  belongs_to :section
 
   enum difficulty_level: {default: 0, easy: 1, medium: 2, difficult: 3, very_difficult: 4}
 
