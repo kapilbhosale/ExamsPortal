@@ -28,8 +28,10 @@ class Students::HomeController < Students::BaseController
   end
 
   def summary
-    @exam = Exam.find params[:exam_id]
-    @student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: @exam.id)
+    @response = Exams::ExamSummaryService.new(params, current_student).process_summary
+    unless @response[:status]
+      flash[:success] = @response[:message]
+    end
   end
 
   def sync

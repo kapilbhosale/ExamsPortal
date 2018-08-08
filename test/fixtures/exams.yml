@@ -6,6 +6,7 @@
 #  description     :text
 #  name            :string           not null
 #  no_of_questions :integer
+#  publish_result  :boolean          default(FALSE), not null
 #  published       :boolean
 #  time_in_minutes :integer
 #  created_at      :datetime         not null

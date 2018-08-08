@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="card-body">
-        <%= form_tag '/admin/exams', method: :post, class: 'form-horizontal', multipart: true do %>
+        <%= form_tag admin_exams_path, method: :post, class: 'form-horizontal', multipart: true do %>
           <div class="form-group">
             <label class="control-label col-sm-2" for="name">Name:</label>
             <div class="col-sm-6">
@@ -15,10 +15,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="control-label col-sm-2" for="pwd">Description:</label>
+            <label class="control-label col-sm-2" for="description">Description:</label>
             <div class="col-sm-6">
-              <textarea style="width: 100%" class="form-control" name="description" placeholder="Enter description">
-              </textarea>
+              <textarea class="form-control" name="description" placeholder="Enter description"></textarea>
             </div>
           </div>
           <div class="form-group">
@@ -43,6 +42,19 @@
             <label class="control-label col-sm-2" for="questions_zip">questions Zip:</label>
             <div class="col-sm-3">
               <input type="file" class="form-control" id="questions_zip" name="questions_zip">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="publish_result">Publish Result:</label>
+            <div class="custom-controls-stacked">
+              <label class="custom-control custom-radio custom-control-inline">
+                <%= radio_button_tag 'publish_result', true %>
+                <span class="custom-control-label">Yes</span>
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <%= radio_button_tag 'publish_result', false %>
+                <span class="custom-control-label">No</span>
+              </label>
             </div>
           </div>
           <div class="form-group">

@@ -8,9 +8,9 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def create
-    @exam = Exam.new(exam_params)
-    if @exam.save
-      Exams::Upload.new(@exam, params[:questions_zip].tempfile).call
+    @response = Exams::AddExamService.new(params).create
+    set_flash
+    if @response[:status]
       redirect_to admin_exams_path
     else
       render 'new'
@@ -27,10 +27,10 @@ class Admin::ExamsController < Admin::BaseController
 
   private
 
-  def exam_params
-    params.permit(:name, :description, :no_of_questions, :time_in_minutes)
+  def set_flash
+    key = @response[:status] ? :success : :warning
+    flash[key] = @response[:message]
   end
-
 end
 
 # Imgur
