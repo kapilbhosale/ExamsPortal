@@ -141,6 +141,12 @@ export function syncWithBackend() {
   }
 }
 
+export function changeSection(e) {
+  return (dispatch, getState) => {
+    dispatch({ type: actionTypes.SECTION_CHANGED, val: e.target.text });
+  }
+}
+
 export function onTick(e) {
   return (dispatch, getState) => {
     // console.log(e);
@@ -182,11 +188,11 @@ export function updateQuestionsCount(questionCounts) {
   };
 }
 
-
 function getQuestionsCount(state) {
   const { $$examSolverStore } = state;
   const store = $$examSolverStore;
-  const questions = store.get('questions').toJS();
+  const currentSection = store.get('currentSection');
+  const questions = store.get('questionsBySections').toJS()[currentSection];
   let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
   if (questions.length > 0) {
     questions.map((question) => {

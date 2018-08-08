@@ -79,10 +79,16 @@ class Students::HomeController < Students::BaseController
     	}
     end
 
+    questions_by_sections = {}
+    ['Physics', 'Chemistry', 'Maths'].each do |section|
+      questions_by_sections[section] = questions
+    end
+
     render json: {
-      currentQuestionIndex: 0,
-      totalQuestions: exam.questions.size,
-      questions: questions,
+      currentQuestionIndex: { 'Physics': 0, 'Chemistry': 0, 'Maths': 0 },
+      totalQuestions: { 'Physics': exam.questions.size, 'Chemistry': exam.questions.size, 'Maths': exam.questions.size },
+      questionsBySections: questions_by_sections,
+      sections: ['Physics', 'Chemistry', 'Maths'],
       startedAt: student_exam.started_at,
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,

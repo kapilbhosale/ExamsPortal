@@ -34,9 +34,9 @@ class ExamSolverContainer extends Component {
   componentWillReceiveProps(nextProps){
     const prevStore = this.props.$$examSolverStore;
     const nextStore = nextProps.$$examSolverStore;
-    if(prevStore.get('questions') !== nextStore.get('questions')){
+    // if(prevStore.get('questionsBy') !== nextStore.get('questions')){
       this.actions().syncAnswers();
-    }
+    // }
   }
 
   componentWillMount() {
@@ -49,8 +49,8 @@ class ExamSolverContainer extends Component {
 
   render() {
     const { $$examSolverStore } = this.props;
-    const questions = $$examSolverStore.get('questions').toJS();
-    const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex');
+    const questionsBySections = $$examSolverStore.get('questionsBySections').toJS();
+    const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex').toJS();
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
@@ -58,6 +58,7 @@ class ExamSolverContainer extends Component {
     const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notAnswered']);
     const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'marked']);
     const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notVisited']);
+    const currentSection = $$examSolverStore.get('currentSection');
 
     const modal = $$examSolverStore.get('modal');
     const customStyles = {
@@ -114,16 +115,17 @@ class ExamSolverContainer extends Component {
         </div>
         </Modal>
         <ShellLeft
-          questions={questions}
-          currentQuestionIndex={currentQuestionIndex}
+          questions={questionsBySections[currentSection]}
+          currentQuestionIndex={currentQuestionIndex[currentSection]}
           startedAt={startedAt}
           timeInMinutes={timeInMinutes}
+          currentSection={currentSection}
           { ...this.actions() }
           />
         <ShellRight
-          questions={ questions }
+          questions={ questionsBySections[currentSection] }
           totalQuestions={ totalQuestions }
-          currentQuestionIndex={currentQuestionIndex}
+          currentQuestionIndex={currentQuestionIndex[currentSection]}
           answeredQuestions={ answeredQuestions }
           notAnsweredQuestions ={ notAnsweredQuestions }
           markedQuestions={ markedQuestions }
@@ -135,25 +137,25 @@ class ExamSolverContainer extends Component {
             <button
               type="button"
               className="btn btn-primary mark-review-btn margin-left-5"
-              onClick={ () => { actions.markForReview(currentQuestionIndex) } }
+              onClick={ () => { actions.markForReview(currentQuestionIndex[currentSection]) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-primary clear-response-btn margin-left-5"
-              onClick={ () => { actions.clearAnswer(currentQuestionIndex) } }
+              onClick={ () => { actions.clearAnswer(currentQuestionIndex[currentSection]) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-primary previous-btn margin-left-5"
-              onClick={ () => { actions.previousQuestion(currentQuestionIndex) } }
+              onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
             >
             </button>
             <button
               type="button"
               className="btn btn-success save-next-btn margin-left-5"
-              onClick={ () => { actions.saveAndNext(currentQuestionIndex) } }
+              onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
             >
             </button>
             <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>

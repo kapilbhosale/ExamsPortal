@@ -2,9 +2,9 @@ import Immutable from 'immutable';
 import actionTypes from '../constants/examSolverConstants';
 
 export const $$initialState = Immutable.fromJS({
-  currentQuestionIndex: 0,
-  totalQuestions: 0,
-  questions: [],
+  currentQuestionIndex: { ['Physics']: 0 },
+  totalQuestions: { ['Physics']: 0 },
+  questionsBySections: { ['Physics']: [] },
   startedAt: new Date(),
   timeInMinutes: 0,
   modal: false,
@@ -14,59 +14,68 @@ export const $$initialState = Immutable.fromJS({
     notVisited: 0,
     notAnswered: 0,
     marked: 0,
-  }
+  },
+  currentSection: 'Physics',
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
   const { type, val } = action;
   switch (type) {
     case actionTypes.INCREMENT_CURRENT_QUESTION_INDEX: {
-      let questions = $$state.get('questions').toJS();
-      if (questions[val.questionIndex].answerProps.answer !== null) {
-        questions[val.questionIndex].answerProps.isAnswered = true;
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      if (questionsBySections[currentSection][val.questionIndex].answerProps.answer !== null) {
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = true;
       } else {
-        questions[val.questionIndex].answerProps.isAnswered = false;
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = false;
       }
-      questions[val.questionIndex].answerProps.needReview = false;
-      let nextIndex = $$state.get('currentQuestionIndex');
-      if (($$state.get('currentQuestionIndex') + 1) < $$state.get('totalQuestions')) {
-        nextIndex = $$state.get('currentQuestionIndex') + 1;
+      questionsBySections[currentSection][val.questionIndex].answerProps.needReview = false;
+      let currentQuestionIndex = $$state.get('currentQuestionIndex').toJS()[currentSection];
+      let nextIndex = currentQuestionIndex || 0;
+      if (((currentQuestionIndex || 0) + 1) < $$state.get('totalQuestions').toJS()[currentSection]) {
+        nextIndex = (currentQuestionIndex || 0) + 1;
       }
-      return $$state.set('currentQuestionIndex', nextIndex).set('questions', Immutable.fromJS(questions));
+      return $$state.setIn(['currentQuestionIndex', currentSection], nextIndex).set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.ANSWER_QUESTION: {
-      let questions = $$state.get('questions').toJS();
-      questions[val.questionIndex].answerProps.answer = val.answerIndex;
-      return $$state.set('questions', Immutable.fromJS(questions));
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      questionsBySections[currentSection][val.questionIndex].answerProps.answer = val.answerIndex;
+      return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.CLEAR_ANSWER: {
-      let questions = $$state.get('questions').toJS();
-      questions[val.questionIndex].answerProps.answer = 1;
-      questions[val.questionIndex].answerProps.isAnswered = false;
-      return $$state.set('questions', Immutable.fromJS(questions));
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      questionsBySections[currentSection][val.questionIndex].answerProps.answer = 1;
+      questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = false;
+      return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.JUMP_TO_QUESTION: {
-      return $$state.set('currentQuestionIndex', val.questionIndex);
+      let currentSection = $$state.get('currentSection');
+      return $$state.setIn(['currentQuestionIndex', currentSection], val.questionIndex);
     }
     case actionTypes.MARK_FOR_REVIEW: {
-      let questions = $$state.get('questions').toJS();
-      questions[val.questionIndex].answerProps.needReview = true;
-      let nextIndex = $$state.get('currentQuestionIndex');
-      if (($$state.get('currentQuestionIndex') + 1) < $$state.get('totalQuestions')) {
-        nextIndex = $$state.get('currentQuestionIndex') + 1;
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      questionsBySections[currentSection][val.questionIndex].answerProps.needReview = true;
+      let currentQuestionIndex = $$state.get('currentQuestionIndex').toJS()[currentSection];
+      let nextIndex = currentQuestionIndex || 0;
+      if (((currentQuestionIndex || 0) + 1) < $$state.get('totalQuestions').toJS()[currentSection]) {
+        nextIndex = (currentQuestionIndex || 0) + 1;
       }
-      return $$state.set('currentQuestionIndex', nextIndex).set('questions', Immutable.fromJS(questions));
+      return $$state.setIn(['currentQuestionIndex', currentSection], nextIndex).set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.MARK_VISITED: {
-      let questions = $$state.get('questions').toJS();
-      questions[val.questionIndex].answerProps.visited = true;
-      return $$state.set('questions', Immutable.fromJS(questions));
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      questionsBySections[currentSection][val.questionIndex].answerProps.visited = true;
+      return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.LOAD_EXAM_DATA: {
-      return $$state.set('questions', Immutable.fromJS(val.questions))
-                    .set('currentQuestionIndex', val.currentQuestionIndex)
+      return $$state.set('questionsBySections', Immutable.fromJS(val.questionsBySections))
+                    .set('currentQuestionIndex', Immutable.fromJS(val.currentQuestionIndex))
                     .set('startedAt', val.startedAt)
-                    .set('totalQuestions', val.totalQuestions)
+                    .set('totalQuestions', Immutable.fromJS(val.totalQuestions))
                     .set('studentId', val.studentId)
                     .set('timeInMinutes', val.timeInMinutes);
     }
@@ -77,6 +86,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
                     .setIn(['questionsCountByStatus', 'notVisited'], val.questionCounts.notVisited)
                     .setIn(['questionsCountByStatus', 'notAnswered'], val.questionCounts.notAnswered)
                     .setIn(['questionsCountByStatus', 'marked'], val.questionCounts.marked);
+    case actionTypes.SECTION_CHANGED:
+      return $$state.set('currentSection', val);
     default:
       return $$state;
   }
