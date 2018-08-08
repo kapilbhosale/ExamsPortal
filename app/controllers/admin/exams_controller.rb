@@ -1,15 +1,13 @@
 class Admin::ExamsController < Admin::BaseController
-
+  before_action :sections, only: [:new, :create]
   def index
     @exams = Exam.all.order(id: :desc)
   end
 
   def new
-    @sections = Section.all.select(:id, :name)
   end
 
   def create
-    @sections = Section.all.select(:id, :name)
     @response = Exams::AddExamService.new(params).create
     set_flash
     if @response[:status]
@@ -32,17 +30,16 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def change_question_answer
-
   end
 
   private
+
+  def sections
+    @sections = Section.all.select(:id, :name)
+  end
 
   def set_flash
     key = @response[:status] ? :success : :warning
     flash[key] = @response[:message]
   end
 end
-
-# Imgur
-# client_id : 5b8da04bb57e141
-# secret : ad9a52bcab65dbd79b68c2b98b53eec9c1fbecb6
