@@ -14,28 +14,24 @@ class ShellList extends React.Component {
   }
 
   render() {
-    const { submitTest, onTick, timeIsUp, currentSection, changeSection } = this.props;
+    const { submitTest, onTick, timeIsUp, currentSection, changeSection, sections } = this.props;
     return (
       <div className="row">
         <div className="col-md-1" style={{ paddingTop: '10px' }}>
         </div>
         <div className="col-md-9">
           <ul className="nav nav-pills">
-            <li role="presentation" className={ currentSection == 'Physics' ? "active" : "" }>
-             <a href="#" onClick={ (e) => changeSection(e) }>
-               Physics
-              </a>
-            </li>
-            <li role="presentation" className={ currentSection == 'Chemistry' ? "active" : ""}>
-             <a href="#" onClick={ (e) => changeSection(e) }>
-               Chemistry
-              </a>
-            </li>
-            <li role="presentation" className={ currentSection == 'Maths' ? "active" : ""}>
-              <a href="#" onClick={ (e) => changeSection(e) }>
-                Maths
-              </a>
-            </li>
+            {
+              sections.map((section, idx) => {
+                return (
+                  <li key={idx} role="presentation" className={ currentSection == section ? "active" : "" }>
+                    <a href="#" onClick={ (e) => changeSection(e) }>
+                      { section }
+                    </a>
+                  </li>
+                );
+              })
+            }
           </ul>
         </div>
         <div className="col-md-2">

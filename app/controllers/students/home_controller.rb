@@ -64,6 +64,7 @@ class Students::HomeController < Students::BaseController
     	student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
     end
 
+    indexed_questions = exam.questions.includes(:section).index_by(&:id)
     questions = exam.questions.map do |question|
     	{
     		id: question.id,
@@ -80,15 +81,17 @@ class Students::HomeController < Students::BaseController
     end
 
     questions_by_sections = {}
-    ['Physics', 'Chemistry', 'Maths'].each do |section|
-      questions_by_sections[section] = questions
+    questions.each do |question|
+      db_question = indexed_questions[question[:id]]
+      questions_by_sections[db_question.section.name] ||= []
+      questions_by_sections[db_question.section.name] << question
     end
 
     render json: {
-      currentQuestionIndex: { 'Physics': 0, 'Chemistry': 0, 'Maths': 0 },
-      totalQuestions: { 'Physics': exam.questions.size, 'Chemistry': exam.questions.size, 'Maths': exam.questions.size },
+      currentQuestionIndex: questions_by_sections.keys.inject({}) { |h, k| h[k] = 0; h },
+      totalQuestions: questions_by_sections.inject({}) { |h, k| h[k[0]] = k[1].size; h },
       questionsBySections: questions_by_sections,
-      sections: ['Physics', 'Chemistry', 'Maths'],
+      sections: questions_by_sections.keys,
       startedAt: student_exam.started_at,
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,

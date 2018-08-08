@@ -2,20 +2,21 @@ import Immutable from 'immutable';
 import actionTypes from '../constants/examSolverConstants';
 
 export const $$initialState = Immutable.fromJS({
-  currentQuestionIndex: { ['Physics']: 0 },
-  totalQuestions: { ['Physics']: 0 },
-  questionsBySections: { ['Physics']: [] },
+  currentQuestionIndex: {},
+  totalQuestions: {},
+  questionsBySections: {},
   startedAt: new Date(),
   timeInMinutes: 0,
   modal: false,
   studentId: 0,
+  sections: [],
   questionsCountByStatus: {
     answered: 0,
     notVisited: 0,
     notAnswered: 0,
     marked: 0,
   },
-  currentSection: 'Physics',
+  currentSection: null,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -77,6 +78,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
                     .set('startedAt', val.startedAt)
                     .set('totalQuestions', Immutable.fromJS(val.totalQuestions))
                     .set('studentId', val.studentId)
+                    .set('sections', val.sections)
+                    .set('currentSection', val.sections[0])
                     .set('timeInMinutes', val.timeInMinutes);
     }
     case actionTypes.SHOW_TIME_UP_MODAL:

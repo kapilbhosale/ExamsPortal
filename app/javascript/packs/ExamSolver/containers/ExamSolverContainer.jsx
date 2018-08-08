@@ -59,7 +59,7 @@ class ExamSolverContainer extends Component {
     const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'marked']);
     const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notVisited']);
     const currentSection = $$examSolverStore.get('currentSection');
-
+    const sections = $$examSolverStore.get('sections');
     const modal = $$examSolverStore.get('modal');
     const customStyles = {
   content : {
@@ -115,15 +115,16 @@ class ExamSolverContainer extends Component {
         </div>
         </Modal>
         <ShellLeft
-          questions={questionsBySections[currentSection]}
+          questions={questionsBySections[currentSection] || []}
           currentQuestionIndex={currentQuestionIndex[currentSection]}
           startedAt={startedAt}
           timeInMinutes={timeInMinutes}
           currentSection={currentSection}
+          sections={sections}
           { ...this.actions() }
           />
         <ShellRight
-          questions={ questionsBySections[currentSection] }
+          questions={ questionsBySections[currentSection] || []}
           totalQuestions={ totalQuestions }
           currentQuestionIndex={currentQuestionIndex[currentSection]}
           answeredQuestions={ answeredQuestions }
