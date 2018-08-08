@@ -8,16 +8,14 @@
         <% if student_signed_in? %>
           <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-              <span class="avatar avatar-user-photo"></span>
+              <img class="avatar" src="<%=if current_student.photo? then current_student.photo.url(:thumb) else asset_path('img_avatar.png') end %>">
               <span class="ml-2 d-none d-lg-block">
                 <span class="text-default"><%= current_student.name%></span>
                 <small class="text-muted d-block mt-1">Student</small>
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-user"></i> Profile
-              </a>
+              <%= link_to '<i class="dropdown-icon fe fe-user"></i> Profile'.html_safe, students_home_profile_path, class: 'dropdown-item' %>
               <a class="dropdown-item" href="#">
                 <i class="dropdown-icon fe fe-settings"></i> Settings
               </a>

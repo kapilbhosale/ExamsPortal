@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     put "sync/:exam_id/", to: 'home#sync'
     put "submit/:exam_id/", to: 'home#submit'
     resources :mock_tests
+    get 'home/profile', to: 'home#profile'
+    patch 'home/update_profile', to: 'home#update_profile'
   end
 
 
@@ -32,5 +34,7 @@ Rails.application.routes.draw do
     resources :batches do
       root to: 'batches#index'
     end
+    get 'dashboard/profile', to: 'dashboard#profile'
+    patch 'dashboard/update_profile', to: 'dashboard#update_profile'
   end
 end

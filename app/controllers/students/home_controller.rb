@@ -7,7 +7,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-  	@exams = Exam.all
+    @exams = Exam.order(created_at: :desc).all
     if current_student
       @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
     end
@@ -85,5 +85,38 @@ class Students::HomeController < Students::BaseController
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,
     }
+  end
+
+  def profile
+    @student = Student.find_by(id: current_student.id)
+  end
+
+  def update_profile
+    @response = Students::UpdateStudentService.new(params, student_params).update
+    set_flash
+    redirect_to students_home_profile_path
+  end
+
+  private
+
+  def set_flash
+    key = @response[:status] ? :success : :warning
+    flash[key] = @response[:message]
+  end
+
+  def student_params
+    params.require(:student).permit(
+      :roll_number,
+      :name,
+      :mother_name,
+      :date_of_birth,
+      :gender,
+      :ssc_marks,
+      :student_mobile,
+      :parent_mobile,
+      :category_id,
+      :address,
+      :college,
+      :photo)
   end
 end

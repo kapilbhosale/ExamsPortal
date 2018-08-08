@@ -44,9 +44,12 @@ class Student < ApplicationRecord
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}
   validates  :ssc_marks, numericality: true, allow_nil: true
+  validates  :photo, file_size: { less_than: 2.megabytes }
 
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  mount_uploader :photo, PhotoUploader
+
+  devise :database_authenticatable, :recoverable, :rememberable,
+  :trackable, :validatable
 
   def self.suggest_roll_number
     self.last&.roll_number.to_i + 1
