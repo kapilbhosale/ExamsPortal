@@ -10,7 +10,7 @@ module Students
       @student_params = student_params
     end
 
-    def call
+    def update
       validate_request
       build_batches
       student.update!(@student_params)

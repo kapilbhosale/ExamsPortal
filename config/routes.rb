@@ -34,5 +34,7 @@ Rails.application.routes.draw do
     resources :batches do
       root to: 'batches#index'
     end
+    get 'dashboard/profile', to: 'dashboard#profile'
+    patch 'dashboard/update_profile', to: 'dashboard#update_profile'
   end
 end

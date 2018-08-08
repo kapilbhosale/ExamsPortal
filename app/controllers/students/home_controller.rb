@@ -7,7 +7,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-    @exams = Exam.all.order(created_at: :desc)
+    @exams = Exam.order(created_at: :desc).all
     if current_student
       @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
     end
@@ -92,7 +92,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def update_profile
-    @response = Students::UpdateStudentService.new(params, student_params).call
+    @response = Students::UpdateStudentService.new(params, student_params).update
     set_flash
     redirect_to students_home_profile_path
   end
