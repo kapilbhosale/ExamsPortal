@@ -27,4 +27,9 @@ class Question < ApplicationRecord
   def get_hash_code
     Digest::MD5.hexdigest("#{question.title}.#{question.options.pluck(:data).join(',')}")
   end
+
+  # Assuming now, that there will be single correct ans
+  def correct_option_id
+    optioins.where(is_answer: true).first.id
+  end
 end

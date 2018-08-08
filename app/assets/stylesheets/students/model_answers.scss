@@ -1,0 +1,13 @@
+// Place all the styles related to the students/model_answers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.wrong-ans {
+  background-color: rgba(238, 1, 24, 0.4);
+}
+.correct-ans {
+  background-color: lightgreen;
+}
+.skipped {
+  background-color: lightgrey;
+}

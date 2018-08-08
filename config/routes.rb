@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :mock_tests
     get 'home/profile', to: 'home#profile'
     patch 'home/update_profile', to: 'home#update_profile'
+
+    resources :model_answers
   end
 
 

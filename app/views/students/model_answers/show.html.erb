@@ -1,0 +1,72 @@
+<% if @errors.present? %>
+  <%= @errors %>
+<% else %>
+  <style>
+    <%= @data[:all_styles] %>
+  </style>
+  <div>
+    <ul class="nav nav-tabs" style="padding-left: 12px">
+      <% active_section_id = 0 %>
+      <% @data[:questions_by_section].keys.each_with_index do |section_id, index| %>
+        <% active_section_id = section_id if index == 0 %>
+        <li class="<%= index == 0 ? 'active' : '' %>">
+          <a data-toggle="tab" href="#<%= section_id %>"><%= "#{@data[:sections_by_id][section_id].name.humanize} (#{@data[:questions_by_section][section_id].count})" %></a>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <% @data[:questions_by_section].each do |section_id, questions| %>
+        <div id="<%= section_id %>" class="tab-pane fade in <%= section_id == active_section_id ? 'active' : '' %>">
+
+          <% questions.each_with_index do |question, index| %>
+            <div style="background: white; border-bottom: 1px solid grey; padding-bottom: 5px" class="col-lg-12">
+              <div style="padding: 10px;">
+                <div>
+                  <p><b> Question: <%= index + 1 %> </b></p>
+                  <%= raw(question.title) %>
+                </div>
+                <div class="col-lg-12">
+                  <div class="col-lg-6">
+                    <p><b> Options:</b></p>
+                    <% tmp_options_hash = {} %>
+                    <% student_option_id = @data[:student_ans_by_question][question.id]&.option_id %>
+
+                    <% question.options.each_with_index do |option, index| %>
+                      <% tmp_options_hash[option.id] = (index+65).chr %>
+
+                      <%
+                        option_class = 'wrong-ans' if student_option_id == option.id && !option.is_answer
+                        option_class = 'correct-ans' if student_option_id == option.id && option.is_answer
+                      %>
+
+                      <div>
+                        <label class="radio-inline <%= option_class %>">
+                          <input type="radio" name="optradio-<%= question.id %>" <%= option.is_answer ? 'checked' : '' %> >
+                          <%=  (index+65).chr %> &nbsp; <%= raw(option.data) %>
+                        </label>
+                      </div>
+                    <% end %>
+
+                  </div>
+                  <div class="col-lg-6" style="border: 1px solid green;">
+                    <b>Explanation:</b>
+                    <%= raw(question.explanation) %>
+                  </div>
+                  <div class="col-lg-12">
+                    <% if student_option_id.present? %>
+                      <p> Your ans was : <%= tmp_options_hash[student_option_id] %></p>
+                    <% else %>
+                      <p> Your skipped this question </p>
+                    <% end %>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end  %>
