@@ -36,13 +36,13 @@
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
-                    <td style="text-align: center">
+                    <td class="text-center">
                       <label><input type="checkbox" value="<%= exam.publish_result ? 'checked' : '' %>"></label>
                     </td>
                     <td>
-                      &nbsp;
-                      <%= link_to '', '#', 'data-toggle': "modal", 'data-target': '#examModal', class: 'glyphicon glyphicon-pencil'%> &nbsp;
-                       <%= link_to '', '#', 'data-toggle': "modal", 'data-target': '#examModal', class: 'glyphicon glyphicon-trash'%>
+                      <%= button_to admin_exam_path(exam), method: :delete do %>
+                        <span class="glyphicon glyphicon-trash"></span>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>

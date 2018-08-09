@@ -13,3 +13,4 @@ development:
 test:
   <<: *default
   database: smart-exams-test
+  host: localhost
