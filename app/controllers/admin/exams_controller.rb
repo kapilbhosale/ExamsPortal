@@ -43,8 +43,8 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def update
-    exam = Exam.find_by(id: params[:id])
-    exam.update({publish_result: params[:exam][:publish_result]})
+    @response = Exams::UpdateExamService.new(params).update
+    set_flash
     redirect_to admin_exams_path
   end
 
