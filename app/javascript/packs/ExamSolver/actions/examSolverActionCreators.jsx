@@ -94,7 +94,7 @@ export function submitTest() {
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
-      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
       success: (data) => {
         $.ajax({
           url: '/students/submit/' + store.get('examId'),
@@ -134,10 +134,16 @@ export function syncWithBackend() {
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
       async: false,
-      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
       success: (data) => { console.log('success sync!'); },
       error: (data) => { console.log('error sync!'); },
     });
+  }
+}
+
+export function changeSection(e) {
+  return (dispatch, getState) => {
+    dispatch({ type: actionTypes.SECTION_CHANGED, val: e.target.text });
   }
 }
 
@@ -182,11 +188,11 @@ export function updateQuestionsCount(questionCounts) {
   };
 }
 
-
 function getQuestionsCount(state) {
   const { $$examSolverStore } = state;
   const store = $$examSolverStore;
-  const questions = store.get('questions').toJS();
+  const currentSection = store.get('currentSection');
+  const questions = store.get('questionsBySections').toJS()[currentSection];
   let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
   if (questions.length > 0) {
     questions.map((question) => {

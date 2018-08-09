@@ -11,6 +11,7 @@ const actionTypes = mirrorCreator([
   'LOAD_EXAM_DATA',
   'SHOW_TIME_UP_MODAL',
   'UPDATE_QUESTIONS_COUNT',
+  'SECTION_CHANGED',
 ]);
 
 export default actionTypes;

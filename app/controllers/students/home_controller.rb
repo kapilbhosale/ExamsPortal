@@ -36,13 +36,15 @@ class Students::HomeController < Students::BaseController
 
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-  	params[:questions].each do |index, input_question|
-      if input_question[:answerProps][:answer].to_i > 0
-        student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
-        if student_exam_answer
-  		    student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
-        else
-           StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+    params[:questions].each do |section, questions|
+      questions.each do  |index, input_question|
+        if input_question[:answerProps][:answer].to_i > 0
+          student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
+          if student_exam_answer
+            student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+          else
+            StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+          end
         end
       end
   	end
@@ -64,6 +66,7 @@ class Students::HomeController < Students::BaseController
     	student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
     end
 
+    indexed_questions = exam.questions.includes(:section).index_by(&:id)
     questions = exam.questions.map do |question|
     	{
     		id: question.id,
@@ -79,10 +82,18 @@ class Students::HomeController < Students::BaseController
     	}
     end
 
+    questions_by_sections = {}
+    questions.each do |question|
+      db_question = indexed_questions[question[:id]]
+      questions_by_sections[db_question.section.name] ||= []
+      questions_by_sections[db_question.section.name] << question
+    end
+
     render json: {
-      currentQuestionIndex: 0,
-      totalQuestions: exam.questions.size,
-      questions: questions,
+      currentQuestionIndex: questions_by_sections.keys.inject({}) { |h, k| h[k] = 0; h },
+      totalQuestions: questions_by_sections.inject({}) { |h, k| h[k[0]] = k[1].size; h },
+      questionsBySections: questions_by_sections,
+      sections: questions_by_sections.keys,
       startedAt: student_exam.started_at,
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,
