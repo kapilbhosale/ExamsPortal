@@ -10,12 +10,14 @@
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
               <span class="avatar avatar-user-photo" ></span>
               <span class="ml-2 d-none d-lg-block">
-                <span class="text-default"><%= current_admin.name%></span>
+                <span class="text-default"><%= current_admin.name %></span>
                 <small class="text-muted d-block mt-1">Administrator</small>
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <%= link_to '<i class="dropdown-icon fe fe-user"></i> Profile'.html_safe, admin_dashboard_profile_path, class: 'dropdown-item' %>
+              <a class="dropdown-item" href="#">
+                <i class="dropdown-icon fe fe-user"></i> Profile
+              </a>
               <a class="dropdown-item" href="#">
                 <i class="dropdown-icon fe fe-settings"></i> Settings
               </a>
@@ -40,11 +42,10 @@
       <div class="col-lg order-lg-first">
         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
           <li class="nav-item">
-            <a href="#" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i> Data</a>
-             <div class="dropdown-menu dropdown-menu-arrow">
-              <%= link_to ' Manage Students', admin_students_path, class: 'dropdown-item' %>
-              <%= link_to ' Manage Batches', admin_batches_path, class: 'dropdown-item' %>
-            </div>
+            <%= link_to '<i class="fe fe-users"></i> Students'.html_safe, admin_students_path, class: 'nav-link' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to '<i class="fe fe-list"></i> Batches'.html_safe, admin_batches_path, class: 'nav-link' %>
           </li>
           <li class="nav-item">
             <%= link_to '<i class="fe fe-bar-chart-2"></i> Reports'.html_safe, admin_reports_path, class: 'nav-link' %>

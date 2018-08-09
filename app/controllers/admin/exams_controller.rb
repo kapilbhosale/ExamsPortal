@@ -32,11 +32,18 @@ class Admin::ExamsController < Admin::BaseController
   def change_question_answer
   end
 
+  def destroy
+    @response = Exams::DeleteExamService.new(params[:id]).delete
+    set_flash
+    redirect_to admin_exams_path
+  end
   private
 
   def sections
     @sections = Section.all.select(:id, :name)
   end
+
+  private
 
   def set_flash
     key = @response[:status] ? :success : :warning
