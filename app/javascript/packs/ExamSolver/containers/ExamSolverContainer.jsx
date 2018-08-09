@@ -51,7 +51,7 @@ class ExamSolverContainer extends Component {
       mobile: 575,
     };
     if ($win.width() < MEDIAQUERY.mobile) {
-      setNavigationMap(false);
+      this.actions().setNavigationMap(false);
     }
     this.actions();
   }

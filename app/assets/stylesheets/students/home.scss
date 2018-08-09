@@ -46,7 +46,7 @@
   margin-top: 30px;
 }
 .sidenav {
-  height: 91%;
+  height: 87%;
   position: fixed;
   z-index: 1;
   bottom: 5px;
@@ -58,7 +58,10 @@
   margin-bottom: 0;
   margin-right: -2px;
   @media (max-width: 575px) {
-    width: 100%;
+    width: 98%;
+    .close-btn {
+      left: -5px;
+    }
   }
   @media (min-width: 576px) {
     width: 350px;
@@ -160,4 +163,22 @@
 .submit-exam {
   position: absolute !important;
   bottom: 7px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.sections-nav {
+  .menu {
+    font-size: 20px;
+  }
+}
+
+.gray-border-bottom {
+  border-bottom: solid 1px gray
+}
+
+.padding-bottom-15 {
+  padding-bottom: 15px;
 }

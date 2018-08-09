@@ -15,28 +15,30 @@ class ShellLeft extends React.Component {
             sections, changeSection } = this.props;
     return (
       <div className='col-md-9'>
-        <div className='col-md-12'>
-          <SectionList
-          totalQuestions={questions.length}
-          submitTest={submitTest}
-          startedAt={startedAt}
-          examFinished={ examFinished }
-          timeInMinutes={ timeInMinutes }
-          timeIsUp={ timeIsUp }
-          sections={sections}
-          currentSection={currentSection}
-          changeSection={changeSection}
-          />
-        </div>
-        <div className="col-md-12">
-          {
-            this.currentQuestion() && <Question
-              { ...this.currentQuestion() }
-              currentQuestionIndex={currentQuestionIndex}
-              answerQuestion={ answerQuestion }
-              markVisited={ markVisited }
+        <div className='row'>
+          <div className='col-md-12'>
+            <SectionList
+            totalQuestions={questions.length}
+            submitTest={submitTest}
+            startedAt={startedAt}
+            examFinished={ examFinished }
+            timeInMinutes={ timeInMinutes }
+            timeIsUp={ timeIsUp }
+            sections={sections}
+            currentSection={currentSection}
+            changeSection={changeSection}
             />
-          }
+          </div>
+          <div className="col-md-12">
+            {
+              this.currentQuestion() && <Question
+                { ...this.currentQuestion() }
+                currentQuestionIndex={currentQuestionIndex}
+                answerQuestion={ answerQuestion }
+                markVisited={ markVisited }
+              />
+            }
+          </div>
         </div>
       </div>
     );

@@ -18,7 +18,7 @@ export const $$initialState = Immutable.fromJS({
   },
   currentSection: null,
   loading: true,
-  navigationMapOpen: true,
+  navigationMapOpen: false,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {

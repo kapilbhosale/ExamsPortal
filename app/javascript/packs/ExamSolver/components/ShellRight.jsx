@@ -1,6 +1,27 @@
 import React from 'react';
 
 class ShellRight extends React.Component {
+
+  componentDidMount() {
+    const $win = $(window);
+    const MEDIAQUERY = {
+      desktopXL: 1200,
+      desktop: 992,
+      tablet: 768,
+      mobile: 575,
+    };
+    const mobileDevice = $win.width() < MEDIAQUERY.mobile
+
+    if (this.props.isNavigationMapOpen && mobileDevice) {
+      setNavigationMap(false);
+      document.getElementById("mySidenav").style.width = "0";
+      document.getElementById("mySidenav").style.paddingLeft = 0;
+      document.getElementById("mySidenav").style.paddingRight = 0;
+    } else {
+      document.getElementById("mySidenav").style.width = "350px";
+      document.getElementById("mySidenav").style.paddingLeft = "13px";
+    }
+  }
   render() {
     const { 
       questions,
@@ -15,6 +36,7 @@ class ShellRight extends React.Component {
       setNavigationMap,
       isNavigationMapOpen } = this.props;
     const closeNav = () => {
+      setNavigationMap(false);
       document.getElementById("mySidenav").style.width = "0";
       document.getElementById("mySidenav").style.paddingLeft = 0;
       document.getElementById("mySidenav").style.paddingRight = 0;
@@ -31,6 +53,7 @@ class ShellRight extends React.Component {
       return $win.width() < MEDIAQUERY.mobile;
     }
     const openNav = () => {
+      setNavigationMap(true);
       if (isMobileDevice()) {
         document.getElementById("mySidenav").style.width = "100%";
         document.getElementById("mySidenav").style.paddingLeft = "13px";
@@ -44,11 +67,9 @@ class ShellRight extends React.Component {
     const changeNavigationMapStatus = () => {
       if (isNavigationMapOpen) {
         closeNav();
-        setNavigationMap(false);
       }
       else {
         openNav();
-        setNavigationMap(true);
       }
 
     }
@@ -58,37 +79,43 @@ class ShellRight extends React.Component {
         <div className='row'>
           <div className='navigation-map'>
             <div className='sidenav panel' id="mySidenav">
-              <span
-                className={ `closebtn ${isNavigationMapOpen ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-left' }` }
-                onClick={ () => { changeNavigationMapStatus() }}>
-              </span>
-              <div className='row padding-side-20'>
-                <div className='col-md-6  margin-bottom-20'>
+              <div onClick={ () => { changeNavigationMapStatus() }} className='closebtn cursor-pointer'>
+                <span
+                  className={ `${isNavigationMapOpen ? 'glyphicon glyphicon-chevron-right' : 'glyphicon glyphicon-chevron-left' }` }
+                  >
+                </span>
+              </div>
+              <div className='row margin-bottom-20'>
+                <div className='col-md-6'>
                   <span className="label label-default label-sm margin-5">
                     { `Not visited (${notVisitedQuestions})`}
                   </span>
                 </div>
-                <div className='col-md-6 margin-bottom-20'>
+                <div className='col-md-6'>
                   <div >
                   <span className="label label-primary label-sm margin-5">
                     { `Marked (${markedQuestions})` }
                   </span>
                   </div>
                 </div>
-                <div className='col-md-6 margin-bottom-20'>
+              </div>
+              <div className='row margin-bottom-20'>
+                <div className='col-md-6'>
                   <span className="label label-success label-sm margin-5">
                     { `Answered (${answeredQuestions})` }
                   </span>
                 </div>
-                <div className='col-md-6  margin-bottom-20'>
+                <div className='col-md-6'>
                   <span className="label label-danger label-sm margin-5">
                     { `Not answered (${notAnsweredQuestions})` }
                   </span>
                 </div>
               </div>
 
-              <div className="form-group text-center">
-                Navigation Map
+              <div className='row margin-bottom-20 text-center'>
+                <div className="col-md-12">
+                  Navigation Map
+                </div>
               </div>
 
               <div className='row' style={{ height: '70vh', overflow: 'scroll' }}>
