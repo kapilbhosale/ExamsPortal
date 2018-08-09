@@ -36,7 +36,7 @@
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
-                    <td style="text-align: center">
+                    <td class="text-center">
                       <label><input type="checkbox" value="<%= exam.publish_result ? 'checked' : '' %>"></label>
                     </td>
                     <td>
