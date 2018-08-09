@@ -28,8 +28,11 @@ class Students::HomeController < Students::BaseController
   end
 
   def summary
-    @response = Exams::ExamSummaryService.new(params, current_student).process_summary
-    unless @response[:status]
+    # @response = Exams::ExamSummaryService.new(params, current_student).process_summary
+    @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
+    @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+    @exam_id = params[:exam_id]
+    unless @student_exam
       flash[:success] = @response[:message]
     end
   end
@@ -54,6 +57,7 @@ class Students::HomeController < Students::BaseController
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     render :ok unless student_exam
     student_exam.update!(ended_at: Time.current)
+    StudentExamScoreCalculator.new(student_exam.id).calculate
   end
 
   def exam_data
@@ -71,7 +75,7 @@ class Students::HomeController < Students::BaseController
     	{
     		id: question.id,
     		title: question.title,
-    		options: question.options.map { |o| { id: o.id, data: o.data } },
+    		options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
         cssStyle: question.css_style,
     		answerProps: {
           isAnswered: false,
