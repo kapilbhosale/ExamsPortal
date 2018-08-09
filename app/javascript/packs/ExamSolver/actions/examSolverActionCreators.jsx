@@ -89,6 +89,7 @@ function markVisit(questionIndex) {
 // Bad piece of code. Don't try to blame. You're responsible.
 export function submitTest() {
   return (dispatch, getState) => {
+    dispatch(loading(true));
     const store = getState().$$examSolverStore;
     const dataJSON = JSON.parse(localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`));
     $.ajax({
@@ -105,7 +106,11 @@ export function submitTest() {
           }
         });
       },
-      error: (data) => { console.log('error sync!'); },
+      error: (data) => {
+        console.log('error sync!');
+        dispatch(loading(false));
+        alert('Error submitting exam');
+      },
     });
   };
 }
@@ -153,9 +158,17 @@ export function onTick(e) {
   }
 }
 
+export function loading(val) {
+  return {
+    type: actionTypes.LOADING,
+    val: val
+  }
+}
+
 export function initialize() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
+    dispatch(loading(true));
     $.ajax({
       url: '/students/exam_data',
       method: 'get',
@@ -166,6 +179,7 @@ export function initialize() {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
           const questionCounts = JSON.parse(localData).questionsCountByStatus;
           dispatch(updateQuestionsCount(questionCounts));
+          dispatch(loading(false));
         } else {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
           const questionCounts = {
@@ -175,6 +189,7 @@ export function initialize() {
             notVisited: data.questions ? data.questions.length : 0,
           }
           dispatch(updateQuestionsCount(questionCounts));
+          dispatch(loading(false));
         }
       }
     });

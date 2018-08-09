@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import * as examSolverActionCreators from '../actions/examSolverActionCreators';
 import ShellLeft from "../components/ShellLeft";
 import ShellRight from "../components/ShellRight";
+import LoadingAnimation from "../components/LoadingAnimation";
 import Modal from 'react-modal';
 
 function select(state) {
@@ -22,11 +23,13 @@ class ExamSolverContainer extends Component {
   }
 
   componentDidMount() {
-    if ($(window).width() < 575) {
-      document.getElementById("mySidenav").style.width = "0";
-    }
-    else {
-      document.getElementById("mySidenav").style.width = "350px";
+    if (document.getElementById("mySidenav")) {
+      if ($(window).width() < 575) {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+      else {
+        document.getElementById("mySidenav").style.width = "350px";
+      }
     }
     this.actions().initialize();
   }
@@ -61,16 +64,17 @@ class ExamSolverContainer extends Component {
     const currentSection = $$examSolverStore.get('currentSection');
     const sections = $$examSolverStore.get('sections');
     const modal = $$examSolverStore.get('modal');
+    const loading = $$examSolverStore.get('loading');
     const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+      }
+    };
     const $win = $(window);
     const MEDIAQUERY = {
       desktopXL: 1200,
@@ -93,77 +97,81 @@ class ExamSolverContainer extends Component {
     };
 
     const actions = this.actions();
-    return (
-      <div className="">
-       <Modal
-          isOpen={modal}
-          onAfterOpen={() => {}}
-          onRequestClose={() => {}}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-        Time is up. Please click ok to continue and view results.
-        <br/>
-        <br/>
-        <div className="text-center">
-          <button
-            className="btn btn-default btn-primary"
-            onClick={ this.actions().submitTest }
-            >
-            OK
-          </button>
-        </div>
-        </Modal>
-        <ShellLeft
-          questions={questionsBySections[currentSection] || []}
-          currentQuestionIndex={currentQuestionIndex[currentSection]}
-          startedAt={startedAt}
-          timeInMinutes={timeInMinutes}
-          currentSection={currentSection}
-          sections={sections}
-          { ...this.actions() }
+    if (loading) {
+      return <LoadingAnimation height="700px" />;
+    } else {      
+      return (
+        <div className="">
+        <Modal
+            isOpen={modal}
+            onAfterOpen={() => {}}
+            onRequestClose={() => {}}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+          Time is up. Please click ok to continue and view results.
+          <br/>
+          <br/>
+          <div className="text-center">
+            <button
+              className="btn btn-default btn-primary"
+              onClick={ this.actions().submitTest }
+              >
+              OK
+            </button>
+          </div>
+          </Modal>
+          <ShellLeft
+            questions={questionsBySections[currentSection] || []}
+            currentQuestionIndex={currentQuestionIndex[currentSection]}
+            startedAt={startedAt}
+            timeInMinutes={timeInMinutes}
+            currentSection={currentSection}
+            sections={sections}
+            { ...this.actions() }
+            />
+          <ShellRight
+            questions={ questionsBySections[currentSection] || []}
+            totalQuestions={ totalQuestions }
+            currentQuestionIndex={currentQuestionIndex[currentSection]}
+            answeredQuestions={ answeredQuestions }
+            notAnsweredQuestions ={ notAnsweredQuestions }
+            markedQuestions={ markedQuestions }
+            notVisitedQuestions={ notVisitedQuestions }
+            { ...this.actions() }
           />
-        <ShellRight
-          questions={ questionsBySections[currentSection] || []}
-          totalQuestions={ totalQuestions }
-          currentQuestionIndex={currentQuestionIndex[currentSection]}
-          answeredQuestions={ answeredQuestions }
-          notAnsweredQuestions ={ notAnsweredQuestions }
-          markedQuestions={ markedQuestions }
-          notVisitedQuestions={ notVisitedQuestions }
-          { ...this.actions() }
-        />
-        <div className='row'>
-          <div className="bottom-menu margin-bottom-10 text-center">
-            <button
-              type="button"
-              className="btn btn-primary mark-review-btn margin-left-5"
-              onClick={ () => { actions.markForReview(currentQuestionIndex[currentSection]) } }
-            >
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary clear-response-btn margin-left-5"
-              onClick={ () => { actions.clearAnswer(currentQuestionIndex[currentSection]) } }
-            >
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary previous-btn margin-left-5"
-              onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
-            >
-            </button>
-            <button
-              type="button"
-              className="btn btn-success save-next-btn margin-left-5"
-              onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
-            >
-            </button>
-            <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>
+          <div className='row'>
+            <div className="bottom-menu margin-bottom-10 text-center">
+              <button
+                type="button"
+                className="btn btn-primary mark-review-btn margin-left-5"
+                onClick={ () => { actions.markForReview(currentQuestionIndex[currentSection]) } }
+              >
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary clear-response-btn margin-left-5"
+                onClick={ () => { actions.clearAnswer(currentQuestionIndex[currentSection]) } }
+              >
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary previous-btn margin-left-5"
+                onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
+              >
+              </button>
+              <button
+                type="button"
+                className="btn btn-success save-next-btn margin-left-5"
+                onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
+              >
+              </button>
+              <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>
+          </div>
+          </div>
         </div>
-        </div>
-      </div>
-    )
+      )
+    }
   }
 }
 

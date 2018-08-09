@@ -17,6 +17,7 @@ export const $$initialState = Immutable.fromJS({
     marked: 0,
   },
   currentSection: null,
+  loading: true,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -91,6 +92,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
                     .setIn(['questionsCountByStatus', 'marked'], val.questionCounts.marked);
     case actionTypes.SECTION_CHANGED:
       return $$state.set('currentSection', val);
+    case actionTypes.LOADING:
+      return $$state.set('loading', val);
     default:
       return $$state;
   }
