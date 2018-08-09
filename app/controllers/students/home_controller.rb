@@ -36,13 +36,15 @@ class Students::HomeController < Students::BaseController
 
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-  	params[:questions].each do |index, input_question|
-      if input_question[:answerProps][:answer].to_i > 0
-        student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
-        if student_exam_answer
-  		    student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
-        else
-           StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+    params[:questions].each do |section, questions|
+      questions.each do  |index, input_question|
+        if input_question[:answerProps][:answer].to_i > 0
+          student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
+          if student_exam_answer
+            student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+          else
+            StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+          end
         end
       end
   	end

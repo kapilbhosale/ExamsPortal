@@ -94,7 +94,7 @@ export function submitTest() {
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
-      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
       success: (data) => {
         $.ajax({
           url: '/students/submit/' + store.get('examId'),
@@ -134,7 +134,7 @@ export function syncWithBackend() {
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
       async: false,
-      data: { questions: dataJSON.questions, exam_id: store.get('examId') },
+      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
       success: (data) => { console.log('success sync!'); },
       error: (data) => { console.log('error sync!'); },
     });
