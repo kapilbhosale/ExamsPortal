@@ -12,6 +12,7 @@ const actionTypes = mirrorCreator([
   'SHOW_TIME_UP_MODAL',
   'UPDATE_QUESTIONS_COUNT',
   'SECTION_CHANGED',
+  'LOADING',
 ]);
 
 export default actionTypes;
