@@ -37,6 +37,17 @@ class Admin::ExamsController < Admin::BaseController
     set_flash
     redirect_to admin_exams_path
   end
+
+  def edit
+    @exam = Exam.find_by(id: params[:id])
+  end
+
+  def update
+    exam = Exam.find_by(id: params[:id])
+    exam.update({publish_result: params[:exam][:publish_result]})
+    redirect_to admin_exams_path
+  end
+
   private
 
   def sections

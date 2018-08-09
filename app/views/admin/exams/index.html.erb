@@ -37,12 +37,14 @@
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
                     <td class="text-center">
-                      <label><input type="checkbox" value="<%= exam.publish_result ? 'checked' : '' %>"></label>
+                      <%= check_box_tag :publish_result, 'true', false, 'data-toggle': "modal", 'data-target': '#publishResultModal', checked: exam.publish_result, disabled: true %>
                     </td>
                     <td>
                       <%= button_to admin_exam_path(exam), method: :delete do %>
                         <span class="glyphicon glyphicon-trash"></span>
                       <% end %>
+                      &nbsp;
+                      <%= link_to '', edit_admin_exam_path(exam.id), remote: true, class: 'glyphicon glyphicon-pencil'%> &nbsp;
                     </td>
                   </tr>
                 <% end %>
@@ -60,3 +62,4 @@
 </div>
 
 <%= render partial: 'admin/exams/new' %>
+<%= render partial: 'admin/exams/publish_exam_modal' %>
