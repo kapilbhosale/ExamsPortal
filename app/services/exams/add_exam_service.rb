@@ -15,7 +15,6 @@ module Exams
         @exam = Exam.new(exam_params)
         if @exam.save!
           params[:questions_zip].each do |section_id, zip_file|
-            binding.pry
             Exams::Upload.new(@exam, zip_file.tempfile, section_id).call
           end
           return {status: true, message: 'Exam added successfully'}
