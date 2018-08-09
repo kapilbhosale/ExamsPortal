@@ -76,73 +76,40 @@ class ExamSolverContainer extends Component {
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
     const isNavigationMapOpen = $$examSolverStore.get('navigationMapOpen');
-    const customStyles = {
-      content : {
-        top                   : '50%',
-        left                  : '50%',
-        right                 : 'auto',
-        bottom                : 'auto',
-        marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
-      }
-    };
-    const $win = $(window);
-    const MEDIAQUERY = {
-      desktopXL: 1200,
-      desktop: 992,
-      tablet: 768,
-      mobile: 575,
-    };
-    const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
+const customStyles = {
+content : {
+top                   : '50%',
+left                  : '50%',
+right                 : 'auto',
+bottom                : 'auto',
+marginRight           : '-50%',
+transform             : 'translate(-50%, -50%)'
+}
 };
-
-    function isMobileDevice() {
-      return $win.width() < MEDIAQUERY.mobile;
-    }
-    const openNav = () => {
-      if (isMobileDevice()) {
-        document.getElementById("mySidenav").style.width = "100%";
-        document.getElementById("mySidenav").style.paddingLeft = "50px";
-      }
-      else {
-        document.getElementById("mySidenav").style.width = "350px";
-        document.getElementById("mySidenav").style.paddingLeft = "50px";
-      }
-    };
-
     const actions = this.actions();
     if (loading) {
       return <LoadingAnimation height="700px" />;
     } else {      
       return (
-        return (
-      <div className="">
-         <Modal
-            isOpen={modal}
-            onAfterOpen={() => {}}
-            onRequestClose={() => {}}
-            style={customStyles}
-            contentLabel="Example Modal"
-          >
-          Time is up. Please click ok to continue and view results.
-          <br/>
-          <br/>
-          <div className="text-center">
-            <button
-              className="btn btn-default btn-primary"
-              onClick={ this.actions().submitTest }
-              >
-              OK
-            </button>
-          </div>
+        <div className="">
+           <Modal
+              isOpen={modal}
+              onAfterOpen={() => {}}
+              onRequestClose={() => {}}
+              style={customStyles}
+              contentLabel="Example Modal"
+            >
+            Time is up. Please click ok to continue and view results.
+            <br/>
+            <br/>
+            <div className="text-center">
+              <button
+                className="btn btn-default btn-primary"
+                onClick={ this.actions().submitTest }
+                >
+                OK
+              </button>
+            </div>
           </Modal>
           <div className='row'>
             <ShellLeft
@@ -167,37 +134,37 @@ class ExamSolverContainer extends Component {
             />
           </div>
           <div className='row'>
-            <div className="bottom-menu margin-bottom-10">
-              <div className='col-md-8'>
-              <button
-                type="button"
-                className="btn btn-primary mark-review-btn margin-left-5"
-                onClick={ () => { actions.markForReview(currentQuestionIndex[currentSection]) } }
-              >
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary clear-response-btn margin-left-5"
-                onClick={ () => { actions.clearAnswer(currentQuestionIndex[currentSection]) } }
-              >
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary previous-btn margin-left-5"
-                onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
-              >
-              </button>
-              <button
-                type="button"
-                className="btn btn-success save-next-btn margin-left-5 pull-right"
-                onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
-              >
-              </button>
+	    <div className="bottom-menu margin-bottom-10">
+	      <div className='col-md-8'>
+                <button
+                  type="button"
+                  className="btn btn-primary mark-review-btn margin-left-5"
+                  onClick={ () => { actions.markForReview(currentQuestionIndex[currentSection]) } }
+                  >
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary clear-response-btn margin-left-5"
+                  onClick={ () => { actions.clearAnswer(currentQuestionIndex[currentSection]) } }
+                  >
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary previous-btn margin-left-5"
+                  onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
+                  >
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success save-next-btn margin-left-5 pull-right"
+                  onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
+                  >
+                </button>
+              </div>
             </div>
           </div>
-          <div className='col-md-4' />
-        </div>
-      )
+	</div>
+      );
     }
   }
 }
