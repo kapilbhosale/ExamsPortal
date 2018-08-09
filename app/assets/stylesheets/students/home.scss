@@ -49,19 +49,20 @@
   height: 91%;
   position: fixed;
   z-index: 1;
-  bottom: 0;
+  bottom: 5px;
   right: 0;
   background-color: #e7f9ff;
-  overflow-x: hidden;
+/*overflow-x: hidden;*/
   transition: 0.5s;
   padding-top: 25px;
   margin-bottom: 0;
+  margin-right: -2px;
   @media (max-width: 575px) {
     width: 100%;
   }
   @media (min-width: 576px) {
     width: 350px;
-    padding-left: 50px;
+    padding: 0 13px 0 13px;
   }
 }
 
@@ -79,10 +80,13 @@
 }
 
 .sidenav .closebtn {
-    position: absolute;
-    bottom: 0;
-    left: 2px;
-    font-size: 36px;
+  position: absolute;
+  left: -25px;
+  top: 50%;
+  background: #000;
+  color: #fff;
+  padding: 15px 4px;
+  border-radius: 5px 0 0 5px;
 }
 
 .bottom-menu {
@@ -111,14 +115,18 @@
   margin: 20px;
 }
 
+.padding-side-20 {
+  padding: 0 20px 0 20px;
+}
+
 .openFullSidebar {
   width: 100%;
-  padding-left: 50px;
+  padding: 0 25px 0 25px;
 }
 
 .opentPartialSidebar {
   width: 350px;
-  padding-left: 50px;
+  padding: 0 25px 0 25px;
 }
 
 .shadow-div {
@@ -149,3 +157,7 @@
   border: 1px solid #ddd;
 }
 
+.submit-exam {
+  position: absolute !important;
+  bottom: 7px;
+}

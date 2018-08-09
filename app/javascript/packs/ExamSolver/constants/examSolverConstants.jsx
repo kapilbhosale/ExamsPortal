@@ -13,6 +13,7 @@ const actionTypes = mirrorCreator([
   'UPDATE_QUESTIONS_COUNT',
   'SECTION_CHANGED',
   'LOADING',
+  'SET_NAVIGATION_MAP',
 ]);
 
 export default actionTypes;

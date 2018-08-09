@@ -43,6 +43,16 @@ class ExamSolverContainer extends Component {
   }
 
   componentWillMount() {
+    const $win = $(window);
+    const MEDIAQUERY = {
+      desktopXL: 1200,
+      desktop: 992,
+      tablet: 768,
+      mobile: 575,
+    };
+    if ($win.width() < MEDIAQUERY.mobile) {
+      setNavigationMap(false);
+    }
     this.actions();
   }
 
@@ -65,6 +75,7 @@ class ExamSolverContainer extends Component {
     const sections = $$examSolverStore.get('sections');
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
+    const isNavigationMapOpen = $$examSolverStore.get('navigationMapOpen');
     const customStyles = {
       content : {
         top                   : '50%',
@@ -82,6 +93,17 @@ class ExamSolverContainer extends Component {
       tablet: 768,
       mobile: 575,
     };
+    const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
+
     function isMobileDevice() {
       return $win.width() < MEDIAQUERY.mobile;
     }
@@ -101,8 +123,9 @@ class ExamSolverContainer extends Component {
       return <LoadingAnimation height="700px" />;
     } else {      
       return (
-        <div className="">
-        <Modal
+        return (
+      <div className="">
+         <Modal
             isOpen={modal}
             onAfterOpen={() => {}}
             onRequestClose={() => {}}
@@ -121,27 +144,31 @@ class ExamSolverContainer extends Component {
             </button>
           </div>
           </Modal>
-          <ShellLeft
-            questions={questionsBySections[currentSection] || []}
-            currentQuestionIndex={currentQuestionIndex[currentSection]}
-            startedAt={startedAt}
-            timeInMinutes={timeInMinutes}
-            currentSection={currentSection}
-            sections={sections}
-            { ...this.actions() }
-            />
-          <ShellRight
-            questions={ questionsBySections[currentSection] || []}
-            totalQuestions={ totalQuestions }
-            currentQuestionIndex={currentQuestionIndex[currentSection]}
-            answeredQuestions={ answeredQuestions }
-            notAnsweredQuestions ={ notAnsweredQuestions }
-            markedQuestions={ markedQuestions }
-            notVisitedQuestions={ notVisitedQuestions }
-            { ...this.actions() }
-          />
           <div className='row'>
-            <div className="bottom-menu margin-bottom-10 text-center">
+            <ShellLeft
+              questions={questionsBySections[currentSection] || []}
+              currentQuestionIndex={currentQuestionIndex[currentSection]}
+              startedAt={startedAt}
+              timeInMinutes={timeInMinutes}
+              currentSection={currentSection}
+              sections={sections}
+              { ...this.actions() }
+              />
+            <ShellRight
+              questions={ questionsBySections[currentSection] || []}
+              totalQuestions={ totalQuestions }
+              currentQuestionIndex={currentQuestionIndex[currentSection]}
+              answeredQuestions={ answeredQuestions }
+              notAnsweredQuestions ={ notAnsweredQuestions }
+              markedQuestions={ markedQuestions }
+              notVisitedQuestions={ notVisitedQuestions }
+              isNavigationMapOpen={ isNavigationMapOpen }
+              { ...this.actions() }
+            />
+          </div>
+          <div className='row'>
+            <div className="bottom-menu margin-bottom-10">
+              <div className='col-md-8'>
               <button
                 type="button"
                 className="btn btn-primary mark-review-btn margin-left-5"
@@ -162,13 +189,13 @@ class ExamSolverContainer extends Component {
               </button>
               <button
                 type="button"
-                className="btn btn-success save-next-btn margin-left-5"
+                className="btn btn-success save-next-btn margin-left-5 pull-right"
                 onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
               >
               </button>
-              <span className="btn btn-success btn-xs pull-right margin-right-5" onClick={ () => { openNav() }}>Map</span>
+            </div>
           </div>
-          </div>
+          <div className='col-md-4' />
         </div>
       )
     }

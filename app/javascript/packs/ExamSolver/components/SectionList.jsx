@@ -17,9 +17,7 @@ class ShellList extends React.Component {
     const { submitTest, onTick, timeIsUp, currentSection, changeSection, sections } = this.props;
     return (
       <div className="row">
-        <div className="col-md-1" style={{ paddingTop: '10px' }}>
-        </div>
-        <div className="col-md-9">
+        <div className="col-md-8">
           <ul className="nav nav-pills">
             {
               sections.map((section, idx) => {
@@ -34,7 +32,7 @@ class ShellList extends React.Component {
             }
           </ul>
         </div>
-        <div className="col-md-2">
+        <div className="col-md-3">
           <span style={{ fontSize: '30px' }}>
             <Countdown
               date={ this.dateForCountdown() }
