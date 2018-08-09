@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_08_191630) do
+ActiveRecord::Schema.define(version: 2018_08_09_103348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,15 @@ ActiveRecord::Schema.define(version: 2018_08_08_191630) do
     t.integer "weightage", default: 0
     t.index ["name_map"], name: "index_concepts_on_name_map"
     t.index ["subject_id"], name: "index_concepts_on_subject_id"
+  end
+
+  create_table "exam_batches", force: :cascade do |t|
+    t.bigint "exam_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_exam_batches_on_batch_id"
+    t.index ["exam_id"], name: "index_exam_batches_on_exam_id"
   end
 
   create_table "exam_questions", force: :cascade do |t|

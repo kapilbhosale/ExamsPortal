@@ -17,6 +17,7 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Batch(es)</th>
                 <th>Description</th>
                 <th>Question</th>
                 <th>Added Ques</th>
@@ -31,6 +32,8 @@
                 <% @exams.each do |exam| %>
                   <tr>
                     <td class="text-truncate"><%= link_to exam.name, admin_exam_path(exam.id) %></td>
+                    <td class="text-truncate"><%= exam&.batches&.each&.map(&:name).join(', ') %>
+                      </td>
                     <td class="text-truncate"><%= exam.description %> ...</td>
                     <td><%= exam.no_of_questions %></td>
                     <td><%= exam.questions.count %></td>

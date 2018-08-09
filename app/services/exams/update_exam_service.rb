@@ -10,6 +10,7 @@ module Exams
 
     def update
       validate_request
+      build_batches
       exam.update!({publish_result: exam_params[:exam][:publish_result]})
       return {status: true, message: 'Exam details updated successfully'}
     rescue UpdateExamError, ActiveRecord::RecordInvalid => ex
@@ -20,6 +21,21 @@ module Exams
 
     def validate_request
       raise UpdateExamError, 'Exam does not exists' if exam.nil?
+    end
+
+    def build_batches
+      @batch_ids = @exam_params[:exam][:batches]&.each&.map{|id| id.to_i}
+      if @batch_ids.present?
+        existing_batch_ids = ExamBatch.where(exam_id: exam.id).map(&:batch_id)
+        ids_to_delete = existing_batch_ids - @batch_ids
+        ids_to_add = @batch_ids - existing_batch_ids
+        ids_to_delete.each do |id|
+          ExamBatch.find_by(exam_id: exam.id, batch_id: id).destroy
+        end
+        ids_to_add.each do |batch|
+          exam&.exam_batches&.build(exam_id: exam.id, batch_id: batch)
+        end
+      end
     end
   end
 end
