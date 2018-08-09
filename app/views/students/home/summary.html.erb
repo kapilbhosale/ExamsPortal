@@ -5,25 +5,47 @@
     </div>
     <div class="text-muted">Your answers have been saved successfully.</div>
   </div>
-  <% if @response[:status]%>
+  <% if @student_exam %>
     <div class="table">
       <table class="table-responsive summary-table">
         <tr>
-          <th class="summary-table-th text-white">Sections</th>
+          <th class="summary-table-th text-white">Section</th>
           <th class="summary-table-th text-white">No of questions</th>
           <th class="summary-table-th text-white">Answered</th>
           <th class="summary-table-th text-white">Not-answered</th>
           <th class="summary-table-th text-white">Correct</th>
+          <th class="summary-table-th text-white">Inorrect</th>
+          <th class="summary-table-th text-white">Score</th>
           <th class="summary-table-th text-white">Total Time Spent</th>
         </tr>
-        <tr>
-          <td class="summary-table-td">Genereal</td>
-          <td class="summary-table-td"><%= @response[:exam].no_of_questions %></td>
-          <td class="summary-table-td"><%= @response[:student_exam].student_exam_answers.count %></td>
-          <td class="summary-table-td"><%= @response[:exam].no_of_questions - @response[:student_exam].student_exam_answers.count %></td>
-          <td class="summary-table-td"><%= @response[:student_exam].correct_answers_count %></td></td>
-          <td class="summary-table-td"><%= distance_of_time_in_hours_and_minutes(@response[:student_exam].ended_at, @response[:student_exam].started_at) rescue "Not available" %></td>
-        </tr>
+        <% @student_exam_summaries.each do |student_exam_summary| %>
+          <tr>
+            <td class="summary-table-td">
+              <%= student_exam_summary.section.name %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.no_of_questions %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.answered %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.not_answered %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.correct %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.incorrect %>
+            </td>
+            <td class="summary-table-td">
+              <%= student_exam_summary.score %>
+            </td>
+            <td class="summary-table-td">
+              <%= distance_of_time_in_hours_and_minutes(@response[:student_exam].ended_at, @response[:student_exam].started_at) rescue "Not available" %>
+            </td>
+          </tr>
+        <% end %>
       </table>
     </div>
   <% end %>
@@ -32,7 +54,7 @@
       <%=  link_to  '<button class="btn btn-default">Continue</button>'.html_safe, students_tests_path %>
     </div>
     <div class="offset-1">
-      <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@response[:exam].id) %>
+      <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@exam_id) %>
     </div>
   </div>
 </div>
