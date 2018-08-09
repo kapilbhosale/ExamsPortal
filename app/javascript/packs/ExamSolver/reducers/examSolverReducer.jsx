@@ -18,6 +18,7 @@ export const $$initialState = Immutable.fromJS({
   },
   currentSection: null,
   loading: true,
+  navigationMapOpen: true,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -94,6 +95,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('currentSection', val);
     case actionTypes.LOADING:
       return $$state.set('loading', val);
+    case actionTypes.SET_NAVIGATION_MAP:
+      return $$state.set('navigationMapOpen', val);
     default:
       return $$state;
   }

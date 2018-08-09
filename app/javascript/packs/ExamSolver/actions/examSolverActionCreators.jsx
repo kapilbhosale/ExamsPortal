@@ -235,3 +235,10 @@ function getQuestionsCount(state) {
     }
   );
 }
+
+export function setNavigationMap(value) {
+  return {
+    type: actionTypes.SET_NAVIGATION_MAP,
+    val: value,
+  };
+}
