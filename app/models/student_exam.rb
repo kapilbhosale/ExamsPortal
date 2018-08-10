@@ -20,6 +20,7 @@ class StudentExam < ApplicationRecord
   belongs_to  :student
   belongs_to  :exam
   has_many :student_exam_answers
+  has_one :student_exam_summary
 
   def correct_answers_count
   	student_exam_answers.select do |sea|
