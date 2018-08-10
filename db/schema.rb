@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_09_103348) do
+ActiveRecord::Schema.define(version: 2018_08_09_120015) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -158,6 +158,21 @@ ActiveRecord::Schema.define(version: 2018_08_09_103348) do
     t.index ["option_id"], name: "index_student_exam_answers_on_option_id"
     t.index ["question_id"], name: "index_student_exam_answers_on_question_id"
     t.index ["student_exam_id"], name: "index_student_exam_answers_on_student_exam_id"
+  end
+
+  create_table "student_exam_summaries", force: :cascade do |t|
+    t.bigint "student_exam_id"
+    t.bigint "section_id"
+    t.integer "no_of_questions"
+    t.integer "answered"
+    t.integer "not_answered"
+    t.integer "correct"
+    t.integer "incorrect"
+    t.integer "score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
+    t.index ["student_exam_id"], name: "index_student_exam_summaries_on_student_exam_id"
   end
 
   create_table "student_exams", force: :cascade do |t|

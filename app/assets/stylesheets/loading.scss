@@ -1,0 +1,153 @@
+$smartexam-secondary: #999933;
+$smartexam-secondary-light: #a7bb65;
+$smartexam-secondary-lighter: #cad199;
+$smartexam-secondary-lightest: #e2e3c7;
+
+$smartexam-navy-blue: #548499;
+$smartexam-navy-blue-light: #73a3b4;
+$smartexam-navy-blue-lighter: #a0c7d3;
+$smartexam-navy-blue-lightest: #c6dadf;
+
+$smartexam-primary: #1a5c5e;
+$smartexam-primary-light: #21918e;
+$smartexam-primary-lighter: #7abdbd;
+
+$smartexam-blue: #0382d2;
+
+$smartexam-black: #1b1919;
+$smartexam-black-light: #343433;
+$smartexam-grey: #41454a;
+$smartexam-grey-light: #5b6b6f;
+$smartexam-grey-lighter: #8b9ca1;
+$smartexam-background: #f3f3f3;
+$smartexam-stroke-grey: #D7D7D7;
+
+$smartexam-accent: #df4943;
+$smartexam-accent-light: #e46b5c;
+$smartexam-accent-lighter: #ea9080;
+
+$white: #ffffff;
+
+.v-separator {
+  display: inline;
+  width: 0px;
+  border-right: 1px solid $smartexam-grey-lighter;
+}
+.v-separator-2 {
+  height: 30px;
+  margin-top: 10px;
+  display: inline;
+  width: 0px;
+  border-right: 1px solid $smartexam-grey-lighter;
+}
+.v-separator-border {
+  border-right: 1px solid $smartexam-grey-lighter;
+}
+.h-separator-border {
+  border-top: 1px solid $smartexam-grey-lighter;
+}
+.chevron-toggle {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'iconic-sm';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  &:before {
+    display: inline-block;
+    content:'\e155';
+  }
+}
+.open .chevron-toggle {
+  &:before {
+    content:'\e158';
+  }
+}
+.shell-left {
+ overflow: hidden;
+ &.width-closed {
+  padding: 0;
+ }
+}
+.shell-right {
+ overflow: hidden;
+ &.width-full {
+
+ }
+}
+.label-btn {
+ margin-top: -30px;
+}
+
+
+// Loading animation
+.loading-animation {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0;
+  li {
+    height: 0;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0;
+    margin: 0;
+    height: 10px;
+    width: 10px;
+    border: 3px solid $smartexam-secondary;
+    border-radius: 100%;
+    transform: transformZ(0);
+    animation: LOADING 2s infinite;
+    &:nth-child(1n) {
+      left: -20px;
+      animation-delay: 0s;
+    }
+    &:nth-child(2n) {
+      left: 0;
+      animation-delay: 0.2s;
+    }
+    &:nth-child(3n) {
+      left: 20px;
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+@keyframes  LOADING {
+  0%   {
+    transform: scale(0.5);
+    background: $smartexam-secondary;
+  }
+  50%   {
+    transform: scale(1);
+    background: white;
+  }
+  100% {
+    transform: scale(0.5);
+    background: $smartexam-secondary;
+  }
+}
+.fullscreen-table {
+  position: fixed;
+  width: 100%;
+  min-height: 100%;
+  top: 0;
+  background: white;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 15px;
+  z-index: 999;
+  overflow-y:scroll;
+}
+.full-vh {
+  min-height: 100vh;
+}
