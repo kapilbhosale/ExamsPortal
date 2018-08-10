@@ -10,12 +10,7 @@ export const $$initialState = Immutable.fromJS({
   modal: false,
   studentId: 0,
   sections: [],
-  questionsCountByStatus: {
-    answered: 0,
-    notVisited: 0,
-    notAnswered: 0,
-    marked: 0,
-  },
+  questionsCountByStatus: Immutable.fromJS({}),
   currentSection: null,
   loading: true,
   navigationMapOpen: false,
@@ -87,10 +82,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
     case actionTypes.SHOW_TIME_UP_MODAL:
       return $$state.set('modal', val);
     case actionTypes.UPDATE_QUESTIONS_COUNT:
-      return $$state.setIn(['questionsCountByStatus', 'answered'], val.questionCounts.answered)
-                    .setIn(['questionsCountByStatus', 'notVisited'], val.questionCounts.notVisited)
-                    .setIn(['questionsCountByStatus', 'notAnswered'], val.questionCounts.notAnswered)
-                    .setIn(['questionsCountByStatus', 'marked'], val.questionCounts.marked);
+      return $$state.set('questionsCountByStatus', Immutable.fromJS(val));
     case actionTypes.SECTION_CHANGED:
       return $$state.set('currentSection', val);
     case actionTypes.LOADING:

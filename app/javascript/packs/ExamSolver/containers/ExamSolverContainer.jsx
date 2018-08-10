@@ -66,12 +66,12 @@ class ExamSolverContainer extends Component {
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex').toJS();
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
-    const timeInMinutes = $$examSolverStore.get('timeInMinutes');
-    const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'answered']);
-    const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notAnswered']);
-    const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'marked']);
-    const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notVisited']);
     const currentSection = $$examSolverStore.get('currentSection');
+    const timeInMinutes = $$examSolverStore.get('timeInMinutes');
+    const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', currentSection, 'answered']);
+    const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notAnswered']);
+    const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'marked']);
+    const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
     const sections = $$examSolverStore.get('sections');
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
