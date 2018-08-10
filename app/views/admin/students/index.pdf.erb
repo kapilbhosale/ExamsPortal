@@ -1,16 +1,18 @@
 <div class="col-12">
-  <div class="card" style="border: none;">
-    <div class="card-header text-center">
-      <h4>Creative Coaching Classes</h4>
-      <p>'Sharda Bhavan', Shyam Nagar, Nanded</p>
+  <div>
+    <div class="card-header text-center border-0">
+      <h4 class="border-0"><%=  CLASS_NAME %></h4>
+      <p><%= CLASS_ADDRESS %></p>
     </div>
     <% if @students.present? %>
-      <table class="table table-bordered table-vcenter text-nowrap">
+      <table class="table table-vcenter text-nowrap">
         <thead>
           <tr>
             <th>Roll Number</th>
             <th>Batch(s)</th>
             <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
             <th>Parent Mobile</th>
           </tr>
         </thead>
@@ -18,9 +20,10 @@
           <% @students.each do |student| %>
             <tr>
               <td><%= student.roll_number %></td>
-              <td><%= student&.batches&.each&.map(&:name).join(', ') %>
-              </td>
+              <td><%= student&.batches&.each&.map(&:name).join(', ') %></td>
               <td><%= student.name %></td>
+              <td><%= link_to student.email, admin_student_path(student) %></td>
+              <td><%= student.raw_password %></td>
               <td><%= student.parent_mobile %></td>
             </tr>
           <% end %>
