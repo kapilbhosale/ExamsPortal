@@ -17,6 +17,7 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Batch(es)</th>
                 <th>Description</th>
                 <th>Question</th>
                 <th>Added Ques</th>
@@ -31,18 +32,19 @@
                 <% @exams.each do |exam| %>
                   <tr>
                     <td class="text-truncate"><%= link_to exam.name, admin_exam_path(exam.id) %></td>
+                    <td class="text-truncate"><%= exam&.batches&.each&.map(&:name).join(', ') %>
+                      </td>
                     <td class="text-truncate"><%= exam.description %> ...</td>
                     <td><%= exam.no_of_questions %></td>
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
                     <td class="text-center">
-                      <label><input type="checkbox" value="<%= exam.publish_result ? 'checked' : '' %>"></label>
+                      <%= check_box_tag :publish_result, 'true', false, 'data-toggle': "modal", 'data-target': '#publishResultModal', checked: exam.publish_result, disabled: true %>
                     </td>
                     <td>
-                      <%= button_to admin_exam_path(exam), method: :delete do %>
-                        <span class="glyphicon glyphicon-trash"></span>
-                      <% end %>
+                      <%= link_to '', edit_admin_exam_path(exam.id), remote: true, class: 'glyphicon glyphicon-pencil'%> &nbsp;
+                      <%= link_to '', admin_exam_path(exam), method: :delete, data: {confirm: 'Are you sure?'}, remote: true, class: 'glyphicon glyphicon-trash'%>
                     </td>
                   </tr>
                 <% end %>
@@ -60,3 +62,4 @@
 </div>
 
 <%= render partial: 'admin/exams/new' %>
+<%= render partial: 'admin/exams/publish_exam_modal' %>

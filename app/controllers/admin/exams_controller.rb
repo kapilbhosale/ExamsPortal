@@ -5,10 +5,11 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def new
+    @batches = Batch.all_batches
   end
 
   def create
-    @response = Exams::AddExamService.new(params).create
+    @response = Exams::AddExamService.new(params, params[:exam][:batches]).create
     set_flash
     if @response[:status]
       redirect_to admin_exams_path
@@ -37,6 +38,18 @@ class Admin::ExamsController < Admin::BaseController
     set_flash
     redirect_to admin_exams_path
   end
+
+  def edit
+    @exam = Exam.find_by(id: params[:id])
+    @batches = Batch.all_batches
+  end
+
+  def update
+    @response = Exams::UpdateExamService.new(params).update
+    set_flash
+    redirect_to admin_exams_path
+  end
+
   private
 
   def sections

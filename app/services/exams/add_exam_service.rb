@@ -2,10 +2,11 @@ class AddExamError < StandardError; end
 
 module Exams
   class AddExamService
-    attr_reader :params, :name
-    def initialize(params)
+    attr_reader :params, :name, :batch_ids
+    def initialize(params, batches)
       @params = params
       @name = params[:name]
+      @batch_ids = batches
     end
 
     def create
@@ -13,6 +14,7 @@ module Exams
 
       ActiveRecord::Base.transaction do
         @exam = Exam.new(exam_params)
+        build_batches
         if @exam.save!
           params[:questions_zip].each do |section_id, zip_file|
             Exams::Upload.new(@exam, zip_file.tempfile, section_id).call
@@ -42,6 +44,12 @@ module Exams
                     :time_in_minutes,
                     :publish_result,
                     :questions_zip)
+    end
+
+    def build_batches
+      @batch_ids&.each do |batch|
+        @exam.exam_batches.build(exam_id: @exam.id, batch_id: batch.to_i)
+      end
     end
   end
 end

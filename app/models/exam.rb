@@ -26,5 +26,8 @@ class Exam < ApplicationRecord
   has_many :exam_sections, dependent: :destroy
   has_many :sections, through: :exam_sections, dependent: :destroy
 
+  has_many :exam_batches
+  has_many :batches, through: :exam_batches
+
   # has_one :style, as: :component, dependent: :destroy
 end

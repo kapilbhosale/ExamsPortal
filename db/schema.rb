@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(version: 2018_08_09_120015) do
     t.index ["subject_id"], name: "index_concepts_on_subject_id"
   end
 
+  create_table "exam_batches", force: :cascade do |t|
+    t.bigint "exam_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_exam_batches_on_batch_id"
+    t.index ["exam_id"], name: "index_exam_batches_on_exam_id"
+  end
+
   create_table "exam_questions", force: :cascade do |t|
     t.bigint "exam_id"
     t.bigint "question_id"
