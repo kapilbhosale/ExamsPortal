@@ -42,6 +42,12 @@ class Admin::ExamsController < Admin::BaseController
   def edit
     @exam = Exam.find_by(id: params[:id])
     @batches = Batch.all_batches
+    respond_to do |format|
+      format.html do
+      end
+      format.js do
+      end
+    end
   end
 
   def update

@@ -10,16 +10,17 @@ module Reports
 
     def prepare_report
       validate_request
-      @search = StudentExam.where(exam_id: exam_id).search(q)
-      @student_exams = @search.result
-      @student_exams_hash = @student_exams.each.map{|student_exam| {roll_number: student_exam.student.roll_number,
-                                  name: student_exam.student.name,
-                                  marks: student_exam.correct_answers_count,
-                                  correct: student_exam.correct_answers_count,
-                                  wrong: student_exam.exam.no_of_questions - student_exam.correct_answers_count
+      @search = StudentExam.where(exam_id: exam_id).joins(:student_exam_summary).search(q)
+      student_exam_summaries = @search.result
+      @student_exam_summaries_hash = student_exam_summaries.each.map{|student_exam_summary| {
+                                  roll_number: student_exam_summary.student.roll_number,
+                                  name: student_exam_summary.student.name,
+                                  score: student_exam_summary.student_exam_summary.score,
+                                  correct: student_exam_summary.student_exam_summary.correct,
+                                  incorrect: student_exam_summary.student_exam_summary.incorrect
                                   }}
       append_student_ranks
-      return {status: true, message: nil, search: @search, student_exams_hash: @student_exams_hash}
+      return {status: true, message: nil, search: @search, student_exam_summaries_hash: @student_exam_summaries_hash}
     rescue ShowExamReportError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
     end
@@ -35,9 +36,9 @@ module Reports
     end
 
     def append_student_ranks
-      @student_exams_hash.sort_by{|h| -h[:marks]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
+      @student_exam_summaries_hash.sort_by{|h| -h[:score]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
       if q.present? && q[:s] == 'rank asc'
-        @student_exams_hash.reverse!
+        @student_exam_summaries_hash.reverse!
       end
     end
   end

@@ -5,38 +5,44 @@
         <h5>Exam Reports</h5>
       </div>
       <div class="card-body">
-        <div class="col-12 text-right">
-          <button class="btn btn-danger clearfix">
-            <span class="fa fa-file-pdf-o"></span>
-            <%= link_to 'Download PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
-          </button>
+        <% if @response[:status] %>
+          <div class="col-12 text-right">
+            <button class="btn btn-danger clearfix">
+              <span class="fa fa-file-pdf-o"></span>
+              <%= link_to 'Download PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
+            </button>
+          </div>
+          <div class="col-12">
+            <table id="exportTable" class="table table-striped">
+              <thead>
+                <tr>
+                  <th><%= sort_link(@response[:search], :student_id) %></th>
+                  <th>StudentName</th>
+                  <th>Score</th>
+                  <th><%= sort_link(@response[:search], :rank) %></th>
+                  <th>Correct</th>
+                  <th>Wrong</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @response[:student_exam_summaries_hash].each do |student_exam_summary| %>
+                  <tr>
+                    <td><%= student_exam_summary[:roll_number] %></td>
+                    <td><%= student_exam_summary[:name] %></td>
+                    <td><%= student_exam_summary[:score] %></td>
+                    <td><%= student_exam_summary[:rank] %></td>
+                    <td><%= student_exam_summary[:correct] %></td>
+                    <td><%= student_exam_summary[:incorrect] %></td>
+                  </tr>
+                <% end  %>
+              </tbody>
+            </table>
         </div>
-        <div class="col-12">
-          <table id="exportTable" class="table table-striped">
-            <thead>
-              <tr>
-                <th><%= sort_link(@response[:search], :student_id) %></th>
-                <th>StudentName</th>
-                <th>Marks</th>
-                <th><%= sort_link(@response[:search], :rank) %></th>
-                <th>correct</th>
-                <th>wrong</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @response[:student_exams_hash].each do |student_exam| %>
-              <tr>
-                <td><%= student_exam[:roll_number] %></td>
-                <td><%= student_exam[:name] %></td>
-                <td><%=  student_exam[:marks] %></td>
-                <td><%=  student_exam[:rank]%></td>
-                <td><%=  student_exam[:correct]%></td>
-                <td><%=  student_exam[:wrong]%></td>
-              </tr>
-            <% end  %>
-            </tbody>
-          </table>
-        </div>
+        <% else %>
+          <div class="well text-center">
+            Nothing here yet. Seems no results are present.
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
