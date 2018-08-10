@@ -212,31 +212,37 @@ function getQuestionsCount(state) {
   const currentSection = store.get('currentSection');
   const sections = store.get('questionsBySections')
   let sectionwiseCount = {};
-    sections.forEach((questions, section_name) => {
-      let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
-      questions.toJS().forEach((question) => {
-        const answer_props = question.answerProps;
-        if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
-          notAnswered = notAnswered + 1;
-        }
-        if (!answer_props.visited) {
-          notVisited = notVisited + 1;
-        }
-        if (answer_props.isAnswered) {
-          answered = answered + 1;
-        }
-        if (question.answerProps.needReview) {
-          marked = marked + 1;
-        }
-      })
-      sectionwiseCount[section_name] = {
-        answered: answered,
-        notAnswered: notAnswered,
-        marked: marked,
-        notVisited: notVisited
-      };
-    })
+  sections.forEach((questions, section_name) => {
+    sectionwiseCount[section_name] = questionsCountByCategory(questions.toJS());
+  })
   return (sectionwiseCount);
+}
+
+function questionsCountByCategory(questions) {
+  let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
+  questions.forEach((question) => {
+    const answer_props = question.answerProps;
+    if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
+      notAnswered = notAnswered + 1;
+    }
+    if (!answer_props.visited) {
+      notVisited = notVisited + 1;
+    }
+    if (answer_props.isAnswered) {
+      answered = answered + 1;
+    }
+    if (question.answerProps.needReview) {
+      marked = marked + 1;
+    }
+  })
+  return(
+    {
+      answered: answered,
+      notAnswered: notAnswered,
+      marked: marked,
+      notVisited: notVisited
+    }
+  )
 }
 
 export function setNavigationMap(value) {
