@@ -119,6 +119,7 @@ transform             : 'translate(-50%, -50%)'
               timeInMinutes={timeInMinutes}
               currentSection={currentSection}
               sections={sections}
+              isNavigationMapOpen={ isNavigationMapOpen }
               { ...this.actions() }
               />
             <ShellRight
