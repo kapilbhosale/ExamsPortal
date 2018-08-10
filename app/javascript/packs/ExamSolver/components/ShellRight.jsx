@@ -91,7 +91,7 @@ class ShellRight extends React.Component {
                 Navigation Map
               </div>
 
-              <div className='row'>
+              <div className='row' style={{ height: '70vh', overflow: 'scroll' }}>
               <div className='col-md-12'>
                 <div className="btn-toolbar form-group text-center" role="toolbar" aria-label="...">
                   {
