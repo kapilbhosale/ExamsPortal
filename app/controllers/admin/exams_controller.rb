@@ -9,11 +9,12 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def create
-    @response = Exams::AddExamService.new(params, params[:exam][:batches]).create
+    @response = Exams::AddExamService.new(params).create
     set_flash
     if @response[:status]
       redirect_to admin_exams_path
     else
+      @batches = Batch.all_batches
       render 'new'
     end
   end
