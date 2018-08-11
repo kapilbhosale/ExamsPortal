@@ -19,6 +19,12 @@ class Students::HomeController < Students::BaseController
   end
 
   def exam
+    exam = Exam.find_by(id: params[:id])
+    redirect_to root_path unless exam
+    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: exam.id)
+    if student_exam&.ended_at
+      redirect_to "/students/summary/#{exam.id}"
+    end
   end
 
   def instructions
@@ -61,6 +67,7 @@ class Students::HomeController < Students::BaseController
   def submit
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     render :ok unless student_exam
+    redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
     student_exam.update!(ended_at: Time.current)
     StudentExamScoreCalculator.new(student_exam.id).calculate
   end
@@ -72,7 +79,7 @@ class Students::HomeController < Students::BaseController
 
     student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
     unless student_exam
-    	student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
+      student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
     end
 
     indexed_questions = exam.questions.includes(:section).index_by(&:id)
