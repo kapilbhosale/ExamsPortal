@@ -1,7 +1,13 @@
 <div class="container">
   <div class="row text-center">
+    <br/><br/>
     <div class="col-md-12">
-      <h6>Summary of section(s) answered &nbsp;</h6>
+      <h4>
+      Total time spent: <%= distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available" %>
+      </h4>
+    </div>
+    <div class="col-md-12">
+        <h6>summary of section(s) answered &nbsp;</h6>
     </div>
     <div class="col-md-12 text-muted">Your answers have been saved successfully.</div>
   </div>
@@ -18,7 +24,6 @@
               <th class="summary-table-th text-white">Correct</th>
               <th class="summary-table-th text-white">Inorrect</th>
               <th class="summary-table-th text-white">Score</th>
-              <th class="summary-table-th text-white">Total Time Spent</th>
             </tr>
             <% @student_exam_summaries.each do |student_exam_summary| %>
               <tr>
@@ -42,9 +47,6 @@
                 </td>
                 <td class="summary-table-td">
                   <%= student_exam_summary.score %>
-                </td>
-                <td class="summary-table-td">
-                  <%= distance_of_time_in_hours_and_minutes(@response[:student_exam].ended_at, @response[:student_exam].started_at) rescue "Not available" %>
                 </td>
               </tr>
             <% end %>
