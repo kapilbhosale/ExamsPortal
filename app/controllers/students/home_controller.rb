@@ -8,9 +8,13 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-    @exams = Exam.order(created_at: :desc).all
     if current_student
+      batch_ids = current_student.batches.map(&:id)
+      exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
+      @exams = Exam.where(id: exam_ids).order(created_at: :desc)
       @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
+    else
+      @exams = Exam.order(created_at: :desc).all
     end
   end
 
