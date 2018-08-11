@@ -183,12 +183,12 @@ export function initialize() {
         } else {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
           let questionCounts = {};
-          data.toJS().sections.forEach((section) => {
+          data.sections.forEach((section) => {
             questionCounts[section] = {
               answered: 0,
               notAnswered: 0,
               marked: 0,
-              notVisited: data.questions ? data.questions.length : 0,
+              notVisited: data.questionsBySections[section] ? data.questionsBySections[section].length : 0,
             }
           });
           dispatch(updateQuestionsCount(questionCounts));
