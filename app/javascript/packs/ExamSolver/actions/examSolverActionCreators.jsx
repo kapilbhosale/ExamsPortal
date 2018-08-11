@@ -118,7 +118,7 @@ export function submitTest() {
 export function syncAnswers() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    // console.log(store.get('questions').toJS());
+    localStorage.clear();
     localStorage.setItem(`${store.get('studentId')}-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
   }
 }
@@ -182,12 +182,15 @@ export function initialize() {
           dispatch(loading(false));
         } else {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
-          const questionCounts = {
-            answered: 0,
-            notAnswered: 0,
-            marked: 0,
-            notVisited: data.questions ? data.questions.length : 0,
-          }
+          let questionCounts = {};
+          data.toJS().sections.forEach((section) => {
+            questionCounts[section] = {
+              answered: 0,
+              notAnswered: 0,
+              marked: 0,
+              notVisited: data.questions ? data.questions.length : 0,
+            }
+          });
           dispatch(updateQuestionsCount(questionCounts));
           dispatch(loading(false));
         }
@@ -196,10 +199,10 @@ export function initialize() {
   };
 }
 
-export function updateQuestionsCount(questionCounts) {
+export function updateQuestionsCount(sectionQuestionsCount) {
   return {
     type: actionTypes.UPDATE_QUESTIONS_COUNT,
-    val: { questionCounts: questionCounts },
+    val: sectionQuestionsCount,
   };
 }
 
@@ -207,33 +210,39 @@ function getQuestionsCount(state) {
   const { $$examSolverStore } = state;
   const store = $$examSolverStore;
   const currentSection = store.get('currentSection');
-  const questions = store.get('questionsBySections').toJS()[currentSection];
+  const sections = store.get('questionsBySections')
+  let sectionwiseCount = {};
+  sections.forEach((questions, section_name) => {
+    sectionwiseCount[section_name] = questionsCountByCategory(questions.toJS());
+  })
+  return (sectionwiseCount);
+}
+
+function questionsCountByCategory(questions) {
   let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
-  if (questions.length > 0) {
-    questions.map((question) => {
-      const answer_props = question.answerProps;
-      if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
-        notAnswered = notAnswered + 1;
-      }
-      if (!answer_props.visited) {
-        notVisited = notVisited + 1;
-      }
-      if (answer_props.isAnswered) {
-        answered = answered + 1;
-      }
-      if (question.answerProps.needReview) {
-        marked = marked + 1;
-      }
-    })
-  }
-  return (
+  questions.forEach((question) => {
+    const answer_props = question.answerProps;
+    if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
+      notAnswered = notAnswered + 1;
+    }
+    if (!answer_props.visited) {
+      notVisited = notVisited + 1;
+    }
+    if (answer_props.isAnswered) {
+      answered = answered + 1;
+    }
+    if (question.answerProps.needReview) {
+      marked = marked + 1;
+    }
+  })
+  return(
     {
       answered: answered,
       notAnswered: notAnswered,
       marked: marked,
       notVisited: notVisited
     }
-  );
+  )
 }
 
 export function setNavigationMap(value) {
