@@ -20,4 +20,11 @@ class StudentExamAnswer < ApplicationRecord
 	belongs_to :student_exam
 	belongs_to :option
 	belongs_to :question
+  include BulkCreator
+
+  ATTRIBUTE_NAMES = ["question_id", "option_id", "student_exam_id"].freeze
+
+  def self.bulk_insert_columns
+    ATTRIBUTE_NAMES
+  end
 end
