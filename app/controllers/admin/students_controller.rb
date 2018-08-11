@@ -8,6 +8,7 @@ class Admin::StudentsController < Admin::BaseController
       format.html do
       end
       format.pdf do
+        @students = @search.result
         render pdf: "student information",
                template: "admin/students/index.pdf.erb",
                locals: {students: @students},
