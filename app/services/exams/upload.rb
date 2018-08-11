@@ -9,6 +9,7 @@ module Exams
       @exam = exam
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
+      @path = "exam_#{exam.id}_#{section_id}"
     end
 
     def call
@@ -30,7 +31,7 @@ module Exams
     def extract_zip
       zip_name = "zip_#{Time.now.to_i}"
       zip_file_path = "#{Rails.root}/tmp/#{zip_name}.zip"
-      @tmp_dir_path = "#{Rails.root}/tmp/zip_data/#{exam.id}/"
+      @tmp_dir_path = "#{Rails.root}/tmp/zip_data/#{@path}/"
       FileUtils.mv tmp_zip_file, zip_file_path
 
       Zip::ZipFile.open(zip_file_path) { |zip_file|
@@ -48,7 +49,7 @@ module Exams
 
     def upload_images_folder
       images_folder = "#{@tmp_dir_path}/images"
-      uploader = Exams::S3FolderUpload.new(images_folder, "exam#{exam.id}/images")
+      uploader = Exams::S3FolderUpload.new(images_folder, "#{@path}/images")
       uploader.upload!
     end
 
@@ -125,7 +126,7 @@ module Exams
     end
 
     def replace_local_img_with_s3(html_code)
-      s3_path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/exam#{exam.id}/images/"
+      s3_path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/#{@path}/images/"
       html_code.gsub('images/', s3_path_to_replace)
     end
 
