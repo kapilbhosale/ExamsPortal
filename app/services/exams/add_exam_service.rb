@@ -3,15 +3,14 @@ class AddExamError < StandardError; end
 module Exams
   class AddExamService
     attr_reader :params, :name, :batch_ids
-    def initialize(params, batches)
+    def initialize(params)
       @params = params
       @name = params[:name]
-      @batch_ids = batches
     end
 
     def create
       validate_request
-
+      @batch_ids = params[:exam][:batches]
       ActiveRecord::Base.transaction do
         @exam = Exam.new(exam_params)
         build_batches
@@ -31,6 +30,8 @@ module Exams
     def validate_request
       raise AddExamError, 'Name must be present' if name.nil?
       raise AddExamError, 'Name already taken' if name_already_taken?
+      raise AddExamError, 'Select ZIP file to upload questions' if params[:questions_zip].nil?
+      raise AddExamError, 'At least one batch must be selected' if params[:exam].nil?
     end
 
     def name_already_taken?

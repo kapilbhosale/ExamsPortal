@@ -51,7 +51,7 @@ class ExamSolverContainer extends Component {
       mobile: 575,
     };
     if ($win.width() < MEDIAQUERY.mobile) {
-      setNavigationMap(false);
+      this.actions().setNavigationMap(false);
     }
     this.actions();
   }
@@ -66,12 +66,12 @@ class ExamSolverContainer extends Component {
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex').toJS();
     const totalQuestions = $$examSolverStore.get('totalQuestions');
     const startedAt = $$examSolverStore.get('startedAt');
-    const timeInMinutes = $$examSolverStore.get('timeInMinutes');
-    const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'answered']);
-    const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notAnswered']);
-    const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'marked']);
-    const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus', 'notVisited']);
     const currentSection = $$examSolverStore.get('currentSection');
+    const timeInMinutes = $$examSolverStore.get('timeInMinutes');
+    const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', currentSection, 'answered']);
+    const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notAnswered']);
+    const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'marked']);
+    const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
     const sections = $$examSolverStore.get('sections');
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
@@ -119,6 +119,7 @@ transform             : 'translate(-50%, -50%)'
               timeInMinutes={timeInMinutes}
               currentSection={currentSection}
               sections={sections}
+              isNavigationMapOpen={ isNavigationMapOpen }
               { ...this.actions() }
               />
             <ShellRight

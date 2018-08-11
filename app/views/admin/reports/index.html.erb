@@ -17,7 +17,6 @@
               <th>Added Ques</th>
               <th>Time</th>
               <th>Added on</th>
-              <th>status</th>
               <th>Reports</th>
             </tr>
             </thead>
@@ -31,7 +30,6 @@
                     <td><%= exam.questions.count %></td>
                     <td><%= exam.time_in_minutes %> mins</td>
                     <td><%= exam.created_at.to_date %></td>
-                    <td><%= exam.published %></td>
                     <td class="text-center">
                       &nbsp;
                       <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>

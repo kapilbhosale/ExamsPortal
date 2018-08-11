@@ -2,7 +2,7 @@
   <h4> Available Exams </h4>
   <hr>
     <% if @exams.size == 0 %>
-      <p> No exams available right now. Please try after some time. </p>
+      <div class="well"> No exams available for your batch right now. Please try after some time. </div>
     <% else %>
       <div class="row">
       <% @exams.each do |exam| %>

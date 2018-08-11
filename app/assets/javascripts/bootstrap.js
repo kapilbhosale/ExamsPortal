@@ -1,5 +1,4 @@
-var $j = jQuery.noConflict();
-$j(function() {
-  $j("a[rel~=popover], .has-popover").popover();
-  $j("a[rel~=tooltip], .has-tooltip").tooltip();
+$(function() {
+  $("a[rel~=popover], .has-popover").popover();
+  $("a[rel~=tooltip], .has-tooltip").tooltip();
 });
