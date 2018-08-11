@@ -97,7 +97,7 @@ batch_D = [
 
 batch_D.each do |row|
   data = row.split(',')
-  email = "#{data[0]}@se.com}"
+  email = "#{data[0]}@se.com"
   student = Student.find_or_initialize_by(email: email)
   student.roll_number = data[0]
   student.password = ('0'..'9').to_a.shuffle.first(6).join
