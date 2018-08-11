@@ -13,7 +13,7 @@ export const $$initialState = Immutable.fromJS({
   questionsCountByStatus: Immutable.fromJS({}),
   currentSection: null,
   loading: true,
-  navigationMapOpen: false,
+  navigationMapOpen: true,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {

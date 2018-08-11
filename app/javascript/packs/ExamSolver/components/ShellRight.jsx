@@ -85,7 +85,7 @@ class ShellRight extends React.Component {
                   >
                 </span>
               </div>
-              <div className='row margin-bottom-20'>
+              <div className='row margin-bottom-20 padding-top-20'>
                 <div className='col-md-6'>
                   <span className="label label-default label-sm margin-5">
                     { `Not visited (${notVisitedQuestions})`}
