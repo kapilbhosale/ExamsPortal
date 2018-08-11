@@ -11,6 +11,7 @@
     </div>
     <div class="col-md-12 text-muted">Your answers have been saved successfully.</div>
   </div>
+  <% total_score = 0 %>
   <div class="row">
     <div class="mx-auto">
       <% if @student_exam %>
@@ -46,6 +47,7 @@
                   <%= student_exam_summary.incorrect %>
                 </td>
                 <td class="summary-table-td">
+                  <% total_score += student_exam_summary.score %>
                   <%= student_exam_summary.score %>
                 </td>
               </tr>
@@ -53,10 +55,15 @@
           </table>
         </div>
       <% end %>
+      <br />
+      <div class="col-md-12 text-right">
+          <h4>
+              Total Score: <%= total_score %>
+          </h4>
+      </div>
+      <br /> <br />
       <div class="text-right">
         <%=  link_to  '<button class="btn btn-success">Continue</button>'.html_safe, students_tests_path %>
         <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@exam_id) %>
-      </div>
     </div>
-  </div>
-</div>
+   </div>
