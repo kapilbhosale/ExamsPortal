@@ -129,7 +129,9 @@ batch_A.each do |row|
   email = "#{data[0]}@se.com"
   student = Student.find_or_initialize_by(email: email)
   student.roll_number = data[0]
-  student.password = ('0'..'9').to_a.shuffle.first(6).join
+  rand_password = ('0'..'9').to_a.shuffle.first(6).join
+  student.password = rand_password
+  student.raw_password = rand_password
   student.name = data[1]
   student.gender = data[2].downcase == 'male' ? 0 : 1
   student.parent_mobile = data[3] || ('0'..'9').to_a.shuffle.first(10).join

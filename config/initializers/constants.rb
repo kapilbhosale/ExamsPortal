@@ -1,3 +1,3 @@
 ITEMS_PER_PAGE = 10
-CLASS_NAME = 'Creative Coaching Classes'
-CLASS_ADDRESS = '\'Sharda Bhavan\', Shyam Nagar, Nanded'
+CLASS_NAME = 'cr'
+CLASS_ADDRESS = '\'Barshi Road\', Latur'
