@@ -63,9 +63,9 @@ class Students::HomeController < Students::BaseController
         end
       end
   	end
-    StudentExamAnswer.bulk_create(StudentExamAnswer.bulk_insert_columns, values, student_exam.id)
+    StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
   rescue StandardError => e
-    Rails.logger.error("#{e.message} Student_id: #{current_student.id} exam_id: #{params[:exam_id]}")
+    Rails.logger.error("#{e.message} Student_id: #{current_student.id} exam_id: #{params}")
   end
 
   def submit
@@ -151,5 +151,9 @@ class Students::HomeController < Students::BaseController
       :address,
       :college,
       :photo)
+  end
+
+  def student_exam_answer_columns
+    ["question_id", "option_id", "student_exam_id"]
   end
 end
