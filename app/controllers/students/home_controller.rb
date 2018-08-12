@@ -99,7 +99,7 @@ class Students::HomeController < Students::BaseController
     end
 
     questions_by_sections = {}
-    questions.each do |question|
+    questions.shuffle.each do |question|
       db_question = indexed_questions[question[:id]]
       questions_by_sections[db_question.section.name] ||= []
       questions_by_sections[db_question.section.name] << question
