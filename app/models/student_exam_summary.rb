@@ -23,4 +23,6 @@
 class StudentExamSummary < ApplicationRecord
   belongs_to :section
   belongs_to :student_exam
+
+  validates :student_exam_id, uniqueness: true
 end
