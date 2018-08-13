@@ -42,16 +42,16 @@
       <div class="col-lg order-lg-first">
         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-users"></i> Students'.html_safe, admin_students_path, class: 'nav-link' %>
+            <%= link_to '<i class="fe fe-users"></i> Students'.html_safe, admin_students_path, class: 'nav-link', remote: true %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-list"></i> Batches'.html_safe, admin_batches_path, class: 'nav-link' %>
+            <%= link_to '<i class="fe fe-list"></i> Batches'.html_safe, admin_batches_path, class: 'nav-link', remote: true %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-bar-chart-2"></i> Reports'.html_safe, admin_reports_path, class: 'nav-link' %>
+            <%= link_to '<i class="fe fe-bar-chart-2"></i> Reports'.html_safe, admin_reports_path, class: 'nav-link', remote: true %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-monitor"></i> Exams'.html_safe, admin_exams_path, class: 'nav-link' %>
+            <%= link_to '<i class="fe fe-monitor"></i> Exams'.html_safe, admin_exams_path, class: 'nav-link active', remote: true %>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link"><i class="fe fe-folder"></i> Question Bank</a>
@@ -61,3 +61,11 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $(".nav-item .nav-link").on("click", function(){
+      $(".nav-item").find(".active").removeClass("active");
+      $(this).addClass("active");
+    });
+  });
+</script>
