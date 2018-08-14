@@ -1,7 +1,7 @@
 class Admin::ExamsController < Admin::BaseController
   before_action :sections, only: [:new, :create]
   def index
-    @exams = Exam.all.order(id: :desc)
+    @exams = Exam.includes(exam_batches: :batch).includes(:batches).all.order(id: :desc)
   end
 
   def new
