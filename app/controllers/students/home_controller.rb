@@ -65,7 +65,7 @@ class Students::HomeController < Students::BaseController
   	end
     StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
   rescue StandardError => e
-    Rails.logger.error("#{e.message} Student_id: #{current_student.id} exam_id: #{params}")
+    Rails.logger.error("#{e.message} Student_id: #{current_student.id} params: #{params}")
   end
 
   def submit
