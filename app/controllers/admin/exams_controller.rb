@@ -1,7 +1,7 @@
 class Admin::ExamsController < Admin::BaseController
   before_action :sections, only: [:new, :create]
   def index
-    @exams = Exam.includes(exam_batches: :batch).includes(:batches).all.order(id: :desc)
+    @exams = Exam.includes(exam_batches: :batch).includes(:batches).order(id: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
   end
 
   def new
@@ -20,7 +20,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def show
-    exam = Exam.find_by(id: params[:id])
+    exam = Exam.includes(questions: :options).find_by(id: params[:id])
     if exam.present?
       @questions_by_section = exam.questions.group_by(&:section_id)
       @sections_by_id = Section.all.index_by(&:id)
