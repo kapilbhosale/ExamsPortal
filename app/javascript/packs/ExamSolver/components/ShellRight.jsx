@@ -34,7 +34,8 @@ class ShellRight extends React.Component {
       markedQuestions,
       notVisitedQuestions,
       setNavigationMap,
-      isNavigationMapOpen } = this.props;
+      isNavigationMapOpen,
+      toggleTestSubmitModal } = this.props;
     const closeNav = () => {
       setNavigationMap(false);
       document.getElementById("mySidenav").style.width = "0";
@@ -157,7 +158,7 @@ class ShellRight extends React.Component {
 
                 <div className='row'>
                   <div className='col-md-12 submit-exam'>
-                    <button type="button" className="btn btn-block btn-success" onClick={ () => { submitTest() }}>
+                    <button type="button" className="btn btn-block btn-success" onClick={ () => { toggleTestSubmitModal(true) }}>
                       Submit Test
                     </button>
                   </div>

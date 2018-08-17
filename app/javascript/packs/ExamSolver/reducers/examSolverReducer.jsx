@@ -14,6 +14,7 @@ export const $$initialState = Immutable.fromJS({
   currentSection: null,
   loading: true,
   navigationMapOpen: true,
+  isTestSubmitModalOpen: false,
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -89,6 +90,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('loading', val);
     case actionTypes.SET_NAVIGATION_MAP:
       return $$state.set('navigationMapOpen', val);
+    case actionTypes.TOGGLE_TEST_SUBMIT_MODAL:
+      return $$state.set('isTestSubmitModalOpen', val);
     default:
       return $$state;
   }
