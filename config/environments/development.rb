@@ -79,11 +79,9 @@ Rails.application.configure do
     Bullet.rails_logger = true
     Bullet.rollbar = true
     Bullet.add_footer = true
-    Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
-    Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
   end
 
   Rollbar.configure do |config|
-    config.access_token = 'b0e0f01077814d6aa7b630f9716a8e9f'
+    config.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
   end
 end
