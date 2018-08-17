@@ -7,17 +7,15 @@ export default class TestSubmitModal extends React.Component {
     cancelHandler: PropTypes.func.isRequired,
     sectionWiseSummary: PropTypes.object,
     submitTest: PropTypes.func.isRequired,
+    isTestSubmitModalOpen: PropTypes.bool.isRequired,
   };
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const {
       cancelHandler,
       sectionWiseSummary,
       submitTest,
+      isTestSubmitModalOpen,
     } = this.props;
 
     const customStyles = {
@@ -35,17 +33,12 @@ export default class TestSubmitModal extends React.Component {
       },
     };
 
-    const showTestSummary = () => {
-      const summary = this.props.sectionWiseSummary;
-      debugger
-    }
-
     const renderTableHeaders = () => {
       const headersNames = ['Section Name', 'Answered', 'Not Answered'];
       const tableHeaders = headersNames.map((headersName) => {
         return (
-          <th key={ `${headersName}` }>
-            { `${ headersName }` }
+          <th key={ headersName }>
+            { headersName }
           </th>
         );
       });
@@ -61,7 +54,8 @@ export default class TestSubmitModal extends React.Component {
     const renderTableBody = () => {
       const summary = this.props.sectionWiseSummary;
       let tableDataRows = [];
-      let totalAnswered = 0, totalNotAnswered = 0;
+      let totalAnswered = 0;
+      let totalNotAnswered = 0;
       this.props.sectionWiseSummary.map((answerProps, section_name) => {
         totalAnswered = totalAnswered + answerProps.get('answered');
         const notAnswered = answerProps.get('notAnswered') + answerProps.get('marked') + answerProps.get('notVisited')
@@ -89,38 +83,41 @@ export default class TestSubmitModal extends React.Component {
     }
 
     return (
-      <Modal isOpen={ true } contentLabel='Close Call' style={ customStyles }>
-        <div className='padding-bottom-10 margin-left-30'>
-          <h1 className='text-red text-center'> Submit Exam </h1>
-        </div>
-        <div className='row'>
-          <div className='col-md-12'>
-            <div className="container">
-              <table className='table table-bordered'>
-                { renderTableHeaders() }
-                { renderTableBody() }
-              </table>
+      isTestSubmitModalOpen ?
+        <Modal isOpen={ true } contentLabel='Close Call' style={ customStyles }>
+          <div className='padding-bottom-10 margin-left-30'>
+            <h1 className='text-red text-center'> Submit Exam </h1>
+          </div>
+          <div className='row'>
+            <div className='col-md-12'>
+              <div className="container">
+                <table className='table table-bordered'>
+                  { renderTableHeaders() }
+                  { renderTableBody() }
+                </table>
+              </div>
             </div>
           </div>
-        </div>
-        <div className='row'>
-          <div className='col-md-12 mt-1 mb-3'>
-            Still, do you want to submit exam?
+          <div className='row'>
+            <div className='col-md-12 mt-1 mb-3'>
+              Still, do you want to submit exam?
+            </div>
           </div>
-        </div>
-        <div className='text-center'>
-          <button className='btn btn-info' onClick={ this.props.cancelHandler }>
-            Cancel
-          </button>
-          &nbsp;
-          <button
-            className='btn btn-danger'
-             onClick={ () => { submitTest() } }
-          >
-            Submit Test
-          </button>
-        </div>
-      </Modal>
+          <div className='text-center'>
+            <button className='btn btn-info' onClick={ this.props.cancelHandler }>
+              Cancel
+            </button>
+            &nbsp;
+            <button
+              className='btn btn-danger'
+               onClick={ () => { submitTest() } }
+            >
+              Submit Test
+            </button>
+          </div>
+        </Modal>
+        :
+        null
     );
   }
 }

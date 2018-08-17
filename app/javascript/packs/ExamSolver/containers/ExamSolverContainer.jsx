@@ -89,16 +89,7 @@ class ExamSolverContainer extends Component {
     transform             : 'translate(-50%, -50%)'
     }
     };
-    const renderTestSubmitModal = () => {
-      if (!isTestSubmitModalOpen) { return null; }
-      return (
-        <TestSubmitModal
-          cancelHandler={ () => { this.actions().toggleTestSubmitModal(null); } }
-          sectionWiseSummary={ sectionWiseSummary }
-          submitTest={ this.actions().submitTest }
-        />
-      );
-    };
+
     const actions = this.actions();
     if (loading) {
       return <LoadingAnimation height="700px" />;
@@ -118,7 +109,7 @@ class ExamSolverContainer extends Component {
             <div className="text-center">
               <button
                 className="btn btn-default btn-primary"
-                onClick={ this.actions().submitTest }
+                onClick={ actions.submitTest }
                 >
                 OK
               </button>
@@ -177,7 +168,12 @@ class ExamSolverContainer extends Component {
               </div>
             </div>
           </div>
-          { renderTestSubmitModal() }
+          <TestSubmitModal
+            cancelHandler={ () => { actions.toggleTestSubmitModal(false); } }
+            sectionWiseSummary={ sectionWiseSummary }
+            submitTest={ actions.submitTest }
+            isTestSubmitModalOpen={ isTestSubmitModalOpen }
+          />
 	</div>
       );
     }
