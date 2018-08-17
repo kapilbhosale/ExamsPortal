@@ -64,20 +64,21 @@ export default class TestSubmitModal extends React.Component {
       let totalAnswered = 0, totalNotAnswered = 0;
       this.props.sectionWiseSummary.map((answerProps, section_name) => {
         totalAnswered = totalAnswered + answerProps.get('answered');
-        totalNotAnswered = totalNotAnswered + answerProps.get('notAnswered');
+        const notAnswered = answerProps.get('notAnswered') + answerProps.get('marked') + answerProps.get('notVisited')
+        totalNotAnswered = totalNotAnswered + notAnswered;
         tableDataRows.push(
           <tr key={ `data_row_${ section_name }` }>
             <td> { section_name } </td>
-            <td> { answerProps.get('answered') } </td>
-            <td> { answerProps.get('notAnswered') } </td>
+            <td className='text-center'> { answerProps.get('answered') } </td>
+            <td className='text-center'> { notAnswered } </td>
           </tr>
         );
       });
       tableDataRows.push(
         <tr key={ `data_row_total` }>
-          <td> { 'Total' } </td>
-          <td> { totalAnswered } </td>
-          <td> { totalNotAnswered } </td>
+          <td className='text-right'> { 'Total' } </td>
+          <td className='text-center'> { totalAnswered } </td>
+          <td className='text-center'> { totalNotAnswered } </td>
         </tr>
       )
       return (
@@ -103,7 +104,9 @@ export default class TestSubmitModal extends React.Component {
           </div>
         </div>
         <div className='row'>
-          Still, do you want to submit exam?
+          <div className='col-md-12 mt-1 mb-3'>
+            Still, do you want to submit exam?
+          </div>
         </div>
         <div className='text-center'>
           <button className='btn btn-info' onClick={ this.props.cancelHandler }>
