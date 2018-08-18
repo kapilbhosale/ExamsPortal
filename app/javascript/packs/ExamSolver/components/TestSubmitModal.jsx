@@ -69,7 +69,7 @@ export default class TestSubmitModal extends React.Component {
         );
       });
       tableDataRows.push(
-        <tr key={ `data_row_total` }>
+        <tr>
           <td className='text-right'> { 'Total' } </td>
           <td className='text-center'> { totalAnswered } </td>
           <td className='text-center'> { totalNotAnswered } </td>
@@ -100,7 +100,7 @@ export default class TestSubmitModal extends React.Component {
           </div>
           <div className='row'>
             <div className='col-md-12 mt-1 mb-3'>
-              Still, do you want to submit exam?
+              Exam submitted once can not be undone. Still, do you want to submit exam?
             </div>
           </div>
           <div className='text-center'>
