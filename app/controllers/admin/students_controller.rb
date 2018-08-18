@@ -14,6 +14,9 @@ class Admin::StudentsController < Admin::BaseController
                locals: {students: @students},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
+      format.csv do
+        redirect_to admin_batches_path
+      end
     end
   end
 

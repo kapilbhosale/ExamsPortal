@@ -32,7 +32,11 @@
                     <th>Parent Mobile</th>
                     <th><button class="btn btn-danger clearfix btn-sm">
                           <span class="fa fa-file-pdf-o"></span>
-                          <%= link_to ' Download PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
+                          <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
+                        </button>
+                        <button class="btn btn-danger clearfix btn-sm">
+                          <span class="fa fa-file-pdf-o"></span>
+                          <%= link_to ' CSV'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
                         </button>
                     </th>
                   </tr>
