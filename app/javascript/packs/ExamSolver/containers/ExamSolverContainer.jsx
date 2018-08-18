@@ -76,6 +76,7 @@ class ExamSolverContainer extends Component {
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
     const isNavigationMapOpen = $$examSolverStore.get('navigationMapOpen');
+    const currentTime = $$examSolverStore.get('currentTime');
 const customStyles = {
 content : {
 top                   : '50%',
@@ -120,6 +121,7 @@ transform             : 'translate(-50%, -50%)'
               currentSection={currentSection}
               sections={sections}
               isNavigationMapOpen={ isNavigationMapOpen }
+              currentTime={ currentTime }
               { ...this.actions() }
               />
             <ShellRight

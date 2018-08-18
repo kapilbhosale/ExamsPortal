@@ -70,7 +70,7 @@ class Students::HomeController < Students::BaseController
 
   def submit
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    render :ok unless student_exam
+    head :ok unless student_exam
     redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
     student_exam.update!(ended_at: Time.current)
     StudentExamScoreCalculator.new(student_exam.id).calculate
@@ -115,6 +115,7 @@ class Students::HomeController < Students::BaseController
       questionsBySections: questions_by_sections,
       sections: questions_by_sections.keys,
       startedAt: student_exam.started_at,
+      currentTime: DateTime.current.iso8601,
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,
     }
