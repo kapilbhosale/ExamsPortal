@@ -93,6 +93,10 @@ class ExamSolverContainer extends Component {
     }
     };
 
+    const onFirstQuestion = () => {
+      return currentQuestionIndex[currentSection] === 0;
+    }
+
     const actions = this.actions();
     if (loading) {
       return <LoadingAnimation height="700px" />;
@@ -162,6 +166,7 @@ class ExamSolverContainer extends Component {
                   type="button"
                   className="btn btn-primary previous-btn margin-left-5"
                   onClick={ () => { actions.previousQuestion(currentQuestionIndex[currentSection]) } }
+                  disabled={ onFirstQuestion() }
                   >
                 </button>
                 <button
