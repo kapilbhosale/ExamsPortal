@@ -8,6 +8,7 @@ import * as examSolverActionCreators from '../actions/examSolverActionCreators';
 import ShellLeft from "../components/ShellLeft";
 import ShellRight from "../components/ShellRight";
 import LoadingAnimation from "../components/LoadingAnimation";
+import TestSubmitModal from "../components/TestSubmitModal";
 import Modal from 'react-modal';
 
 function select(state) {
@@ -77,16 +78,19 @@ class ExamSolverContainer extends Component {
     const loading = $$examSolverStore.get('loading');
     const isNavigationMapOpen = $$examSolverStore.get('navigationMapOpen');
     const currentTime = $$examSolverStore.get('currentTime');
-const customStyles = {
-content : {
-top                   : '50%',
-left                  : '50%',
-right                 : 'auto',
-bottom                : 'auto',
-marginRight           : '-50%',
-transform             : 'translate(-50%, -50%)'
-}
-};
+    const isTestSubmitModalOpen = $$examSolverStore.get('isTestSubmitModalOpen');
+    const sectionWiseSummary = $$examSolverStore.get('questionsCountByStatus');
+    const customStyles = {
+    content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+    }
+    };
+
     const actions = this.actions();
     if (loading) {
       return <LoadingAnimation height="700px" />;
@@ -106,7 +110,7 @@ transform             : 'translate(-50%, -50%)'
             <div className="text-center">
               <button
                 className="btn btn-default btn-primary"
-                onClick={ this.actions().submitTest }
+                onClick={ actions.submitTest }
                 >
                 OK
               </button>
@@ -166,6 +170,12 @@ transform             : 'translate(-50%, -50%)'
               </div>
             </div>
           </div>
+          <TestSubmitModal
+            cancelHandler={ () => { actions.toggleTestSubmitModal(false); } }
+            sectionWiseSummary={ sectionWiseSummary }
+            submitTest={ actions.submitTest }
+            isTestSubmitModalOpen={ isTestSubmitModalOpen }
+          />
 	</div>
       );
     }
