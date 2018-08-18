@@ -12,7 +12,7 @@ class ShellLeft extends React.Component {
   render() {
     const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
             submitTest, previousQuestion, startedAt, examFinished, timeInMinutes, timeIsUp, currentSection,
-            sections, changeSection, isNavigationMapOpen } = this.props;
+            sections, changeSection, isNavigationMapOpen, currentTime } = this.props;
     return (
       <div className={`${isNavigationMapOpen ? 'col-md-9' : 'full-width'}`}>
         <div className='row'>
@@ -27,6 +27,7 @@ class ShellLeft extends React.Component {
             sections={sections}
             currentSection={currentSection}
             changeSection={changeSection}
+            currentTime={ currentTime }
             />
           </div>
           <div className="col-md-12">

@@ -77,6 +77,7 @@ class ExamSolverContainer extends Component {
     const modal = $$examSolverStore.get('modal');
     const loading = $$examSolverStore.get('loading');
     const isNavigationMapOpen = $$examSolverStore.get('navigationMapOpen');
+    const currentTime = $$examSolverStore.get('currentTime');
     const isTestSubmitModalOpen = $$examSolverStore.get('isTestSubmitModalOpen');
     const sectionWiseSummary = $$examSolverStore.get('questionsCountByStatus');
     const customStyles = {
@@ -124,6 +125,7 @@ class ExamSolverContainer extends Component {
               currentSection={currentSection}
               sections={sections}
               isNavigationMapOpen={ isNavigationMapOpen }
+              currentTime={ currentTime }
               { ...this.actions() }
               />
             <ShellRight

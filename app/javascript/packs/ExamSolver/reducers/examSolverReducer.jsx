@@ -14,6 +14,7 @@ export const $$initialState = Immutable.fromJS({
   currentSection: null,
   loading: true,
   navigationMapOpen: true,
+  currentTime: new Date(),
   isTestSubmitModalOpen: false,
 });
 
