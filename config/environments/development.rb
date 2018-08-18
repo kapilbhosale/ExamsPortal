@@ -71,16 +71,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.alert = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-    Bullet.rails_logger = true
-    Bullet.rollbar = true
-    Bullet.add_footer = true
-  end
-
   Rollbar.configure do |config|
     config.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
   end

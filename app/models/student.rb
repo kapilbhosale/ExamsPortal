@@ -1,3 +1,4 @@
+require 'csv'
 # == Schema Information
 #
 # Table name: students
@@ -53,5 +54,21 @@ class Student < ApplicationRecord
 
   def self.suggest_roll_number
     self.last&.roll_number.to_i + 1
+  end
+
+  def self.to_csv
+    CSV.generate(headers: true) do |csv|
+      csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
+
+      Student.all.each do |student|
+        csv << [
+          student.roll_number,
+          student.name,
+          student.email,
+          student.raw_password,
+          student.batches.pluck(:name).join(' | ')
+        ]
+      end
+    end
   end
 end
