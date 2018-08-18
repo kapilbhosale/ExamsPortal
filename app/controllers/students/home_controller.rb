@@ -1,7 +1,7 @@
 class Students::HomeController < Students::BaseController
   before_action :authenticate_student!, except: [:tests]
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
-  layout 'student_exam_layout', only: [:index, :exam]
+  layout 'student_exam_layout', only: [:exam]
 
   def index
     @styles = ''
@@ -12,7 +12,7 @@ class Students::HomeController < Students::BaseController
       batch_ids = current_student.batches.map(&:id)
       exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
       @exams = Exam.where(id: exam_ids).order(created_at: :desc)
-      @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
+      @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
     else
       @exams = Exam.order(created_at: :desc).all
     end
