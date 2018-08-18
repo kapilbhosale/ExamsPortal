@@ -1,7 +1,7 @@
 class Students::HomeController < Students::BaseController
   before_action :authenticate_student!, except: [:tests]
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
-  layout 'student_exam_layout', only: [:index, :exam]
+  layout 'student_exam_layout', only: [:exam]
 
   def index
     @styles = ''
@@ -12,7 +12,7 @@ class Students::HomeController < Students::BaseController
       batch_ids = current_student.batches.map(&:id)
       exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
       @exams = Exam.where(id: exam_ids).order(created_at: :desc)
-      @student_exams = StudentExam.where(student: current_student)&.index_by(&:exam_id) || {}
+      @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
     else
       @exams = Exam.order(created_at: :desc).all
     end
@@ -50,6 +50,7 @@ class Students::HomeController < Students::BaseController
 
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+    values = []
     params[:questions].each do |section, questions|
       questions.each do  |index, input_question|
         if input_question[:answerProps][:answer].to_i > 0
@@ -57,16 +58,19 @@ class Students::HomeController < Students::BaseController
           if student_exam_answer
             student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
           else
-            StudentExamAnswer.create!(student_exam_id: student_exam.id, question_id: input_question[:id], option_id: input_question[:answerProps][:answer])
+            values.push("#{input_question[:id]}, #{input_question[:answerProps][:answer]}")
           end
         end
       end
   	end
+    StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
+  rescue StandardError => e
+    Rails.logger.error("#{e.message} Student_id: #{current_student.id} params: #{params}")
   end
 
   def submit
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    render :ok unless student_exam
+    head :ok unless student_exam
     redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
     student_exam.update!(ended_at: Time.current)
     StudentExamScoreCalculator.new(student_exam.id).calculate
@@ -111,6 +115,7 @@ class Students::HomeController < Students::BaseController
       questionsBySections: questions_by_sections,
       sections: questions_by_sections.keys,
       startedAt: student_exam.started_at,
+      currentTime: DateTime.current.iso8601,
       timeInMinutes: exam.time_in_minutes,
       studentId: current_student.id,
     }
@@ -147,5 +152,9 @@ class Students::HomeController < Students::BaseController
       :address,
       :college,
       :photo)
+  end
+
+  def student_exam_answer_columns
+    ["question_id", "option_id", "student_exam_id"]
   end
 end

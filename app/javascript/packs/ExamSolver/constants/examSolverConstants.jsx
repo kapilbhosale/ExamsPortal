@@ -14,6 +14,7 @@ const actionTypes = mirrorCreator([
   'SECTION_CHANGED',
   'LOADING',
   'SET_NAVIGATION_MAP',
+  'TOGGLE_TEST_SUBMIT_MODAL',
 ]);
 
 export default actionTypes;

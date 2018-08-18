@@ -251,3 +251,10 @@ export function setNavigationMap(value) {
     val: value,
   };
 }
+
+export function toggleTestSubmitModal(value) {
+  return {
+    type: actionTypes.TOGGLE_TEST_SUBMIT_MODAL,
+    val: value,
+  };
+}

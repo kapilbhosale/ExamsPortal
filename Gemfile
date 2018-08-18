@@ -76,6 +76,8 @@ group :development do
   gem 'pry-nav'
   gem 'rails-erd'
   gem 'pry'
+  gem 'bullet'
+  gem 'rollbar'
 end
 
 group :test do
