@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get :tests, to: 'home#tests', as: :tests
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
+    get :question_bank, to: 'home#question_bank', as: :question_bank
     get :subscription, to: 'home#subscription', as: :exam_subscription
     get "summary/:exam_id", to: 'home#summary', as: :exam_summary
     get :exam_data, to: 'home#exam_data'
@@ -28,7 +29,11 @@ Rails.application.routes.draw do
     root to: 'dashboard#show'
     resource :dashboard
     resources :reports
-    resources :exams
+    resources :exams do
+      collection do
+        get 'question_bank', to: 'exams#question_bank'
+      end
+    end
     resources :practice_questions
     resources :students do
       root to: 'students#index'
