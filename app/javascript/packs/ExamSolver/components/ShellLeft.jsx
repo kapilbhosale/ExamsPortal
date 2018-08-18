@@ -10,24 +10,27 @@ class ShellLeft extends React.Component {
   }
 
   render() {
-    const { questions, currentQuestionIndex, saveAndNext, answerQuestion, clearAnswer, markForReview, markVisited,
-            submitTest, previousQuestion, startedAt, examFinished, timeInMinutes, timeIsUp, currentSection,
-            sections, changeSection, isNavigationMapOpen, currentTime } = this.props;
+    const { questions, currentQuestionIndex, answerQuestion, markVisited,
+            submitTest, startedAt, examFinished, timeInMinutes, timeIsUp, currentSection,
+            sections, changeSection, isNavigationMapOpen, currentTime, remainingTimeAlert,
+            timeLeftMessage } = this.props;
     return (
       <div className={`${isNavigationMapOpen ? 'col-md-9' : 'full-width'}`}>
         <div className='row'>
           <div className='col-md-12'>
             <SectionList
-            totalQuestions={questions.length}
-            submitTest={submitTest}
-            startedAt={startedAt}
-            examFinished={ examFinished }
-            timeInMinutes={ timeInMinutes }
-            timeIsUp={ timeIsUp }
-            sections={sections}
-            currentSection={currentSection}
-            changeSection={changeSection}
-            currentTime={ currentTime }
+              totalQuestions={questions.length}
+              submitTest={submitTest}
+              startedAt={startedAt}
+              examFinished={ examFinished }
+              timeInMinutes={ timeInMinutes }
+              timeIsUp={ timeIsUp }
+              sections={sections}
+              currentSection={currentSection}
+              changeSection={changeSection}
+              currentTime={ currentTime }
+              remainingTimeAlert={ remainingTimeAlert }
+              timeLeftMessage={  timeLeftMessage }
             />
           </div>
           <div className="col-md-12">

@@ -80,6 +80,8 @@ class ExamSolverContainer extends Component {
     const currentTime = $$examSolverStore.get('currentTime');
     const isTestSubmitModalOpen = $$examSolverStore.get('isTestSubmitModalOpen');
     const sectionWiseSummary = $$examSolverStore.get('questionsCountByStatus');
+    const timeLeftMessage = $$examSolverStore.get('timeLeftMessage');
+
     const customStyles = {
     content : {
     top                   : '50%',
@@ -126,6 +128,7 @@ class ExamSolverContainer extends Component {
               sections={sections}
               isNavigationMapOpen={ isNavigationMapOpen }
               currentTime={ currentTime }
+              timeLeftMessage={ timeLeftMessage }
               { ...this.actions() }
               />
             <ShellRight
