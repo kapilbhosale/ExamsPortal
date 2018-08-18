@@ -55,7 +55,6 @@
   bottom: 5px;
   right: 0;
   background-color: #e7f9ff;
-/*overflow-x: hidden;*/
   transition: 0.5s;
   padding-top: 25px;
   margin-bottom: 0;
@@ -166,6 +165,9 @@
 .submit-exam {
   position: absolute !important;
   bottom: 7px;
+  margin-bottom: -25px;
+  padding: 10px 15px;
+  background-color: #e7f9ff;
 }
 
 .cursor-pointer {
@@ -188,3 +190,12 @@
 .padding-top-20 {
   padding-top: 20px;
 }
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}
+
+.margin-bottom-110 {
+  margin-bottom: 110px !important;
+}
+
