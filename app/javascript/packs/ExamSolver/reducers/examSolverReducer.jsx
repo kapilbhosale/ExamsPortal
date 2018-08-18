@@ -93,6 +93,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('navigationMapOpen', val);
     case actionTypes.TOGGLE_TEST_SUBMIT_MODAL:
       return $$state.set('isTestSubmitModalOpen', val);
+    case actionTypes.UPDATE_TIME_LEFT:
+      return $$state.set('timeLeftMessage', val);
     default:
       return $$state;
   }

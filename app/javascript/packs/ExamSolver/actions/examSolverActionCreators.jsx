@@ -59,6 +59,19 @@ export function previousQuestion(questionIndex) {
   };
 }
 
+export function remainingTimeAlert(message) {
+  return (dispatch) => {
+    dispatch(timeLeft(message));
+  };
+}
+
+function timeLeft(message) {
+  return {
+    type: actionTypes.UPDATE_TIME_LEFT,
+    val: message,
+  }
+}
+
 export function markForReview(questionIndex) {
   return (dispatch, getState) => {
     dispatch(markVisit(questionIndex));
