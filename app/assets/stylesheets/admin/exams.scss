@@ -1,3 +1,21 @@
 // Place all the styles related to the admin/exams controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.remaining-time {
+  vertical-align: super;
+  padding: 0 10px;
+  color: red;
+  font-weight: bold;
+}
+
+.blinking {
+  animation:blinkingText 1.2s infinite;
+}
+@keyframes blinkingText{
+  0%{ color:transparent; }
+  49%{ color: red; }
+  50%{ color: red; }
+  99%{ color: red; }
+  100%{ color:transparent; }
+}
