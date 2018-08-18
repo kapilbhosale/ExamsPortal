@@ -80,7 +80,7 @@ namespace :student_report do
           '180',
           row[2][:answered] + row[3][:answered] + row[5][:answered],
           row[2][:not_answered] + row[3][:not_answered] + row[5][:not_answered],
-          row[2][:correct] + row[][:correct] + row[5][:correct],
+          row[2][:correct] + row[3][:correct] + row[5][:correct],
           row[2][:incorrect] + row[3][:incorrect] + row[5][:incorrect],
           row[2][:score] + row[3][:score] + row[5][:score]
         ]
