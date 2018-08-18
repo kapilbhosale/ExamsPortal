@@ -16,7 +16,7 @@ class MasterShell extends Component {
     const { $$masterStore } = this.props;
 
     return (
-      <div className='page-content'>
+      <div className='page-content' style={{marginBottom: '50px'}}>
         <div className='container-fluid'>
           { this.props.children }
         </div>

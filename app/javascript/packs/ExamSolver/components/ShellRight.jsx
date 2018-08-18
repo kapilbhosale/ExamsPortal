@@ -121,7 +121,7 @@ class ShellRight extends React.Component {
 
               <div className='row' style={{ height: '70vh', overflow: 'scroll' }}>
               <div className='col-md-12'>
-                <div className="btn-toolbar form-group text-center" role="toolbar" aria-label="...">
+                <div className="btn-toolbar form-group text-center margin-bottom-110" role="toolbar" aria-label="...">
                   {
                     questions.map((question, idx) => {
                       const { isAnswered, needReview, visited } = question.answerProps;
