@@ -1,7 +1,7 @@
 require 'csv'
 
 namespace :student_report do
-  task print: :environment do
+  task student_list: :environment do
     CSV.open("Students.csv","w") do |csv|
       csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
 

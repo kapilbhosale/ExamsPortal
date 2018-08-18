@@ -15,7 +15,6 @@ class Question < ApplicationRecord
   has_many :exam_questions
   has_many :exams, through: :exam_questions
   has_many :options, dependent: :destroy
-  has_one :style, as: :component, dependent: :destroy
   belongs_to :section
 
   enum difficulty_level: {default: 0, easy: 1, medium: 2, difficult: 3, very_difficult: 4}
@@ -30,6 +29,6 @@ class Question < ApplicationRecord
 
   # Assuming now, that there will be single correct ans
   def correct_option_id
-    optioins.where(is_answer: true).first.id
+    options.where(is_answer: true).first.id
   end
 end

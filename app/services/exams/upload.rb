@@ -5,6 +5,8 @@ module Exams
     attr_reader :exam, :section_id
     attr_accessor :tmp_zip_file
 
+    S3_UPLOAD = false
+
     def initialize(exam, tmp_zip_file, section_id=1)
       @exam = exam
       @tmp_zip_file = tmp_zip_file
@@ -49,8 +51,14 @@ module Exams
 
     def upload_images_folder
       images_folder = "#{@tmp_dir_path}/images"
-      uploader = Exams::S3FolderUpload.new(images_folder, "#{@path}/images")
-      uploader.upload!
+      if S3_UPLOAD
+        uploader = Exams::S3FolderUpload.new(images_folder, "#{@path}/images")
+        uploader.upload!
+      else
+        local_path = "public/uploads/#{@path}/images"
+        FileUtils.mkdir_p(File.dirname(local_path))
+        FileUtils.mv images_folder, local_path
+      end
     end
 
 
@@ -96,8 +104,8 @@ module Exams
     def create_questions_and_options
       @questions_data.each do |question_data|
 
-        title = replace_local_img_with_s3(question_data[:question])
-        explanation = replace_local_img_with_s3(question_data[:explanation])
+        title = replace_local_img_path(question_data[:question])
+        explanation = replace_local_img_path(question_data[:explanation])
         question = Question.create!(title: title, explanation: explanation, section_id: section_id)
         ExamQuestion.create(exam: exam, question: question)
 
@@ -105,7 +113,7 @@ module Exams
         question_data[:options].each_with_index do |option, index|
           create_option_params << {
             question: question,
-            data: replace_local_img_with_s3(option),
+            data: replace_local_img_path(option),
             is_answer: answer_input(question_data[:answer]) == index + 1
           }
         end
@@ -125,9 +133,13 @@ module Exams
       input.to_i
     end
 
-    def replace_local_img_with_s3(html_code)
-      s3_path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/#{@path}/images/"
-      html_code.gsub('images/', s3_path_to_replace)
+    def replace_local_img_path(html_code)
+      if S3_UPLOAD
+        path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/#{@path}/images/"
+      else
+        path_to_replace = "/uploads/#{@path}/images/"
+      end
+      html_code.gsub('images/', path_to_replace)
     end
 
     def options_table?(table)
