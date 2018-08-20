@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive mt-5">
           <table class="table table-striped table-bordered table-hover table-fixed">
             <thead>
             <tr>
@@ -32,7 +32,7 @@
                     <td><%= exam.created_at.to_date %></td>
                     <td class="text-center">
                       &nbsp;
-                      <%= link_to ' ', admin_report_path(exam), 'data-toggle'=>'tooltip', title: 'Show Report', class: 'glyphicon glyphicon-file' %>
+                      <%= link_to ' ', admin_report_path(exam), 'data-toggle': 'tooltip', title: 'Show Report', class: 'fa fa-list' %>
                       &nbsp;&nbsp;
                     </td>
                   </tr>

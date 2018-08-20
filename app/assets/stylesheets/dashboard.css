@@ -1573,7 +1573,7 @@ pre code {
 }
 
 .table-bordered, .text-wrap table {
-  border: 1px solid #dee2e6;
+  border: 1px solid #dee2e6 !important;
 }
 
 .table-bordered th, .text-wrap table th,
