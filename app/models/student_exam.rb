@@ -26,5 +26,5 @@ class StudentExam < ApplicationRecord
   	student_exam_answers.select do |sea|
   		sea.option.is_answer
   	end.size
-	end
+  end
 end

@@ -1,8 +1,13 @@
 class Admin::StudentsController < Admin::BaseController
 
   def index
-    @search = Student.includes(:batches).search(params[:q])
+    if params[:q].present? && params[:q][:batch_id].present?
+      @search = Student.includes(:student_batches, :batches).joins(:batches).where(batches: {id: params[:q][:batch_id]}).search(params[:q])
+    else
+      @search = Student.includes(:student_batches, :batches).joins(:batches).search(params[:q])
+    end
     @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    @batches = Batch.all_batches
     params.permit(:q, :limit)
     respond_to do |format|
       format.html do

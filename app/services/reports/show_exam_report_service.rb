@@ -10,14 +10,14 @@ module Reports
 
     def prepare_report
       validate_request
-      @search = StudentExam.where(exam_id: exam_id).joins(:student_exam_summary).search(q)
-      student_exam_summaries = @search.result
+      @search = StudentExamSummary.includes(student_exam: :student).where(student_exam_id: StudentExam.where(exam_id: exam_id).map(&:id)).search(q)
+      student_exam_summaries = @search.result 
       @student_exam_summaries_hash = student_exam_summaries.each.map{|student_exam_summary| {
-                                  roll_number: student_exam_summary.student.roll_number,
-                                  name: student_exam_summary.student.name,
-                                  score: student_exam_summary.student_exam_summary.score,
-                                  correct: student_exam_summary.student_exam_summary.correct,
-                                  incorrect: student_exam_summary.student_exam_summary.incorrect
+                                  roll_number: student_exam_summary.student_exam.student.roll_number,
+                                  name: student_exam_summary.student_exam.student.name,
+                                  score: student_exam_summary.score,
+                                  correct: student_exam_summary.correct,
+                                  incorrect: student_exam_summary.incorrect
                                   }}
       append_student_ranks
       return {status: true, message: nil, search: @search, student_exam_summaries_hash: @student_exam_summaries_hash}
@@ -36,7 +36,7 @@ module Reports
     end
 
     def append_student_ranks
-      @student_exam_summaries_hash.sort_by{|h| -h[:score]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
+      @student_exam_summaries_hash.sort_by!{|h| -h[:score]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
       if q.present? && q[:s] == 'rank asc'
         @student_exam_summaries_hash.reverse!
       end

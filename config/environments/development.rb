@@ -70,8 +70,4 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-
-  Rollbar.configure do |config|
-    config.access_token = ENV["ROLLBAR_ACCESS_TOKEN"]
-  end
 end
