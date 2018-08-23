@@ -11,10 +11,6 @@
               <span class="fa fa-file-pdf-o"></span>
               <%= link_to 'PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
             </button>
-            <button class="btn btn-success btn-sm clearfix">
-              <span class="fa fa-file-pdf-o"></span>
-              <%= link_to 'CSV', admin_report_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
-            </button>
           </div>
           <div class="col-12">
             <div class="table-responsive mt-3">

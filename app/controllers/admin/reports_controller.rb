@@ -34,9 +34,6 @@ class Admin::ReportsController < Admin::BaseController
                locals: {students: @response[:student_exams]},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
-      format.csv do
-        @response[:student_exams].to_csv
-      end
     end
   end
 
