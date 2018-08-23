@@ -16,7 +16,7 @@ class Admin::StudentsController < Admin::BaseController
         @students = @search.result
         render pdf: "student information",
                template: "admin/students/index.pdf.erb",
-               locals: {students: @students},
+               locals: { students: @students},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
       format.csv do

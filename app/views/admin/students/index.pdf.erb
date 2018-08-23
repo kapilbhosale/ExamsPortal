@@ -1,6 +1,5 @@
 <div class="col-12">
-  <div>
-    <div class="card-header text-center border-0">
+  <div class="card-header text-center border-0">
       <h4 class="border-0"><%=  CLASS_NAME %></h4>
       <p><%= CLASS_ADDRESS %></p>
     </div>
@@ -19,12 +18,12 @@
         <tbody>
           <% @students.each do |student| %>
             <tr>
-              <td><%= student.roll_number %></td>
-              <td><%= student&.batches&.each&.map(&:name).join(', ') %></td>
+              <td class="text-center"><%= student.roll_number %></td>
+              <td class="text-center"><%= student&.batches&.each&.map(&:name).join(', ') %></td>
               <td><%= student.name %></td>
-              <td><%= link_to student.email, admin_student_path(student) %></td>
-              <td><%= student.raw_password %></td>
-              <td><%= student.parent_mobile %></td>
+              <td><%= student.email %></td>
+              <td class="text-center"><%= student.raw_password %></td>
+              <td class="text-center"><%= student.parent_mobile %></td>
             </tr>
           <% end %>
         </tbody>
@@ -32,5 +31,4 @@
     <% else %>
       <div class="alert alert-info">No students were found.</div>
     <% end %>
-  </div>
 </div>
