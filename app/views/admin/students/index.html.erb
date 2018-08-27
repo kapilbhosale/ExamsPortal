@@ -11,6 +11,8 @@
           <%= search_form_for @search, url: admin_students_path, class:"form-inline my-2 my-lg-0" do |f| %>
             <span class="p-2">Name</span>
             <%= f.text_field :name_cont, placeholder: 'Search...', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
+            <span class="p-2">Batch</span>
+            <%= f.collection_select(:batch_id, Batch.all_batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
             <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
           <% end %>
         </div>
@@ -27,8 +29,8 @@
                     <th><%= sort_link(@search, :roll_number) %></th>
                     <th>Batch(s)</th>
                     <th><%= sort_link(@search, :name) %></th>
-                    <th><%= sort_link(@search, :email) %></th>
-                    <th> Password</th>
+                    <th>Email</th>
+                    <th>Password</th>
                     <th>Parent Mobile</th>
                     <th><button class="btn btn-danger clearfix btn-sm">
                           <span class="fa fa-file-pdf-o"></span>
@@ -48,7 +50,7 @@
                       <td><%= student&.batches&.each&.map(&:name).join(', ') %>
                       </td>
                       <td><%= link_to student.name, admin_student_path(student) %></td>
-                      <td><%= link_to student.email, admin_student_path(student) %></td>
+                      <td><%= student.email %></td>
                       <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
                       <td>

@@ -42,3 +42,5 @@ yarn-debug.log*
 /config/application.yml
 /Procfile.dev
 /public/uploads/*
+.DS_Store
+Result.csv
