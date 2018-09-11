@@ -39,7 +39,7 @@ module Students
       raise ModelAnswersError, 'Student does not exist'if student.blank?
       raise ModelAnswersError, 'Exam does not exist'if exam.blank?
       raise ModelAnswersError, 'You must submit exam to see model answers'if student_exam.blank?
-      raise ModelAnswersError, 'Model answers are not published yet, please wait for admin to publish it.' unless exam.published?
+      raise ModelAnswersError, 'Model answers are not published yet, please wait for admin to publish it.' unless exam.publish_result
     end
   end
 end
