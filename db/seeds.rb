@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 #Create Batches
-batch_list = ['A', 'B', 'C', 'D', 'A1', 'B1', 'E1']
+batch_list = ['A1', 'A2', 'A3']
 
 batch_list.each do |name|
   Batch.find_or_create_by(name: name)
