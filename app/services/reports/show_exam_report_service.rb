@@ -10,15 +10,19 @@ module Reports
 
     def prepare_report
       validate_request
-      @search = StudentExamSummary.includes(student_exam: :student).where(student_exam_id: StudentExam.where(exam_id: exam_id).map(&:id)).search(q)
-      student_exam_summaries = @search.result 
-      @student_exam_summaries_hash = student_exam_summaries.each.map{|student_exam_summary| {
-                                  roll_number: student_exam_summary.student_exam.student.roll_number,
-                                  name: student_exam_summary.student_exam.student.name,
-                                  score: student_exam_summary.score,
-                                  correct: student_exam_summary.correct,
-                                  incorrect: student_exam_summary.incorrect
-                                  }}
+      student_exam_ids = StudentExam.where(exam_id: exam_id).map(&:id)
+      student_exam_summaries = StudentExamSummary.includes(student_exam: :student).where(student_exam_id: student_exam_ids)
+      @student_exam_summaries_hash = {}
+      student_exam_summaries.each do |student_exam_summary|
+        roll_number = student_exam_summary.student_exam.student.roll_number
+        @student_exam_summaries_hash[roll_number] ||= {
+            roll_number: roll_number,
+            name: student_exam_summary.student_exam.student.name
+        }
+        @student_exam_summaries_hash[roll_number][:score] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
+        @student_exam_summaries_hash[roll_number][:correct] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
+        @student_exam_summaries_hash[roll_number][:incorrect] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
+      end
       append_student_ranks
       return {status: true, message: nil, search: @search, student_exam_summaries_hash: @student_exam_summaries_hash}
     rescue ShowExamReportError, ActiveRecord::RecordInvalid => ex
