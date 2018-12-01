@@ -20,8 +20,8 @@ module Reports
             name: student_exam_summary.student_exam.student.name
         }
         @student_exam_summaries_hash[roll_number][:score] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
-        @student_exam_summaries_hash[roll_number][:correct] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
-        @student_exam_summaries_hash[roll_number][:incorrect] = @student_exam_summaries_hash[roll_number][:score].to_s.to_i + student_exam_summary.score.to_i
+        @student_exam_summaries_hash[roll_number][:correct] = @student_exam_summaries_hash[roll_number][:correct].to_s.to_i + student_exam_summary.correct.to_i
+        @student_exam_summaries_hash[roll_number][:incorrect] = @student_exam_summaries_hash[roll_number][:incorrect].to_s.to_i + student_exam_summary.incorrect.to_i
       end
       append_student_ranks
       return {status: true, message: nil, search: @search, student_exam_summaries_hash: @student_exam_summaries_hash}
