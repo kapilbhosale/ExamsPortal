@@ -77,7 +77,7 @@ group :development do
   gem 'rails-erd'
   gem 'pry'
   gem 'bullet'
-  gem 'rollbar'
+  # gem 'rollbar'
 end
 
 group :test do
