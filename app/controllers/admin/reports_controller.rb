@@ -34,7 +34,28 @@ class Admin::ReportsController < Admin::BaseController
                locals: {students: @response[:student_exams]},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
+      format.csv do
+
+        students_csv = CSV.generate(headers: true) do |csv|
+          csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
+
+          @students_data.each do |student|
+            csv << [
+                student[:roll_number],
+                student[:name],
+                student[:email],
+                student[:raw_password],
+                student[:batches]
+            ]
+          end
+        end
+        send_data students_csv, filename: 'StudentList.csv'
+      end
     end
+  end
+
+  def student_progress
+    student = Student.find_by(id: params[:id])
   end
 
   private

@@ -10,6 +10,7 @@ module Reports
 
     def prepare_report
       validate_request
+      @search = StudentExamSummary.includes(student_exam: :student).where(student_exam_id: StudentExam.where(exam_id: exam_id).map(&:id)).search(q)
       student_exam_ids = StudentExam.where(exam_id: exam_id).map(&:id)
       student_exam_summaries = StudentExamSummary.includes(student_exam: :student).where(student_exam_id: student_exam_ids)
       @student_exam_summaries_hash = {}
@@ -40,7 +41,7 @@ module Reports
     end
 
     def append_student_ranks
-      @student_exam_summaries_hash.sort_by!{|h| -h[:score]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
+      @student_exam_summaries_hash = @student_exam_summaries_hash.sort_by{|h| -h[:score]}.each_with_index{|h, index| h.merge!({rank: (index + 1)})}
       if q.present? && q[:s] == 'rank asc'
         @student_exam_summaries_hash.reverse!
       end
