@@ -17,6 +17,7 @@ module Exams
     def call
       validate_request
       ActiveRecord::Base.transaction do
+        create_exam_section
         extract_zip
         upload_images_folder
         parse_html
@@ -29,6 +30,11 @@ module Exams
     end
 
     private
+
+    def create_exam_section
+      section = Section.find_by(id: section_id)
+      exam.sections << section if section
+    end
 
     def extract_zip
       zip_name = "zip_#{Time.now.to_i}"

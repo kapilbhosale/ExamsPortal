@@ -32,7 +32,7 @@
                     <td><%= exam.created_at.to_date %></td>
                     <td class="text-center">
                       &nbsp;
-                      <%= link_to ' ', admin_report_path(exam), 'data-toggle': 'tooltip', title: 'Show Report', class: 'fa fa-list' %>
+                      <%= link_to ' ', admin_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report', class: 'fa fa-list' %>
                       &nbsp;&nbsp;
                     </td>
                   </tr>

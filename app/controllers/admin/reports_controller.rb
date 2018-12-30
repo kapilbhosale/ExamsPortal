@@ -23,7 +23,8 @@ class Admin::ReportsController < Admin::BaseController
   end
 
   def show
-    @response = Reports::ShowExamReportService.new(params[:id], params[:q]).prepare_report
+    @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
+
     respond_to do |format|
       format.html do
         set_flash
@@ -36,20 +37,20 @@ class Admin::ReportsController < Admin::BaseController
       end
       format.csv do
 
-        students_csv = CSV.generate(headers: true) do |csv|
-          csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
-
-          @students_data.each do |student|
-            csv << [
-                student[:roll_number],
-                student[:name],
-                student[:email],
-                student[:raw_password],
-                student[:batches]
-            ]
-          end
-        end
-        send_data students_csv, filename: 'StudentList.csv'
+        # students_csv = CSV.generate(headers: true) do |csv|
+        #   csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
+        #
+        #   @students_data.each do |student|
+        #     csv << [
+        #         student[:roll_number],
+        #         student[:name],
+        #         student[:email],
+        #         student[:raw_password],
+        #         student[:batches]
+        #     ]
+        #   end
+        # end
+        send_data @response, filename: 'Exam_result.csv'
       end
     end
   end

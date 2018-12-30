@@ -1,16 +1,16 @@
 class ShowExamReportError < StandardError; end
 
 module Reports
-  class ShowExamReportService
-    attr_reader :exam_id
+  class ExamCsvReportService
+    attr_reader :exam
 
     def initialize(exam_id)
-      @exam_id = exam_id
+      @exam = Exam.find_by(id: exam_id)
     end
 
     def prepare_report
       results = {}
-      StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam_id}).all.group_by(&:student_exam_id).each do |student_exam_id, summary|
+      StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id}).all.group_by(&:student_exam_id).each do |student_exam_id, summary|
         summary.each do |s|
           results[student_exam_id] ||= {}
           results[student_exam_id][s.section_id] = {
@@ -30,6 +30,7 @@ module Reports
         data[student_exam_id] ||= {}
         data[student_exam_id][:roll_number] = student_exams_by_id[student_exam_id].student.roll_number
         data[student_exam_id][:name] = student_exams_by_id[student_exam_id].student.name
+        data[student_exam_id][:parent_mobile] = student_exams_by_id[student_exam_id].student.parent_mobile
         data[student_exam_id][:batch] = student_exams_by_id[student_exam_id].student.batches.pluck(:name).first
         result.each do |section_id, res|
           data[student_exam_id][section_id] ||= res
@@ -37,42 +38,37 @@ module Reports
       end
 
       CSV.generate(headers: true) do |csv|
-        csv << ['Roll Number', 'Student Name', 'Batch',
-                'phy_no_of_questions', 'phy_answered', 'phy_not_answered', 'phy_correct', 'phy_incorrect', 'phy_score',
-                'chem_no_of_questions', 'chem_answered', 'chem_not_answered', 'chem_correct', 'chem_incorrect', 'chem_score',
-                'bio_no_of_questions', 'bio_answered', 'bio_not_answered', 'bio_correct', 'bio_incorrect', 'bio_score',
-                'total_no_of_questions', 'answered', 'not_answered', 'correct', 'incorrect', 'total_score'
-        ]
+        csv << csv_headers
+        csv <<
         data.each do |_, row|
-          csv << [
+          total = {
+              no_of_questions: 0,
+              answered: 0,
+              not_answered: 0,
+              correct: 0,
+              incorrect: 0,
+              score: 0
+          }
+          csv_row = [
               row[:roll_number],
               row[:name],
-              row[:batch],
-              row[2][:no_of_questions],
-              row[2][:answered],
-              row[2][:not_answered],
-              row[2][:correct],
-              row[2][:incorrect],
-              row[2][:score],
-              row[3][:no_of_questions],
-              row[3][:answered],
-              row[3][:not_answered],
-              row[3][:correct],
-              row[3][:incorrect],
-              row[3][:score],
-              row[5][:no_of_questions],
-              row[5][:answered],
-              row[5][:not_answered],
-              row[5][:correct],
-              row[5][:incorrect],
-              row[5][:score],
-              '180',
-              row[2][:answered] + row[3][:answered] + row[5][:answered],
-              row[2][:not_answered] + row[3][:not_answered] + row[5][:not_answered],
-              row[2][:correct] + row[3][:correct] + row[5][:correct],
-              row[2][:incorrect] + row[3][:incorrect] + row[5][:incorrect],
-              row[2][:score] + row[3][:score] + row[5][:score]
-          ]
+              row[:parent_mobile],
+              row[:batch]]
+
+              exam.sections.order(:id).ids.each do |sec_id|
+                section_columns = []
+                total.keys.each do |total_key|
+                  total[total_key] = total[total_key] + row[sec_id][total_key]
+                  section_columns << row[sec_id][total_key]
+                end
+               csv_row += section_columns
+              end
+          total_data = []
+          total.each do |key, val|
+            total_data << total[key]
+          end
+          csv_row += total_data
+          csv << csv_row
         end
       end
     rescue ShowExamReportError, ActiveRecord::RecordInvalid => ex
@@ -80,6 +76,20 @@ module Reports
     end
 
     private
+
+    def csv_headers
+      headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Batch']
+      exam.sections.order(:id).each do |section|
+        section_name = section.name
+        headers += ["#{section_name}_no_of_questions",
+         "#{section_name}_answered",
+         "#{section_name}_not_answered",
+         "#{section_name}_correct",
+         "#{section_name}_incorrect",
+         "#{section_name}_score"]
+      end
+      headers + ['total_no_of_questions', 'total_answered', 'total_not_answered', 'total_correct', 'total_incorrect', 'total_score']
+    end
 
     def validate_request
       raise ShowExamReportError, 'Exam does not exists' unless exam_exists?
