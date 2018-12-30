@@ -25,6 +25,7 @@ module Reports
       end
 
       student_exams_by_id = StudentExam.includes(:student).all.index_by(&:id)
+
       data = {}
       results.each do |student_exam_id, result|
         data[student_exam_id] ||= {}
@@ -70,6 +71,11 @@ module Reports
           csv_row += total_data
           csv << csv_row
         end
+
+        Student.where(id: exam.un_appeared_student_ids).each do |student|
+          csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).first]
+        end
+
       end
     rescue ShowExamReportError, ActiveRecord::RecordInvalid => ex
       nil

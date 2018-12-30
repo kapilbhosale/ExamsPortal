@@ -30,4 +30,16 @@ class Exam < ApplicationRecord
   has_many :batches, through: :exam_batches
 
   # has_one :style, as: :component, dependent: :destroy
+
+  def appeared_student_ids
+    StudentExam.where(exam: self).pluck(:student_id)
+  end
+
+  def un_appeared_student_ids
+    total_student_ids - appeared_student_ids
+  end
+
+  def total_student_ids
+    batches.map(&:student_ids).flatten
+  end
 end
