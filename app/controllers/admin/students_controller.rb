@@ -8,20 +8,44 @@ class Admin::StudentsController < Admin::BaseController
     end
     @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
     @batches = Batch.all_batches
+
+    @students_data = @search.result.includes(:batches).order(:roll_number).map do |student|
+      {
+          roll_number: student.roll_number,
+          batches: student&.batches&.each&.map(&:name).join(', '),
+          name: student.name,
+          email: student.email,
+          raw_password: student.raw_password,
+          parent_mobile: student.parent_mobile
+      }
+    end
+
     params.permit(:q, :limit)
     respond_to do |format|
       format.html do
       end
       format.pdf do
-        @students = @search.result
-        render pdf: "student information",
+        render pdf: "StudentList.pdf",
                template: "admin/students/index.pdf.erb",
                locals: { students: @students},
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
       format.csv do
-        @students = @search.result
-        send_data @students.to_csv
+        students_csv = CSV.generate(headers: true) do |csv|
+          csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
+
+          @students_data.each do |student|
+            csv << [
+                student[:roll_number],
+                student[:name],
+                student[:email],
+                student[:raw_password],
+                student[:batches]
+            ]
+          end
+        end
+
+        send_data students_csv, filename: 'StudentList.csv'
       end
     end
   end

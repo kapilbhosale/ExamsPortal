@@ -3,7 +3,7 @@
       <h4 class="border-0"><%=  CLASS_NAME %></h4>
       <p><%= CLASS_ADDRESS %></p>
     </div>
-    <% if @students.present? %>
+    <% if @students_data.present? %>
       <table class="table table-vcenter text-nowrap">
         <thead>
           <tr>
@@ -16,14 +16,14 @@
           </tr>
         </thead>
         <tbody>
-          <% @students.each do |student| %>
+          <% @students_data.each do |student| %>
             <tr>
-              <td class="text-center"><%= student.roll_number %></td>
-              <td class="text-center"><%= student&.batches&.each&.map(&:name).join(', ') %></td>
-              <td><%= student.name %></td>
-              <td><%= student.email %></td>
-              <td class="text-center"><%= student.raw_password %></td>
-              <td class="text-center"><%= student.parent_mobile %></td>
+              <td class="text-center"><%= student[:roll_number] %></td>
+              <td class="text-center"><%= student[:batches] %></td>
+              <td><%= student[:name] %></td>
+              <td><%= student[:email] %></td>
+              <td class="text-center"><%= student[:raw_password] %></td>
+              <td class="text-center"><%= student[:parent_mobile] %></td>
             </tr>
           <% end %>
         </tbody>

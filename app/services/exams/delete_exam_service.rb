@@ -19,7 +19,7 @@ module Exams
 
     def validate_request
       raise DeleteExamError, 'Exam does not exists!' if exam.nil?
-      raise DeleteExamError, 'Exam can\'t be deleted because some students have already appeared for it!' if students_appeared?
+      # raise DeleteExamError, 'Exam can\'t be deleted because some students have already appeared for it!' if students_appeared?
     end
 
     def students_appeared?

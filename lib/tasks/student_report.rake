@@ -21,7 +21,7 @@ namespace :student_report do
   task exam_report: :environment do
 
     results = {}
-    StudentExamSummary.includes(:student_exam).all.group_by(&:student_exam_id).each do |student_exam_id, summary|
+    StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: Exam.last.id}).all.group_by(&:student_exam_id).each do |student_exam_id, summary|
       summary.each do |s|
         results[student_exam_id] ||= {}
         results[student_exam_id][s.section_id] = {

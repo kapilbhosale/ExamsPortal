@@ -11,6 +11,10 @@
               <span class="fa fa-file-pdf-o"></span>
               <%= link_to 'PDF', admin_report_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
             </button>
+            <button class="btn btn-success clearfix btn-sm">
+              <span class="fa fa-file-text-o"></span>
+              <%= link_to 'CSV'.html_safe, admin_report_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
+            </button>
           </div>
           <div class="col-12">
             <div class="table-responsive mt-3">
@@ -18,7 +22,7 @@
                 <thead>
                   <tr>
                     <th><%= sort_link(@response[:search], :student_id) %></th>
-                    <th>StudentName</th>
+                    <th>Student Name</th>
                     <th>Score</th>
                     <th><%= sort_link(@response[:search], :rank) %></th>
                     <th>Correct</th>
