@@ -18,17 +18,17 @@
               <table class="table table-striped table-hover table-fixed">
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Batch(es)</th>
-                    <th>Description</th>
-                    <th>Question</th>
-                    <th>Added Ques</th>
-                    <th>+ve Marks</th>
-                    <th>-ve Marks</th>
-                    <th>Time</th>
-                    <th>Added on</th>
-                    <th>Publish Result</th>
-                    <th>Actions</th>
+                    <th class="col-md-1">Name</th>
+                    <th class="col-md-1">Batch(es)</th>
+                    <th class="col-md-1">Description</th>
+                    <th class="col-md-1">Question</th>
+                    <th class="col-md-1">Added Ques</th>
+                    <th class="col-md-1">+ve Marks</th>
+                    <th class="col-md-1">-ve Marks</th>
+                    <th class="col-md-1">Time</th>
+                    <th class="col-md-1">Added on</th>
+                    <th class="col-md-1">Publish Result</th>
+                    <th class="col-md-1">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -40,8 +40,8 @@
                       <td class="text-truncate"><%= exam.description %> ...</td>
                       <td><%= exam.no_of_questions %></td>
                       <td><%= exam.questions.count %></td>
-                      <td><%= exam.positive_marks %></td>
-                      <td><%= exam.negative_marks %></td>
+                      <td class="success"><%= exam.positive_marks %></td>
+                      <td class="danger"><%= exam.negative_marks %></td>
                       <td><%= exam.time_in_minutes %> mins</td>
                       <td><%= exam.created_at.to_date %></td>
                       <td class="text-center">
