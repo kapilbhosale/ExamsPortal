@@ -44,4 +44,48 @@ class Exam < ApplicationRecord
   def total_student_ids
     batches.map(&:student_ids).flatten
   end
+
+  def display_image
+    return 'bio' if only_biology?
+    return 'math' if only_math?
+    return 'phy' if only_physics?
+    return 'chem' if only_chemistry?
+    return 'neet' if neet?
+    return 'jee' if jee?
+    'general'
+  end
+
+  private
+
+  def check_exam(section)
+    sections.pluck(:name) == [section]
+  end
+
+  def only_biology?
+    check_exam('biology')
+  end
+
+  def only_math?
+    check_exam('maths')
+  end
+
+  def only_physics?
+    check_exam('physics')
+  end
+
+  def only_chemistry?
+    check_exam('chemistry')
+  end
+
+  def only_general?
+    check_exam('general')
+  end
+
+  def jee?
+    sections.pluck(:name).length > 1 && sections.pluck(:name).include?('maths')
+  end
+
+  def neet?
+    sections.pluck(:name).length > 1 && sections.pluck(:name).include?('biology')
+  end
 end
