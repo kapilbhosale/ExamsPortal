@@ -23,6 +23,8 @@
                     <th>Description</th>
                     <th>Question</th>
                     <th>Added Ques</th>
+                    <th>+ve Marks</th>
+                    <th>-ve Marks</th>
                     <th>Time</th>
                     <th>Added on</th>
                     <th>Publish Result</th>
@@ -38,6 +40,8 @@
                       <td class="text-truncate"><%= exam.description %> ...</td>
                       <td><%= exam.no_of_questions %></td>
                       <td><%= exam.questions.count %></td>
+                      <td><%= exam.positive_marks %></td>
+                      <td><%= exam.negative_marks %></td>
                       <td><%= exam.time_in_minutes %> mins</td>
                       <td><%= exam.created_at.to_date %></td>
                       <td class="text-center">

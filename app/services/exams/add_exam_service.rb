@@ -44,7 +44,10 @@ module Exams
                     :no_of_questions,
                     :time_in_minutes,
                     :publish_result,
-                    :questions_zip)
+                    :questions_zip,
+                    :positive_marks,
+                    :negative_marks
+      )
     end
 
     def build_batches

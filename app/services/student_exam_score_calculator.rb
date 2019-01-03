@@ -1,8 +1,9 @@
 class StudentExamScoreCalculator
-    attr_reader :student_exam
+    attr_reader :student_exam, :exam
 
     def initialize(student_exam_id)
       @student_exam = StudentExam.includes(student_exam_answers: :question, exam: :questions).where(id: student_exam_id).first
+      @exam = student_exam.exam
     end
 
     def calculate
@@ -60,6 +61,6 @@ class StudentExamScoreCalculator
     end
 
     def score
-      correct * 4 - incorrect * 1
+      (correct * exam.positive_marks) - (incorrect * exam.negative_marks)
     end
 end
