@@ -99,6 +99,22 @@ function markVisit(questionIndex) {
   }
 }
 
+export function getCurrentServerTime() {
+  return (dispatch, getState) => {
+    $.ajax({
+      url: '/current-server-time',
+      method: 'get',
+      success: (data) => {
+        console.log("==============  Current time from server is : " + data.time);
+        dispatch({type: actionTypes.SET_CURRENT_TIME, val: data.time }); 
+      },
+      error: (data) => {
+        console.log("==============  Error : ");
+      },
+    });
+  };
+}
+
 // Bad piece of code. Don't try to blame. You're responsible.
 export function submitTest() {
   return (dispatch, getState) => {

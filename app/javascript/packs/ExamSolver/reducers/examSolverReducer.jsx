@@ -14,7 +14,7 @@ export const $$initialState = Immutable.fromJS({
   currentSection: null,
   loading: true,
   navigationMapOpen: true,
-  currentTime: new Date(),
+  currentTime: null,
   isTestSubmitModalOpen: false,
 });
 
@@ -95,6 +95,8 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('isTestSubmitModalOpen', val);
     case actionTypes.UPDATE_TIME_LEFT:
       return $$state.set('timeLeftMessage', val);
+    case actionTypes.SET_CURRENT_TIME:
+      return $$state.set('currentTime', val);
     default:
       return $$state;
   }

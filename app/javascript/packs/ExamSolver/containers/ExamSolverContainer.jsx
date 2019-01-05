@@ -55,6 +55,7 @@ class ExamSolverContainer extends Component {
       this.actions().setNavigationMap(false);
     }
     this.actions();
+    this.actions().getCurrentServerTime();
   }
 
   actions() {
