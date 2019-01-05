@@ -54,7 +54,6 @@ class ExamSolverContainer extends Component {
     if ($win.width() < MEDIAQUERY.mobile) {
       this.actions().setNavigationMap(false);
     }
-    this.actions();
     this.actions().getCurrentServerTime();
   }
 

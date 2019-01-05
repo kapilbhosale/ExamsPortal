@@ -147,7 +147,6 @@ export function submitTest() {
 export function syncAnswers() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    localStorage.clear();
     localStorage.setItem(`${store.get('studentId')}-${store.get('examId')}-store`, JSON.stringify(store.toJS()));
   }
 }
