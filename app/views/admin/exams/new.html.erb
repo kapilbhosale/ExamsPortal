@@ -26,20 +26,6 @@
               <input type="number" class="form-control" id="no_of_questions" placeholder="Total Number of Questions in exam" name="no_of_questions"  required>
             </div>
           </div>
-
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="questions">Positive Marks:</label>
-            <div class="col-sm-6">
-              <input type="number" min="0" max="10" class="form-control" id="positive_marks" placeholder="Positive marks for a question" name="positive_marks"  required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label col-sm-2" for="questions">Negative Marks:</label>
-            <div class="col-sm-6">
-              <input type="number" min="-10" max="0" class="form-control" id="negative_marks" placeholder="Negative marks for a question" name="negative_marks"  required>
-            </div>
-          </div>
-
           <div class="form-group">
             <label class="control-label col-sm-2" for="time_in_minutes">Time in Mins:</label>
             <div class="col-sm-6">
@@ -52,15 +38,38 @@
               <input type="datetime-local" class="form-control" id="available_from_time" name="available_from_time">
             </div>
           </div>
+          
 
-          <% @sections.each do |section| %>
-            <div class="form-group">
-              <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
-              <div class="col-sm-3">
-                <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
-              </div>
-            </div>
-          <% end %>
+          <table class="table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th>Section Name</th>
+                <th>Positive Marks</th>
+                <th>Negative Marks</th>
+                <th>Input File</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @sections.each do |section| %>
+                <tr>
+                  <td>
+                    <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
+                  </td>
+                  <td>
+                    <input type="number" min="0" max="10" class="form-control" id="positive_marks" placeholder="Positive marks" name="positive_marks[<%= section.id%>]">
+                  </td>
+                  <td>
+                    <input type="number" min="-10" max="0" class="form-control" id="negative_marks" placeholder="Negative marks" name="negative_marks[<%= section.id%>]">
+                  </td>
+                  <td>
+                    <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+
           <div class="form-group">
             <label class="control-label col-sm-2">Batch</label>
             <% if @batches.present? %>

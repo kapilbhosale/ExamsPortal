@@ -15,8 +15,13 @@ module Exams
         @exam = Exam.new(exam_params)
         build_batches
         if @exam.save!
+          
           params[:questions_zip].each do |section_id, zip_file|
-            Exams::Upload.new(@exam, zip_file.tempfile, section_id).call
+            marks = {
+              positive_marks: params[:positive_marks][section_id],
+              negative_marks: params[:negative_marks][section_id]
+            }
+            Exams::Upload.new(@exam, zip_file.tempfile, section_id, marks).call
           end
           return {status: true, message: 'Exam added successfully'}
         end
@@ -44,9 +49,7 @@ module Exams
                     :no_of_questions,
                     :time_in_minutes,
                     :publish_result,
-                    :questions_zip,
-                    :positive_marks,
-                    :negative_marks
+                    :questions_zip
       )
     end
 

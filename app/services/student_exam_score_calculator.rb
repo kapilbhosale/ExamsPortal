@@ -61,6 +61,6 @@ class StudentExamScoreCalculator
     end
 
     def score
-      (correct * exam.positive_marks) + (incorrect * exam.negative_marks)
+      (correct * @current_section.positive_marks) + (incorrect * @current_section.negative_marks)
     end
 end

@@ -52,6 +52,7 @@ class Exam < ApplicationRecord
     return 'chem' if only_chemistry?
     return 'neet' if neet?
     return 'jee' if jee?
+
     'general'
   end
 

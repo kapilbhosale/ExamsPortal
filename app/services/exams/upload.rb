@@ -2,16 +2,17 @@ class UploadExamError < StandardError; end
 
 module Exams
   class Upload
-    attr_reader :exam, :section_id
+    attr_reader :exam, :section_id, :marks
     attr_accessor :tmp_zip_file
 
     S3_UPLOAD = false
 
-    def initialize(exam, tmp_zip_file, section_id=1)
+    def initialize(exam, tmp_zip_file, section_id=1, marks={})
       @exam = exam
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
       @path = "exam_#{exam.id}_#{section_id}"
+      @marks = marks
     end
 
     def call
@@ -33,7 +34,13 @@ module Exams
 
     def create_exam_section
       section = Section.find_by(id: section_id)
-      exam.sections << section if section
+      if section
+        exam.exam_sections.create(
+          section_id: section.id,
+          positive_marks: marks[:positive_marks],
+          negative_marks: marks[:negative_marks]
+        )
+      end
     end
 
     def extract_zip

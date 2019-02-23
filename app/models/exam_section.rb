@@ -2,11 +2,13 @@
 #
 # Table name: exam_sections
 #
-#  id         :bigint(8)        not null, primary key
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  exam_id    :bigint(8)
-#  section_id :bigint(8)
+#  id             :bigint(8)        not null, primary key
+#  negative_marks :integer          default(-1), not null
+#  positive_marks :integer          default(4), not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  exam_id        :bigint(8)
+#  section_id     :bigint(8)
 #
 # Indexes
 #
