@@ -61,6 +61,7 @@ class StudentExamScoreCalculator
     end
 
     def score
-      (correct * @current_section.positive_marks) + (incorrect * @current_section.negative_marks)
+      exam_section = ExamSection.find_by(exam: exam, section: @current_section)
+      (correct * exam_section.positive_marks) + (incorrect * exam_section.negative_marks)
     end
 end
