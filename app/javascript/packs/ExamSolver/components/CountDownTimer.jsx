@@ -1,5 +1,6 @@
 import React from 'react';
 import Countdown from 'react-countdown-now';
+import ReactCountdownClock from 'react-countdown-clock';
 
 class CountDownTimer extends React.Component {
 
@@ -8,7 +9,8 @@ class CountDownTimer extends React.Component {
         const currentDateTime = new Date(currentTime).getTime();
         const startedSince = currentDateTime - new Date(startedAt);
         const endTime = currentDateTime + (timeInMinutes * 60 * 1000);
-        return (endTime - startedSince);
+        console.log("**************> " + new Date((endTime - startedSince)));
+        return ((endTime - startedSince) - currentDateTime)/(1000);
     }
 
     showAlertIfRequired(e) {
@@ -31,17 +33,18 @@ class CountDownTimer extends React.Component {
     render() {
         const { timeLeftMessage, timeIsUp } = this.props;
         return (
-            <div className="col-md-5 col-sm-5 col-xs-12 text-right">
+            <div className="col-md-2 col-sm-2 col-xs-12 text-right">
               <span className="text-right remaining-time blinking">
                 { timeLeftMessage }
               </span>
-              <span style={{ fontSize: '30px' }}>
-                <Countdown
-                    date={ this.dateForCountdown() }
-                    daysInHours
-                    onTick={ (e) => { this.showAlertIfRequired(e) } }
-                    onComplete={ () => { timeIsUp() }}
-                />
+              <span style={{marginTop: '-45px', marginBottom: '-80px', float: 'right', paddingRight: '80px'}}>
+                <ReactCountdownClock seconds={this.dateForCountdown()}
+                                     color="#428bca"
+                                     alpha={0.7}
+                                     size={150}
+                                     weight={4}
+                                     fontSize={'30px'}
+                                     onComplete={ () => { timeIsUp() }} />
               </span>
             </div> 
         );
