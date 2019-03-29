@@ -100,7 +100,7 @@ class ExamSolverContainer extends Component {
     const actions = this.actions();
     if (loading) {
       return <LoadingAnimation height="700px" />;
-    } else {      
+    } else {
       return (
         <div className="">
            <Modal

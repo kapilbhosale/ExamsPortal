@@ -48,7 +48,7 @@ gem 'ransack'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary', '= 0.12.3' 
+gem 'wkhtmltopdf-binary', '= 0.12.3'
 
 gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
 gem 'zip-zip' # will load compatibility for old rubyzip API.
@@ -77,6 +77,7 @@ group :development do
   gem 'rails-erd'
   gem 'pry'
   gem 'bullet'
+  gem 'rb-readline'
   # gem 'rollbar'
 end
 

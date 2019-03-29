@@ -4,6 +4,17 @@ import ReactCountdownClock from 'react-countdown-clock';
 
 class CountDownTimer extends React.Component {
 
+    componentDidMount() {
+        // Syncing answers with backend every 20 Seconds
+        this.syncInterval = setInterval(() => {
+            this.props.syncWithBackend();
+        }, 20000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.syncInterval);
+    }
+
     dateForCountdown() {
         const { startedAt, timeInMinutes, currentTime } = this.props;
         const currentDateTime = new Date(currentTime).getTime();
@@ -46,7 +57,7 @@ class CountDownTimer extends React.Component {
                                      fontSize={'30px'}
                                      onComplete={ () => { timeIsUp() }} />
               </span>
-            </div> 
+            </div>
         );
     }
 }
