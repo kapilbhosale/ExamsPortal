@@ -19,10 +19,8 @@ class CountDownTimer extends React.Component {
         const { startedAt, timeInMinutes, currentTime } = this.props;
         const currentDateTime = new Date(currentTime).getTime();
         const startedSince = currentDateTime - new Date(startedAt);
-        console.log('currentDateTime: ' + currentDateTime);
         const endTime = currentDateTime + (timeInMinutes * 60 * 1000);
         console.log("**************> " + new Date((endTime - startedSince)));
-        console.log('endTime: ' + endTime);
         return ((endTime - startedSince) - currentDateTime)/(1000);
     }
 
