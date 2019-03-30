@@ -77,6 +77,14 @@
           <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
         </form>
       </div>
+      <span class="text-danger">
+        <h4>
+          Be Carefull..
+          Submit Exams if any pending.
+          <br>
+          This action will clear all unsumitted data.
+        </h4>
+      </span>
     </div>
   </div>
 <% else %>
@@ -91,6 +99,7 @@
         alert("Accept the declaration.");
       }
       else
+      alert("You must submit previous exams, if any pending for submission.");
       {
         window.localStorage.clear();
         $('#myForm').submit();
