@@ -51,10 +51,10 @@ class Students::HomeController < Students::BaseController
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
 
-    student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id)
-    if student_exam_answer.present? && student_exam_answer.updated_at <= Time.current - 20.minues
-      head :ok and return
-    end
+    # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id)
+    # if student_exam_answer.present? && student_exam_answer.updated_at <= Time.current - 20.minues
+    #   head :ok and return
+    # end
 
     values = []
     params[:questions].each do |section, questions|
