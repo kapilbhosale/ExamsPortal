@@ -50,6 +50,12 @@ class Students::HomeController < Students::BaseController
 
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+
+    student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id)
+    if student_exam_answer.present? && student_exam_answer.updated_at <= Time.current - 20.minues
+      head :ok and return
+    end
+
     values = []
     params[:questions].each do |section, questions|
       questions.each do  |index, input_question|
@@ -86,18 +92,26 @@ class Students::HomeController < Students::BaseController
       student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
     end
 
-    indexed_questions = exam.questions.includes(:section).index_by(&:id)
-    questions = exam.questions.map do |question|
-    	{
-    		id: question.id,
+    indexed_questions = exam.questions.includes(:options, :section).index_by(&:id)
+    styles_by_question_id = ComponentStyle.where(
+      component_type: 'Question', 
+      component_id: exam.questions.ids).index_by(&:component_id)
+
+    student_answers_by_question_id = StudentExamAnswer
+      .where(student_exam_id: student_exam.id)
+      .where(question_id: exam.questions.ids).index_by(&:question_id)
+
+    questions = exam.questions.includes(:options).map do |question|
+      {
+    	  id: question.id,
     		title: question.title,
     		options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
-        cssStyle: question.css_style,
+        cssStyle: styles_by_question_id[question.id].style || '',
     		answerProps: {
           isAnswered: false,
           visited: false,
           needReview: false,
-          answer: StudentExamAnswer.find_by(question_id: question.id, student_exam_id: student_exam.id)&.option_id
+          answer: student_answers_by_question_id[question.id]&.option_id
         }
     	}
     end
