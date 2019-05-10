@@ -72,12 +72,26 @@ class Question extends React.Component {
       )
     }
 
+    const renderInputOption = () => {
+      return(
+        <div>
+          <input
+            type="text"
+            value={ answerProps.answer !== null ? answerProps.answer.join() : null }
+            onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
+          />
+        </div>
+      );
+    }
+
     const renderOptions = () => {
-      const type = "singleSelect";
+      const type = "input";
       if ( type === "singleSelect") {
         return (renderSingleSelectOptions());
       } else if (type === "multiSelect") {
         return (renderMultiSelectOptions());
+      } else if (type === "input") {
+        return (renderInputOption());
       }
 
     }
