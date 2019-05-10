@@ -4,6 +4,19 @@ class Question extends React.Component {
 
   render() {
     const { title, options, currentQuestionIndex, answerQuestion, answerProps, cssStyle} = this.props;
+    const onMultiSelectAnswerChanged = (value) => {
+      let answer = answerProps.answer;
+      if (answer === null) {
+        answerQuestion(currentQuestionIndex, [value]);
+      } else {
+        if ( answer.indexOf(value) === -1) {
+          answer.push(value)
+          answerQuestion(currentQuestionIndex, answer);
+        } else {
+          answerQuestion(currentQuestionIndex, answer.filter(function(val, index, arr){ return val != value }));
+        }
+      }
+    }
     return (
       <div>
         <style>
@@ -34,10 +47,10 @@ class Question extends React.Component {
                   <div key={idx} className="radio">
                     <label>
                       <input
-                        type="radio"
+                        type="checkbox"
                         value={ option.id }
                         checked={ parseInt(answerProps.answer) === option.id }
-                        onChange={ (e) => { answerQuestion(currentQuestionIndex, e.target.value) } }
+                        onChange={ (e) => { onMultiSelectAnswerChanged(e.target.value) } }
                       />
                       <div dangerouslySetInnerHTML={{ __html: option.data }} />
                     </label>
