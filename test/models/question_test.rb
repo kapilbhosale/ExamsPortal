@@ -5,6 +5,7 @@
 #  id               :bigint(8)        not null, primary key
 #  difficulty_level :integer          default("default"), not null
 #  explanation      :text
+#  question_type    :integer          default(0)
 #  title            :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
