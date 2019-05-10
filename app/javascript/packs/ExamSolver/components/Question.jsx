@@ -17,6 +17,70 @@ class Question extends React.Component {
         }
       }
     }
+
+    const renderMultiSelectOptions = () => {
+      return (
+        options.map((option, idx) => {
+          return (
+            <div key={idx} className="radio">
+              <label>
+                <input
+                  type="checkbox"
+                  value={ option.id }
+                  checked={ isOptionSelected(option.id) }
+                  onChange={ (e) => { onMultiSelectAnswerChanged(parseInt(e.target.value)) } }
+                />
+                <div dangerouslySetInnerHTML={{ __html: option.data }} />
+              </label>
+            </div>
+          )
+        })
+      );
+    }
+
+    const isOptionSelected = (optionId) => {
+      console.log('checked==== '+findAnswer(optionId));
+      return findAnswer(optionId);
+    }
+
+    const findAnswer = (optionId) => {
+      if (answerProps.answer === null) {
+        return false;
+      } else if (answerProps.answer.indexOf(optionId) === -1) {
+        return false;
+      }
+      return true;
+    }
+
+    const renderSingleSelectOptions = () => {
+      return (
+        options.map((option, idx) => {
+          return (
+            <div key={idx} className="radio">
+              <label>
+                <input
+                  type="radio"
+                  value={ option.id }
+                  checked={ isOptionSelected(option.id) }
+                  onChange={ (e) => { answerQuestion(currentQuestionIndex, [parseInt(e.target.value)]) } }
+                />
+                <div dangerouslySetInnerHTML={{ __html: option.data }} />
+              </label>
+            </div>
+          )
+        })
+      )
+    }
+
+    const renderOptions = () => {
+      const type = "singleSelect";
+      if ( type === "singleSelect") {
+        return (renderSingleSelectOptions());
+      } else if (type === "multiSelect") {
+        return (renderMultiSelectOptions());
+      }
+
+    }
     return (
       <div>
         <style>
@@ -42,21 +106,7 @@ class Question extends React.Component {
           <div className="col-md-12">
 
             {
-              options.map((option, idx) => {
-                return (
-                  <div key={idx} className="radio">
-                    <label>
-                      <input
-                        type="checkbox"
-                        value={ option.id }
-                        checked={ parseInt(answerProps.answer) === option.id }
-                        onChange={ (e) => { onMultiSelectAnswerChanged(e.target.value) } }
-                      />
-                      <div dangerouslySetInnerHTML={{ __html: option.data }} />
-                    </label>
-                  </div>
-                )
-              })
+              renderOptions()
             }
 
           </div>
