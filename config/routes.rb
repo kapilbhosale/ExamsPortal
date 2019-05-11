@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :exams do
       collection do
         get 'question_bank', to: 'exams#question_bank'
+        get 'new_jee', to: 'exams#new_jee'
       end
     end
     resources :practice_questions

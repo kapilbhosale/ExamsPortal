@@ -6,6 +6,7 @@ class Admin::ExamsController < Admin::BaseController
 
   def new
     @batches = Batch.all_batches
+    @sections = Section.jee.all.select(:id, :name, :description)
   end
 
   def create
@@ -60,7 +61,7 @@ class Admin::ExamsController < Admin::BaseController
   private
 
   def sections
-    @sections = Section.all.select(:id, :name)
+    @sections = Section.non_jee.all.select(:id, :name)
   end
 
   private

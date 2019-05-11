@@ -12,6 +12,7 @@ module Exams
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
       @path = "exam_#{exam.id}_#{section_id}"
+      @question_type = question_type_from_sections[Section.find_by(id: section_id).name]
       @marks = marks
     end
 
@@ -114,12 +115,27 @@ module Exams
       end
     end
 
+    def question_type_from_sections
+      {
+        "phy-I" => Question.question_types[:multi_select], 
+        "phy-II" => Question.question_types[:input], 
+        "phy-III" => Question.question_types[:single_select], 
+        "chem-I"=> Question.question_types[:multi_select],
+        "chem-II" => Question.question_types[:input], 
+        "chem-III" =>  Question.question_types[:single_select], 
+        "math-I"=> Question.question_types[:multi_select],
+        "math-II" => Question.question_types[:input], 
+        "math-III" => Question.question_types[:single_select]
+      }
+    end
+
     def create_questions_and_options
       @questions_data.each do |question_data|
 
         title = replace_local_img_path(question_data[:question])
         explanation = replace_local_img_path(question_data[:explanation])
-        question = Question.create!(title: title, explanation: explanation, section_id: section_id)
+        question = Question.create!(title: title, explanation: explanation, 
+          section_id: section_id, question_type: @question_type)
         ExamQuestion.create(exam: exam, question: question)
 
         create_option_params = []

@@ -104,7 +104,8 @@ class Students::HomeController < Students::BaseController
     questions = exam.questions.includes(:options).map do |question|
       {
     	  id: question.id,
-    		title: question.title,
+        title: question.title,
+        question_type: question.question_type,
     		options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
         cssStyle: styles_by_question_id[question.id].style || '',
     		answerProps: {

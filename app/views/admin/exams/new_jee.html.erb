@@ -55,10 +55,10 @@
                     <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
                   </td>
                   <td>
-                    <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
+                    <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.name%>]">
                   </td>
                   <td style="width: 100px;">
-                    <span><%= section.description.first(100) %></span>
+                    <span><%= section.description %></span>
                   </td>
                 </tr>
               <% end %>

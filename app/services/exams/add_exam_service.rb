@@ -18,8 +18,8 @@ module Exams
           
           params[:questions_zip].each do |section_id, zip_file|
             marks = {
-              positive_marks: params[:positive_marks][section_id],
-              negative_marks: params[:negative_marks][section_id]
+              positive_marks: 1,
+              negative_marks: -1
             }
             Exams::Upload.new(@exam, zip_file.tempfile, section_id, marks).call
           end

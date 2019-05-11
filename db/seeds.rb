@@ -134,6 +134,38 @@ exam_concepts.each do |exam_concept|
   Section.find_or_create_by(name: exam_concept)
 end
 
+jee_sections = {
+  "phy-I" => "This section contains SIX (06) questions. 
+  Each question has FOUR options for correct answer(s). 
+  ONE OR MORE THAN ONE of these four option(s) is (are) correct option(s).",
+  "phy-II" => "This section contains EIGHT (08) questions. The answer to each question is a NUMERICAL VALUE.",
+  "phy-III" => "This section contains FOUR (04) questions.
+  Each question has TWO (02) matching lists: LIST‐I and LIST‐II.
+  FOUR options are given representing matching of elements from LIST‐I and LIST‐II. ONLY ONE of
+  these four options corresponds to a correct matching.",
+
+  "chem-I" => "This section contains SIX (06) questions. 
+  Each question has FOUR options for correct answer(s). 
+  ONE OR MORE THAN ONE of these four option(s) is (are) correct option(s).",
+  "chem-II" => "This section contains EIGHT (08) questions. The answer to each question is a NUMERICAL VALUE.",
+  "chem-III" => "This section contains FOUR (04) questions.
+  Each question has TWO (02) matching lists: LIST‐I and LIST‐II.
+  FOUR options are given representing matching of elements from LIST‐I and LIST‐II. ONLY ONE of
+  these four options corresponds to a correct matching.",
+
+  "math-I" => "This section contains SIX (06) questions. 
+  Each question has FOUR options for correct answer(s). 
+  ONE OR MORE THAN ONE of these four option(s) is (are) correct option(s).",
+  "math-II" => "This section contains EIGHT (08) questions. The answer to each question is a NUMERICAL VALUE.",
+  "math-III" => "This section contains FOUR (04) questions.
+  Each question has TWO (02) matching lists: LIST‐I and LIST‐II.
+  FOUR options are given representing matching of elements from LIST‐I and LIST‐II. ONLY ONE of
+  these four options corresponds to a correct matching.",
+}
+jee_sections.each do |name, description|
+  Section.find_or_create_by(name: name, description: description, is_jee: true)
+end
+
 unless Rails.env.production?
   # Admin.find_or_create_by(email: 'admin@smartexams.com', password: 'p@ssword')
 end

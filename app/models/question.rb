@@ -5,7 +5,7 @@
 #  id               :bigint(8)        not null, primary key
 #  difficulty_level :integer          default("default"), not null
 #  explanation      :text
-#  question_type    :integer          default(0)
+#  question_type    :integer          default("single_select")
 #  title            :text
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
@@ -18,7 +18,7 @@ class Question < ApplicationRecord
   has_many :options, dependent: :destroy
   belongs_to :section
 
-  enum question_type: {single_select: 0, multi_select: 1, input: 2}
+  enum question_type: { single_select: 0, multi_select: 1, input: 2 }
   enum difficulty_level: {default: 0, easy: 1, medium: 2, difficult: 3, very_difficult: 4}
 
   def css_style
