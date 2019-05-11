@@ -3,7 +3,7 @@ import React from 'react';
 class Question extends React.Component {
 
   render() {
-    const { title, options, currentQuestionIndex, answerQuestion, answerProps, cssStyle} = this.props;
+    const { title, options, currentQuestionIndex, answerQuestion, answerProps, cssStyle, question_type} = this.props;
     const onMultiSelectAnswerChanged = (value) => {
       let answer = answerProps.answer;
       if (answer === null) {
@@ -39,11 +39,6 @@ class Question extends React.Component {
     }
 
     const isOptionSelected = (optionId) => {
-      console.log('checked==== '+findAnswer(optionId));
-      return findAnswer(optionId);
-    }
-
-    const findAnswer = (optionId) => {
       if (answerProps.answer === null) {
         return false;
       } else if (answerProps.answer.indexOf(optionId) === -1) {
@@ -72,12 +67,20 @@ class Question extends React.Component {
       )
     }
 
+    const inputTypeValue = () => {
+      if (answerProps.answer !== null) {
+        console.log('input value--->'+answerProps.answer.join());
+        return answerProps.answer.join();
+      }
+      return '';
+    }
+
     const renderInputOption = () => {
       return(
         <div>
           <input
             type="text"
-            value={ answerProps.answer !== null ? answerProps.answer.join() : null }
+            value={ inputTypeValue() }
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
         </div>
@@ -85,12 +88,11 @@ class Question extends React.Component {
     }
 
     const renderOptions = () => {
-      const type = "multiSelect";
-      if ( type === "singleSelect") {
+      if ( question_type === "single_select") {
         return (renderSingleSelectOptions());
-      } else if (type === "multiSelect") {
+      } else if (question_type === "multi_select") {
         return (renderMultiSelectOptions());
-      } else if (type === "input") {
+      } else if (question_type === "input") {
         return (renderInputOption());
       }
 
