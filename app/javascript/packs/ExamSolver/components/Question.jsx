@@ -30,7 +30,7 @@ class Question extends React.Component {
                   checked={ isOptionSelected(option.id) }
                   onChange={ (e) => { onMultiSelectAnswerChanged(parseInt(e.target.value)) } }
                 />
-                <div dangerouslySetInnerHTML={{ __html: option.data }} />
+                <div className='display-inline padding-left-10' dangerouslySetInnerHTML={{ __html: option.data }} />
               </label>
             </div>
           )
@@ -85,7 +85,7 @@ class Question extends React.Component {
     }
 
     const renderOptions = () => {
-      const type = "input";
+      const type = "multiSelect";
       if ( type === "singleSelect") {
         return (renderSingleSelectOptions());
       } else if (type === "multiSelect") {

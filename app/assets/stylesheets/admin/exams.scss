@@ -9,6 +9,10 @@
   font-weight: bold;
 }
 
+.display-inline {
+  display: inline-block;
+}
+
 .blinking {
   animation:blinkingText 1.2s infinite;
 }
