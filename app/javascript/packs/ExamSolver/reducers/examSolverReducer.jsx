@@ -40,7 +40,7 @@ export default function examSolverReducer($$state = $$initialState, action) {
     case actionTypes.ANSWER_QUESTION: {
       let currentSection = $$state.get('currentSection');
       let questionsBySections = $$state.get('questionsBySections').toJS();
-      questionsBySections[currentSection][val.questionIndex].answerProps.answer = val.answerIndex;
+      questionsBySections[currentSection][val.questionIndex].answerProps.answer = Immutable.fromJS(val.answerIndex);
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.CLEAR_ANSWER: {
