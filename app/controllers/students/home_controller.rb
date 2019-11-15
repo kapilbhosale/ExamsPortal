@@ -50,26 +50,47 @@ class Students::HomeController < Students::BaseController
 
   def sync
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-
-    # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id)
-    # if student_exam_answer.present? && student_exam_answer.updated_at <= Time.current - 20.minues
-    #   head :ok and return
-    # end
+    exam = Exam.find_by(id: params[:exam_id])
+    questions_by_id = exam.questions.index_by(&:id)
+    student_exam_answer_by_qid = StudentExamAnswer.where(student_exam_id: student_exam.id, question_id: questions_by_id.keys).index_by(&:question_id)
 
     values = []
     params[:questions].each do |section, questions|
       questions.each do  |index, input_question|
-        if input_question[:answerProps][:answer].to_i > 0
-          student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
+        question_id = input_question['id'].to_i
+        question = questions_by_id[question_id]
+      
+        if question.input? || question.single_select?
+          student_ans = input_question[:answerProps][:answer].first.strip
+        else
+          student_ans = input_question[:answerProps][:answer]
+        end
+
+        next if student_ans.blank?
+        student_exam_answer = student_exam_answer_by_qid[question_id]
+        next if question.input? && student_exam_answer&.ans == student_ans
+        next if question.single_select? && student_exam_answer&.option_id == student_ans.to_i
+
+        if question.input? && student_ans.present?
+          # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])    
           if student_exam_answer
-            student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
+            student_exam_answer.update!(ans: student_ans)
           else
-            values.push("#{input_question[:id]}, #{input_question[:answerProps][:answer]}")
+            values.push("#{question_id}, NULL, #{student_ans}")
+          end
+        elsif question.single_select? && student_ans.to_i > 0
+          # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
+          if student_exam_answer
+            student_exam_answer.update!(option_id: student_ans.to_i)
+          else
+            values.push("#{question_id}, #{student_ans.to_i}, NULL")
           end
         end
       end
-  	end
-    StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
+    end
+    if values.present?
+      StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
+    end  
   rescue StandardError => e
     Rails.logger.error("#{e.message} Student_id: #{current_student.id} params: #{params}")
   end
@@ -170,6 +191,6 @@ class Students::HomeController < Students::BaseController
   end
 
   def student_exam_answer_columns
-    ["question_id", "option_id", "student_exam_id"]
+    ["question_id", "option_id", "ans", "student_exam_id"]
   end
 end

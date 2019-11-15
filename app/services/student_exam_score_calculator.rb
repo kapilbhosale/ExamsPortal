@@ -9,13 +9,14 @@ class StudentExamScoreCalculator
     def calculate
       sections.each do |section|
         @current_section = section
+        counts = correct_incorrect_counts
         StudentExamSummary.create!(
           student_exam_id: @student_exam.id,
           answered: answered,
           not_answered: not_answered,
-          correct: correct,
-          incorrect: incorrect,
-          score: score,
+          correct: counts[:correct_count],
+          incorrect: counts[:in_correct_count],
+          score: score(counts),
           no_of_questions: no_of_questions,
           section_id: @current_section.id,
         )
@@ -60,8 +61,21 @@ class StudentExamScoreCalculator
       answered - correct
     end
 
-    def score
+    def correct_incorrect_counts
+      correct_count, in_correct_count = 0, 0
+      student_exam.student_exam_answers.select do |sea|
+        next if sea.question.section_id != @current_section.id
+        if sea.question.single_select? 
+          sea.option.is_answer ? correct_count += 1 : in_correct_count +=1 
+        elsif sea.question.input?
+          correct_count += 1 if sea.question.options.first.data == sea.ans 
+        end        
+      end
+      { correct_count: correct_count, in_correct_count: in_correct_count }
+    end
+
+    def score(counts)
       exam_section = ExamSection.find_by(exam: exam, section: @current_section)
-      (correct * exam_section.positive_marks) + (incorrect * exam_section.negative_marks)
+      (counts[:correct_count] * exam_section.positive_marks) + (counts[:in_correct_count] * exam_section.negative_marks)
     end
 end
