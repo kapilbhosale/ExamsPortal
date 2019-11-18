@@ -107,7 +107,7 @@ module Exams
         question_type = question_val.downcase.strip.start_with?('input') ? 2 : 0
         question = rows[0].at('td').children.to_s.strip
         answer = rows[2].text.strip
-        explanation = rows[3].at('td').children.to_s.strip
+        explanation = rows[3]&.at('td')&.children&.to_s&.strip
 
         @questions_data << {
           question: question,
@@ -176,6 +176,7 @@ module Exams
     end
 
     def replace_local_img_path(html_code)
+      return if html_code.blank?
       if S3_UPLOAD
         path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/#{@path}/images/"
       else

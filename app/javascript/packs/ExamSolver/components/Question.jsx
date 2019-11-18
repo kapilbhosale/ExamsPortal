@@ -118,7 +118,7 @@ class Question extends React.Component {
 
         <br/>
 
-        <div className="row">
+        <div className="row" style={{ paddingTop: '150px'}}>
           <div className="col-md-12">
             {
               renderOptions()
