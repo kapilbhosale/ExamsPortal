@@ -22,7 +22,7 @@ class Question extends React.Component {
       return (
         options.map((option, idx) => {
           return (
-            <div key={idx} className="radio">
+            <div key={idx} className="radio text-indent-0">
               <label>
                 <input
                   type="checkbox"
@@ -51,7 +51,7 @@ class Question extends React.Component {
       return (
         options.map((option, idx) => {
           return (
-            <div key={idx} className="radio">
+            <div key={idx} className="radio text-indent-0">
               <label>
                 <input
                   type="radio"
@@ -77,7 +77,7 @@ class Question extends React.Component {
 
     const renderInputOption = () => {
       return(
-        <div>
+        <div className='text-indent-0'>
           <input
             type="text"
             value={ inputTypeValue() }
@@ -112,7 +112,7 @@ class Question extends React.Component {
 
         <div className="row">
           <div className="col-md-12" style={{ fontSize: '20px'}}>
-            <p dangerouslySetInnerHTML={{ __html: title}} />
+            <div className='text-indent-0' dangerouslySetInnerHTML={{ __html: title}} />
           </div>
         </div>
 

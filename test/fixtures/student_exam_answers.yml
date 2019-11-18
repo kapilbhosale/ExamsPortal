@@ -3,6 +3,7 @@
 # Table name: student_exam_answers
 #
 #  id              :bigint(8)        not null, primary key
+#  ans             :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  option_id       :bigint(8)

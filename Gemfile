@@ -33,6 +33,8 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'sucker_punch', '~> 2.0'
+
 gem 'webpacker'
 gem 'foreman'
 
