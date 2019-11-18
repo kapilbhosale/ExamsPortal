@@ -49,7 +49,8 @@ class Students::HomeController < Students::BaseController
   end
 
   def sync
-    # Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
+    SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    return {}, status: :ok
   end
 
   def submit

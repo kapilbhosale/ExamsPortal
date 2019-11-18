@@ -23,7 +23,7 @@ module Students
       ["question_id", "option_id", "ans", "student_exam_id"]
     end
 
-    def call     
+    def call 
       values = []
       questions_data.each do |section, questions|
         questions.each do  |index, input_question|
