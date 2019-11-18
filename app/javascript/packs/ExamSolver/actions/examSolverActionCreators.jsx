@@ -197,6 +197,7 @@ export function initialize() {
       method: 'get',
       data: { id: store.get('examId') },
       success: (data) => {
+
         const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
         if (localData) {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });

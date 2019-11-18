@@ -18,7 +18,7 @@ module Exams
           
           params[:questions_zip].each do |section_id, zip_file|
             marks = {
-              positive_marks: 1,
+              positive_marks: 4,
               negative_marks: -1
             }
             Exams::Upload.new(@exam, zip_file.tempfile, section_id, marks).call
