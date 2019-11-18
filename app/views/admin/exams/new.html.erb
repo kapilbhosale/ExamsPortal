@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-2">
-          <h5 class="pt-3"> Add New JEE Advance Exam</h5>
+          <h5 class="pt-3"> Add New Exam</h5>
         </div>
       </div>
       <div class="card-body">
@@ -58,7 +58,7 @@
                     <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
                   </td>
                   <td style="width: 100px;">
-                    <span><%= section.description.first(100) %></span>
+                    <span><%= section.description&.first(100) %></span>
                   </td>
                 </tr>
               <% end %>

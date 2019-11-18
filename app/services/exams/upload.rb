@@ -12,7 +12,6 @@ module Exams
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
       @path = "exam_#{exam.id}_#{section_id}"
-      @question_type = question_type_from_sections[Section.find_by(id: section_id).name]
       @marks = marks
     end
 
@@ -64,7 +63,7 @@ module Exams
     end
 
     def upload_images_folder
-      images_folder = "#{@tmp_dir_path}/images"
+      images_folder = "#{@tmp_dir_path}images"
       if S3_UPLOAD
         uploader = Exams::S3FolderUpload.new(images_folder, "#{@path}/images")
         uploader.upload!
@@ -91,27 +90,33 @@ module Exams
       tables.each do |table|
         next if options_table?(table)
         options = []
+        options_val = []
         # copy options table and remove it.
         options_table = table.at('table')
         table.at('table').remove
 
         options_table.search('tr').each do |option|
           options << option.at('td').children.to_s.strip
+          options_val << option.at('td').children.text.strip
         end
 
         rows = table.search('tr')
         # assuming that there will be only 4 rows in question, as per defined structure.
+        
         question_val = rows[0].at('td').text.strip
+        question_type = question_val.downcase.strip.start_with?('input') ? 2 : 0
         question = rows[0].at('td').children.to_s.strip
         answer = rows[2].text.strip
         explanation = rows[3].at('td').children.to_s.strip
 
         @questions_data << {
           question: question,
+          question_type: question_type,
           options: options,
+          optinos_val: options_val,
           answer: answer,
           explanation: explanation
-        } if question_val.present?
+        } 
       end
     end
 
@@ -135,17 +140,25 @@ module Exams
         title = replace_local_img_path(question_data[:question])
         explanation = replace_local_img_path(question_data[:explanation])
         question = Question.create!(title: title, explanation: explanation, 
-          section_id: section_id, question_type: @question_type)
+          section_id: section_id, question_type: question_data[:question_type])
         ExamQuestion.create(exam: exam, question: question)
 
         create_option_params = []
-        question_data[:options].each_with_index do |option, index|
+        if question_data[:question_type] == 0
+          question_data[:options].each_with_index do |option, index|
+            create_option_params << {
+              question: question,
+              data: replace_local_img_path(option),
+              is_answer: answer_input(question_data[:answer]) == index + 1
+            }
+          end
+        else 
           create_option_params << {
             question: question,
-            data: replace_local_img_path(option),
-            is_answer: answer_input(question_data[:answer]) == index + 1
+            data: question_data[:answer],
+            is_answer: true
           }
-        end
+        end  
         Option.create!(create_option_params)
         ComponentStyle.create!(component: question, style: @style)
       end

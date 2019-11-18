@@ -120,11 +120,9 @@ class Question extends React.Component {
 
         <div className="row">
           <div className="col-md-12">
-
             {
               renderOptions()
             }
-
           </div>
         </div>
       </div>
