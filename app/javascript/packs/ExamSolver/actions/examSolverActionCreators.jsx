@@ -120,20 +120,14 @@ export function submitTest() {
   return (dispatch, getState) => {
     dispatch(loading(true));
     const store = getState().$$examSolverStore;
-    const dataJSON = JSON.parse(localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`));
+    const studentKey = `${store.get('studentId')}-${store.get('examId')}-store`
+    const dataJSON = parseLocalStorageDataForSync(studentKey)
     $.ajax({
-      url: '/students/sync/' + store.get('examId'),
+      url: '/students/submit/' + store.get('examId'),
       method: 'put',
-      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
+      data: { id: store.get('examId'), questions: dataJSON },
       success: (data) => {
-        $.ajax({
-          url: '/students/submit/' + store.get('examId'),
-          method: 'put',
-          data: { id: store.get('examId') },
-          success: (data) => {
-            window.location = '/students/summary/' + store.get('examId');
-          }
-        });
+        window.location = '/students/summary/' + store.get('examId');
       },
       error: (data) => {
         console.log('error sync!');
@@ -162,12 +156,13 @@ export function timeIsUp() {
 export function syncWithBackend() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    const dataJSON = JSON.parse(localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`));
+    const studentKey = `${store.get('studentId')}-${store.get('examId')}-store`
+    const dataJSON = parseLocalStorageDataForSync(studentKey)
     $.ajax({
       url: '/students/sync/' + store.get('examId'),
       method: 'put',
       async: false,
-      data: { questions: dataJSON.questionsBySections, exam_id: store.get('examId') },
+      data: { questions: dataJSON, exam_id: store.get('examId') },
       success: (data) => { console.log('success sync!'); },
       error: (data) => { console.log('error sync!'); },
     });
@@ -285,4 +280,16 @@ export function toggleTestSubmitModal(value) {
     type: actionTypes.TOGGLE_TEST_SUBMIT_MODAL,
     val: value,
   };
+}
+
+function parseLocalStorageDataForSync(studentKey) {
+  const dataJSON = JSON.parse(localStorage.getItem(studentKey)).questionsBySections;
+  let questionsBySections = { }
+  Object.keys(dataJSON).forEach((key) => {
+    const questions = dataJSON[`${key}`].map((data, index) => {
+      return { id: data.id, answerProps: data.answerProps }
+    });
+    questionsBySections[key] = questions;
+  });
+  return questionsBySections;
 }
