@@ -4,8 +4,9 @@
 #
 #  id              :bigint(8)        not null, primary key
 #  description     :text
+#  exam_type       :integer          default(0)
 #  name            :string           not null
-#  negative_marks  :integer          default(-1), not null
+#  negative_marks  :integer          default(1), not null
 #  no_of_questions :integer
 #  positive_marks  :integer          default(4), not null
 #  publish_result  :boolean          default(FALSE), not null
@@ -30,6 +31,8 @@ class Exam < ApplicationRecord
 
   has_many :exam_batches
   has_many :batches, through: :exam_batches
+
+  enum exam_type: { jee: 0, cet: 1, other: 2 }
 
   # has_one :style, as: :component, dependent: :destroy
 

@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_14_095224) do
+ActiveRecord::Schema.define(version: 2019_12_19_063709) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "hstore"
   enable_extension "plpgsql"
 
   create_table "admins", force: :cascade do |t|
@@ -30,7 +31,9 @@ ActiveRecord::Schema.define(version: 2019_11_14_095224) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "photo"
+    t.bigint "institute_id"
     t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["institute_id"], name: "index_admins_on_institute_id"
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
@@ -105,8 +108,16 @@ ActiveRecord::Schema.define(version: 2019_11_14_095224) do
     t.datetime "updated_at", null: false
     t.boolean "publish_result", default: false, null: false
     t.integer "positive_marks", default: 4, null: false
-    t.integer "negative_marks", default: -1, null: false
+    t.integer "negative_marks", default: 1, null: false
+    t.integer "exam_type", default: 0
     t.index ["name"], name: "index_exams_on_name"
+  end
+
+  create_table "institutes", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "options", force: :cascade do |t|

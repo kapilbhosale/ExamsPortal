@@ -13,13 +13,14 @@ module Exams
       @batch_ids = params[:exam][:batches]
       ActiveRecord::Base.transaction do
         @exam = Exam.new(exam_params)
+        exam_type = Exam.exam_types[params[:exam_type].to_sym] if params[:exam_type]
+        @exam.exam_type = exam_type
         build_batches
         if @exam.save!
-          
           params[:questions_zip].each do |section_id, zip_file|
             marks = {
-              positive_marks: 4,
-              negative_marks: -1
+              positive_marks: params.dig(:positive_marks, section_id) || 4,
+              negative_marks: params.dig(:negative_marks, section_id) || -1
             }
             Exams::Upload.new(@exam, zip_file.tempfile, section_id, marks).call
           end

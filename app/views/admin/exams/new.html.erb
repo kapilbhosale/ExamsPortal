@@ -38,13 +38,29 @@
               <input type="datetime-local" class="form-control" id="available_from_time" name="available_from_time">
             </div>
           </div>
-          
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="exam_type">Exam Type:</label>
+            <div class="custom-controls-stacked" style="padding-top: 8px;">
+              <label class="custom-control custom-radio custom-control-inline">
+                <input checked="checked" id="exam_type_yes" name="exam_type" type="radio" value="jee" /> &nbsp; JEE
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="exam_type_no" name="exam_type" type="radio" value="cet" /> &nbsp; CET
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="exam_type_no" name="exam_type" type="radio" value="other" /> &nbsp; Other
+              </label>
+            </div>
+          </div>
 
           <table class="table table-vcenter text-nowrap">
             <thead>
               <tr>
                 <th>Section Name</th>
                 <th>Description</th>
+                <th>+ve marks</th>
+                <th>-ve marks</th>
                 <th>Input File</th>
               </tr>
             </thead>
@@ -54,11 +70,17 @@
                   <td>
                     <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
                   </td>
-                  <td>
-                    <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.id%>]">
-                  </td>
                   <td style="width: 100px;">
-                    <span><%= section.description&.first(100) %></span>
+                    <span><%= section.description&.first(60) %></span>
+                  </td>
+                  <td style="width: 20px;">
+                    <input type="number" name="positive_marks[<%= section.id%>]" min="0" style="width: 60px;"/>
+                  </td>
+                  <td>
+                    <input type="number" name="negative_marks[<%= section.id%>]" max="0" style="width: 60px;"/>
+                  </td>
+                  <td>
+                    <input type="file" class="form-control-file btn-primary" id="questions_zip" name="questions_zip[<%= section.id%>]" accept=".zip">
                   </td>
                 </tr>
               <% end %>
@@ -84,7 +106,7 @@
           </div>
           <div class="form-group">
             <label class="control-label col-sm-2" for="publish_result">Publish Result:</label>
-            <div class="custom-controls-stacked">
+            <div class="custom-controls-stacked" style="padding-top: 8px;">
               <label class="custom-control custom-radio custom-control-inline">
                 <input checked="checked" id="publish_result_yes" name="publish_result" type="radio" value="Yes" /> &nbsp; Yes
               </label>

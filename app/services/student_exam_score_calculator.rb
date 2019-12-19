@@ -9,7 +9,11 @@ class StudentExamScoreCalculator
     def calculate
       sections.each do |section|
         @current_section = section
-        counts = correct_incorrect_counts
+        if exam.exam_type == 0
+          counts = jee_correct_incorrect_counts
+        else
+          counts = cet_correct_incorrect_counts
+        end
         StudentExamSummary.create!(
           student_exam_id: @student_exam.id,
           answered: answered,
@@ -65,11 +69,33 @@ class StudentExamScoreCalculator
       correct_count, in_correct_count = 0, 0
       student_exam.student_exam_answers.select do |sea|
         next if sea.question.section_id != @current_section.id
-        if sea.question.single_select? 
-          sea.option.is_answer ? correct_count += 1 : in_correct_count +=1 
+        if sea.question.single_select?
+          sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
         elsif sea.question.input?
-          correct_count += 1 if sea.question.options.first.data == sea.ans 
-        end        
+          correct_count += 1 if sea.question.options.first.data == sea.ans
+        end
+      end
+      { correct_count: correct_count, in_correct_count: in_correct_count }
+    end
+
+    def jee_correct_incorrect_counts
+      correct_count, in_correct_count = 0, 0
+      student_exam.student_exam_answers.select do |sea|
+        next if sea.question.section_id != @current_section.id
+        if sea.question.single_select?
+          sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
+        elsif sea.question.input?
+          correct_count += 1 if sea.question.options.first.data == sea.ans
+        end
+      end
+      { correct_count: correct_count, in_correct_count: in_correct_count }
+    end
+
+    def cet_correct_incorrect_counts
+      correct_count, in_correct_count = 0, 0
+      student_exam.student_exam_answers.select do |sea|
+        next if sea.question.section_id != @current_section.id
+          sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
       end
       { correct_count: correct_count, in_correct_count: in_correct_count }
     end

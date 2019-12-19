@@ -99,9 +99,6 @@ class Question extends React.Component {
     }
     return (
       <div>
-        <style>
-          { cssStyle }
-        </style>
         <div className="row">
           <div className="col-md-12">
             <b>Question No: { currentQuestionIndex + 1 }</b>
@@ -118,7 +115,7 @@ class Question extends React.Component {
 
         <br/>
 
-        <div className="row" style={{ paddingTop: '150px'}}>
+        <div className="row">
           <div className="col-md-12">
             {
               renderOptions()
