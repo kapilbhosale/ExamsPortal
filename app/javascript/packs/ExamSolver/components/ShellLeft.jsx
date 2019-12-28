@@ -15,7 +15,7 @@ class ShellLeft extends React.Component {
             sections, changeSection, isNavigationMapOpen, currentTime, remainingTimeAlert,
             timeLeftMessage, syncWithBackend } = this.props;
     return (
-      <div className={`${isNavigationMapOpen ? 'col-md-9' : 'full-width'}`}>
+      <div className={`${isNavigationMapOpen ? 'question-div col-md-9' : 'question-div full-width'}`}>
         <div className='row'>
           <div className='col-md-12'>
             <SectionList

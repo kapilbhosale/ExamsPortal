@@ -14,7 +14,10 @@
   <div id="new_exams" class="tab-pane fade in active">
     <br>
     <% if @new_exams.size == 0 %>
-      <div class="well"> No New exams available for your batch right now. Please try after some time. </div>
+      <div class="well"> 
+        No New exams available for your batch right now. 
+        Check Previous exams.
+      </div>
     <% else %>
       <div class="row">
       <% @new_exams.each do |exam| %>

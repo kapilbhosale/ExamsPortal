@@ -101,12 +101,12 @@ class Question extends React.Component {
       <div>
         <div className="row">
           <div className="col-md-12">
-            <b>Question No: { currentQuestionIndex + 1 }</b>
+            <span class="badge badge-secondary">
+              Question No: &nbsp; <b>{ currentQuestionIndex + 1 }</b>
+            </span>
           </div>
         </div>
-
         <br />
-
         <div className="row">
           <div className="col-md-12" style={{ fontSize: '20px'}}>
             <div className='text-indent-0' dangerouslySetInnerHTML={{ __html: title}} />
@@ -116,7 +116,7 @@ class Question extends React.Component {
         <br/>
 
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-12" style={{ fontSize: '20px'}}>
             {
               renderOptions()
             }
