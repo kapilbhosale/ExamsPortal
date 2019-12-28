@@ -1,55 +1,37 @@
-<div class="container">
-  <h4> Available Exams </h4>
-  <hr>
-    <% if @exams.size == 0 %>
+<ul class="nav nav-tabs">
+  <li class="active">
+    <a data-toggle="tab" href="#new_exams">
+      <h5>New Exams</h5>
+    </a>
+  </li>
+  <li>
+    <a data-toggle="tab" href="#previous_exams">
+      <h5>Previous Exams</h5>
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div id="new_exams" class="tab-pane fade in active">
+    <br>
+    <% if @new_exams.size == 0 %>
+      <div class="well"> No New exams available for your batch right now. Please try after some time. </div>
+    <% else %>
+      <div class="row">
+      <% @new_exams.each do |exam| %>
+        <%= render partial: "exam_card", locals: {exam: exam} %>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+  <div id="previous_exams" class="tab-pane fade">
+    <br>
+    <% if @previous_exams.size == 0 %>
       <div class="well"> No exams available for your batch right now. Please try after some time. </div>
     <% else %>
       <div class="row">
-      <% @exams.each do |exam| %>
-        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
-          <div class="card">
-            <%= image_tag exam.display_image, class: 'card-img-top', width: '200px', height: '150px'%>
-            <div class="card-body">
-              <h5 class="card-title"> <%= exam.name %> </h5>
-              <p class="card-text"></p>
-              <ul>
-                <li class="text-truncate"><%= exam.description %></li>
-                <li>No of questions: <b><%= exam.no_of_questions %></b></li>
-              </ul>
-              <% student_exam = @student_exams.try(:[], exam.id) %>
-              <% if current_student && student_exam %>
-                  <% if student_exam.ended_at.present? || ((student_exam.started_at + student_exam.exam.time_in_minutes.minutes) < Time.current) %>
-                    <a href="/students/summary/<%= exam.id %>" class="btn btn-success">
-                      View Result
-                    </a>
-                  <% elsif student_exam.started_at.present? %>
-                    <a href="/students/exam/<%= exam.id %>" class="btn btn-success">
-                      Continue Exam
-                    </a>
-                  <% else %>
-                    <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">
-                      Appear Exam
-                    </a>
-                  <% end %>
-              <% else %>
-                <a href="<%= students_exam_instructions_path(exam_id: exam.id) %>" class="btn btn-primary">
-                  Appear Exam
-                </a>
-              <% end %>
-            </div>
-          </div>
-        </div>
+      <% @previous_exams.each do |exam| %>
+        <%= render partial: "exam_card", locals: {exam: exam} %>
       <% end %>
-     </div>
+    </div>
     <% end %>
-
-  <hr>
-  <p> Note: Mock Exams and questions updating soon.. </p>
-
-  <style type="text/css">
-    <%= @styles %>
-  </style>
-  <hr>
-    <%= raw @test_html %>
-  <hr>
-</div>
+  </div>

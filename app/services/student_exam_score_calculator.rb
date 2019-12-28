@@ -9,7 +9,7 @@ class StudentExamScoreCalculator
     def calculate
       sections.each do |section|
         @current_section = section
-        if exam.exam_type == 0
+        if exam.exam_type == 'jee'
           counts = jee_correct_incorrect_counts
         else
           counts = cet_correct_incorrect_counts
