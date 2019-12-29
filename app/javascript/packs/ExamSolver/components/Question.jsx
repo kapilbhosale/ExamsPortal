@@ -107,15 +107,14 @@ class Question extends React.Component {
           </div>
         </div>
         <br />
-        <div className="row">
+        <div className="row question-text-div">
           <div className="col-md-12" style={{ fontSize: '20px'}}>
             <div className='text-indent-0' dangerouslySetInnerHTML={{ __html: title}} />
           </div>
         </div>
 
-        <br/>
 
-        <div className="row">
+        <div className="row options-div">
           <div className="col-md-12" style={{ fontSize: '20px'}}>
             {
               renderOptions()

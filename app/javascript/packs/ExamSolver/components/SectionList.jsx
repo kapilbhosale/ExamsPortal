@@ -7,7 +7,7 @@ class SectionList extends React.Component {
     const { timeLeftMessage, timeIsUp, currentSection, changeSection, sections,
       remainingTimeAlert, syncWithBackend } = this.props;
     return (
-      <div className="row gray-border-bottom padding-bottom-15">
+      <div className="row gray-border-bottom">
         <div className="col-md-10 col-sm-10 col-xs-12">
           <ul className="nav nav-pills sections-nav">
             {
