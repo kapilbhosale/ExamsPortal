@@ -4,7 +4,7 @@
 #
 #  id              :bigint(8)        not null, primary key
 #  description     :text
-#  exam_type       :integer          default(0)
+#  exam_type       :integer          default("jee")
 #  name            :string           not null
 #  negative_marks  :integer          default(1), not null
 #  no_of_questions :integer

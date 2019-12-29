@@ -15,7 +15,7 @@
               View Result
             </a>
           <% elsif student_exam.started_at.present? %>
-            <a href="/students/exam/<%= exam.id %>" class="btn btn-success">
+            <a href="/students/exam/<%= exam.id %>" class="btn btn-danger">
               Continue Exam
             </a>
           <% else %>

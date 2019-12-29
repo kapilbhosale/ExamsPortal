@@ -20,40 +20,43 @@ module Students
     end
 
     def student_exam_answer_columns
-      ["question_id", "option_id", "ans", "student_exam_id"]
+      ["question_id", "option_id", "ans", "question_props", "student_exam_id"]
     end
 
-    def call 
+    def call
       values = []
       questions_data.each do |section, questions|
         questions.each do  |index, input_question|
           question_id = input_question['id'].to_i
           question = questions_by_id[question_id]
-        
+
           if question.input? || question.single_select?
             student_ans = input_question[:answerProps][:answer].first.strip
           else
             student_ans = input_question[:answerProps][:answer]
           end
+          input_question[:answerProps].delete(:answer)
+          json_question_props = input_question[:answerProps].to_json
+          # next if student_ans.blank?
+          # commenting so as to store the ans/question props
 
-          next if student_ans.blank?
           student_exam_answer = student_exam_answer_by_qid[question_id]
           next if question.input? && student_exam_answer&.ans == student_ans
           next if question.single_select? && student_exam_answer&.option_id == student_ans.to_i
 
-          if question.input? && student_ans.present?
+          if question.input?
             # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])    
             if student_exam_answer
-              student_exam_answer.update!(ans: student_ans)
+              student_exam_answer.update!(ans: student_ans, question_props: json_question_props)
             else
-              values.push("#{question_id}, NULL, '#{student_ans}'")
+              values.push("#{question_id}, NULL, '#{student_ans}', '#{json_question_props}'")
             end
-          elsif question.single_select? && student_ans.to_i > 0
+          elsif question.single_select?
             # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
             if student_exam_answer
-              student_exam_answer.update!(option_id: student_ans.to_i)
+              student_exam_answer.update!(option_id: student_ans.to_i, question_props: json_question_props)
             else
-              values.push("#{question_id}, #{student_ans.to_i}, NULL")
+              values.push("#{question_id}, #{student_ans.to_i}, NULL, '#{json_question_props}'")
             end
           end
         end

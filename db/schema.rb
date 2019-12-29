@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_19_063709) do
+ActiveRecord::Schema.define(version: 2019_12_29_044256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -175,6 +175,7 @@ ActiveRecord::Schema.define(version: 2019_12_19_063709) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "ans"
+    t.jsonb "question_props", default: {}
     t.index ["option_id"], name: "index_student_exam_answers_on_option_id"
     t.index ["question_id"], name: "index_student_exam_answers_on_question_id"
     t.index ["student_exam_id"], name: "index_student_exam_answers_on_student_exam_id"

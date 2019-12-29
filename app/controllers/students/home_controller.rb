@@ -8,7 +8,6 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-    # binding.pry
     if current_student
       batch_ids = current_student.batches.map(&:id)
       exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
@@ -93,16 +92,22 @@ class Students::HomeController < Students::BaseController
                     Array.wrap(student_answer.option_id)
                   end
                 end
+      if student_answer.question_props.is_a? String
+        answer_props = JSON.parse(student_answer.question_props)
+      else
+        answer_props = student_answer.question_props
+      end
+
       {
         id: question.id,
         title: question.title,
         question_type: question.question_type,
         options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
-        cssStyle: styles_by_question_id[question.id].style || '',
+        cssStyle: "" || styles_by_question_id[question.id].style || '',
         answerProps: {
-          isAnswered: false,
-          visited: false,
-          needReview: false,
+          isAnswered: answer_props['isAnswered'] == 'true',
+          visited: answer_props['visited'] == 'true',
+          needReview: answer_props['needReview'] == 'true',
           answer: answer
         }
       }
