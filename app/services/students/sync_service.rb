@@ -36,7 +36,6 @@ module Students
             student_ans = input_question[:answerProps][:answer]
           end
           input_question[:answerProps].delete(:answer)
-          json_question_props = input_question[:answerProps].to_json
           # next if student_ans.blank?
           # commenting so as to store the ans/question props
 
@@ -47,16 +46,16 @@ module Students
           if question.input?
             # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])    
             if student_exam_answer
-              student_exam_answer.update!(ans: student_ans, question_props: json_question_props)
+              student_exam_answer.update!(ans: student_ans, question_props: input_question[:answerProps])
             else
-              values.push("#{question_id}, NULL, '#{student_ans}', '#{json_question_props}'")
+              values.push("#{question_id}, NULL, '#{student_ans}', '#{input_question[:answerProps].to_json}'")
             end
           elsif question.single_select?
             # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
             if student_exam_answer
-              student_exam_answer.update!(option_id: student_ans.to_i, question_props: json_question_props)
+              student_exam_answer.update!(option_id: student_ans.to_i, question_props: input_question[:answerProps])
             else
-              values.push("#{question_id}, #{student_ans.to_i}, NULL, '#{json_question_props}'")
+              values.push("#{question_id}, #{student_ans.to_i}, NULL, '#{input_question[:answerProps].to_json}'")
             end
           end
         end

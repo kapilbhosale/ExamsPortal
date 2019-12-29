@@ -92,15 +92,7 @@ class Students::HomeController < Students::BaseController
                     Array.wrap(student_answer.option_id)
                   end
                 end
-      answer_props = {}
-      if student_answer.present?
-        if student_answer.question_props.is_a? String
-          answer_props = JSON.parse(student_answer.question_props)
-        else
-          answer_props = student_answer.question_props
-        end
-      end
-
+      answer_props = student_answer.present? ? student_answer.question_props : {}
       {
         id: question.id,
         title: question.title,
