@@ -68,6 +68,7 @@ class StudentExamScoreCalculator
     def correct_incorrect_counts
       correct_count, in_correct_count = 0, 0
       student_exam.student_exam_answers.select do |sea|
+        next if sea.option_id == 0
         next if sea.question.section_id != @current_section.id
         if sea.question.single_select?
           sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
@@ -81,6 +82,7 @@ class StudentExamScoreCalculator
     def jee_correct_incorrect_counts
       correct_count, in_correct_count = 0, 0
       student_exam.student_exam_answers.select do |sea|
+        next if sea.option_id == 0
         next if sea.question.section_id != @current_section.id
         if sea.question.single_select?
           sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
