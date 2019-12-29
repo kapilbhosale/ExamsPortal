@@ -85,19 +85,27 @@ class Students::HomeController < Students::BaseController
       .where(question_id: exam.questions.ids).index_by(&:question_id)
 
     questions = exam.questions.includes(:options).map do |question|
+      student_answer = student_answers_by_question_id[question.id]
+      answer = if student_answer.present?
+                  if student_answer.ans.present?
+                    Array.wrap(student_answer.ans)
+                  elsif student_answer.option_id
+                    Array.wrap(student_answer.option_id)
+                  end
+                end
       {
-    	  id: question.id,
+        id: question.id,
         title: question.title,
         question_type: question.question_type,
-    		options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
+        options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
         cssStyle: styles_by_question_id[question.id].style || '',
-    		answerProps: {
+        answerProps: {
           isAnswered: false,
           visited: false,
           needReview: false,
-          answer: student_answers_by_question_id[question.id]&.option_id
+          answer: answer
         }
-    	}
+      }
     end
 
     questions_by_sections = {}
