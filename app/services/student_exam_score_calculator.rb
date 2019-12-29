@@ -42,11 +42,13 @@ class StudentExamScoreCalculator
     end
 
     def answered
-      begin
-        student_exam.student_exam_answers.select do |sea|
-          sea.question.section_id == @current_section.id
-        end.count
+      count = 0
+      student_exam.student_exam_answers.each do |sea|
+        next if sea.option_id == 0
+        next if sea.question.input? && sea.ans.blank?
+        count += 1 if sea.question.section_id == @current_section.id
       end
+      count
     end
 
     def not_answered

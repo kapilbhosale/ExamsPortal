@@ -24,6 +24,7 @@
               <th class="summary-table-th text-white">Not-answered</th>
               <th class="summary-table-th text-white">Correct</th>
               <th class="summary-table-th text-white">Inorrect</th>
+              <th class="summary-table-th text-white">Input Inorrect</th>
               <th class="summary-table-th text-white">Score</th>
             </tr>
             <% @student_exam_summaries.each do |student_exam_summary| %>
@@ -45,6 +46,9 @@
                 </td>
                 <td class="summary-table-td">
                   <%= student_exam_summary.incorrect %>
+                </td>
+                <td class="summary-table-td">
+                  <%= student_exam_summary.answered - (student_exam_summary.correct + student_exam_summary.incorrect) %>
                 </td>
                 <td class="summary-table-td">
                   <% total_score += student_exam_summary.score %>
