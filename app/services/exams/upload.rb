@@ -102,7 +102,7 @@ module Exams
 
         rows = table.search('tr')
         # assuming that there will be only 4 rows in question, as per defined structure.
-        
+
         question_val = rows[0].at('td').text.strip
         question_type = question_val.downcase.strip.start_with?('input') ? 2 : 0
         question = rows[0].at('td').children.to_s.strip
@@ -116,7 +116,7 @@ module Exams
           optinos_val: options_val,
           answer: answer,
           explanation: explanation
-        } 
+        }
       end
     end
 
