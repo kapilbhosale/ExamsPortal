@@ -18,7 +18,7 @@ class ShellRight extends React.Component {
       document.getElementById("mySidenav").style.paddingLeft = 0;
       document.getElementById("mySidenav").style.paddingRight = 0;
     } else {
-      document.getElementById("mySidenav").style.width = "350px";
+      document.getElementById("mySidenav").style.width = "320px";
       document.getElementById("mySidenav").style.paddingLeft = "13px";
     }
   }
@@ -60,7 +60,7 @@ class ShellRight extends React.Component {
         document.getElementById("mySidenav").style.paddingLeft = "13px";
       }
       else {
-        document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("mySidenav").style.width = "320px";
         document.getElementById("mySidenav").style.paddingLeft = "13px";
       }
     };
