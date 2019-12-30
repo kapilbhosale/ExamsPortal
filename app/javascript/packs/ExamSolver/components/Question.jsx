@@ -77,7 +77,7 @@ class Question extends React.Component {
 
     const renderInputOption = () => {
       return(
-        <div className='text-indent-0'>
+        <div className='text-indent-0 padding-top-20'>
           <input
             type="text"
             value={ inputTypeValue() }
