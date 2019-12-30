@@ -83,6 +83,7 @@ class Question extends React.Component {
             value={ inputTypeValue() }
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
+          <span className='text-muted text-medium'> Write answers upto 2 precisions.</span>
         </div>
       );
     }
