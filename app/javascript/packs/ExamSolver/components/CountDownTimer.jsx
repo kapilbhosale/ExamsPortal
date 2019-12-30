@@ -50,8 +50,9 @@ class CountDownTimer extends React.Component {
               </span>
               <span style={{marginTop: '-45px', marginBottom: '-80px', float: 'right', paddingRight: '80px'}}>
                 <ReactCountdownClock seconds={this.dateForCountdown()}
-                                     color="#428bca"
+                                     color="#054379"
                                      alpha={0.7}
+                                     hideArc
                                      size={150}
                                      weight={4}
                                      fontSize={'30px'}

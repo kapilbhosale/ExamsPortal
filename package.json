@@ -20,7 +20,7 @@
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
     "redux-thunk": "^2.3.0",
-    "react-countdown-clock": "^2.5.0"
+    "react-countdown-clock": "https://github.com/deepakjadhav288/react-countdown-clock/tarball/258158225b9a40f9220d2f14e435a35a73bc3b9f"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
