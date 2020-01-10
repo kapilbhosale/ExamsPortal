@@ -13,8 +13,10 @@ module Exams
       @batch_ids = params[:exam][:batches]
       ActiveRecord::Base.transaction do
         @exam = Exam.new(exam_params)
-        exam_type = Exam.exam_types[params[:exam_type].to_sym] if params[:exam_type]
-        @exam.exam_type = exam_type
+        if params[:exam_type]
+          e_type = Exam.exam_types[params[:exam_type].to_sym]
+          @exam.exam_type = e_type
+        end
         build_batches
         if @exam.save!
           params[:questions_zip].each do |section_id, zip_file|
