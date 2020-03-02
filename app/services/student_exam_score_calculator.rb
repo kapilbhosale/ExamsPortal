@@ -98,6 +98,7 @@ class StudentExamScoreCalculator
     def cet_correct_incorrect_counts
       correct_count, in_correct_count = 0, 0
       student_exam.student_exam_answers.select do |sea|
+        next if sea.option_id == 0
         next if sea.question.section_id != @current_section.id
           sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
       end
