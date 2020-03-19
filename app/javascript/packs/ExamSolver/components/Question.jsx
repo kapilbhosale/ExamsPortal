@@ -3,7 +3,7 @@ import React from 'react';
 class Question extends React.Component {
 
   render() {
-    console.log("QUESTION PROPS", this.props);
+    const $win = $(window);
     const {
       title, options, currentQuestionIndex, answerQuestion,
       answerProps, question_type, is_image,
@@ -109,16 +109,16 @@ class Question extends React.Component {
 
     const getOptionData = (is_image, data) => {
       if (is_image) {
-        img_data = `data:image/png;base64,${data}`
-        return (<img src={img_data} style="width:40%" />)
+        const img_data = `data:image/png;base64,${data}`
+        return (<img src={img_data} style={{width: "60%", maxWidth: ($win.width()-20)}} />)
       }
       return(<div dangerouslySetInnerHTML={{ __html: data}} />);
     }
 
     const getQestionData = () => {
       if (is_image) {
-        img_data = `data:image/png;base64,${title}`
-        return (<img src={img_data} style="width:40%" />)
+        const img_data = `data:image/png;base64,${title}`
+        return (<img src={img_data}  style={{maxWidth: ($win.width()-20)}} />)
       }
       return(<div dangerouslySetInnerHTML={{ __html: title}} />);
     }

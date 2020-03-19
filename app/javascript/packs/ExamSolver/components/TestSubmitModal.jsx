@@ -85,7 +85,7 @@ export default class TestSubmitModal extends React.Component {
     return (
       isTestSubmitModalOpen ?
         <Modal isOpen={ true } contentLabel='Close Call' style={ customStyles }>
-          <div className='padding-bottom-10 margin-left-30'>
+          <div>
             <h1 className='text-red text-center'> Submit Exam </h1>
           </div>
           <div className='row'>

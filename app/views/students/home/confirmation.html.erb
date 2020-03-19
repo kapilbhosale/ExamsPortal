@@ -71,20 +71,21 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2 pull-right">
+      <div class="col-md-2 text-center">
         <a href="/students/exam/<%= @exam.id %>"></a>
         <form action="/students/exam/<%= @exam.id %>" id="myForm">
           <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
         </form>
       </div>
-      <span class="text-danger">
-        <h4>
-          Be Carefull..
-          Submit Exams if any pending.
-          <br>
-          This action will clear all unsumitted data.
-        </h4>
-      </span>
+      <div class="text-center" style="width: 100%;">
+        <span class="text-danger text-center">
+          <h4>
+            Next step will load all paper at once.
+            <br>
+            This will take some time, please wait.
+          </h4>
+        </span>
+      </div>
     </div>
   </div>
 <% else %>

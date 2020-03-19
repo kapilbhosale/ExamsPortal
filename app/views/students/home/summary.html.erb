@@ -19,12 +19,11 @@
           <table class="table-stripped summary-table">
             <tr>
               <th class="summary-table-th text-white">Section</th>
-              <th class="summary-table-th text-white">No of questions</th>
-              <th class="summary-table-th text-white">Answered</th>
-              <th class="summary-table-th text-white">Not-answered</th>
+              <th class="summary-table-th text-white">No of Q</th>
+              <th class="summary-table-th text-white">Ansrd</th>
+              <th class="summary-table-th text-white">Not-ansrd</th>
               <th class="summary-table-th text-white">Correct</th>
               <th class="summary-table-th text-white">Inorrect</th>
-              <th class="summary-table-th text-white">Input Inorrect</th>
               <th class="summary-table-th text-white">Score</th>
             </tr>
             <% @student_exam_summaries.each do |student_exam_summary| %>
@@ -48,9 +47,6 @@
                   <%= student_exam_summary.incorrect %>
                 </td>
                 <td class="summary-table-td">
-                  <%= student_exam_summary.answered - (student_exam_summary.correct + student_exam_summary.incorrect) %>
-                </td>
-                <td class="summary-table-td">
                   <% total_score += student_exam_summary.score %>
                   <%= student_exam_summary.score %>
                 </td>
@@ -60,13 +56,13 @@
         </div>
       <% end %>
       <br />
-      <div class="col-md-12 text-right">
+      <div class="col-md-12">
           <h4>
               Total Score: <%= total_score %>
           </h4>
       </div>
       <br /> <br />
-      <div class="text-right">
+      <div class="text-center">
         <%=  link_to  '<button class="btn btn-success">Continue</button>'.html_safe, students_tests_path %>
         <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@exam_id) %>
     </div>

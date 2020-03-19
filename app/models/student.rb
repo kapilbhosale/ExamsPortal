@@ -50,7 +50,23 @@ class Student < ApplicationRecord
   mount_uploader :photo, PhotoUploader
 
   devise :database_authenticatable, :recoverable, :rememberable,
-  :trackable, :validatable
+  :trackable, :validatable, authentication_keys: [:login]
+
+
+  attr_writer :login
+
+  def login
+    @login || self.roll_number || self.email
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions.to_h).where(["roll_number = :value OR lower(email) = :value", { :value => login.downcase }]).first
+    elsif conditions.has_key?(:roll_number) || conditions.has_key?(:email)
+      where(conditions.to_h).first
+    end
+  end
 
   def self.suggest_roll_number
     self.last&.roll_number.to_i + 1
