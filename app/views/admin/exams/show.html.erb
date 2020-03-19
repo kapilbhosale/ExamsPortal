@@ -19,7 +19,12 @@
             <div style="padding: 10px;">
               <div>
                 <p><b> Question ID: <%= index + 1 %> </b></p>
-                <%= raw(question.title) %>
+                <% if question.is_image %>
+                  <% img_data = "data:image/png;base64,#{question.title}" %>
+                  <img src="<%= img_data %>" style="width:40%">
+                <% else %>
+                  <%= raw(question.title) %>
+                <% end %>
               </div>
               <div class="col-lg-12">
                 <div class="col-lg-6">
@@ -28,7 +33,12 @@
                     <div>
                       <label class="radio-inline">
                         <input type="radio" name="optradio-<%= question.id %>" <%= option.is_answer ? 'checked' : '' %> >
-                        <%= raw(option.data) %>
+                        <% if option.is_image %>
+                          <% img_data = "data:image/png;base64,#{option.data}" %>
+                          <img src="<%= img_data %>" style="width:40%">
+                        <% else %>
+                          <%= raw(option.data) %>
+                        <% end %>
                       </label>
                     </div>
                   <% end %>

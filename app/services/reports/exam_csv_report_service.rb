@@ -8,8 +8,19 @@ module Reports
       @exam = Exam.find_by(id: exam_id)
     end
 
+    # this is a backup mechanism, if by any changes we have sync data but not summary data
+    # this method will add sync data to summary
+    def considerDangligDataInSummary
+      not_considered_se_ids = StudentExamAnswer.includes(:student_exam).where(student_exams: {exam_id: exam.id}).pluck(:student_exam_id).uniq
+      considered_se_ids = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id}).pluck(:student_exam_id).uniq
+      (not_considered_se_ids - considered_se_ids).each do |se_id|
+        StudentExamScoreCalculator.new(se_id).calculate
+      end
+    end
+
     def prepare_report
       results = {}
+      considerDangligDataInSummary()
       StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id}).all.group_by(&:student_exam_id).each do |student_exam_id, summary|
         summary.each do |s|
           results[student_exam_id] ||= {}

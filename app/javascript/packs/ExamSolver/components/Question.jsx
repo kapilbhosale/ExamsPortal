@@ -3,7 +3,11 @@ import React from 'react';
 class Question extends React.Component {
 
   render() {
-    const { title, options, currentQuestionIndex, answerQuestion, answerProps, cssStyle, question_type} = this.props;
+    console.log("QUESTION PROPS", this.props);
+    const {
+      title, options, currentQuestionIndex, answerQuestion,
+      answerProps, question_type, is_image,
+    } = this.props;
     const onMultiSelectAnswerChanged = (value) => {
       let answer = answerProps.answer;
       if (answer === null) {
@@ -59,7 +63,11 @@ class Question extends React.Component {
                   checked={ isOptionSelected(option.id) }
                   onChange={ (e) => { answerQuestion(currentQuestionIndex, [parseInt(e.target.value)]) } }
                 />
-                <div dangerouslySetInnerHTML={{ __html: option.data }} />
+                <div>
+                  {
+                    getOptionData(option.is_image, option.data)
+                  }
+                </div>
               </label>
             </div>
           )
@@ -98,6 +106,23 @@ class Question extends React.Component {
       }
 
     }
+
+    const getOptionData = (is_image, data) => {
+      if (is_image) {
+        img_data = `data:image/png;base64,${data}`
+        return (<img src={img_data} style="width:40%" />)
+      }
+      return(<div dangerouslySetInnerHTML={{ __html: data}} />);
+    }
+
+    const getQestionData = () => {
+      if (is_image) {
+        img_data = `data:image/png;base64,${title}`
+        return (<img src={img_data} style="width:40%" />)
+      }
+      return(<div dangerouslySetInnerHTML={{ __html: title}} />);
+    }
+
     return (
       <div>
         <div className="row">
@@ -110,7 +135,9 @@ class Question extends React.Component {
         <br />
         <div className="row question-text-div">
           <div className="col-md-12" style={{ fontSize: '20px'}}>
-            <div className='text-indent-0' dangerouslySetInnerHTML={{ __html: title}} />
+            <div className='text-indent-0'>
+              { getQestionData() }
+            </div>
           </div>
         </div>
 

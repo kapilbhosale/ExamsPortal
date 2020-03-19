@@ -76,7 +76,7 @@ class Students::HomeController < Students::BaseController
 
     indexed_questions = exam.questions.includes(:options, :section).index_by(&:id)
     styles_by_question_id = ComponentStyle.where(
-      component_type: 'Question', 
+      component_type: 'Question',
       component_id: exam.questions.ids).index_by(&:component_id)
 
     student_answers_by_question_id = StudentExamAnswer
@@ -96,8 +96,9 @@ class Students::HomeController < Students::BaseController
       {
         id: question.id,
         title: question.title,
+        is_image: question.is_image,
         question_type: question.question_type,
-        options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
+        options: question.options.map { |o| { id: o.id, data: o.data, is_image: o.is_image } }.sort_by{ |o| o[:id] },
         cssStyle: "" || styles_by_question_id[question.id].style || '',
         answerProps: {
           isAnswered: answer_props['isAnswered'] == 'true',

@@ -7,7 +7,7 @@ module Exams
 
     S3_UPLOAD = false
 
-    def initialize(exam, tmp_zip_file, section_id=1, marks={})
+    def initialize(exam, tmp_zip_file, section_id = 1, marks = {})
       @exam = exam
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
@@ -25,7 +25,7 @@ module Exams
         create_questions_and_options
         remove_zip_files
       end
-      return {status: true}
+      { status: true }
     rescue UploadExamError, ActiveRecord::RecordInvalid => ex
       raise StandardError ex.message
     end
@@ -96,7 +96,16 @@ module Exams
         table.at('table').remove
 
         options_table.search('tr').each do |option|
-          options << option.at('td').children.to_s.strip
+          img_base64 = nil
+          img_name = option.at('td').children.at('img')&.attributes&.dig('src')&.value
+          if img_name
+            img_base64 = Base64.encode64(open("#{Rails.root}/public/uploads/#{@path}/#{img_name}") { |io| io.read })
+          end
+
+          options << {
+            data: (img_base64 || option.at('td').children.to_s.strip),
+            is_image: img_base64.present?
+          }
           options_val << option.at('td').children.text.strip
         end
 
@@ -104,13 +113,19 @@ module Exams
         # assuming that there will be only 4 rows in question, as per defined structure.
 
         question_val = rows[0].at('td').text.strip
-        question_type = question_val.downcase.strip.start_with?('input') ? 2 : 0
+        question_type = question_val.downcase.strip.start_with?('[input]') ? 2 : 0
         question = rows[0].at('td').children.to_s.strip
+        img_base64 = nil
+        img_name = rows[0].at('td').children.at('img')&.attributes&.dig('src')&.value
+        if img_name
+          img_base64 = Base64.encode64(open("#{Rails.root}/public/uploads/#{@path}/#{img_name}") { |io| io.read })
+        end
         answer = rows[2].text.strip
         explanation = rows[3]&.at('td')&.children&.to_s&.strip
 
         @questions_data << {
-          question: question,
+          question: (img_base64 || question),
+          q_is_image: img_base64.present?,
           question_type: question_type,
           options: options,
           optinos_val: options_val,
@@ -137,10 +152,17 @@ module Exams
     def create_questions_and_options
       @questions_data.each do |question_data|
 
-        title = replace_local_img_path(question_data[:question])
-        explanation = replace_local_img_path(question_data[:explanation])
-        question = Question.create!(title: title, explanation: explanation, 
-          section_id: section_id, question_type: question_data[:question_type])
+        # title = replace_local_img_path(question_data[:question])
+        # explanation = replace_local_img_path(question_data[:explanation])
+        title = question_data[:question]
+        explanation = question_data[:explanation]
+        question = Question.create!(
+          title: title,
+          is_image: question_data[:q_is_image],
+          explanation: explanation,
+          section_id: section_id,
+          question_type: question_data[:question_type]
+        )
         ExamQuestion.create(exam: exam, question: question)
 
         create_option_params = []
@@ -148,17 +170,19 @@ module Exams
           question_data[:options].each_with_index do |option, index|
             create_option_params << {
               question: question,
-              data: replace_local_img_path(option),
+              # data: replace_local_img_path(option),
+              data: option[:data],
+              is_image: option[:is_image],
               is_answer: answer_input(question_data[:answer]) == index + 1
             }
           end
-        else 
+        else
           create_option_params << {
             question: question,
             data: question_data[:answer],
             is_answer: true
           }
-        end  
+        end
         Option.create!(create_option_params)
         ComponentStyle.create!(component: question, style: @style)
       end

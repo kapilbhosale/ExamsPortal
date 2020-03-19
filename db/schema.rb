@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_29_044256) do
+ActiveRecord::Schema.define(version: 2020_03_19_141309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -126,6 +126,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_044256) do
     t.boolean "is_answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_image", default: false
     t.index ["question_id"], name: "index_options_on_question_id"
   end
 
@@ -148,6 +149,7 @@ ActiveRecord::Schema.define(version: 2019_12_29_044256) do
     t.datetime "updated_at", null: false
     t.integer "section_id", default: 1
     t.integer "question_type", default: 0
+    t.boolean "is_image", default: false
   end
 
   create_table "sections", force: :cascade do |t|

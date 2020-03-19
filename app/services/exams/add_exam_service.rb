@@ -30,7 +30,7 @@ module Exams
         end
       end
     rescue AddExamError, ActiveRecord::RecordInvalid => ex
-      return {status: false, message: ex.message}
+      return { status: false, message: ex.message }
     end
 
     private

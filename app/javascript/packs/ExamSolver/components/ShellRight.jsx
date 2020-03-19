@@ -23,7 +23,7 @@ class ShellRight extends React.Component {
     }
   }
   render() {
-    const { 
+    const {
       questions,
       totalQuestions,
       jumpToQuestion,
@@ -56,7 +56,7 @@ class ShellRight extends React.Component {
     const openNav = () => {
       setNavigationMap(true);
       if (isMobileDevice()) {
-        document.getElementById("mySidenav").style.width = "100%";
+        document.getElementById("mySidenav").style.width = "90%";
         document.getElementById("mySidenav").style.paddingLeft = "13px";
       }
       else {

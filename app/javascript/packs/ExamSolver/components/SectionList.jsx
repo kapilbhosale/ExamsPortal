@@ -3,12 +3,28 @@ import CountdownTimer from './CountDownTimer';
 
 class SectionList extends React.Component {
 
+  getTimerValue = (value) => {
+    console.log("timer value is ", value);
+  }
+
   render() {
+    const $win = $(window);
+    const MEDIAQUERY = {
+      desktopXL: 1200,
+      desktop: 992,
+      tablet: 768,
+      mobile: 575,
+    };
+    function isMobileDevice() {
+      console.log("WINDOW WIDTH", $win.width())
+      return $win.width() < MEDIAQUERY.mobile;
+    }
+
     const { timeLeftMessage, timeIsUp, currentSection, changeSection, sections,
       remainingTimeAlert, syncWithBackend } = this.props;
     return (
       <div className="row gray-border-bottom">
-        <div className="col-md-10 col-sm-10 col-xs-12">
+        <div className="col-md-10 col-sm-10 col-xs-12" style={{zIndex: "99"}}>
           <ul className="nav nav-pills sections-nav">
             {
               sections.map((section, idx) => {
@@ -23,6 +39,7 @@ class SectionList extends React.Component {
             }
           </ul>
         </div>
+        {isMobileDevice() && <span>&nbsp;</span>}
         <CountdownTimer
             startedAt={ this.props.startedAt }
             timeInMinutes={ this.props.timeInMinutes }
