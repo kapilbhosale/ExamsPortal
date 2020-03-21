@@ -99,7 +99,7 @@ class ExamSolverContainer extends Component {
 
     const actions = this.actions();
     if (loading) {
-      return <LoadingAnimation height="700px" />;
+      return <LoadingAnimation height="700px" msg="Loading All Exam data, Please wait, This May take some time."/>;
     } else {
       return (
         <div className="">

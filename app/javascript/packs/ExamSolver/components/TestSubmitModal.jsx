@@ -18,17 +18,26 @@ export default class TestSubmitModal extends React.Component {
       isTestSubmitModalOpen,
     } = this.props;
 
+    const $win = $(window);
+    const MEDIAQUERY = {
+      desktopXL: 1200,
+      desktop: 992,
+      tablet: 768,
+      mobile: 575,
+    };
+    const mobileDevice = $win.width() < MEDIAQUERY.mobile
+
     const customStyles = {
       overlay: {
-        zIndex: 10,
+        zIndex: 102,
       },
       content: {
-        width: '50%',
-        top: '35%',
-        left: '50%',
+        width: (mobileDevice ? '100%': '50%'),
+        top: (mobileDevice ? '35%': '35%'),
+        left: (mobileDevice ? '50%': '50%'),
         right: 'auto',
         bottom: 'auto',
-        marginRight: '-50%',
+        marginRight: (mobileDevice ? '0%': '-50%'),
         transform: 'translate(-50%, -50%)',
       },
     };
@@ -99,7 +108,7 @@ export default class TestSubmitModal extends React.Component {
             </div>
           </div>
           <div className='row'>
-            <div className='col-md-12 mt-1 mb-3'>
+            <div className='col-md-12'>
               Exam submitted once can not be undone. Still, do you want to submit exam?
             </div>
           </div>

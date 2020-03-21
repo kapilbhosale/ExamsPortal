@@ -1,3 +1,12 @@
+<div style="text-align: right; padding-bottom: 10px;">
+  <% if current_student %>
+    <span>Welcome:</span>
+    <span style="color: darkblue; background-color: bisque; padding: 5px;">
+      <b><%= current_student&.name&.split[1] || current_student&.name %></b>
+    </span>
+  <% end %>
+</div>
+
 <ul class="nav nav-tabs">
   <li class="active">
     <a data-toggle="tab" href="#new_exams">

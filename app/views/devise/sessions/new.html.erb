@@ -21,20 +21,21 @@
           <% if resource.is_a? Admin %>
             <%= f.email_field :login, placeholder:'Enter email ...', class:'form-control', autofocus: true %>
           <% else %>
-            <%= f.text_field :login, placeholder:'Enter 5 digit roll number...', class:'form-control', autofocus: true %>
+            <%= f.text_field :login, placeholder:'Enter roll number...', class:'form-control', autofocus: true %>
           <% end %>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">
-          Password
+          <%= (resource.is_a? Admin) ? 'Password' : 'Parent mobile no' %>
           <a href="password/new" class="float-right small">I forgot password</a>
         </label>
         <div class="input-icon">
           <span class="input-icon-addon">
             <i class="fe fe-lock"></i>
           </span>
-          <%= f.password_field :password, autocomplete:'off', placeholder:'Password...', class:'form-control' %>
+          <% placeholder = (resource.is_a? Admin) ? 'Password' : 'Enter 10 digit Parent mobile' %>
+          <%= f.password_field :password, autocomplete:'off', placeholder: placeholder, class:'form-control' %>
         </div>
       </div>
       <% if devise_mapping.rememberable? -%>

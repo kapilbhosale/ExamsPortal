@@ -18,8 +18,13 @@ class ShellRight extends React.Component {
       document.getElementById("mySidenav").style.paddingLeft = 0;
       document.getElementById("mySidenav").style.paddingRight = 0;
     } else {
-      document.getElementById("mySidenav").style.width = "320px";
-      document.getElementById("mySidenav").style.paddingLeft = "13px";
+      if( mobileDevice ) {
+        document.getElementById("mySidenav").style.width = "90%";
+        document.getElementById("mySidenav").style.paddingLeft = "13px";
+      } else {
+        document.getElementById("mySidenav").style.width = "320px";
+        document.getElementById("mySidenav").style.paddingLeft = "13px";
+      }
     }
   }
   render() {
@@ -78,7 +83,7 @@ class ShellRight extends React.Component {
     return (
       <div className='container col-md-3'>
         <div className='row'>
-          <div className='navigation-map'>
+          <div className='navigation-map' style={{zIndex: "101"}}>
             <div className='sidenav panel' id="mySidenav">
               <div onClick={ () => { changeNavigationMapStatus() }} className='closebtn cursor-pointer'>
                 <span
@@ -86,7 +91,7 @@ class ShellRight extends React.Component {
                   >
                 </span>
               </div>
-              <div className='row margin-bottom-20 padding-top-20'>
+              <div className='row text-right'>
                 <div className='col-md-6'>
                   <span className="label label-default label-sm margin-5">
                     { `Not visited (${notVisitedQuestions})`}
@@ -100,7 +105,7 @@ class ShellRight extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className='row margin-bottom-20'>
+              <div className='row margin-bottom-20 text-right'>
                 <div className='col-md-6'>
                   <span className="label label-success label-sm margin-5">
                     { `Answered (${answeredQuestions})` }
@@ -158,7 +163,7 @@ class ShellRight extends React.Component {
 
                 <div className='row'>
                   <div className='col-md-12 submit-exam'>
-                    <button type="button" className="btn btn-block btn-success" onClick={ () => { toggleTestSubmitModal(true) }}>
+                    <button type="button" className="btn btn-block btn-success" onClick={ () => { closeNav(); toggleTestSubmitModal(true) }}>
                       Submit Test
                     </button>
                   </div>

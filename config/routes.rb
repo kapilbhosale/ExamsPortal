@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root to: 'students/home#tests'
 
   namespace :students do
+    get "auto-auth", to: 'home#auto_auth'
     root to: 'home#index'
     get :tests, to: 'home#tests', as: :tests
     get :instructions, to: 'home#instructions', as: :exam_instructions
