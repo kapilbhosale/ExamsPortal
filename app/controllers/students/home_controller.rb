@@ -17,6 +17,10 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
+    student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
+    if student.present?
+      sign_in_and_redirect(Student.last)
+    end
     if current_student
       batch_ids = current_student.batches.map(&:id)
       exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
