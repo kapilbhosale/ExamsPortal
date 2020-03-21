@@ -26,7 +26,7 @@ export default class LoadingAnimation extends React.Component {
                     </ul>
                 </div>
                 <div className="text-center">
-                    {msg}
+                    <h5>We are loading the Exam Details, Please wait....</h5>
                 </div>
             </div>
         );

@@ -1,15 +1,14 @@
 batch = Batch.find_or_create_by(name: 'JEE')
 students = [
-  "111,Demo user,1234567890",
-  "112,Demo user,1234567890",
-  "113,Demo user,1234567890",
-  "114,Demo user,1234567890",
-  "115,Demo user,1234567890",
-  "116,Demo user,1234567890",
-  "117,Demo user,1234567890",
-  "118,Demo user,1234567890",
-  "119,Demo user,1234567890",
-  "120,Demo user,1234567890",
+  "211,Demo user,1234567890",
+  "212,Demo user,1234567890",
+  "213,Demo user,1234567890",
+  "214,Demo user,1234567890",
+  "215,Demo user,1234567890",
+  "216,Demo user,1234567890",
+  "217,Demo user,1234567890",
+  "218,Demo user,1234567890",
+  "219,Demo user,1234567890",  
   ]
 
 students.each do |row|
