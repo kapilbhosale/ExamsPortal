@@ -10,7 +10,7 @@ class Students::HomeController < Students::BaseController
   def auto_auth
     student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
     if student.present?
-      sign_in_and_redirect(Student.last)
+      sign_in_and_redirect(student)
     else
       redirect_to "/student/sign_in"
     end
@@ -19,7 +19,7 @@ class Students::HomeController < Students::BaseController
   def tests
     student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
     if student.present?
-      sign_in_and_redirect(Student.last)
+      sign_in_and_redirect(student)
     end
     if current_student
       batch_ids = current_student.batches.map(&:id)

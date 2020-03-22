@@ -30,7 +30,7 @@ class SectionList extends React.Component {
               sections.map((section, idx) => {
                 return (
                   <li key={idx} role="presentation" className={ currentSection === section ? "active" : "" }>
-                    <a href="#" onClick={ (e) => changeSection(e) } className='menu'>
+                    <a href="#" onClick={ (e) => changeSection(e) } className='menu' style={{padding: '6px 12px', fontSize: '16px'}}>
                       { section }
                     </a>
                   </li>
