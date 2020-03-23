@@ -72,6 +72,8 @@ module Exams
         FileUtils.mkdir_p(File.dirname(local_path))
         FileUtils.mv images_folder, local_path
       end
+    rescue Exception, StandardError => e
+      puts "Error uploading ..."
     end
 
 

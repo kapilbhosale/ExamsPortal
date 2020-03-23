@@ -57,8 +57,12 @@ gem 'zip-zip' # will load compatibility for old rubyzip API.
 gem 'aws-sdk-s3'
 gem 'file_validators'
 
-gem 'newrelic_rpm'
 gem 'jquery-rails'
+
+# redis added for caching
+gem 'redis'
+gem 'redis-rails'
+gem 'hiredis'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

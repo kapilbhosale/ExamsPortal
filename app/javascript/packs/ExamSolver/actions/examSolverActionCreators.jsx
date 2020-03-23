@@ -188,16 +188,59 @@ export function loading(val) {
   }
 }
 
+function isStudentAnsEmpty(studentAns) {
+  if (studentAns === null) { return true }
+  return(Object.keys(studentAns).length === 0 && studentAns.constructor === Object)
+}
+
+function formatDataToOldFormat(data) {
+  const questionsData = JSON.parse(data.questions);
+  const studentAns = data.student_ans;
+  const timeData = data.time_data;
+
+  const questionsBySections = {}
+  if (isStudentAnsEmpty(studentAns)) {
+    const emptyAnswerProps = {isAnswered: false, visited: false, needReview: false, answer: null}
+    questionsData.sections.forEach((section) => {
+      questionsBySections[section] =
+        questionsData.questionsBySections[section].map((question) => {
+          return {...question, answerProps: emptyAnswerProps}
+        })
+    });
+  } else {
+    questionsData.sections.forEach((section) => {
+      questionsBySections[section] =
+        questionsData.questionsBySections[section].map((question) => {
+          let sAns = studentAns[question.id]
+          let answerProps = {
+            isAnswered: sAns.question_props['isAnswered'] === 'true',
+            visited: sAns.question_props['visited'] === 'true',
+            needReview: sAns.question_props['needReview'] === 'true',
+            answer: (sAns.option_id ? Array.of(sAns.option_id) : null)
+          }
+          return {...question, answerProps}
+        })
+    });
+  }
+  const formattedData = {
+    ...questionsData,
+    questionsBySections,
+    ...timeData}
+  return (formattedData);
+}
+
 export function initialize() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
+    // const someLocalData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
+    // if (someLocalData) { return }
     dispatch(loading(true));
     $.ajax({
       url: '/students/exam_data',
       method: 'get',
       data: { id: store.get('examId') },
       success: (data) => {
-
+        data = formatDataToOldFormat(data)
         const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
         if (localData) {
           dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });

@@ -18,9 +18,7 @@ class Students::HomeController < Students::BaseController
 
   def tests
     student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
-    if student.present?
-      sign_in_and_redirect(student)
-    end
+    sign_in_and_redirect(student) if student.present?
     if current_student
       batch_ids = current_student.batches.map(&:id)
       exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
@@ -78,7 +76,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def exam_data
-    exam_id =  params[:id]
+    exam_id = params[:id]
     exam = Exam.find params[:id]
     student_id = current_student.id
 
@@ -134,7 +132,7 @@ class Students::HomeController < Students::BaseController
       startedAt: student_exam.started_at,
       currentTime: DateTime.current.iso8601,
       timeInMinutes: exam.time_in_minutes,
-      studentId: current_student.id,
+      studentId: current_student.id
     }
   end
 

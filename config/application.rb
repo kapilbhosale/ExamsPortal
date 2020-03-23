@@ -17,7 +17,5 @@ module SmartExamsRails
     # the framework and any gems in your application.
     config.autoload_paths += Dir[Rails.root.join('lib', 'tasks', '**/'), Rails.root.join('lib', '**/')]
 
-    CLASS_NAME = 'Munde Coaching Classes'
-    ADDRESS_LINE = 'Nanded'
   end
 end
