@@ -8,7 +8,7 @@ class CountDownTimer extends React.Component {
         // Syncing answers with backend every 20 Seconds
         this.syncInterval = setInterval(() => {
             this.props.syncWithBackend();
-        }, (10*60*1000));
+        }, (1*20*1000));
     }
 
     componentWillUnmount() {

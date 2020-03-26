@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_051708) do
+ActiveRecord::Schema.define(version: 2020_03_26_165049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -197,6 +197,16 @@ ActiveRecord::Schema.define(version: 2020_03_26_051708) do
     t.datetime "updated_at", null: false
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
+  end
+
+  create_table "student_exam_syncs", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "exam_id"
+    t.jsonb "sync_data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_student_exam_syncs_on_exam_id"
+    t.index ["student_id"], name: "index_student_exam_syncs_on_student_id"
   end
 
   create_table "student_exams", force: :cascade do |t|
