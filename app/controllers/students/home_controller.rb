@@ -1,10 +1,11 @@
 class Students::HomeController < Students::BaseController
-  before_action :authenticate_student!, except: [:tests, :auto_auth]
+  before_action :authenticate_student!, except: [:index, :auto_auth]
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 
   def index
-    @styles = ''
+    student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
+    sign_in_and_redirect(student) if student.present?
   end
 
   def auto_auth
@@ -17,18 +18,11 @@ class Students::HomeController < Students::BaseController
   end
 
   def tests
-    student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
-    sign_in_and_redirect(student) if student.present?
-    if current_student
-      batch_ids = current_student.batches.map(&:id)
-      exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
-      @new_exams = Exam.where(id: exam_ids).where('created_at > ?', Time.now - 1.days ).order(created_at: :desc)
-      @previous_exams = Exam.where(id: exam_ids).where('created_at <= ?', Time.now - 1.days ).order(created_at: :desc)
-      @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
-    else
-      @new_exams = Exam.order(created_at: :desc).where('created_at > ?', Time.now - 1.days).all
-      @previous_exams = Exam.order(created_at: :desc).where('created_at <= ?', Time.now - 1.days).all
-    end
+    batch_ids = current_student.batches.map(&:id)
+    exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
+    @new_exams = Exam.where(id: exam_ids).where('created_at > ?', Time.now - 1.days ).order(created_at: :desc)
+    @previous_exams = Exam.where(id: exam_ids).where('created_at <= ?', Time.now - 1.days ).order(created_at: :desc)
+    @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
   end
 
   def exam

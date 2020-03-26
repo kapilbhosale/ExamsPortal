@@ -2,7 +2,12 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="/">
-        Smart Exams
+        <div>
+          <span style="margin-top: -13px;">
+            <%= image_tag 'rcc-logo', width: '50px' %>
+            Exams
+          </span>
+        </div>
       </a>
       <div class="d-flex order-lg-2 ml-auto">
         <% if student_signed_in? %>

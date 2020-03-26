@@ -2,9 +2,10 @@ Rails.application.routes.draw do
   devise_for :admin
   devise_for :student
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: 'students/home#tests'
+  root to: 'students/home#index'
 
   namespace :students do
+    post 'authorise', to: 'login#authorise'
     get "auto-auth", to: 'home#auto_auth'
     root to: 'home#index'
     get :tests, to: 'home#tests', as: :tests
