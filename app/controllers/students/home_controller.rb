@@ -27,6 +27,7 @@ class Students::HomeController < Students::BaseController
 
   def exam
     exam = Exam.find_by(id: params[:id])
+    @student_id = current_student.id
     redirect_to root_path unless exam
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: exam.id)
     if student_exam&.ended_at

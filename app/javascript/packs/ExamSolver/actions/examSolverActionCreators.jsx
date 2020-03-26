@@ -232,12 +232,17 @@ function formatDataToOldFormat(data) {
 export function initialize() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-
-    //  DEEPAK check this, store.get('studentId') is getting 0. this is problem.
-    // const someLocalData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
-    // if (someLocalData) { return }
+    const studentId = store.get('studId');
+    const localData = localStorage.getItem(`${studentId}-${store.get('examId')}-store`);
 
     dispatch(loading(true));
+    if (localData) {
+      dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
+      const questionCounts = JSON.parse(localData).questionsCountByStatus;
+      dispatch(updateQuestionsCount(questionCounts));
+      dispatch(loading(false));
+      return;
+    }
     $.ajax({
       url: '/students/exam_data',
       method: 'get',
