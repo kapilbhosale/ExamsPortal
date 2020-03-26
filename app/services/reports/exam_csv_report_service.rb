@@ -18,7 +18,20 @@ module Reports
       end
     end
 
+    def syn_data_to_se
+      exam.batches.each do |batch|
+        batch.students.find_each do |student|
+          ses = StudentExamSync.find_by(students_id: student.id, exams_id: exam.id)
+          if ses
+            Students::SyncService.new(student.id, exam.id, ses.sync_data).call
+          end
+        end
+      end
+    end
+
     def prepare_report
+      syn_data_to_se()
+
       results = {}
       considerDangligDataInSummary()
       StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id}).all.group_by(&:student_exam_id).each do |student_exam_id, summary|

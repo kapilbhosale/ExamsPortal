@@ -3,7 +3,7 @@
     <div class="text-center mb-6">
       Smart Exams
     </div>
-    <% auth_url = resource.is_a?(Admin) ? '/admin/authorise' : '/students/authorise' %>
+    <% auth_url = resource.is_a?(Admin) ? session_path(resource_name) : '/students/authorise' %>
     <%= form_for(resource, as: resource_name,html:{class:'card'}, url: auth_url) do |f| %>
     <div class="card-body p-6">
       <div class="card-title">Login to your account</div>
