@@ -21,10 +21,8 @@ module Reports
     def syn_data_to_se
       exam.batches.each do |batch|
         batch.students.find_each do |student|
-          ses = StudentExamSync.find_by(students_id: student.id, exams_id: exam.id)
-          if ses
-            Students::SyncService.new(student.id, exam.id, ses.sync_data).call
-          end
+          ses = StudentExamSync.find_by(student_id: student.id, exam_id: exam.id)
+          Students::SyncService.new(student.id, exam.id, ses.sync_data).call if ses
         end
       end
     end

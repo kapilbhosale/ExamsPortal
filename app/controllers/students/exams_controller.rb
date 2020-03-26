@@ -9,6 +9,12 @@ class Students::ExamsController < Students::BaseController
 
     student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
     if student_exam
+      # this must be very rare case, when student changes the computer
+      ses = StudentExamSync.find_by(student_id: student_id, exam_id: exam_id)
+      if ses
+        Students::SyncService.new(student_id, exam_id, ses.sync_data).call
+        ses.destroy
+      end
       student_answers_by_question_id =
         StudentExamAnswer.where(student_exam_id: student_exam.id)
         .where(question_id: exam_question_ids(exam_id)).index_by(&:question_id)

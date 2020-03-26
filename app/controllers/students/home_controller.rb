@@ -41,6 +41,8 @@ class Students::HomeController < Students::BaseController
 
   def confirmation
     @exam = Exam.find_by(id: params[:exam_id])
+    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: @exam.id)
+    redirect_to "/students/exam/#{@exam.id}" if student_exam&.started_at.present?
   end
 
   def subscription
@@ -62,6 +64,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def submit
+    SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
     Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     head :ok unless student_exam
