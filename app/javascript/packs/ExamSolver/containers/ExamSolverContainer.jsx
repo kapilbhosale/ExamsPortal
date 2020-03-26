@@ -35,13 +35,29 @@ class ExamSolverContainer extends Component {
     this.actions().initialize();
   }
 
-  componentWillReceiveProps(nextProps){
-    const prevStore = this.props.$$examSolverStore;
-    const nextStore = nextProps.$$examSolverStore;
-    // if(prevStore.get('questionsBy') !== nextStore.get('questions')){
+  componentDidUpdate(prevProps) {
+    this.actions().syncAnswers();
+    const { $$curExamSolverStore } = this.props;
+    const { $$prevExamSolverStore } = prevProps;
+    if (!$$curExamSolverStore || !$$prevExamSolverStore) {
       this.actions().syncAnswers();
-    // }
+      return;
+    }
+    const curNotVisitedQuestions = $$curExamSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
+    const prevNotVisitedQuestions = $$prevExamSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
+
+    if (curNotVisitedQuestions !== prevNotVisitedQuestions) {
+      this.actions().syncAnswers();
+    }
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   const prevStore = this.props.$$examSolverStore;
+  //   const nextStore = nextProps.$$examSolverStore;
+  //   // if(prevStore.get('questionsBy') !== nextStore.get('questions')){
+  //     this.actions().syncAnswers();
+  //   // }
+  // }
 
   componentWillMount() {
     const $win = $(window);

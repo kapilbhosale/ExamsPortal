@@ -232,8 +232,11 @@ function formatDataToOldFormat(data) {
 export function initialize() {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
-    const someLocalData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
-    if (someLocalData) { return }
+
+    //  DEEPAK check this, store.get('studentId') is getting 0. this is problem.
+    // const someLocalData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
+    // if (someLocalData) { return }
+
     dispatch(loading(true));
     $.ajax({
       url: '/students/exam_data',
