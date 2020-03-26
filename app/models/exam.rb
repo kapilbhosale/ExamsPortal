@@ -11,6 +11,7 @@
 #  positive_marks  :integer          default(4), not null
 #  publish_result  :boolean          default(FALSE), not null
 #  published       :boolean
+#  show_exam_at    :datetime
 #  time_in_minutes :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

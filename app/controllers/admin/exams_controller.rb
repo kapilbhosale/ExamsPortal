@@ -64,8 +64,6 @@ class Admin::ExamsController < Admin::BaseController
     @sections = Section.non_jee.all.select(:id, :name)
   end
 
-  private
-
   def set_flash
     key = @response[:status] ? :success : :warning
     flash[key] = @response[:message]

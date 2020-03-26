@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_19_141309) do
+ActiveRecord::Schema.define(version: 2020_03_26_051708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 2020_03_19_141309) do
     t.integer "positive_marks", default: 4, null: false
     t.integer "negative_marks", default: 1, null: false
     t.integer "exam_type", default: 0
+    t.datetime "show_exam_at"
     t.index ["name"], name: "index_exams_on_name"
   end
 

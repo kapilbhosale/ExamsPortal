@@ -52,7 +52,8 @@ module Exams
                     :no_of_questions,
                     :time_in_minutes,
                     :publish_result,
-                    :questions_zip
+                    :questions_zip,
+                    :show_exam_at,
       )
     end
 
