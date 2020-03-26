@@ -3,9 +3,9 @@ class ModelAnsError < StandardError; end
   # {
   #   exam_id: 1,
   #   questions: {
-  #     1: {type: 'single_choice', ans: [option_id | ans], pm: 4, nm: -1},
-  #     2: {type: 'single_choice', ans: [option_id | ans], pm: 4, nm: -1},
-  #     3: {type: 'single_choice', ans: [option_id | ans], pm: 4, nm: -1},
+  #     1: {type: 'single_choice', ans: option_id, pm: 4, nm: -1},
+  #     2: {type: 'single_choice', ans: option_id, pm: 4, nm: -1},
+  #     3: {type: 'input', ans: ans, pm: 4, nm: -1},
   #   }
   # }
 

@@ -197,6 +197,9 @@ function formatDataToOldFormat(data) {
   const questionsData = JSON.parse(data.questions);
   const studentAns = data.student_ans;
   const timeData = data.time_data;
+  const modelAns = data.model_ans;
+  //  store modelAns data in local storage
+  localStorage.setItem(`model-ans-${modelAns.exam_id}`, JSON.stringify(modelAns));
 
   const questionsBySections = {}
   if (isStudentAnsEmpty(studentAns)) {
