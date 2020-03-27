@@ -115,7 +115,46 @@ export function getCurrentServerTime() {
   };
 }
 
-// Bad piece of code. Don't try to blame. You're responsible.
+export function updateExamSummary(examID) {
+  return (dispatch, getState) => {
+    const store = getState().$$examSolverStore;
+    let localData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
+    const localSAData = JSON.parse(localData)
+
+    localData = localStorage.getItem(`model-ans-${store.get('examId')}`);
+    const localModelAnsData = JSON.parse(localData)
+    const resultSummary = {}
+    if(localSAData && localModelAnsData) {
+      localSAData.sections.forEach((section) => {
+        let ans = 0;
+        let correct = 0;
+        let wrong = 0;
+        let score = 0;
+        let count = 0;
+        localSAData.questionsBySections[section].forEach((question) => {
+          let modelAns = localModelAnsData.questions[question.id];
+          if (question.answerProps.answer) {
+            if (modelAns.ans === question.answerProps.answer[0]) {
+              correct++;
+              score += modelAns.pm;
+            } else {
+              wrong++;
+              score += modelAns.nm;
+            }
+            ans++;
+          }
+          count++;
+        })
+        resultSummary[section] = {ans, correct, wrong, score, count}
+      })
+    }
+    dispatch({ type: actionTypes.SET_EXAM_SUMMARY, val: resultSummary });
+  }
+};
+
+// submitTest()
+// backend_call => store result success: true|false
+// <ResultSummary studentId, examId />
 export function submitTest() {
   return (dispatch, getState) => {
     dispatch(loading(true));
@@ -126,16 +165,33 @@ export function submitTest() {
       url: '/students/submit/' + store.get('examId'),
       method: 'put',
       data: { id: store.get('examId'), questions: dataJSON },
-      success: (data) => {
-        window.location = '/students/summary/' + store.get('examId');
-      },
-      error: (data) => {
-        console.log('error sync!');
-        dispatch(loading(false));
-        alert('Error submitting exam');
-      },
     });
+    dispatch(updateExamSummary(store.get('examId')));
   };
+
+  
+
+// Bad piece of code. Don't try to blame. You're responsible.
+// export function submitTest() {
+//   return (dispatch, getState) => {
+//     dispatch(loading(true));
+//     const store = getState().$$examSolverStore;
+//     const studentKey = `${store.get('studentId')}-${store.get('examId')}-store`
+//     const dataJSON = parseLocalStorageDataForSync(studentKey)
+//     $.ajax({
+//       url: '/students/submit/' + store.get('examId'),
+//       method: 'put',
+//       data: { id: store.get('examId'), questions: dataJSON },
+//       success: (data) => {
+//         window.location = '/students/summary/' + store.get('examId');
+//       },
+//       error: (data) => {
+//         console.log('error sync!');
+//         dispatch(loading(false));
+//         alert('Error submitting exam');
+//       },
+//     });
+//   };
 }
 
 export function syncAnswers() {
@@ -199,7 +255,7 @@ function formatDataToOldFormat(data) {
   const timeData = data.time_data;
   const modelAns = data.model_ans;
   //  store modelAns data in local storage
-  localStorage.setItem(`model-ans-${modelAns.exam_id}`, JSON.stringify(modelAns));
+  localStorage.setItem(`model-ans-${JSON.parse(modelAns).exam_id}`, modelAns);
 
   const questionsBySections = {}
   if (isStudentAnsEmpty(studentAns)) {

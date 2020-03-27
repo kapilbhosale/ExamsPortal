@@ -33,14 +33,7 @@ class Students::ExamsController < Students::BaseController
       questions: questions,
       student_ans: student_answers_by_question_id,
       time_data: time_data,
-      model_ans: {
-        exam_id: 1,
-        questions: {
-          1 => {type: 'single_choice', ans: 1, pm: 4, nm: -1},
-          2 => {type: 'single_choice', ans: 1, pm: 4, nm: -1},
-          3 => {type: 'input', ans: 'ans', pm: 4, nm: -1}
-        }
-      }
+      model_ans: Exams::ModelAnsService.new(exam_id).call
     }
   end
 

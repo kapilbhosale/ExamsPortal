@@ -10,6 +10,7 @@ import ShellRight from "../components/ShellRight";
 import LoadingAnimation from "../components/LoadingAnimation";
 import TestSubmitModal from "../components/TestSubmitModal";
 import Modal from 'react-modal';
+import ExamSummary from "../components/ExamSummary";
 
 function select(state) {
   // $$ just indicates that it's Immutable.
@@ -97,6 +98,8 @@ class ExamSolverContainer extends Component {
     const isTestSubmitModalOpen = $$examSolverStore.get('isTestSubmitModalOpen');
     const sectionWiseSummary = $$examSolverStore.get('questionsCountByStatus');
     const timeLeftMessage = $$examSolverStore.get('timeLeftMessage');
+    const examFinished = $$examSolverStore.get('examFinished');
+    const examSummary = $$examSolverStore.get('examSummary');
 
     const customStyles = {
     content : {
@@ -111,6 +114,12 @@ class ExamSolverContainer extends Component {
 
     const onFirstQuestion = () => {
       return currentQuestionIndex[currentSection] === 0;
+    }
+
+    if(examFinished) {
+      return(
+        <ExamSummary examSummary={examSummary}/>
+      )
     }
 
     const actions = this.actions();

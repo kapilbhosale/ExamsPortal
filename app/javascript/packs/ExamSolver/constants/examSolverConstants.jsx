@@ -16,7 +16,8 @@ const actionTypes = mirrorCreator([
   'SET_NAVIGATION_MAP',
   'TOGGLE_TEST_SUBMIT_MODAL',
   'UPDATE_TIME_LEFT',
-  'SET_CURRENT_TIME'
+  'SET_CURRENT_TIME',
+  'SET_EXAM_SUMMARY',
 ]);
 
 export default actionTypes;
