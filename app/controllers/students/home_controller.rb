@@ -56,15 +56,13 @@ class Students::HomeController < Students::BaseController
   end
 
   def summary
+    # @response = Exams::ExamSummaryService.new(params, current_student).process_summary
     @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
-    ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    if ses
-      Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
-      StudentExamScoreCalculator.new(@student_exam.id).calculate
-      ses.destroy
-    end
     @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
     @exam_id = params[:exam_id]
+    unless @student_exam
+      flash[:success] = @response[:message]
+    end
   end
 
   def sync
@@ -74,17 +72,33 @@ class Students::HomeController < Students::BaseController
 
   def submit
     SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     head :ok unless student_exam
+    redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
     student_exam.update!(ended_at: Time.current)
-    return {}, status: :ok
-    # Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
-    # student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    # head :ok unless student_exam
-    # redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
-    # student_exam.update!(ended_at: Time.current)
-    # StudentExamScoreCalculator.new(student_exam.id).calculate
+    StudentExamScoreCalculator.new(student_exam.id).calculate
   end
+
+  # def summary
+  #   @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
+  #   ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+  #   if ses
+  #     Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
+  #     StudentExamScoreCalculator.new(@student_exam.id).calculate
+  #     ses.destroy
+  #   end
+  #   @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+  #   @exam_id = params[:exam_id]
+  # end
+
+  # def submit
+  #   SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+  #   student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+  #   head :ok unless student_exam
+  #   student_exam.update!(ended_at: Time.current)
+  #   return {}, status: :ok
+  # end
 
   # def exam_data
   #   exam_id = params[:id]
