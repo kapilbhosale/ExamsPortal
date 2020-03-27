@@ -20,8 +20,15 @@ class Students::HomeController < Students::BaseController
   def tests
     batch_ids = current_student.batches.map(&:id)
     exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
-    @new_exams = Exam.where(id: exam_ids).where('created_at > ?', Time.now - 1.days ).order(created_at: :desc)
-    @previous_exams = Exam.where(id: exam_ids).where('created_at <= ?', Time.now - 1.days ).order(created_at: :desc)
+    @new_exams = Exam
+      .where(id: exam_ids)
+      .where('created_at > ?', Time.current - 1.days)
+      .where('show_exam_at <= ?', Time.current)
+      .order(created_at: :desc)
+    @previous_exams = Exam
+      .where(id: exam_ids)
+      .where('created_at <= ?', Time.current - 1.days )
+      .order(created_at: :desc)
     @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
   end
 

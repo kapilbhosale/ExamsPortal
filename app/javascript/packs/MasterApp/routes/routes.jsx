@@ -38,17 +38,6 @@ const ExamSolver = MyLoadable({
   },
 });
 
-const ExamSummary = MyLoadable({
-  loader: () => import('../../ExamSummary/startup/ExamSummaryApp'),
-  render(loaded, props) {
-    debugger;
-    const ExamSummaryApp = loaded.default;
-    return (
-      <ExamSummaryApp { ...props } />
-    );
-  },
-});
-
 class MasterRoutes extends Component {
 
   componentDidMount() {
@@ -76,11 +65,6 @@ class MasterRoutes extends Component {
               path='/'
               {  ...{examId, studId} }
               component={ ExamSolver }
-            />
-            <RenderRoute
-              path='/students/exam/:examId/summary/:studId'
-              {  ...{examId, studId} }
-              component={ ExamSummary }
             />
           </Switch>
         </MasterShell>
