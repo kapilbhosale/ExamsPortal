@@ -116,7 +116,6 @@ export function getCurrentServerTime() {
 }
 
 export function updateExamSummary(examID) {
-  debugger;
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
     let localData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
@@ -162,13 +161,30 @@ export function submitTest() {
     const store = getState().$$examSolverStore;
     const studentKey = `${store.get('studentId')}-${store.get('examId')}-store`
     const dataJSON = parseLocalStorageDataForSync(studentKey)
-    $.ajax({
-      url: '/students/submit/' + store.get('examId'),
-      method: 'put',
-      data: { id: store.get('examId'), questions: dataJSON },
-    });
-    // dispatch(syncWithBackend());
-    dispatch(updateExamSummary(store.get('examId')));
+
+    const localModelAns = localStorage.getItem(`model-ans-${store.get('examId')}`);
+    if (localModelAns) {
+      $.ajax({
+        url: '/students/submit/' + store.get('examId'),
+        method: 'put',
+        data: { id: store.get('examId'), questions: dataJSON },
+      });
+      dispatch(updateExamSummary(store.get('examId')));
+    } else {
+        $.ajax({
+        url: '/students/submit/' + store.get('examId'),
+        method: 'put',
+        data: { id: store.get('examId'), questions: dataJSON },
+        success: (data) => {
+          window.location = '/students/summary/' + store.get('examId');
+        },
+        error: (data) => {
+          console.log('error sync!');
+          dispatch(loading(false));
+          alert('Error submitting exam');
+        },
+      });
+    }
   };
 
 

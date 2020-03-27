@@ -30,7 +30,7 @@ module Exams
         exam_section = es_by_id[question.section_id]
         questions[question.id] = {
           type: question.question_type,
-          ans: question.options.find_by(is_answer: true).id,
+          ans: question.options.find_by(is_answer: true)&.id,
           pm: exam_section.positive_marks,
           nm: exam_section.negative_marks}
       end
@@ -41,6 +41,9 @@ module Exams
       REDIS_CACHE.set(cache_key, model_ans_data.to_json)
       REDIS_CACHE.get(cache_key)
     rescue ModelAnsError, StandardError => ex
+      console.log("======================================")
+      console.log(ex)
+      console.log("======================================")
       false
     end
   end
