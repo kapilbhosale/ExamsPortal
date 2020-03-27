@@ -27,6 +27,7 @@ module Students
       values = []
       questions_data.each do |section, questions|
         questions.each do  |index, input_question|
+          input_question = ActiveSupport::HashWithIndifferentAccess.new(input_question)
           question_id = input_question['id'].to_i
           question = questions_by_id[question_id]
 
