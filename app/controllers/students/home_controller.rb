@@ -71,7 +71,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def submit
-    SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
     Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     head :ok unless student_exam
