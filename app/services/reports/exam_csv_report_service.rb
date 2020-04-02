@@ -22,7 +22,10 @@ module Reports
       exam.batches.each do |batch|
         batch.students.find_each do |student|
           ses = StudentExamSync.find_by(student_id: student.id, exam_id: exam.id)
-          Students::SyncService.new(student.id, exam.id, ses.sync_data).call if ses
+          if ses
+            Students::SyncService.new(student.id, exam.id, ses.sync_data).call
+            ses.destroy
+          end
         end
       end
     end

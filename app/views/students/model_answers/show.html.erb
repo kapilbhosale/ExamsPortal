@@ -1,9 +1,6 @@
 <% if @errors.present? %>
   <div class="alert alert-warning"> <%= @errors %> </div>
 <% else %>
-  <style>
-    <%= @data[:all_styles] %>
-  </style>
   <div>
     <ul class="nav nav-tabs" style="padding-left: 12px">
       <% active_section_id = 0 %>
@@ -43,7 +40,7 @@
                       <div>
                         <label class="radio-inline <%= option_class %>">
                           <input type="radio" name="optradio-<%= question.id %>" <%= option.is_answer ? 'checked' : '' %> >
-                          <%=  (index+65).chr %> &nbsp; <%= raw(option.data) %>
+                          <%= raw(option.data) %>
                         </label>
                       </div>
                     <% end %>
