@@ -1,10 +1,11 @@
 class Admin::ReportsController < Admin::BaseController
 
   def index
-    @exams = Exam.all
+    @exams = Exam.all.order(id: :desc)
   end
 
   def show
+    exam = Exam.find_by(id: params[:id])
     @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
 
     respond_to do |format|
@@ -18,7 +19,7 @@ class Admin::ReportsController < Admin::BaseController
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
       format.csv do
-        send_data @response, filename: 'Exam_result.csv'
+        send_data @response, filename: "#{exam.name}_result.csv"
       end
     end
   end

@@ -88,6 +88,7 @@ class Students::HomeController < Students::BaseController
       if ses
         Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
         StudentExamScoreCalculator.new(@student_exam.id).calculate
+        ses.destroy
       end
       @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
     end
