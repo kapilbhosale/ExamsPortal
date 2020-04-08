@@ -19,15 +19,15 @@ module Reports
     end
 
     def syn_data_to_se
+      ses_ids_to_delete = []
       exam.batches.each do |batch|
-        batch.students.find_each do |student|
-          ses = StudentExamSync.find_by(student_id: student.id, exam_id: exam.id)
-          if ses
-            Students::SyncService.new(student.id, exam.id, ses.sync_data).call
-            ses.destroy
-          end
+        student_ids = batch.students.ids
+        StudentExamSync.where(student_id: student_ids, exam_id: exam.id).find_each do |ses|
+          Students::SyncService.new(ses.student_id, exam.id, ses.sync_data).call
+          ses_ids_to_delete << ses.id
         end
       end
+      StudentExamSync.where(id: ses_ids_to_delete).delete_all
     end
 
     def prepare_report
@@ -49,7 +49,7 @@ module Reports
         end
       end
 
-      student_exams_by_id = StudentExam.includes(:student).all.index_by(&:id)
+      student_exams_by_id = StudentExam.includes(student: [:batches]).all.index_by(&:id)
 
       data = {}
       results.each do |student_exam_id, result|
@@ -62,6 +62,8 @@ module Reports
           data[student_exam_id][section_id] ||= res
         end
       end
+
+      exam_section_ids = exam.sections.order(:id).ids
 
       CSV.generate(headers: true) do |csv|
         csv << csv_headers
@@ -81,7 +83,7 @@ module Reports
               row[:parent_mobile],
               row[:batch]]
 
-              exam.sections.order(:id).ids.each do |sec_id|
+              exam_section_ids.each do |sec_id|
                 section_columns = []
                 total.keys.each do |total_key|
                   total[total_key] = total[total_key] + row[sec_id][total_key]
@@ -97,8 +99,8 @@ module Reports
           csv << csv_row
         end
 
-        Student.where(id: exam.un_appeared_student_ids).each do |student|
-          csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).first]
+        Student.where(id: exam.un_appeared_student_ids).includes(:batches).find_each do |student|
+          csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).join(', ')]
         end
 
       end

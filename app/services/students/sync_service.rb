@@ -12,11 +12,12 @@ module Students
     end
 
     def questions_by_id
-      exam.questions.index_by(&:id)
+      @questions_by_id ||= exam.questions.index_by(&:id)
     end
 
     def student_exam_answer_by_qid
-      StudentExamAnswer.where(student_exam_id: student_exam.id, question_id: questions_by_id.keys).index_by(&:question_id)
+      @student_exam_answer_by_qid ||=
+        StudentExamAnswer.where(student_exam_id: student_exam.id, question_id: questions_by_id.keys).index_by(&:question_id)
     end
 
     def student_exam_answer_columns
