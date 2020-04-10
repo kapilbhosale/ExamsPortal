@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script>
+      document.onkeydown = function(e) {
+        if(event.keyCode == 123) {
+          return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+          return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+          return false;
+        }
+        if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+          return false;
+        }
+        if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+          return false;
+        }
+      }
+    </script>
+
+
+  </head>
+  <body oncontextmenu="return false;" style="padding: 10px">
+    <div class="page">
+
+      <nav class="navbar navbar-expand-sm bg-info">
+        <!-- Brand/logo -->
+        <a class="navbar-brand" href="/students/videos">
+          <div>
+            <span>
+              <%= image_tag 'rcc-logo', width: '50px', style: "margin-top:-10px"%>
+              <span style="font-size: large; color: aliceblue;">Videos</span>
+            </span>
+          </div>
+        </a>
+
+        <!-- Links -->
+        <ul class="nav navbar-nav ml-auto">
+          <li class="nav-item">
+            <div class="d-flex order-lg-2 ml-auto">
+              <% if student_signed_in? %>
+              <li class="nav-item" style="color: white; padding-top: 15px;">
+                <span class="text-default"><%= current_student.name%></span>
+              </li>
+              <li class="nav-item">
+                <%= link_to "Sign Out", destroy_student_session_path, method: :delete, style: "color: black" %>
+              </li>
+              <% else %>
+                <li class="nav-item" style="color: white;">
+                  <%= link_to 'Sign In &nbsp; <i class="fa fa-user-o"></i>'.html_safe, new_student_session_path, method: :get, style: 'color: white' %>
+                </li>
+              <% end %>
+            </div>
+          </li>
+
+        </ul>
+      </nav>
+
+      <div class="page-main">
+        <%= yield %>
+      </div>
+    </div>
+  </body>
+</html>
