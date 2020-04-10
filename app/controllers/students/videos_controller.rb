@@ -6,14 +6,15 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    @videos = [
+    @chem_videos = [
       {
         id: 1,
-        title: "Biomolecules1 - Carbohydrate Classification By Shivraj Motegaonkar Sir RCC",
+        title: "Biomolecules1 - Carbohydrate Classification",
         url: "https://vimeo.com/405985315",
         video_id: "405985315",
-        description: "",
-        subject: 'chemistry'
+        description: "By Shivraj Motegaonkar Sir RCC",
+        subject: 'chemistry',
+        thumbnail: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/video-thumbnails/video-1.png'
       },
       {
         id: 2,
@@ -21,7 +22,8 @@ class Students::VideosController < Students::BaseController
         url: "https://vimeo.com/405976840",
         video_id: "405976840",
         description: "",
-        subject: 'chemistry'
+        subject: 'chemistry',
+        thumbnail: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/video-thumbnails/video-2.png'
       }
     ]
   end
