@@ -9,10 +9,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(student)
-      if current_admin
-        '/admin/exams'
-      else
-        '/students/tests'
-      end
+    if current_admin
+      '/admin/exams'
+    elsif request.subdomain == 'videos'
+      '/students/videos'
+    else
+      '/students/tests'
     end
+  end
 end

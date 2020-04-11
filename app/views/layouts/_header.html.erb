@@ -5,7 +5,7 @@
         <div>
           <span style="margin-top: -13px;">
             <%= image_tag 'rcc-logo', width: '50px' %>
-            Exams
+            <%= request.subdomain.humanize || "Exams" %>
           </span>
         </div>
       </a>
