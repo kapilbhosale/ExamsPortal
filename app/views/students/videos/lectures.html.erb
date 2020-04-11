@@ -1,1 +1,47 @@
-<p> Lecture  page </p>
+<div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="chem-tab" data-toggle="tab" href="#chem" role="tab" aria-controls="chem" aria-selected="true">Chem</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="phy-tab" data-toggle="tab" href="#phy" role="tab" aria-controls="phy" aria-selected="false">Phy</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="bio-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="bio" aria-selected="false">Bio</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="maths-tab" data-toggle="tab" href="#maths" role="tab" aria-controls="maths" aria-selected="false">Maths</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="chem" role="tabpanel" aria-labelledby="chem-tab">
+      <% @chem_videos.each do |video| %>
+        <% video_url = "/students/lectures/#{video[:video_id]}" %>
+
+        <div class="card col-md-6 col-sm-12" style="padding-bottom: 10px; background-color: blanchedalmond; margin-top: 5px;">
+          <div class="row">
+            <div class="col-md-8 col-sm-8 col-8">
+              <p><%= video[:title] %><small> - By Prof. Motegaonkar Sir</small></p>
+              <div class="text-center">
+                <a href="<%= video_url %>" class="btn btn-danger btn-sm" > &nbsp; Play Video &nbsp;</a>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-4 my-auto text-center" style="padding-right: 20px;">
+              <%= image_tag video[:thumbnail], size: "80x60" %>
+              <span class="badge badge-light">Concept</span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="tab-pane fade" id="phy" role="tabpanel" aria-labelledby="phy-tab">
+      Physics
+    </div>
+    <div class="tab-pane fade" id="bio" role="tabpanel" aria-labelledby="bio-tab">
+      Biology
+    </div>
+    <div class="tab-pane fade" id="maths" role="tabpanel" aria-labelledby="maths-tab">
+      Maths
+    </div>
+  </div>
+</div>
