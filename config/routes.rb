@@ -10,10 +10,6 @@ Rails.application.routes.draw do
   root to: 'students/home#index'
 
   namespace :students do
-    resources :videos
-    get 'lectures' => 'videos#lectures'
-    get 'lectures/:video_id' => 'videos#show_lecture'
-
     post 'authorise', to: 'login#authorise'
     get "auto-auth", to: 'home#auto_auth'
     root to: 'home#index'

@@ -12,11 +12,7 @@ class ApplicationController < ActionController::Base
       if current_admin
         '/admin/exams'
       else
-        if request.subdomain == 'exams'
-          '/students/tests'
-        else
-          '/students/lectures'
-        end
+        '/students/tests'
       end
     end
 end

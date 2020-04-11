@@ -4,8 +4,6 @@ class Students::HomeController < Students::BaseController
   layout 'student_exam_layout', only: [:exam]
 
   def index
-    @subdomain = request.subdomain
-    redirect_to students_videos_path if request.subdomain == 'videos'
     student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
     sign_in_and_redirect(student) if student.present?
   end
