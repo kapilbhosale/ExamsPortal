@@ -6,6 +6,9 @@
           <span style="margin-top: -13px;">
             <%= image_tag 'rcc-logo', width: '50px' %>
             <%= request.subdomain.humanize || "Exams" %>
+            <% if request.subdomain == "videos" %>
+              <a href="/students/videos" class="btn btn-warning btn-sm" role="button">Go to Videos</a>
+            <% end %>
           </span>
         </div>
       </a>
@@ -43,25 +46,27 @@
     </div>
   </div>
 </div>
-<div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg order-lg-first">
-        <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-monitor'></i> My Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-airplay'></i> Mock Tests".html_safe, students_mock_tests_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-book'></i> Question Bank".html_safe, students_question_bank_path, class: current_page?(students_question_bank_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-users'></i> External Students".html_safe, students_exam_subscription_path, class: current_page?(students_exam_subscription_path) ? "nav-link active" : "nav-link" %>
-          </li>
-        </ul>
+<% if request.subdomain == 'exams' %>
+  <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg order-lg-first">
+          <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-monitor'></i> My Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-airplay'></i> Mock Tests".html_safe, students_mock_tests_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-book'></i> Question Bank".html_safe, students_question_bank_path, class: current_page?(students_question_bank_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-users'></i> External Students".html_safe, students_exam_subscription_path, class: current_page?(students_exam_subscription_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>

@@ -1,47 +1,107 @@
-<div>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="chem-tab" data-toggle="tab" href="#chem" role="tab" aria-controls="chem" aria-selected="true">Chem</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="phy-tab" data-toggle="tab" href="#phy" role="tab" aria-controls="phy" aria-selected="false">Phy</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="bio-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="bio" aria-selected="false">Bio</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="maths-tab" data-toggle="tab" href="#maths" role="tab" aria-controls="maths" aria-selected="false">Maths</a>
-    </li>
-  </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="chem" role="tabpanel" aria-labelledby="chem-tab">
-      <% @chem_videos.each do |video| %>
-        <% video_url = "/students/lectures/#{video[:video_id]}" %>
-
-        <div class="card col-md-6 col-sm-12" style="padding-bottom: 10px; background-color: blanchedalmond; margin-top: 5px;">
-          <div class="row">
-            <div class="col-md-8 col-sm-8 col-8">
-              <p><%= video[:title] %><small> - By Prof. Motegaonkar Sir</small></p>
-              <div class="text-center">
-                <a href="<%= video_url %>" class="btn btn-danger btn-sm" > &nbsp; Play Video &nbsp;</a>
-              </div>
-            </div>
-            <div class="col-md-4 col-sm-4 col-4 my-auto text-center" style="padding-right: 20px;">
-              <%= image_tag video[:thumbnail], size: "80x60" %>
-              <span class="badge badge-light">Concept</span>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-    <div class="tab-pane fade" id="phy" role="tabpanel" aria-labelledby="phy-tab">
-      Physics
-    </div>
-    <div class="tab-pane fade" id="bio" role="tabpanel" aria-labelledby="bio-tab">
-      Biology
-    </div>
-    <div class="tab-pane fade" id="maths" role="tabpanel" aria-labelledby="maths-tab">
-      Maths
+<div class="tabbable-panel">
+  <div class="tabbable-line">
+    <ul class="nav nav-tabs ">
+      <li class="active">
+        <a href="#tab_chem" data-toggle="tab">
+          Chemistry
+        </a>
+      </li>
+      <li>
+        <a href="#tab_phy" data-toggle="tab">
+          Physics
+        </a>
+      </li>
+      <li>
+        <a href="#tab_bio" data-toggle="tab">
+          Biology
+        </a>
+      </li>
+      <li>
+        <a href="#tab_maths" data-toggle="tab">
+          Maths
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab_chem">
+        <%= render 'chem' %>
+      </div>
+      <div class="tab-pane" id="tab_phy">
+        <%= render 'phy' %>
+      </div>
+      <div class="tab-pane" id="tab_bio">
+        <%= render 'bio' %>
+      </div>
+      <div class="tab-pane" id="tab_maths">
+        <%= render 'maths' %>
+      </div>
     </div>
   </div>
 </div>
+
+<style>
+  .card-horizontal {
+    display: flex;
+    flex-shrink: 0;
+    flex: 2 1 auto;
+  }
+
+    /* Tabs panel */
+  .tabbable-panel {
+    border:1px solid #eee;
+    padding: 0px;
+    margin: -10px;
+  }
+
+  /* Default mode */
+  .tabbable-line > .nav-tabs {
+    border: none;
+    margin: 0px;
+  }
+  .tabbable-line > .nav-tabs > li {
+    margin-right: 2px;
+  }
+  .tabbable-line > .nav-tabs > li > a {
+    border: 0;
+    margin-right: 0;
+    color: #737373;
+  }
+  .tabbable-line > .nav-tabs > li > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
+    border-bottom: 4px solid #fbcdcf;
+  }
+  .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
+    border: 0;
+    background: none !important;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.open > a > i, .tabbable-line > .nav-tabs > li:hover > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open .dropdown-menu, .tabbable-line > .nav-tabs > li:hover .dropdown-menu {
+    margin-top: 0px;
+  }
+  .tabbable-line > .nav-tabs > li.active {
+    border-bottom: 4px solid #f3565d;
+    position: relative;
+  }
+  .tabbable-line > .nav-tabs > li.active > a {
+    border: 0;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.active > a > i {
+    color: #404040;
+  }
+  .tabbable-line > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 5px 0;
+  }
+  .portlet .tabbable-line > .tab-content {
+    padding-bottom: 0;
+  }
+</style>
