@@ -1,47 +1,47 @@
-<div>
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="chem-tab" data-toggle="tab" href="#chem" role="tab" aria-controls="chem" aria-selected="true">Chem</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="phy-tab" data-toggle="tab" href="#phy" role="tab" aria-controls="phy" aria-selected="false">Phy</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="bio-tab" data-toggle="tab" href="#bio" role="tab" aria-controls="bio" aria-selected="false">Bio</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="maths-tab" data-toggle="tab" href="#maths" role="tab" aria-controls="maths" aria-selected="false">Maths</a>
-    </li>
+<div style="padding: 10px;">
+  <ul class="nav nav-tabs" style="width: 100%;">
+    <li class="active"><a data-toggle="tab" href="#chem">Chemistry</a></li>
+    <li><a data-toggle="tab" href="#phy">Physics</a></li>
+    <li><a data-toggle="tab" href="#bio">Biology</a></li>
+    <li><a data-toggle="tab" href="#math">Maths</a></li>
+    <li><a data-toggle="tab" href="#other">Other</a></li>
   </ul>
-  <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="chem" role="tabpanel" aria-labelledby="chem-tab">
-      <% @chem_videos.each do |video| %>
-        <% video_url = "/students/lectures/#{video[:video_id]}" %>
 
-        <div class="card col-md-6 col-sm-12" style="padding-bottom: 10px; background-color: blanchedalmond; margin-top: 5px;">
-          <div class="row">
-            <div class="col-md-8 col-sm-8 col-8">
-              <p><%= video[:title] %><small> - By Prof. Motegaonkar Sir</small></p>
-              <div class="text-center">
-                <a href="<%= video_url %>" class="btn btn-danger btn-sm" > &nbsp; Play Video &nbsp;</a>
-              </div>
+  <div class="tab-content">
+    <div id="chem" class="tab-pane fade in active">
+      <div>
+        <% @videos.each do |video| %>
+        <% video_url = "/students/lectures/#{video[:video_id]}" %>
+        <div class="card col-md-12" style="padding-top: 10px">
+          <div class="row" style="padding: 20px">
+            <div class="col-md-2 col-sm-2 col-sx-2">
+              <%= image_tag 'play', size: "80x50" %>
             </div>
-            <div class="col-md-4 col-sm-4 col-4 my-auto text-center" style="padding-right: 20px;">
-              <%= image_tag video[:thumbnail], size: "80x60" %>
-              <span class="badge badge-light">Concept</span>
+            <div class="col-md-10 col-sm-10 col-sx-10 text-center">
+              <h5 class="card-title"><%= video[:title] %></h5>
+              <a href="<%= video_url %>" class="btn btn-warning">Play Video</a>
             </div>
           </div>
         </div>
-      <% end %>
+        &nbsp;
+        <% end %>
+      </div>
     </div>
-    <div class="tab-pane fade" id="phy" role="tabpanel" aria-labelledby="phy-tab">
-      Physics
+    <div id="phy" class="tab-pane fade">
+      <h3>Physics</h3>
+      <p>We will upload new Physics lectures soon..</p>
     </div>
-    <div class="tab-pane fade" id="bio" role="tabpanel" aria-labelledby="bio-tab">
-      Biology
+    <div id="bio" class="tab-pane fade">
+      <h3>Biology</h3>
+      <p>We will upload new Biology lectures soon..</p>
     </div>
-    <div class="tab-pane fade" id="maths" role="tabpanel" aria-labelledby="maths-tab">
-      Maths
+    <div id="math" class="tab-pane fade">
+      <h3>Maths</h3>
+      <p>We will upload new Maths lectures soon..</p>
+    </div>
+    <div id="other" class="tab-pane fade">
+      <h3>Other</h3>
+      <p>We will upload new Genral Motivational lectures soon..</p>
     </div>
   </div>
 </div>
