@@ -6,9 +6,6 @@
           <span style="margin-top: -13px;">
             <%= image_tag 'rcc-logo', width: '50px' %>
             <%= request.subdomain.humanize || "Exams" %>
-            <% if request.subdomain == "videos" %>
-              <a href="/students/videos" class="btn btn-warning btn-sm" role="button">Go to Videos</a>
-            <% end %>
           </span>
         </div>
       </a>

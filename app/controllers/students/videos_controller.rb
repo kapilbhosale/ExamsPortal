@@ -6,11 +6,10 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    @chem_videos = VideoLecture.chem
-
-    @phy_videos = VideoLecture.phy
-    @bio_videos = VideoLecture.bio
-    @maths_videos = VideoLecture.maths
+    @chem_videos = VideoLecture.chem.order(id: :desc)
+    @phy_videos = VideoLecture.phy.order(id: :desc)
+    @bio_videos = VideoLecture.bio.order(id: :desc)
+    @maths_videos = VideoLecture.maths.order(id: :desc)
   end
 
   def show_lecture
