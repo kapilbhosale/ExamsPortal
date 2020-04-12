@@ -20,6 +20,7 @@ module Exams
       ActiveRecord::Base.transaction do
         create_exam_section
         extract_zip
+        convert_images_to_grayscale
         upload_images_folder
         parse_html
         create_questions_and_options
@@ -60,6 +61,17 @@ module Exams
 
     def remove_zip_files
       FileUtils.rm_rf(Dir.glob(@tmp_dir_path))
+    end
+
+    def convert_images_to_grayscale
+      images_folder = "#{@tmp_dir_path}images"
+      Dir.glob("#{images_folder}/*.png") do |img_filename|
+        img = (Magick::Image.read(img_filename).first rescue nil)
+        next if img.nil?
+
+        img.quantize(256, Magick::GRAYColorspace)
+        img.write img_filename
+      end
     end
 
     def upload_images_folder

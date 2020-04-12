@@ -46,7 +46,7 @@ module Students
           next if question.single_select? && student_exam_answer&.option_id == student_ans.to_i
 
           if question.input?
-            # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])    
+            # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
             if student_exam_answer
               student_exam_answer.update!(ans: student_ans, question_props: input_question[:answerProps])
             else
