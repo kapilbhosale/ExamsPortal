@@ -83,17 +83,48 @@ class Students::HomeController < Students::BaseController
 
   def summary
     @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
-    @student_exam_summaries = StudentExamSummary.where(student_exam_id: @student_exam.id)
-    if @student_exam_summaries.blank?
+    student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
+    if student_exam_summaries.blank?
       ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
       if ses
         Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
         StudentExamScoreCalculator.new(@student_exam.id).calculate
         ses.destroy
       end
-      @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+      student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
     end
     @exam_id = params[:exam_id]
+
+
+    se_ids = StudentExam.where(exam_id: @exam_id).ids
+    ses = StudentExamSummary.where(student_exam_id: se_ids)
+
+    total_score, total_question, topper_total = 0, 0, 0
+    time_spent = distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
+    section_data = student_exam_summaries.map do |student_exam_summary|
+      topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
+      total_score += student_exam_summary.score
+      total_question += student_exam_summary.no_of_questions
+      topper_total += topper_score
+
+      {
+        section_name: student_exam_summary.section.name,
+        total_question: student_exam_summary.no_of_questions,
+        correct: student_exam_summary.correct,
+        incorrect: student_exam_summary.incorrect,
+        not_answered: student_exam_summary.not_answered,
+        score: student_exam_summary.score,
+        topper_score: topper_score
+      }
+    end
+
+    @summary_data = {
+      total_question: total_question,
+      total_score: total_score,
+      time_spent: time_spent,
+      section_data: section_data,
+      topper_total: topper_total
+    }
   end
 
   def submit

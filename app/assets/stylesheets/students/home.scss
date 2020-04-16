@@ -206,6 +206,10 @@
 
 .text-indent-0 *{
   text-indent: 0;
+
+  p {
+    margin-bottom: 0 !important;
+  }
 }
 
 .question-div {
@@ -219,4 +223,7 @@
   border-bottom: 1px solid rgba(110, 109, 109, 0.25);
 }
 
-.options-div { }
+.question-selected {
+  border: solid 2px #5cb85c !important;
+  border-radius: 10px;
+}

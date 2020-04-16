@@ -2,6 +2,7 @@
   "name": "SmartExamsRails",
   "private": true,
   "dependencies": {
+    "@nivo/pie": "^0.61.1",
     "@rails/webpacker": "3.5",
     "babel-preset-react": "^6.24.1",
     "global": "^4.3.2",
@@ -9,6 +10,7 @@
     "mirror-creator": "^1.1.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
+    "react-countdown-clock": "https://github.com/deepakjadhav288/react-countdown-clock/tarball/258158225b9a40f9220d2f14e435a35a73bc3b9f",
     "react-countdown-now": "^1.3.0",
     "react-dom": "^16.4.1",
     "react-loadable": "^5.4.0",
@@ -19,8 +21,7 @@
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
-    "redux-thunk": "^2.3.0",
-    "react-countdown-clock": "https://github.com/deepakjadhav288/react-countdown-clock/tarball/258158225b9a40f9220d2f14e435a35a73bc3b9f"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"

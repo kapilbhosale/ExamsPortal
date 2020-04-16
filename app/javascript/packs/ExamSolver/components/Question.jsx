@@ -55,13 +55,14 @@ class Question extends React.Component {
       return (
         options.map((option, idx) => {
           return (
-            <div key={idx} className="radio text-indent-0">
+            <div key={idx} className={`radio text-indent-0 ${isOptionSelected(option.id) ? 'question-selected' : ''}`} style={{padding: '5px'}}>
               <label>
                 <input
                   type="radio"
                   value={ option.id }
                   checked={ isOptionSelected(option.id) }
                   onChange={ (e) => { answerQuestion(currentQuestionIndex, [parseInt(e.target.value)]) } }
+                  style={{marginTop: '8px'}}
                 />
                 <div>
                   {
