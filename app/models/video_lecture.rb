@@ -17,4 +17,7 @@
 
 class VideoLecture < ApplicationRecord
   enum subject: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4 }
+
+  has_many :batch_video_lectures
+  has_many :batches, through: :batch_video_lectures
 end

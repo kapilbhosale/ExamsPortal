@@ -1,15 +1,18 @@
 class Admin::StudentsController < Admin::BaseController
-
+  ITEMS_PER_PAGE = 20
   def index
+    @search = Student.includes(:student_batches, :batches).joins(:batches)
+
     if params[:q].present? && params[:q][:batch_id].present?
-      @search = Student.includes(:student_batches, :batches).joins(:batches).where(batches: {id: params[:q][:batch_id]}).search(params[:q])
-    else
-      @search = Student.includes(:student_batches, :batches).joins(:batches).search(params[:q])
+      @search = @search.where(batches: {id: params[:q][:batch_id]})
     end
+
+    @search = @search.search(search_params)
+
     @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
     @batches = Batch.all_batches
 
-    @students_data = @search.result.includes(:batches).order(:roll_number).map do |student|
+    @students_data = @students.includes(:batches).order(:roll_number).map do |student|
       {
           roll_number: student.roll_number,
           batches: student&.batches&.each&.map(&:name).join(', '),
@@ -83,6 +86,20 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   private
+
+  def search_params
+    return {} if params[:q].blank?
+
+    search_term = params[:q][:name_and_roll_number]&.strip
+
+    # to check if input is number or string
+    if search_term.to_i.to_s == search_term
+      return { roll_number_eq: search_term } if search_term.length <= 5
+      return { parent_mobile_cont: search_term }
+    end
+
+    { name_cont: search_term }
+  end
 
   def student_params
     params.require(:student).permit(

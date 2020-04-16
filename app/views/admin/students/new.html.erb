@@ -64,7 +64,7 @@
           <div class="col-sm-6 col-md-4">
             <div class="form-group">
               <label class="form-label">Parent Mobile*</label>
-              <%= form.text_field :parent_mobile, class: 'form-control', placeholder: 'Parent Mobile' %>
+              <%= form.text_field :parent_mobile, class: 'form-control', placeholder: 'Parent Mobile', :maxlength => 10, :minlength => 10 %>
             </div>
           </div>
           <div class="col-sm-6 col-md-4">

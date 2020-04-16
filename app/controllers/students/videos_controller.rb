@@ -6,10 +6,11 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    @chem_videos = VideoLecture.chem.order(id: :desc)
-    @phy_videos = VideoLecture.phy.order(id: :desc)
-    @bio_videos = VideoLecture.bio.order(id: :desc)
-    @maths_videos = VideoLecture.maths.order(id: :desc)
+    lectures = VideoLecture.includes(:batches).where(batches: {id: current_student.batches}).order(id: :desc).group_by {|vl| vl.subject}
+    @chem_videos = lectures['chem']
+    @phy_videos = lectures['phy']
+    @bio_videos = lectures['bio']
+    @maths_videos = lectures['maths']
   end
 
   def show_lecture

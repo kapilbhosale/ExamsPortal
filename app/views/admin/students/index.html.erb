@@ -7,16 +7,15 @@
         </div>
       </div>
       <div class="card-body">
-        <div class="col-xl-6 col-lg-6 col-md-7 col-sm-3 col-12">
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
           <%= search_form_for @search, url: admin_students_path, class:"form-inline my-2 my-lg-0" do |f| %>
-            <span class="p-2">Name</span>
-            <%= f.text_field :name_cont, placeholder: 'Search...', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
+            <%= f.text_field :name_and_roll_number, placeholder: 'Name, Roll no, parent mob', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
             <span class="p-2">Batch</span>
             <%= f.collection_select(:batch_id, Batch.all_batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
             <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
           <% end %>
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-5 col-sm-3 col-12 text-right">
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
           <%= link_to '<i class="fe fe-user-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
 
         </div>

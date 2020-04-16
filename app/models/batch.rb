@@ -16,6 +16,9 @@ class Batch < ApplicationRecord
   has_many :exams, through: :exams_batches
   validates :name, presence: true
 
+  has_many :batch_video_lectures
+  has_many :video_lectures, through: :batch_video_lectures
+
   def self.all_batches
     Batch.all{|batch| [batch.id, batch.name]}
   end
