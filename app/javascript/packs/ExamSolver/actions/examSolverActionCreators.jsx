@@ -225,6 +225,18 @@ export function timeIsUp() {
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
   }
 }
+export function updateTimeSpentOnQuestion(currentQuestionId) {
+  return (dispatch, getState) => {
+    const store = getState().$$examSolverStore;
+    const currentSection = store.get('currentSection');
+    const currentQuestionIndex = store.get('currentQuestionIndex').toJS();
+    const questionIndex = currentQuestionIndex[currentSection];
+    dispatch({
+      type: actionTypes.UPDATE_TIME_SPENT_ON_QUESTION,
+      val: { questionIndex: questionIndex },
+    });
+  }
+}
 
 export function syncWithBackend() {
   return (dispatch, getState) => {

@@ -102,6 +102,15 @@ export default function examSolverReducer($$state = $$initialState, action) {
     case actionTypes.SET_EXAM_SUMMARY:
       return $$state.set('examSummary', val)
                     .set('examFinished', true);
+    case actionTypes.UPDATE_TIME_SPENT_ON_QUESTION:
+      let currentSection = $$state.get('currentSection');
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      if (questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent) {
+        questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent += 1;
+      } else {
+        questionsBySections[currentSection][val.questionIndex].answerProps['timeSpent'] = 1;
+      }
+      return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     default:
       return $$state;
   }

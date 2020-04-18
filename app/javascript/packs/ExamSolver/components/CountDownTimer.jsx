@@ -5,10 +5,14 @@ import ReactCountdownClock from 'react-countdown-clock';
 class CountDownTimer extends React.Component {
 
     componentDidMount() {
-        // Syncing answers with backend every 20 Seconds
+        // Syncing answers with backend every 10 minutes
         this.syncInterval = setInterval(() => {
             this.props.syncWithBackend();
         }, (10*60*1000));
+
+        this.syncInterval = setInterval( () => {
+            this.props.updateTimeSpentOnQuestion();
+        }, 1000);
     }
 
     componentWillUnmount() {

@@ -3,10 +3,6 @@ import CountdownTimer from './CountDownTimer';
 
 class SectionList extends React.Component {
 
-  getTimerValue = (value) => {
-    console.log("timer value is ", value);
-  }
-
   render() {
     const $win = $(window);
     const MEDIAQUERY = {
@@ -21,7 +17,7 @@ class SectionList extends React.Component {
     }
 
     const { timeLeftMessage, timeIsUp, currentSection, changeSection, sections,
-      remainingTimeAlert, syncWithBackend } = this.props;
+      remainingTimeAlert, syncWithBackend, updateTimeSpentOnQuestion } = this.props;
     return (
       <div className="row gray-border-bottom">
         <div className="col-md-10 col-sm-10 col-xs-12" style={{zIndex: "99"}}>
@@ -48,6 +44,7 @@ class SectionList extends React.Component {
             timeLeftMessage={timeLeftMessage}
             timeIsUp={timeIsUp}
             syncWithBackend={syncWithBackend}
+            updateTimeSpentOnQuestion={ updateTimeSpentOnQuestion }
         />
       </div>
     );
