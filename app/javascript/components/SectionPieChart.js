@@ -36,16 +36,18 @@ class SectionPieChart extends React.Component {
           <tbody>
             <tr>
               <td colspan="3">
-                <button type="button" class="btn btn-outline-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
-                <div style={{height: 300}}>
+                <div className="text-right">
+                  <button type="button" className="btn btn-outline-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
+                </div>
+                <div style={{height: 160}}>
                   <ResponsivePie
                     data={data}
-                    margin={{ top: 0, right: 80, bottom: 60, left: 80 }}
+                    margin={{ top: 0, right: 0, bottom: 20, left: 0 }}
                     innerRadius={0.5}
                     padAngle={1.9}
                     cornerRadius={3}
                     colors={d => d.color}
-                    borderWidth={1}
+                    borderWidth={0}
                     borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
                     radialLabelsSkipAngle={10}
                     radialLabelsTextXOffset={6}
@@ -59,7 +61,8 @@ class SectionPieChart extends React.Component {
                     slicesLabelsTextColor="#333333"
                     animate={true}
                     motionStiffness={90}
-                    motionDamping={15}
+                    motionDamping={25}
+                    enableRadialLabels={false}
                     defs={[
                         {
                             id: 'dots',
@@ -95,17 +98,9 @@ class SectionPieChart extends React.Component {
                             translateY: 20,
                             itemWidth: 100,
                             itemHeight: 18,
-                            itemTextColor: '#999',
+                            itemTextColor: '#000',
                             symbolSize: 18,
-                            symbolShape: 'circle',
-                            effects: [
-                                {
-                                    on: 'hover',
-                                    style: {
-                                        itemTextColor: '#000'
-                                    }
-                                }
-                            ]
+                            symbolShape: 'circle'
                         }
                     ]}
                   />
