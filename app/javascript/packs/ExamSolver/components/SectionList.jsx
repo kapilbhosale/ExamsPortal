@@ -17,7 +17,7 @@ class SectionList extends React.Component {
     }
 
     const { timeLeftMessage, timeIsUp, currentSection, changeSection, sections,
-      remainingTimeAlert, syncWithBackend, updateTimeSpentOnQuestion } = this.props;
+      remainingTimeAlert, syncWithBackend, updateTimeSpentOnQuestion, currentQuestionIndex } = this.props;
     return (
       <div className="row gray-border-bottom">
         <div className="col-md-10 col-sm-10 col-xs-12" style={{zIndex: "99"}}>
@@ -45,6 +45,7 @@ class SectionList extends React.Component {
             timeIsUp={timeIsUp}
             syncWithBackend={syncWithBackend}
             updateTimeSpentOnQuestion={ updateTimeSpentOnQuestion }
+            currentQuestionIndex={currentQuestionIndex}
         />
       </div>
     );

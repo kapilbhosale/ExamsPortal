@@ -3,6 +3,14 @@ import Countdown from 'react-countdown-now';
 import ReactCountdownClock from 'react-countdown-clock';
 
 class CountDownTimer extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {
+          currentQuestionIndex: null,
+          timeSpent: 0,
+      }
+    }
 
     componentDidMount() {
         // Syncing answers with backend every 10 minutes
@@ -10,13 +18,21 @@ class CountDownTimer extends React.Component {
             this.props.syncWithBackend();
         }, (10*60*1000));
 
-        this.syncInterval = setInterval( () => {
-            this.props.updateTimeSpentOnQuestion();
-        }, 1000);
+      this.timeSpentInterval = setInterval( () => {
+        this.setState({ timeSpent: this.state.timeSpent + 1 });
+      }, 1000);
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.props.currentQuestionIndex !== prevProps.currentQuestionIndex) {
+        this.props.updateTimeSpentOnQuestion(this.state.timeSpent);
+       this.setState({currentQuestionIndex: this.props.currentQuestionIndex, timeSpent: 0});
+      }
     }
 
     componentWillUnmount() {
         clearInterval(this.syncInterval);
+        clearInterval(this.timeSpentInterval);
     }
 
     dateForCountdown() {

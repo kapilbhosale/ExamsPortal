@@ -33,6 +33,7 @@ class ShellLeft extends React.Component {
               timeLeftMessage={  timeLeftMessage }
               syncWithBackend={ syncWithBackend }
               updateTimeSpentOnQuestion={updateTimeSpentOnQuestion}
+              currentQuestionIndex={currentQuestionIndex}
             />
           </div>
           <div className="col-md-12">

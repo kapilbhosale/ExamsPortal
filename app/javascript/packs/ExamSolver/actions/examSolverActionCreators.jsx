@@ -225,7 +225,7 @@ export function timeIsUp() {
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
   }
 }
-export function updateTimeSpentOnQuestion(currentQuestionId) {
+export function updateTimeSpentOnQuestion(timeSpent) {
   return (dispatch, getState) => {
     const store = getState().$$examSolverStore;
     const currentSection = store.get('currentSection');
@@ -233,7 +233,7 @@ export function updateTimeSpentOnQuestion(currentQuestionId) {
     const questionIndex = currentQuestionIndex[currentSection];
     dispatch({
       type: actionTypes.UPDATE_TIME_SPENT_ON_QUESTION,
-      val: { questionIndex: questionIndex },
+      val: { questionIndex: questionIndex, timeSpent: timeSpent},
     });
   }
 }
