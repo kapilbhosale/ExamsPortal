@@ -21,6 +21,8 @@ module Students
 
       student.update!(@student_params)
 
+      SyncStudentWithAppService.new(student).sync
+
       return {status: true, message: 'Student updated successfully'}
     rescue UpdateStudentService, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}

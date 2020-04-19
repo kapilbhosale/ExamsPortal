@@ -16,6 +16,9 @@ module Students
       @student = Student.new(student_params)
       build_batches
       @student.save!
+
+      SyncStudentWithAppService.new(@student).sync
+
       return {status: true, message: "Student created successfully email:#{email_id},password:#{rand_password}"}
     rescue AddStudentError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
