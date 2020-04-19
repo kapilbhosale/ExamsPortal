@@ -32,7 +32,7 @@ module Students
 
       # Send the request
       response = http.request(request)
-      if response.code == 200
+      if response.code == "200"
         puts "\n\n\n\n\n\n Synced successfully .. ! #{post_data}"
       else
         puts "\n\n\n\n\n\n $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
