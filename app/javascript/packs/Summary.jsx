@@ -8,15 +8,15 @@ class Summary extends React.Component {
   }
 
   render() {
-    const no_of_questions = (this.props.total_question * 4)
+    const out_of = (this.props.total_question * 4)
     return(
-      <div className='text-center'>
-        <table class="table table-sm table-bordered">
+      <div className="text-center col-md-6 col-xs-12">
+        <table className="table table-sm table-bordered">
           <tbody>
             <tr>
               <td>Total Score:</td>
               <td>
-                <h5>{`${this.props.total_score} / ${no_of_questions}`}</h5>
+                <h5>{`${this.props.total_score} / ${out_of}`}</h5>
               </td>
               <td>
                 Topper: <span class="badge badge-warning">{this.props.topper_total}</span>
@@ -24,7 +24,7 @@ class Summary extends React.Component {
             </tr>
             <tr>
               <td>Total Time Spent: </td>
-              <td colspan="2">
+              <td colSpan="2">
                 <h5>{this.props.time_spent}</h5>
               </td>
             </tr>
@@ -39,3 +39,5 @@ class Summary extends React.Component {
 }
 
 ReactOnRails.register({ Summary });
+
+export default Summary;

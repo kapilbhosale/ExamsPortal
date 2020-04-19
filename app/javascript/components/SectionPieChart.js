@@ -32,10 +32,10 @@ class SectionPieChart extends React.Component {
 
     return(
       <div>
-        <table class="table table-sm table-bordered">
+        <table className="table table-sm table-bordered">
           <tbody>
             <tr>
-              <td colspan="3">
+              <td colSpan="3">
                 <div className="text-right">
                   <button type="button" className="btn btn-outline-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
                 </div>
@@ -113,7 +113,7 @@ class SectionPieChart extends React.Component {
                 <h5>{`${section_data.score} / ${(section_data.total_question * 4)}`}</h5>
               </td>
               <td>
-                Topper: <span class="badge badge-warning">{section_data.topper_score}</span>
+                Topper: <span className="badge badge-warning">{section_data.topper_score}</span>
               </td>
             </tr>
           </tbody>

@@ -1,80 +1,60 @@
 import React from 'react';
+import Summary from '../../Summary'
 
 class ExamSummary extends React.Component {
 
-  renderRows = (summaryData) => {
-    const returnVals = [];
-    let totalScore = 0;
-    for (let [key, value] of Object.entries(summaryData)) {
-      totalScore += value.score;
-      returnVals.push(<tr>
-            <td className="summary-table-td">
-              {key}
-            </td>
-            <td className="summary-table-td">
-              {value.count}
-            </td>
-            <td className="summary-table-td">
-              {value.ans}
-            </td>
-            <td className="summary-table-td">
-              {value.count - value.ans}
-            </td>
-            <td className="summary-table-td">
-            {value.correct}
-            </td>
-            <td className="summary-table-td">
-            {value.wrong}
-            </td>
-            <td className="summary-table-td">
-            {value.score}
-            </td>
-          </tr>)
+  formatData = () => {
+    const {examSummary} = this.props;
+    let total_question = 0;
+    let total_score = 0;
+    const time_spent = '-';
+    const topper_total = "-";
+    const section_data = [];
+    for (let [key, value] of Object.entries(examSummary)) {
+      total_score += value.score;
+      total_question += value.count
+      section_data.push(
+        {
+          section_name: key,
+          total_question: value.count,
+          correct: value.correct,
+          incorrect: value.wrong,
+          not_answered: value.count - value.ans,
+          score: value.score,
+          topper_score: '-'
+        }
+      );
     }
-    return({returnVals, totalScore});
+    return(
+      {
+        total_question,
+        total_score,
+        time_spent,
+        section_data,
+        topper_total,
+      }
+    );
   }
 
   render() {
-    const {examSummary} = this.props;
-    return (
-      <div className="container">
-        <div className="row text-center">
-          <br/><br/>
-          <div className="col-md-12">
-              <h6>summary of section(s) answered &nbsp;</h6>
-          </div>
-          <div className="col-md-12 text-muted">Your answers have been saved successfully.</div>
+    const {total_question, total_score, time_spent, section_data, topper_total} = this.formatData();
+    return(
+      <div>
+        <div className="text-center">
+          <p>Quick Result Summary</p>
         </div>
-        <div className="row">
-      <div className="mx-auto">
-        <div className="table">
-            <table className="table-stripped summary-table">
-              <tr>
-                  <th className="summary-table-th text-white">Sec</th>
-                  <th className="summary-table-th text-white">No of Q</th>
-                  <th className="summary-table-th text-white">Ansrd</th>
-                  <th className="summary-table-th text-white">Not-ansrd</th>
-                  <th className="summary-table-th text-white">Correct</th>
-                  <th className="summary-table-th text-white">Inorrect</th>
-                  <th className="summary-table-th text-white">Score</th>
-              </tr>
-              { this.renderRows(examSummary).returnVals }
-            </table>
-        </div>
-        <br />
-        <div className="col-md-12">
-            <h4>
-              Total Score: { this.renderRows(examSummary).totalScore }
-            </h4>
-        </div>
-        <br /> <br />
+        <Summary
+          total_question={total_question}
+          total_score={total_score}
+          time_spent={time_spent}
+          section_data={section_data}
+          topper_total={topper_total}
+        />
         <div className="text-center">
           <a href='/students/tests'>
             <button className="btn btn-success">Continue</button>
           </a>
         </div>
-      </div>
-    </div>
       </div>
     );
   }

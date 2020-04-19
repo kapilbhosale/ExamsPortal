@@ -100,7 +100,7 @@ class Students::HomeController < Students::BaseController
     ses = StudentExamSummary.where(student_exam_id: se_ids)
 
     total_score, total_question, topper_total = 0, 0, 0
-    time_spent = distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
+    time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
     section_data = student_exam_summaries.map do |student_exam_summary|
       topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
       total_score += student_exam_summary.score
