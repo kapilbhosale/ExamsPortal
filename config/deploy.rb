@@ -1,67 +1,61 @@
-require 'mina/rails'
-require 'mina/git'
-require 'mina/git'
-require 'mina/rvm'
+# config valid for current version and patch releases of Capistrano
+lock "~> 3.13.0"
 
-# Basic settings:
-#   domain       - The hostname to SSH to.
-#   deploy_to    - Path to deploy into.
-#   repository   - Git repo to clone from. (needed by mina/git)
-#   branch       - Branch name to deploy. (needed by mina/git)
+set :application, "SmartExams"
+set :repo_url, "git@github.com:kapilbhosale/SmartExams.git"
+set :user, 'ubuntu'
 
-set :application_name, 'smartexams'
-set :domain, 'exams.smartclassapp.in'
-set :deploy_to, '/home/ubuntu/app'
-set :repository, 'git@github.com:akshaymohite/SmartExamsRails.git'
-set :branch, 'offline-support'
+# Don't change these unless you know what you're doing
+set :pty,             false
+set :use_sudo,        false
+set :stage,           :production
+set :deploy_via,      :remote_cache
+set :deploy_to,       "/home/#{fetch(:user)}/app/#{fetch(:application)}"
+set :puma_bind,       "unix://#{shared_path}/tmp/sockets/#{fetch(:application)}-puma.sock"
+set :puma_state,      "#{shared_path}/tmp/pids/puma.state"
+set :puma_pid,        "#{shared_path}/tmp/pids/puma.pid"
+set :puma_access_log, "#{release_path}/log/puma.error.log"
+set :puma_error_log,  "#{release_path}/log/puma.access.log"
+set :ssh_options,     { forward_agent: true }
+set :puma_preload_app, true
+set :puma_worker_timeout, nil
+set :puma_init_active_record, true  # Change to false when not using ActiveRecord
+set :rvm_ruby_version, 'ruby-2.5.1@smart-exams'
 
-# Optional settings:
-  set :user, 'ubuntu'          # Username in the server to SSH to.
-  set :port, '22'           # SSH port number.
-  set :forward_agent, true     # SSH forward_agent.
+set :keep_releases, 5
 
-# Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
-# Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
-# run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
-# set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
-set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', '.env')
+set :linked_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
+set :linked_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb')
 
-# This task is the environment that is loaded for all remote run commands, such as
-# `mina deploy` or `mina rake`.
-task :remote_environment do
-  # If you're using rbenv, use this to load the rbenv environment.
-  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
-  # invoke :'rbenv:load'
-
-  # For those using RVM, use this to load an RVM version@gemset.
-  invoke :'rvm:use', 'ruby-2.5.1@smart-exams'
-end
-
-# Put any custom commands you need to run at setup
-# All paths in `shared_dirs` and `shared_paths` will be created on their own.
-task :setup do
-  command %{rvm install 2.5.1 --skip-existing}
-end
-
-desc "Deploys the current version to the server."
-task :deploy do
-  # uncomment this line to make sure you pushed your local branch to the remote origin
-  # invoke :'git:ensure_pushed'
-  deploy do
-    # Put things that will set up an empty directory into a fully set-up
-    # instance of your project.
-    invoke :'git:clone'
-    invoke :'deploy:link_shared_paths'
-    invoke :'bundle:install'
-    invoke :'rails:db_migrate'
-    invoke :'rails:assets_precompile'
-    invoke :'deploy:cleanup'
-
-    on :launch do
-      in_path(fetch(:current_path)) do
-        command %{mkdir -p tmp/}
-        command %{touch tmp/restart.txt}
-      end
+namespace :puma do
+  desc 'Create Directories for Puma Pids and Socket'
+  task :make_dirs do
+    on roles(:app) do
+      execute "mkdir #{shared_path}/tmp/sockets -p"
+      execute "mkdir #{shared_path}/tmp/pids -p"
     end
   end
+
+  # before :start, :make_dirs
+end
+
+namespace :deploy do
+  # desc 'Initial Deploy'
+  # task :initial do
+  #   on roles(:app) do
+  #     before 'deploy:restart', 'puma:start'
+  #     invoke 'deploy'
+  #   end
+  # end
+
+  # desc 'Restart application'
+  # task :restart do
+  #   on roles(:app), in: :sequence, wait: 5 do
+  #     invoke 'puma:restart'
+  #   end
+  # end
+
+  after  :finishing,      :compile_assets
+  after  :finishing,      :cleanup
+  after  :finishing,      :restart
 end

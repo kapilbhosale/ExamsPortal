@@ -89,6 +89,17 @@ group :development do
   gem 'bullet'
   gem 'rb-readline'
   # gem 'rollbar'
+
+  gem 'capistrano',         require: false
+  gem 'capistrano-rvm',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
+
+  # deployment gems
+  # gem 'mina'
+  # gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
+  # gem 'mina-nginx', :require => false
 end
 
 group :test do
