@@ -4,7 +4,8 @@
       <a class="header-brand" href="/">
         <div>
           <span style="margin-top: -13px;">
-            <%= image_tag 'rcc-logo', width: '50px' %>
+            <% logo_props = get_logo(request.subdomain) %>
+            <%= image_tag logo_props[:logo], width: logo_props[:width] %>
             <%= request.subdomain.humanize || "Exams" %>
           </span>
         </div>
