@@ -13,7 +13,14 @@ module ApplicationHelper
 
 	  difference_in_words << "#{distance_in_hours} #{distance_in_hours > 1 ? 'hours' : 'hour' } and " if distance_in_hours > 0
 	  difference_in_words << "#{distance_in_minutes} #{distance_in_minutes == 1 ? 'minute' : 'minutes' }"
-	end
+  end
+
+  def get_vl_row_class(subject)
+    return "table-warning" if subject == 'chem'
+    return "table-success" if subject == 'phy'
+    return "table-danger" if subject == 'bio'
+    return "table-primary" if subject == 'maths'
+  end
 
   def delete_button_to(title, url, options = {})
     html_options = {

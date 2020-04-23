@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_16_054307) do
+ActiveRecord::Schema.define(version: 2020_04_23_171435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -324,6 +324,7 @@ ActiveRecord::Schema.define(version: 2020_04_16_054307) do
     t.integer "subject"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "enabled", default: true
   end
 
 end

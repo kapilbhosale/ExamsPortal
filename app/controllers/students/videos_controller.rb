@@ -6,11 +6,20 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    lectures = VideoLecture.includes(:batches).where(batches: {id: current_student.batches}).order(id: :desc).group_by {|vl| vl.subject}
-    @chem_videos = lectures['chem']
-    @phy_videos = lectures['phy']
-    @bio_videos = lectures['bio']
-    @maths_videos = lectures['maths']
+    lectures = VideoLecture.includes(:batches)
+      .where(batches: {id: current_student.batches})
+      .where(enabled: true)
+      .order(id: :desc)
+
+    lectures_data = {}
+    lectures.each do |lect|
+      lectures_data[lect.subject] ||= []
+      lectures_data[lect.subject] << lect
+    end
+    @chem_videos = lectures_data['chem']
+    @phy_videos = lectures_data['phy']
+    @bio_videos = lectures_data['bio']
+    @maths_videos = lectures_data['maths']
   end
 
   def show_lecture
