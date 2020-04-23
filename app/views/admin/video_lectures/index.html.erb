@@ -46,7 +46,7 @@
                     <%= vl.video_id %>
                   </td>
                   <td>
-                    <%= vl.enabled %>
+                    <%= time_ago_in_words(vl.created_at) %> | 
                     <input type="checkbox" <%= vl.enabled ? "checked" : ""%> >
                   </td>
                   <td>
