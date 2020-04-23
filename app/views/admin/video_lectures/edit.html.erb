@@ -1,10 +1,9 @@
-<div class="row card">
+<div class="card">
   <div class="col-lg-8">
     <%= form_tag admin_video_lecture_path(@video_lecture), method: :patch, multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
-      <div class="card-body">
         <h3 class="card-title">Edit Video Lecture</h3>
         <div class="text-center">
-          <%= image_tag @video_lecture.thumbnail.url %>
+          <%= image_tag @video_lecture.thumbnail.url, size: "300"%>
         </div>
 
         <div class="form-group" style="padding: 15px;">
@@ -43,13 +42,27 @@
           </div>
         </div>
 
+        <%
+          batches_11_ids = [2, 3,11, 7, 8]
+          batches_12_ids = Batch.all.ids - batches_11_ids
+
+          batches_11 = Batch.where(id: batches_11_ids)
+          batches_12 = Batch.where(id: batches_12_ids)
+        %>
+
         <div class="form-group" style="padding: 15px;">
-          <label class="control-label col-sm-4" for="email">Batches</label>
-          <div class="col-sm-8">
-            <% Batch.all.each do |batch| %>
-              <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
+          <div class="col-sm-12" style="background-color: antiquewhite;">
+            <% batches_11.each do |batch| %>
+            <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
             <% end %>
           </div>
+
+          <div class="col-sm-12" style="background-color: cornflowerblue;">
+            <% batches_12.each do |batch| %>
+            <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
+            <% end %>
+          </div>
+
         </div>
       </div>
       <div class="card-footer text-right" style="padding: 25px;">
