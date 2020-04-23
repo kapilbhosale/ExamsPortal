@@ -8,7 +8,13 @@
                 <div class="card" >
                     <div class="card-horizontal" style="background-color:white;">
                         <div class="col-4" style="margin-left: -10px;">
-                          <%= image_tag video.thumbnail.banner.url, size: "100x80" %>
+                          <% if video.thumbnail.banner.url.include?('amazonaws.com') %>
+                            <% img_url = video.thumbnail.banner.url.split("/").last %>
+                            <% img_url = "https://smart-exams-production.s3.ap-south-1.amazonaws.com/video-thumbnails/#{img_url}" %>
+                            <%= image_tag img_url, size: "100x80" %>
+                          <% else %>
+                            <%= image_tag video.thumbnail.banner.url, size: "100x80" %>
+                          <% end %>
                         </div>
                           <div class="col-8 card-body" style="padding:0">
                               <p class="card-text" style="padding-left: 10px;">
