@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
       '/admin/exams'
     elsif request.subdomain == 'videos'
       '/students/videos'
+    elsif request.subdomain == 'konale-videos'
+      '/students/videos'
     else
       '/students/tests'
     end

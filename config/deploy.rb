@@ -5,6 +5,7 @@ set :application, "SmartExams"
 set :repo_url, "git@github.com:kapilbhosale/SmartExams.git"
 set :user, 'ubuntu'
 
+set :rails_env, :production
 # Don't change these unless you know what you're doing
 set :pty,             false
 set :use_sudo,        false
@@ -59,12 +60,34 @@ namespace :deploy do
     end
   end
 
+  desc 'Run rake yarn:install'
+  task :yarn_install do
+    on roles(:web) do
+      within release_path do
+        execute("cd #{release_path} && yarn install")
+      end
+    end
+  end
+
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       invoke 'puma:restart'
     end
   end
+
+  desc 'Webpack Compiling assets'
+  task :webpack_compile do
+    on roles(:app) do
+      within release_path do
+        # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
+        execute :rake, "webpacker:compile"
+      end
+    end
+  end
+
+  before "deploy:assets:precompile", "deploy:yarn_install"
+  after  :compile_assets, :webpack_compile
 
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
