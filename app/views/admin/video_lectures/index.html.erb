@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5>Video Lectures</h5>
+        </div>
+        <div class="col-md-6 text-right">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Video Lecture'.html_safe, new_admin_video_lecture_path %>
+        </div>
+      </div>
+      <% if @video_lectures.present? %>
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th class="w-1">No.</th>
+                <th>Subject</th>
+                <th>Title</th>
+                <th>Teacher</th>
+                <th>Tag</th>
+                <th>Video ID</th>
+                <th>Show video</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @video_lectures.each do |vl| %>
+                <tr class="<%= get_vl_row_class(vl.subject) %>">
+                  <td>
+                    <span class="text-muted"><%= vl.id %></span>
+                  </td>
+                  <td>
+                    <%= vl.subject %>
+                  </td>
+                  <td>
+                    <%= link_to vl.title, admin_video_lecture_path(vl) %>
+                  </td>
+                  <td>
+                    <%= vl.by %>
+                  </td>
+                  <td>
+                    <%= vl.tag %>
+                  </td>
+                  <td>
+                    <%= vl.video_id %>
+                  </td>
+                  <td>
+                    <%= time_ago_in_words(vl.created_at) %> | 
+                    <input type="checkbox" <%= vl.enabled ? "checked" : ""%> >
+                  </td>
+                  <td>
+                    <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No Videos were found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

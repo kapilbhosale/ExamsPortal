@@ -5,6 +5,7 @@
 #  id          :bigint(8)        not null, primary key
 #  by          :string
 #  description :string
+#  enabled     :boolean          default(TRUE)
 #  subject     :integer
 #  tag         :string
 #  thumbnail   :string
@@ -20,4 +21,7 @@ class VideoLecture < ApplicationRecord
 
   has_many :batch_video_lectures
   has_many :batches, through: :batch_video_lectures
+
+  mount_uploader :thumbnail, PhotoUploader
 end
+
