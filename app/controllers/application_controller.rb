@@ -11,9 +11,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(student)
     if current_admin
       '/admin/exams'
-    elsif request.subdomain == 'videos'
-      '/students/videos'
-    elsif request.subdomain == 'konale-videos'
+    elsif request.subdomain&.include?('videos')
       '/students/videos'
     else
       '/students/tests'

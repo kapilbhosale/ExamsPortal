@@ -8,8 +8,18 @@ module ApplicationHelper
       return { logo: 'rcc-logo', width: 50 }
     elsif subdomain == 'konale-exams' || subdomain == 'konale-videos'
       return { logo: 'konale-logo', width: 120 }
+    elsif subdomain == 'dhote-exams' || subdomain == 'dhote-videos'
+      return { logo: 'dhote-logo', width: 120 }
     end
+
     { logo: 'rcc-logo', width: 50 }
+  end
+
+  def get_header_name(subdomain)
+    if subdomain == 'dhote-exams' || subdomain == 'dhote-videos'
+      return request.subdomain.split('-').last.humanize
+    end
+    request.subdomain.humanize || "Exams"
   end
 
 	def distance_of_time_in_hours_and_minutes(from_time, to_time)
