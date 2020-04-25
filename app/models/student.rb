@@ -12,6 +12,7 @@ require 'csv'
 #  date_of_birth          :date
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  fcm_token              :string
 #  gender                 :integer          default(0)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
@@ -30,7 +31,6 @@ require 'csv'
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)
-#  fcm_id                 :string
 #
 # Indexes
 #
@@ -96,7 +96,7 @@ class Student < ApplicationRecord
     return if api_key.present?
 
     self.api_key = generated_api_key
-    self.save
+    save
   end
 
   def generated_api_key

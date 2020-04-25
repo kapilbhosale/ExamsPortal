@@ -1,6 +1,7 @@
 class Api::V1::ApiController < ApplicationController
   before_action :authenticate
   before_action :set_default_response_format
+  protect_from_forgery with: :null_session
 
   def authenticate
     authenticate_token || render_unauthorized

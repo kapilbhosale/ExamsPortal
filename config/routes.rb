@@ -60,4 +60,15 @@ Rails.application.routes.draw do
   end
 
   get 'current-server-time', to: 'home#current_server_time'
+
+
+
+
+
+  namespace :api do
+    namespace :v1 do
+      post 'sign-in', to: 'students#login'
+      post 'update-fcm-token', to: 'students#update_fcm_token'
+    end
+  end
 end

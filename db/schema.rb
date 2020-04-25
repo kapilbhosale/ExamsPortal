@@ -291,7 +291,7 @@ ActiveRecord::Schema.define(version: 2020_04_25_102642) do
     t.inet "last_sign_in_ip"
     t.string "raw_password"
     t.string "api_key"
-    t.string "fcm_id"
+    t.string "fcm_token"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
