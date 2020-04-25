@@ -10,7 +10,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       parent_mobile: params[:parentMobile]
     )
     if student.blank?
-      render json: {}, status: :unauthorized
+      render json: {message: 'Invalid roll number and parent mobile'}, status: :unauthorized and return
     end
 
     sign_in(student)

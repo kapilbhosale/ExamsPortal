@@ -3,4 +3,4 @@ set :branch, 'release'
 set :sidekiq_env, :production
 set :stage, :production
 
-server 'api.examapp.in', user: 'ubuntu', roles: [:web, :app, :db], primary: true
+server '13.235.19.68', user: 'ubuntu', roles: [:web, :app, :db], primary: true
