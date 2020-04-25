@@ -96,6 +96,9 @@ group :development do
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
 
+
+  gem 'fcm'
+
   # deployment gems
   # gem 'mina'
   # gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'

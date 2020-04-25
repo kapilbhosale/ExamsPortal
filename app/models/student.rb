@@ -5,6 +5,7 @@ require 'csv'
 #
 #  id                     :bigint(8)        not null, primary key
 #  address                :text
+#  api_key                :string
 #  college                :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
@@ -29,6 +30,7 @@ require 'csv'
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)
+#  fcm_id                 :string
 #
 # Indexes
 #
@@ -52,6 +54,7 @@ class Student < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable,
   :trackable, :validatable, authentication_keys: [:login]
 
+  after_save :set_api_key
 
   attr_writer :login
 
@@ -87,5 +90,17 @@ class Student < ApplicationRecord
         ]
       end
     end
+  end
+
+  def set_api_key
+    return if api_key.present?
+
+    self.api_key = generated_api_key
+    self.save
+  end
+
+  def generated_api_key
+    Digest::MD5.hexdigest "#{roll_number}-#{parent_mobile}"
+    # SecureRandom.uuid.gsub(/\-/,'')
   end
 end

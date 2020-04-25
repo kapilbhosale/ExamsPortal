@@ -14,10 +14,10 @@
 
 # #Create Categories
 # category_list = ['Open', 'OBC', 'SC', 'ST', 'NT', 'VJNT']
-
-# category_list.each do |name|
-#   Category.find_or_create_by(name: name)
-# end
+category_list = ['Open', 'OBC', 'SC', 'ST', 'NT', 'VJNT']
+category_list.each do |name|
+  Category.find_or_create_by(name: name)
+end
 
 # practice_data = [
 #   {
@@ -129,10 +129,10 @@
 # end
 
 
-# exam_concepts = %w[general physics chemistry maths biology]
-# exam_concepts.each do |exam_concept|
-#   Section.find_or_create_by(name: exam_concept, is_jee: true)
-# end
+exam_concepts = %w[general physics chemistry maths biology]
+exam_concepts.each do |exam_concept|
+  Section.find_or_create_by(name: exam_concept, is_jee: true)
+end
 
 # jee_sections = {
 #   "phy-I" => "This section contains SIX (06) questions. 
