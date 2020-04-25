@@ -3,6 +3,11 @@ module ApplicationHelper
     content_for(:header) { text.to_s }
   end
 
+  def full_domain_path
+    request.env['rack.url_scheme'] + '://' + request.host_with_port
+  end
+
+
   def get_logo(subdomain)
     if subdomain == 'exams' || subdomain == 'videos'
       return { logo: 'rcc-logo', width: 50 }

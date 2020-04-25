@@ -69,6 +69,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'sign-in', to: 'students#login'
       post 'update-fcm-token', to: 'students#update_fcm_token'
+
+      resources :videos
     end
   end
 end
