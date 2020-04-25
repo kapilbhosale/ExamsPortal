@@ -15,7 +15,7 @@ class Api::V1::ApiController < ApplicationController
 
   def render_unauthorized
     self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-    render json: { status: 'failure', message:"Authorization failed" }, status: :bad_request
+    render json: { message:"Authorization failed" }, status: :unauthorized
   end
 
   def set_default_response_format
