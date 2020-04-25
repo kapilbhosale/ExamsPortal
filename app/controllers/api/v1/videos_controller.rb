@@ -10,7 +10,7 @@ class Api::V1::VideosController < Api::V1::ApiController
 
     lectures_data = {}
     lectures.each do |lect|
-      lect_data = lect.attributes
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject")
       banner_url = lect.thumbnail.banner.url
       if banner_url.include?('amazonaws.com')
         video_name = banner_url.split('/').last
@@ -18,7 +18,7 @@ class Api::V1::VideosController < Api::V1::ApiController
       else
         lect_data['thumbnail_url'] = "#{helpers.full_domain_path}#{banner_url}"
       end
-
+      lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
       lectures_data[lect.subject] ||= []
       lectures_data[lect.subject] << lect_data
     end
