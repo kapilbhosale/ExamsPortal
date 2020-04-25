@@ -22,7 +22,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       current_student.update(fcm_token: params[:fcm_token])
       render json: student_json(current_student), status: :ok and return
     end
-    render json: {}, status: :unprocessable_entity
+    render json: { message: 'No fcm_token present in params to update' }, status: :unprocessable_entity
   end
 
   private
