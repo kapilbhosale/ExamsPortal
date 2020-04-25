@@ -10,6 +10,8 @@ module ApplicationHelper
       return { logo: 'konale-logo', width: 120 }
     elsif subdomain == 'dhote-exams' || subdomain == 'dhote-videos'
       return { logo: 'dhote-logo', width: 120 }
+    elsif subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
+      return { logo: 'saraswati-logo', width: 120 }
     end
 
     { logo: 'rcc-logo', width: 50 }
@@ -17,6 +19,9 @@ module ApplicationHelper
 
   def get_header_name(subdomain)
     if subdomain == 'dhote-exams' || subdomain == 'dhote-videos'
+      return request.subdomain.split('-').last.humanize
+    end
+    if subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
       return request.subdomain.split('-').last.humanize
     end
     request.subdomain.humanize || "Exams"
