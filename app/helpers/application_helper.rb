@@ -4,9 +4,8 @@ module ApplicationHelper
   end
 
   def full_domain_path
-    request.env['rack.url_scheme'] + '://' + request.host_with_port
+    'https://' + request.host_with_port
   end
-
 
   def get_logo(subdomain)
     if subdomain == 'exams' || subdomain == 'videos'
