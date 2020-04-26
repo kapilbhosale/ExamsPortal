@@ -19,6 +19,7 @@ class Api::V1::VideosController < Api::V1::ApiController
         lect_data['thumbnail_url'] = "#{helpers.full_domain_path}#{banner_url}"
       end
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
+      lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"
       lectures_data[lect.subject] ||= []
       lectures_data[lect.subject] << lect_data
     end
