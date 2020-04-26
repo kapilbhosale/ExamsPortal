@@ -70,7 +70,8 @@ Rails.application.routes.draw do
       post 'sign-in', to: 'students#login'
       post 'update-fcm-token', to: 'students#update_fcm_token'
 
-      resources :videos
+      resources :videos, only: [:index]
+      resources :study_pdfs, only: [:index]
     end
   end
 end
