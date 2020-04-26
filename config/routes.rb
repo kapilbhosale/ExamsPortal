@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'sign-in', to: 'students#login'
       post 'update-fcm-token', to: 'students#update_fcm_token'
+      get 'dashboard_data', to: 'home#dashboard_data'
 
       resources :videos, only: [:index]
       resources :study_pdfs, only: [:index]
