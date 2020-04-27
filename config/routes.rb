@@ -73,6 +73,7 @@ Rails.application.routes.draw do
       get 'gallery', to: 'home#gallery'
       get 'app-version', to: 'home#app_version'
 
+      resources :notifications, only: [:index]
       resources :videos, only: [:index]
       resources :study_pdfs, only: [:index]
     end
