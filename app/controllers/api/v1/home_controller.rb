@@ -10,7 +10,7 @@ class Api::V1::HomeController < Api::V1::ApiController
     json_data = {
       'top_banners_data' => top_banners_data,
       'bottom_list_data' => [],
-      'about_us_link' => 'http://rccpattern.com/',
+      'about_us_link' => 'https://rccpattern.com/',
       'tests_appeared_data' => {
         appeared: 12,
         total: 25,
