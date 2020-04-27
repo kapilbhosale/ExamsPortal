@@ -50,6 +50,6 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def app_version
-    render json: { version_code: "1.0.0", force_update: true }, status: :ok
+    render json: { version_code: "2.0.0", force_update: true }, status: :ok
   end
 end

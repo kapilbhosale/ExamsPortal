@@ -12,7 +12,13 @@ class Admin::VideoLecturesController < Admin::BaseController
   end
 
   def create
-    vl = VideoLecture.create(video_lecture_params)
+    if params[:url].present? && params[:video_id].present?
+      flash[:error] = "Please Enter Either youtube url or Vimeo Id"
+      render 'new' and return
+    end
+    video_type = params[:video_id].present? ? 0 : 1
+
+    vl = VideoLecture.create(video_lecture_params.merge(video_type: video_type))
     batches = Batch.where(id: params[:batch_ids])
     vl.batches << batches
     flash[:success] = "Video Lecture addes successfully.."
@@ -42,7 +48,7 @@ class Admin::VideoLecturesController < Admin::BaseController
     {
       title: params[:title],
       video_id: params[:video_id],
-      url: "https://player.vimeo.com/video/#{params[:video_id]}",
+      url: params[:url].present? ? params[:url] : "https://player.vimeo.com/video/#{params[:video_id]}",
       by: params[:by],
       thumbnail: params[:thumbnail],
       tag: params[:tag],
@@ -54,7 +60,7 @@ class Admin::VideoLecturesController < Admin::BaseController
     {
       title: params[:title],
       video_id: params[:video_id],
-      url: "https://player.vimeo.com/video/#{params[:video_id]}",
+      url: params[:url].present? ? params[:url] : "https://player.vimeo.com/video/#{params[:video_id]}",
       by: params[:by],
       thumbnail: params[:thumbnail],
       tag: params[:tag],
