@@ -70,6 +70,8 @@ Rails.application.routes.draw do
       post 'sign-in', to: 'students#login'
       post 'update-fcm-token', to: 'students#update_fcm_token'
       get 'dashboard_data', to: 'home#dashboard_data'
+      get 'gallery', to: 'home#gallery'
+      get 'app-version', to: 'home#app_version'
 
       resources :videos, only: [:index]
       resources :study_pdfs, only: [:index]
