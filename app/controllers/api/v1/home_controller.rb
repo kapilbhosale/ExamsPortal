@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::HomeController < Api::V1::ApiController
+  skip_before_action :authenticate
 
   def dashboard_data
     json_data = {
