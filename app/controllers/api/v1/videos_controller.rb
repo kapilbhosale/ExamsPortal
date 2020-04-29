@@ -28,10 +28,10 @@ class Api::V1::VideosController < Api::V1::ApiController
       lectures_data[lect.subject] << lect_data
     end
     json_data = {
-      'Biology' => lectures_data['bio'],
       'Chemistry' => lectures_data['chem'],
       'Physics' => lectures_data['phy'],
-      'Maths' => lectures_data['maths']
+      'Maths' => lectures_data['maths'],
+      'Biology' => lectures_data['bio'],
     }
     render json: json_data, status: :ok
   end
