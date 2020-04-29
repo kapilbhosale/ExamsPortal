@@ -10,7 +10,7 @@ class Api::V1::HomeController < Api::V1::ApiController
     json_data = {
       'top_banners_data' => top_banners_data,
       'bottom_list_data' => [],
-      'about_us_link' => 'https://saraswaticoachingclasses.in/',
+      'about_us_link' => 'https://www.konaleclasses.com/',
       'tests_appeared_data' => {
         appeared: 12,
         total: 25,
@@ -23,29 +23,33 @@ class Api::V1::HomeController < Api::V1::ApiController
   def top_banners_data
     [
       {
-        img_url: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/saraswati-banner-2.jpg',
-        on_click: 'https://saraswaticoachingclasses.in/'
-      },
-      {
-        img_url: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/sarawati-banner.jpg',
+        img_url: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/konale-banner-app.jpg',
         on_click: nil
       },
+      {
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/06/topper20191d.jpg',
+        on_click: 'https://www.konaleclasses.com/'
+      },
+      {
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/06/adharsh3sml1d.jpg',
+        on_click: 'https://www.konaleclasses.com/'
+      }
     ]
   end
 
   def gallery
     json_data = [
       {
-        img_url: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/saraswati-banner-2.jpg',
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/06/SANKETBANNERsml1a.jpg',
       },
       {
-        img_url: 'http://saraswaticoachingclasses.in/wp-content/uploads/2019/06/Screenshot-2019-06-10-at-8.55.43-AM.png',
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/06/topper20191d.jpg',
       },
       {
-        img_url: 'http://saraswaticoachingclasses.in/wp-content/uploads/2019/06/Screenshot-2019-06-09-at-9.06.51-AM.png',
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/12/Banner1-2020-1.jpg',
       },
       {
-        img_url: 'http://saraswaticoachingclasses.in/wp-content/uploads/2018/06/gauri-thakre-akola.png'
+        img_url: 'https://www.konaleclasses.com/wp-content/uploads/2019/02/neet2018Banner1-1.jpg'
       }
     ]
     render json: json_data, status: :ok

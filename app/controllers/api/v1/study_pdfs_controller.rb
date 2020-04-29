@@ -18,8 +18,8 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
         :name=>"Test PDF",
         :description=>"description of the test -Test 1 (home)",
         :added_on=>"26 april 2020",
-        :question_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/adding+soon.pdf",
-        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/adding+soon.pdf"
+        :question_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/konale-pdf.pdf",
+        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/konale-pdf.pdf"
       }
     ]
   end
@@ -30,7 +30,7 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
         :name=>"Notes Test 1 (home)",
         :description=>" description of the test -Test 1 (home)",
         :added_on=>"26 april 2020",
-        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/adding+soon.pdf"
+        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/konale-pdf.pdf"
       },
     ]
   end
