@@ -49,6 +49,16 @@ class Exam < ApplicationRecord
     batches.map(&:student_ids).flatten
   end
 
+  def total_marks
+    total_marks = 0
+    es_by_section_id = exam_sections.index_by(&:section_id)
+    q_count_by_section = questions.group(:section_id).count
+    q_count_by_section.each do |key, val|
+      total_marks += (val * es_by_section_id[key].positive_marks)
+    end
+    total_marks
+  end
+
   def display_image
     return 'bio' if only_biology?
     return 'math' if only_math?

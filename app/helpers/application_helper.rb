@@ -24,12 +24,12 @@ module ApplicationHelper
   end
 
   def get_header_name(subdomain)
+    return if ['saraswati-exams', 'saraswati-videos'].include? subdomain
+
     if subdomain == 'dhote-exams' || subdomain == 'dhote-videos'
       return request.subdomain.split('-').last.humanize
     end
-    if subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
-      return request.subdomain.split('-').last.humanize
-    end
+
     request.subdomain.humanize || "Exams"
   end
 
