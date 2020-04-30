@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'release'
+set :branch, 'release-dhote'
 set :sidekiq_env, :production
 set :stage, :production
 
