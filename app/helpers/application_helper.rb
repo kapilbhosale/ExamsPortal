@@ -16,6 +16,8 @@ module ApplicationHelper
       return { logo: 'dhote-logo', width: 120 }
     elsif subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
       return { logo: 'saraswati-logo', width: 120 }
+    elsif subdomain == 'dayanand'
+      return { logo: 'dayanand-logo', width: 45, height: 40 }
     end
 
     { logo: 'rcc-logo', width: 50 }

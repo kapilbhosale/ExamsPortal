@@ -7,7 +7,7 @@ default: &default
 
 development:
   <<: *default
-  database: smart-exams-dev
+  database: smart-exams-1
   host: localhost
 
 test:
