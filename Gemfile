@@ -67,6 +67,8 @@ gem 'hiredis'
 gem 'scout_apm'
 gem 'rmagick'
 
+gem 'fcm'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -95,9 +97,6 @@ group :development do
   gem 'capistrano-rails',   require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
-
-
-  gem 'fcm'
 
   # deployment gems
   # gem 'mina'
