@@ -35,6 +35,9 @@ class Exam < ApplicationRecord
 
   enum exam_type: { jee: 0, cet: 1, other: 2 }
 
+  FCM_SERVER_KEY = "AAAAjTwhVII:APA91bHhp2oDluphwtz_RAFtsl6rQylUQ7izV34CIlSgjAb2REEGbFrAF8l_4RmQvdzmFgLR0lebknPR8miZ87lAslOIax32W-TmcJsw-YLgg6Bm6PcLk9_bMbSjD7xtLq0lhyonM6E4"
+  after_create :send_push_notifications
+
   # has_one :style, as: :component, dependent: :destroy
 
   def appeared_student_ids
@@ -92,5 +95,28 @@ class Exam < ApplicationRecord
 
   def neet?
     sections.pluck(:name).length > 1 && sections.pluck(:name).include?('biology')
+  end
+
+  def send_push_notifications
+    fcm = FCM.new(FCM_SERVER_KEY)
+    batches.each do |batch|
+      reg_ids = batch.students.where.not(fcm_token: nil).pluck(:fcm_token)
+      # response = fcm.send(reg_ids, push_options)
+      fcm.send(reg_ids, push_options)
+    end
+  end
+
+  def push_options
+    {
+      priority: 'high',
+      data: {
+        message: "New Exam Added"
+      },
+      notification: {
+        body: 'Please appear for the exam added, Exam will be available for 24 Hrs in new exams section.',
+        title: "New Exam Added - '#{self.name}'",
+        image: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/dhote-logo.png'
+      }
+    }
   end
 end
