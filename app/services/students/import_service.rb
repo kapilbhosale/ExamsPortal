@@ -19,8 +19,7 @@ module Students
           roll_number = row[0]&.strip
           name = row[1]&.strip
           rand_password = row[2]&.strip || '1'
-
-          email = "#{roll_number}-client-#{batch.name}@se.com"
+          email = "#{roll_number}-client-#{batch.name.parameterize}@se.com"
           student = Student.find_or_initialize_by(email: email)
           student.roll_number = roll_number
           student.name = name
