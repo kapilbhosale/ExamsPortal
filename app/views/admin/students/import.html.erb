@@ -1,0 +1,52 @@
+<% if @response.present? %>
+  <%= @response %>
+<% else %>
+  <div class="row">
+    <div class="col-lg-8">
+      <%= form_tag(process_import_admin_students_path, method: :post, multipart: true, class: 'card') do %>
+        <div class="card-body">
+          <h3 class="card-title">Import Students</h3>
+          <hr>
+          <div class="col-sm-6 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Please Select Batch</label>
+              <% if @student_data[:batches].present? %>
+              <div class="selectgroup selectgroup-pills">
+                <% @student_data[:batches].each do |batch|%>
+                <label class="selectgroup-item">
+                  <input type="radio" name="batch_id" value="<%= batch.id %>" class="selectgroup-input" required>
+                  <span class="selectgroup-button"><%= batch.name %></span>
+                </label>
+                <% end %>
+              </div>
+              <% else %>
+              <div class="alert alert-info alert">No Batches are created yet. Create a batch first
+              </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-8">
+            <div class="form-group">
+              <div class="form-label">CSV File</div>
+              <div class="custom-file">
+                <input type="file" name="csv_file" accept=".csv" required>
+              </div>
+              <p>
+                Note: CSV file with only 3 columns is accepted.
+              </p>
+              <p>
+                [Roll Number, name, parent mobile number]
+              </p>
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer text-right">
+          <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">Add New Student</button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

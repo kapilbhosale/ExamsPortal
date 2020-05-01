@@ -11,7 +11,7 @@
 #  thumbnail   :string
 #  title       :string
 #  url         :string
-#  video_type  :integer          default(0)
+#  video_type  :integer          default("vimeo")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  video_id    :string

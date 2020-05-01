@@ -50,6 +50,8 @@ Rails.application.routes.draw do
     resources :practice_questions
     resources :students do
       root to: 'students#index'
+      get :import, on: :collection
+      post :process_import, on: :collection
     end
     resources :batches do
       root to: 'batches#index'

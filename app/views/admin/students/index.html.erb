@@ -5,6 +5,11 @@
         <div class="col-md-2">
           <h5 class="pt-3">Students</h5>
         </div>
+        <div class="offset-md-8 col-md-2">
+          <h6 class="pt-3">
+            <%= link_to '<i class="fa fa-download"></i> Import Students'.html_safe, import_admin_students_path%>
+          </h6>
+        </div>
       </div>
       <div class="card-body">
         <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
@@ -17,7 +22,6 @@
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
           <%= link_to '<i class="fe fe-user-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
-
         </div>
         <div class="table-responsive">
           <% if @students.present? %>

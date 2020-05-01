@@ -2,6 +2,7 @@ class ImportError < StandardError; end
 
 module Students
   class ImportService
+    attr_reader :batch
 
     def initialize(csv_file_path, batch_id)
       @csv_file_path = csv_file_path
@@ -9,26 +10,32 @@ module Students
     end
 
     def import
-      CSV.open(@csv_file_path, :row_sep => :auto, :col_sep => ",") do |csv|
-        csv.each do |row|
-          roll_number = row[0]
-          name = row[1]
-          parent_mobile = row[2]
+      @students_added = []
+      return { error: "Batch not found" } if batch.blank?
 
-          email = "#{roll_number}@se.com"
+      CSV.open(@csv_file_path, :row_sep => :auto, :encoding => 'ISO-8859-1', :col_sep => ",") do |csv|
+        return { error: "must have only 3 columns" } if csv.first.length != 3
+        csv.each do |row|
+          roll_number = row[0]&.strip
+          name = row[1]&.strip
+          rand_password = row[2]&.strip || '1'
+
+          email = "#{roll_number}-client-#{batch.name}@se.com"
           student = Student.find_or_initialize_by(email: email)
           student.roll_number = roll_number
           student.name = name
 
-          rand_password = parent_mobile
+          rand_password = '111111' if rand_password.length < 6
           student.password = rand_password
           student.raw_password = rand_password
-          student.parent_mobile = parent_mobile
+          student.parent_mobile = rand_password
 
           student.save
-          StudentBatch.create(student: student, batch: @batch)
+          StudentBatch.create(student: student, batch: batch)
+          @students_added << student
         end
       end
+      { data: @students_added.count }
     end
   end
 end

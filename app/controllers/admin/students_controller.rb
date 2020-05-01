@@ -85,6 +85,19 @@ class Admin::StudentsController < Admin::BaseController
     redirect_to admin_students_path
   end
 
+  def import
+    @student_data = {batches: Batch.all_batches}
+  end
+
+  def process_import
+    csv_file_path = params[:csv_file].tempfile.path
+    batch_id = params[:batch_id]
+    import_service = Students::ImportService.new(csv_file_path, batch_id)
+    @response = import_service.import
+    flash[:notice] = "Student imported - #{@response}"
+    render 'import'
+  end
+
   private
 
   def search_params
