@@ -8,7 +8,7 @@ class Summary extends React.Component {
   }
 
   render() {
-    const out_of = (this.props.total_question * 4)
+    const out_of = (this.props.total_marks)
     return(
       <div className="text-center col-md-6 col-xs-12">
         <table className="table table-sm table-bordered">

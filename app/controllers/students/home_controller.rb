@@ -95,17 +95,21 @@ class Students::HomeController < Students::BaseController
     end
     @exam_id = params[:exam_id]
 
+    exam = Exam.find_by(id: @exam_id)
+    es_by_section_id = exam.exam_sections.index_by(&:section_id)
 
     se_ids = StudentExam.where(exam_id: @exam_id).ids
     ses = StudentExamSummary.where(student_exam_id: se_ids)
 
-    total_score, total_question, topper_total = 0, 0, 0
+    total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
     time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
     section_data = student_exam_summaries.map do |student_exam_summary|
       topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
       total_score += student_exam_summary.score
       total_question += student_exam_summary.no_of_questions
       topper_total += topper_score
+      section_out_of_marks = ( es_by_section_id[student_exam_summary.section.id]&.positive_marks || 1 ) * student_exam_summary.no_of_questions
+      total_marks += section_out_of_marks
 
       {
         section_name: student_exam_summary.section.name,
@@ -114,7 +118,8 @@ class Students::HomeController < Students::BaseController
         incorrect: student_exam_summary.incorrect,
         not_answered: student_exam_summary.not_answered,
         score: student_exam_summary.score,
-        topper_score: topper_score
+        topper_score: topper_score,
+        section_out_of_marks: section_out_of_marks
       }
     end
 
@@ -123,7 +128,8 @@ class Students::HomeController < Students::BaseController
       total_score: total_score,
       time_spent: time_spent,
       section_data: section_data,
-      topper_total: topper_total
+      topper_total: topper_total,
+      total_marks: total_marks
     }
   end
 

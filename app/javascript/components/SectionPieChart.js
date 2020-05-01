@@ -110,7 +110,7 @@ class SectionPieChart extends React.Component {
             <tr>
               <td>Score: </td>
               <td>
-                <h5>{`${section_data.score} / ${(section_data.total_question * 4)}`}</h5>
+                <h5>{`${section_data.score} / ${(section_data.section_out_of_marks)}`}</h5>
               </td>
               <td>
                 Topper: <span className="badge badge-warning">{section_data.topper_score}</span>
