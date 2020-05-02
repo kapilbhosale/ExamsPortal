@@ -44,5 +44,6 @@ yarn-debug.log*
 /public/uploads/*
 .DS_Store
 Result.csv
+app/.DS_Store
 
 TAGS
