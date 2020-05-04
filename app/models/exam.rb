@@ -35,7 +35,6 @@ class Exam < ApplicationRecord
 
   enum exam_type: { jee: 0, cet: 1, other: 2 }
 
-  FCM_SERVER_KEY = "AAAAjTwhVII:APA91bHhp2oDluphwtz_RAFtsl6rQylUQ7izV34CIlSgjAb2REEGbFrAF8l_4RmQvdzmFgLR0lebknPR8miZ87lAslOIax32W-TmcJsw-YLgg6Bm6PcLk9_bMbSjD7xtLq0lhyonM6E4"
   after_create :send_push_notifications
 
   # has_one :style, as: :component, dependent: :destroy

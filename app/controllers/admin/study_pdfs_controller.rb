@@ -1,9 +1,8 @@
 class Admin::StudyPdfsController < Admin::BaseController
   #  pdf controller section
   def edit
-    @er = StudyPdf.find_by(id: params[:id])
-    batch_ids = BatchStudyPdf.where(exam_resource: @er).pluck(:batch_id)
-    @batches = Batch.where(id: batch_ids)
+    @study_pdf = StudyPdf.find_by(id: params[:id])
+
   end
 
   def update
@@ -23,6 +22,7 @@ class Admin::StudyPdfsController < Admin::BaseController
     else
       flash[:error] = "Error in Editing PDF.."
     end
+    redirect_to admin_android_apps_path
   end
 
   def create
@@ -44,7 +44,8 @@ class Admin::StudyPdfsController < Admin::BaseController
         flash[:error] = "Error in adding PDF.."
       end
     end
-    redirect_to new_admin_android_app_path
+
+    redirect_to admin_android_apps_path
   end
 
   def destroy

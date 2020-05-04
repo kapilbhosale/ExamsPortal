@@ -1,0 +1,54 @@
+<div class="row" >
+  <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
+    <%= form_tag(admin_study_pdf_path(@study_pdf), method: :patch, multipart: true) do %>
+      <div class="card-body">
+        <h3 class="card-title">Edit PDF</h3>
+          <div class="custom-file form-group" style="margin-bottom: 10px;">
+            <label> * PDF type: </label> &nbsp;&nbsp;
+            <% StudyPdf.pdf_types.each do |key, val| %>
+              <label class="radio-inline">
+                <input name="pdf_type" type="radio" value='<%= val %>' <%= @study_pdf.pdf_type == key ? ' checked' : '' %>>
+                <%= key %>
+              </label>
+            <% end %>
+          </div>
+
+          <div class="form-group">
+            <input type="text" value="<%= @study_pdf.name %>" class="form-control" name="exam_name" id="examName" placeholder="Enter pdf Name" required>
+          </div>
+
+          <div class="custom-file form-group" style="margin-bottom: 10px;">
+            <input type="file" id="customFileQ" name="question_paper" accept="application/pdf">
+            <label class="custom-file-label" for="customFileQ"> <%= @study_pdf.question_paper.url %> </label>
+          </div>
+
+          <div class="custom-file form-group" style="margin-bottom: 10px;">
+            <input type="file" value="<%= @study_pdf.solution_paper.url %>" id="customFileS" name="solution_paper" accept="application/pdf">
+            <label class="custom-file-label" for="customFileS"><%= @study_pdf.solution_paper.url %></label>
+          </div>
+          <% selected_batch_ids = @study_pdf.batches.ids %>
+          <div class="form-group">
+            <% Batch.all.each do |batch| %>
+              <label class="checkbox-inline">
+                <input name="batches[]" type="checkbox" value='<%= batch.id %>' <%= selected_batch_ids.include?(batch.id) ? ' checked' : '' %>>
+                <%= batch.name %>
+              </label>
+            <% end %>
+          </div>
+
+          <input type="submit" class="btn btn-primary pull-right" />
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+      $('input[type="file"]').change(function(e){
+          var fileName = e.target.files[0].name;
+          var label = e.target.parentElement.lastElementChild;
+          label.innerText = fileName;
+      });
+  });
+</script>

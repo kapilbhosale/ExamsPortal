@@ -6,9 +6,7 @@
           <h5 class="pt-3">PDFs</h5>
         </div>
         <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Add New PDF
-          </button>
+          <%= link_to 'Add New PDF', new_admin_study_pdf_path, method: :get, class: "btn btn-info btn-sm" %>
         </div>
       </div>
       <div class="card-body">
@@ -38,9 +36,7 @@
                     <td><%= link_to 'link', study_pdf.solution_paper&.url, target: "_blank" %></td>
                     <td><%= study_pdf.pdf_type %></td>
                     <td>
-                      <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target=<%="#editModal-#{study_pdf.id}"%>>
-                        Edit
-                      </button>
+                      <%= link_to 'Edit', edit_admin_study_pdf_path(study_pdf), method: :get, class: "btn btn-warning btn-sm" %>
                       <%= link_to 'Del', admin_study_pdf_path(study_pdf), method: :delete, class: "btn btn-danger btn-sm" %>
                     </td>
                   </tr>
@@ -57,66 +53,3 @@
   </div>
 </div>
 
-
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg pdfModal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add new PDF</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;"/>
-      </div>
-      <div class="modal-body">
-
-        <%= form_with(url: admin_study_pdfs_path, method: "post", multipart: true) do %>
-
-          <div class="custom-file form-group" style="margin-bottom: 10px;">
-            <label> * PDF type: </label> &nbsp;&nbsp;
-            <% StudyPdf.pdf_types.each do |key, val| %>
-              <label class="radio-inline"><input name="pdf_type" type="radio" value=<%= val %>><%= key %></label>
-            <% end %>
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" name="exam_name" id="examName" placeholder="Enter pdf Name" required>
-          </div>
-
-          <div class="custom-file form-group" style="margin-bottom: 10px;">
-            <input type="file" id="customFileQ" name="question_paper" accept="application/pdf">
-            <label class="custom-file-label" for="customFileQ">Choose Question Paper PDF</label>
-          </div>
-
-          <div class="custom-file form-group" style="margin-bottom: 10px;">
-            <input type="file" id="customFileS" name="solution_paper" accept="application/pdf">
-            <label class="custom-file-label" for="customFileS">Choose Solution Paper PDF</label>
-          </div>
-
-          <div class="form-group">
-            <% Batch.all.each do |batch| %>
-              <label class="checkbox-inline"><input name="batches[]" type="checkbox" value=<%= batch.id %>><%= batch.name %></label>
-            <% end %>
-          </div>
-
-          <button type="submit" id="submit-study-pdf" class="btn btn-primary pull-right">Submit</button>
-        <% end %>
-        <hr>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  $(document).ready(function(){
-      $('input[type="file"]').change(function(e){
-          var fileName = e.target.files[0].name;
-          var label = e.target.parentElement.lastElementChild;
-          label.innerText = fileName;
-      });
-
-      $('#submit-study-pdf').click(function(e){
-        $('.pdfModal').modal('hide');
-        location.reload()
-      });
-
-  });
-</script>
