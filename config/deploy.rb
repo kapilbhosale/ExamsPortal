@@ -26,7 +26,7 @@ set :rvm_ruby_version, 'ruby-2.5.1@smart-exams'
 set :keep_releases, 5
 
 set :linked_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
-set :linked_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb')
+set :linked_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb', 'config/application.yml')
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'

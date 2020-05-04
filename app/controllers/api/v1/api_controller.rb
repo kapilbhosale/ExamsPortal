@@ -1,7 +1,9 @@
 class Api::V1::ApiController < ApplicationController
-  before_action :authenticate
+  before_action :authenticate, :set_current_org
   before_action :set_default_response_format
   protect_from_forgery with: :null_session
+
+  attr_reader :current_org
 
   def authenticate
     authenticate_token || render_unauthorized
@@ -20,6 +22,10 @@ class Api::V1::ApiController < ApplicationController
 
   def set_default_response_format
     request.format = :json
+  end
+
+  def set_current_org
+    @current_org = Org.find_by(subdomain: request.subdomain)
   end
 
 end

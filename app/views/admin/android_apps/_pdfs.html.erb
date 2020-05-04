@@ -1,0 +1,115 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3">PDFs</h5>
+        </div>
+        <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Add New PDF
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @students.present? %>
+            <%= form_for :student, url: admin_students_path, method: :get, id: 'student_form' do |form| %>
+              <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th><%= sort_link(@search, :roll_number) %></th>
+                    <th>Batch(s)</th>
+                    <th><%= sort_link(@search, :name) %></th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Parent Mobile</th>
+                    <th><button class="btn btn-danger clearfix btn-sm">
+                          <span class="fa fa-file-pdf-o"></span>
+                          <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
+                        </button>
+                        <button class="btn btn-success clearfix btn-sm">
+                          <span class="fa fa-file-text-o"></span>
+                          <%= link_to ' CSV'.html_safe, admin_students_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
+                        </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @students.each do |student| %>
+                    <tr>
+                      <td><%= student.roll_number %></td>
+                      <td><%= student&.batches&.each&.map(&:name).join(', ') %>
+                      </td>
+                      <td><%= link_to student.name, admin_student_path(student) %></td>
+                      <td><%= student.email %></td>
+                      <td><%= student.raw_password %></td>
+                      <td><%= student.parent_mobile %></td>
+                      <td>
+                        <%= link_to '', '#', class: "fa fa-bar-chart" %>&nbsp; &nbsp;
+                        <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp; &nbsp;
+                        <%= link_to '', admin_student_path(student), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "glyphicon glyphicon-trash" %>&nbsp; &nbsp;
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+            <%= paginate @students %>
+          <% else %>
+            <div class="alert alert-info">No PDF's were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new PDF</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-top: -25px;"/>
+      </div>
+      <div class="modal-body">
+
+        <%= form_with(url: admin_study_pdfs_path, method: "post", multipart: true) do %>
+          <div class="form-group">
+            <input type="text" class="form-control" name="exam_name" id="examName" placeholder="Enter pdf Name" required>
+          </div>
+
+          <div class="custom-file form-group" style="margin-bottom: 10px;">
+            <input type="file" id="customFileQ" name="question_paper" accept="application/pdf">
+            <label class="custom-file-label" for="customFileQ">Choose Question Paper PDF</label>
+          </div>
+
+          <div class="custom-file form-group" style="margin-bottom: 10px;">
+            <input type="file" id="customFileS" name="solution_paper" accept="application/pdf">
+            <label class="custom-file-label" for="customFileS">Choose Solution Paper PDF</label>
+          </div>
+
+          <div class="form-group">
+            <% Batch.all.each do |batch| %>
+              <label class="checkbox-inline"><input name="batches[]" type="checkbox" value=<%= batch.id %>><%= batch.name %></label>
+            <% end %>
+          </div>
+
+          <button type="submit" class="btn btn-primary pull-right">Submit</button>
+        <% end %>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+      $('input[type="file"]').change(function(e){
+          var fileName = e.target.files[0].name;
+          var label = e.target.parentElement.lastElementChild;
+          label.innerText = fileName;
+      });
+  });
+</script>

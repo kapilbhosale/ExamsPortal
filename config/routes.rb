@@ -56,7 +56,10 @@ Rails.application.routes.draw do
     end
     get 'dashboard/profile', to: 'dashboard#profile'
     patch 'dashboard/update_profile', to: 'dashboard#update_profile'
+
     resources :video_lectures
+    resources :android_apps
+    resources :study_pdfs
   end
 
   get 'current-server-time', to: 'home#current_server_time'

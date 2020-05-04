@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_27_191459) do
+ActiveRecord::Schema.define(version: 2020_05_03_181806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -75,6 +75,15 @@ ActiveRecord::Schema.define(version: 2020_04_27_191459) do
     t.string "photo"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "batch_study_pdfs", force: :cascade do |t|
+    t.bigint "batch_id"
+    t.bigint "study_pdf_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_batch_study_pdfs_on_batch_id"
+    t.index ["study_pdf_id"], name: "index_batch_study_pdfs_on_study_pdf_id"
   end
 
   create_table "batch_video_lectures", force: :cascade do |t|
@@ -172,6 +181,16 @@ ActiveRecord::Schema.define(version: 2020_04_27_191459) do
     t.datetime "updated_at", null: false
     t.boolean "is_image", default: false
     t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "orgs", force: :cascade do |t|
+    t.string "subdomain"
+    t.string "about_us_link"
+    t.string "fcm_server_key"
+    t.string "vimeo_access_token"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "practice_questions", force: :cascade do |t|
@@ -295,6 +314,18 @@ ActiveRecord::Schema.define(version: 2020_04_27_191459) do
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+  end
+
+  create_table "study_pdfs", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name"
+    t.string "description"
+    t.string "question_paper"
+    t.string "solution_paper"
+    t.integer "pdf_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_study_pdfs_on_org_id"
   end
 
   create_table "subjects", force: :cascade do |t|

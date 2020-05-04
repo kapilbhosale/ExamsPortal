@@ -19,6 +19,9 @@ class Batch < ApplicationRecord
   has_many :batch_video_lectures
   has_many :video_lectures, through: :batch_video_lectures
 
+  has_many :batch_study_pdfs
+  has_many :study_pdfs, through: :batch_study_pdfs
+
   def self.all_batches
     Batch.all{|batch| [batch.id, batch.name]}
   end

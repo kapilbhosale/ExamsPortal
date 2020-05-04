@@ -48,6 +48,7 @@ gem 'devise'
 gem 'kaminari'
 gem 'ransack'
 gem 'carrierwave'
+gem 'carrierwave-aws'
 gem 'mini_magick'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary', '= 0.12.3'
@@ -67,7 +68,9 @@ gem 'hiredis'
 gem 'scout_apm'
 gem 'rmagick'
 
+gem 'figaro'
 gem 'fcm'
+gem 'faraday'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -83,7 +86,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'hirb'
-  gem 'figaro'
   gem 'awesome_print'
   gem 'pry-nav'
   gem 'rails-erd'
