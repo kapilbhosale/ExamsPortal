@@ -22,4 +22,9 @@ class StudyPdf < ApplicationRecord
   mount_uploader :solution_paper, PdfUploader
 
   enum pdf_type: { exam_papers: 0, eagle_view: 1, dpp: 2 }
+
+  belongs_to :org
+
+  has_many :batch_study_pdfs
+  has_many :batches, through: :batch_study_pdfs
 end
