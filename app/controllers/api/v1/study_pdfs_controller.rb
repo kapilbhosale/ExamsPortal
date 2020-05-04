@@ -13,25 +13,25 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
   private
 
   def exam_data
-    [
+    StudyPdf.where(org: current_org).exam_papers.map do |spdf|
       {
-        :name=>"Test PDF",
-        :description=>"description of the test -Test 1 (home)",
-        :added_on=>"26 april 2020",
-        :question_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/dhote-sample.pdf",
-        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/dhote-sample.pdf"
+        name: spdf.name,
+        description: spdf.description,
+        added_on: spdf.created_at.strftime("%d-%B-%Y %I:%M%p"),
+        question_paper_link: spdf.question_paper.url,
+        solution_paper_link: spdf.solution_paper.url
       }
-    ]
+    end
   end
 
   def dpp_data
-    [
+    StudyPdf.where(org: current_org).dpp.map do |spdf|
       {
-        :name=>"Notes Test 1 (home)",
-        :description=>" description of the test -Test 1 (home)",
-        :added_on=>"26 april 2020",
-        :solution_paper_link=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/dhote-sample.pdf"
-      },
-    ]
+        name: spdf.name,
+        description: spdf.description,
+        added_on: spdf.created_at.strftime("%d-%B-%Y %I:%M%p"),
+        solution_paper_link: spdf.solution_paper.url
+      }
+    end
   end
 end

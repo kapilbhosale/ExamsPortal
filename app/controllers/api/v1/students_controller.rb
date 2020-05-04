@@ -37,7 +37,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
         parent_mobile_number: student.parent_mobile,
         api_key: student.api_key,
         fcm_token: student.fcm_token,
-        vimeo_access_token: '3ddfeca6410cb5f95be78fc4662a791f'
+        vimeo_access_token: current_org.vimeo_access_token
       }, otp: '111111'
     }
   end

@@ -113,8 +113,7 @@ class Exam < ApplicationRecord
       },
       notification: {
         body: 'Please appear for the exam added, Exam will be available for 24 Hrs in new exams section.',
-        title: "New Exam Added - '#{self.name}'",
-        image: 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/dhote-logo.png'
+        title: "New Exam Added - '#{self.name}'"
       }
     }
   end
