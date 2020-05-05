@@ -18,6 +18,8 @@ module ApplicationHelper
       return { logo: 'saraswati-logo', width: 120 }
     elsif %w[adhyayan-exams adhyayan-videos].include?(subdomain)
       return { logo: 'adhyayan-logo', width: 150}
+    elsif %w[dayanand].include?(subdomain)
+      return { logo: 'dayanand-logo', width: 30}
     end
 
     { logo: 'rcc-logo', width: 50 }
@@ -33,6 +35,10 @@ module ApplicationHelper
 
     if %w[adhyayan-exams adhyayan-videos].include?(subdomain)
       return ''
+    end
+
+    if %w[dayanand].include?(subdomain)
+      return 'DSCL'
     end
 
     request.subdomain.humanize || "Exams"
