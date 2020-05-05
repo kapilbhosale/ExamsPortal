@@ -85,14 +85,24 @@ class Students::HomeController < Students::BaseController
     @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
     student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
 
+    ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     if student_exam_summaries.blank?
-      ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
       if ses
         Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
         StudentExamScoreCalculator.new(@student_exam.id).calculate
         ses.destroy
       end
       student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+    else
+      if ses && student_exam_summaries.first.updated_at < ses.updated_at
+        student_exam_summaries.destroy_all
+        if ses
+          Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
+          StudentExamScoreCalculator.new(@student_exam.id).calculate
+          ses.destroy
+        end
+        student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+      end
     end
     @exam_id = params[:exam_id]
 
