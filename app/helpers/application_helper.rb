@@ -16,6 +16,8 @@ module ApplicationHelper
       return { logo: 'dhote-logo', width: 120 }
     elsif subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
       return { logo: 'saraswati-logo', width: 120 }
+    elsif %w[adhyayan-exams adhyayan-videos].include?(subdomain)
+      return { logo: 'adhyayan-logo', width: 150}
     end
 
     { logo: 'rcc-logo', width: 50 }
@@ -28,6 +30,11 @@ module ApplicationHelper
     if subdomain == 'saraswati-exams' || subdomain == 'saraswati-videos'
       return request.subdomain.split('-').last.humanize
     end
+
+    if %w[adhyayan-exams adhyayan-videos].include?(subdomain)
+      return ''
+    end
+
     request.subdomain.humanize || "Exams"
   end
 
