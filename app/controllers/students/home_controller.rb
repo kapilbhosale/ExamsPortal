@@ -84,6 +84,7 @@ class Students::HomeController < Students::BaseController
   def summary
     @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
     student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
+
     if student_exam_summaries.blank?
       ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
       if ses
@@ -94,7 +95,6 @@ class Students::HomeController < Students::BaseController
       student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
     end
     @exam_id = params[:exam_id]
-
 
     se_ids = StudentExam.where(exam_id: @exam_id).ids
     ses = StudentExamSummary.where(student_exam_id: se_ids)

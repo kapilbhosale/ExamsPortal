@@ -25,6 +25,7 @@
                     <th class="col-md-1">Added Ques</th>
                     <th class="col-md-1">Time</th>
                     <th class="col-md-1">Added on</th>
+                    <th class="col-md-1">Publish on</th>
                     <th class="col-md-1">Publish Result</th>
                     <th class="col-md-1">Actions</th>
                   </tr>
@@ -39,7 +40,8 @@
                       <td><%= exam.no_of_questions %></td>
                       <td><%= exam.questions.count %></td>
                       <td><%= exam.time_in_minutes %> mins</td>
-                      <td><%= exam.created_at.to_date %></td>
+                      <td><%= exam.created_at.strftime("%d-%b-%y") %></td>
+                      <td><%= exam.show_exam_at.strftime("%d-%b-%y %r") %></td>
                       <td class="text-center">
                         <%= check_box_tag :publish_result, 'true', false, 'data-toggle': "modal", 'data-target': '#publishResultModal', checked: exam.publish_result, disabled: true %>
                       </td>

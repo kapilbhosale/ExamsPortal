@@ -10,7 +10,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def create
-    @response = Exams::AddExamService.new(params).create
+    @response = Exams::AddExamService.new(params, current_org).create
     set_flash
     if @response[:status]
       redirect_to admin_exams_path

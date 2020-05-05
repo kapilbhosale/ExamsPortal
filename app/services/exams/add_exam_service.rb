@@ -2,10 +2,11 @@ class AddExamError < StandardError; end
 
 module Exams
   class AddExamService
-    attr_reader :params, :name, :batch_ids
-    def initialize(params)
+    attr_reader :params, :name, :batch_ids, :current_org
+    def initialize(params, current_org)
       @params = params
       @name = params[:name]
+      @current_org = current_org
     end
 
     def create
@@ -13,6 +14,10 @@ module Exams
       @batch_ids = params[:exam][:batches]
       ActiveRecord::Base.transaction do
         @exam = Exam.new(exam_params)
+
+        # set org id to exams
+        @exam.org_id = current_org.id
+
         if params[:exam_type]
           e_type = Exam.exam_types[params[:exam_type].to_sym]
           @exam.exam_type = e_type

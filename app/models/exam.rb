@@ -15,6 +15,7 @@
 #  time_in_minutes :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  org_id          :integer          default(0)
 #
 # Indexes
 #
@@ -32,6 +33,8 @@ class Exam < ApplicationRecord
 
   has_many :exam_batches
   has_many :batches, through: :exam_batches
+
+  belongs_to :org
 
   enum exam_type: { jee: 0, cet: 1, other: 2 }
 
@@ -97,7 +100,7 @@ class Exam < ApplicationRecord
   end
 
   def send_push_notifications
-    fcm = FCM.new(FCM_SERVER_KEY)
+    fcm = FCM.new(org.fcm_server_key)
     batches.each do |batch|
       reg_ids = batch.students.where.not(fcm_token: nil).pluck(:fcm_token)
       # response = fcm.send(reg_ids, push_options)
