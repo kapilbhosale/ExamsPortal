@@ -7,12 +7,14 @@ class ExamSummary extends React.Component {
     const {examSummary} = this.props;
     let total_question = 0;
     let total_score = 0;
+    let total_marks = 0;
     const time_spent = '-';
     const topper_total = "-";
     const section_data = [];
     for (let [key, value] of Object.entries(examSummary)) {
       total_score += value.score;
       total_question += value.count
+      total_marks += value.section_out_of_marks
       section_data.push(
         {
           section_name: key,
@@ -21,7 +23,8 @@ class ExamSummary extends React.Component {
           incorrect: value.wrong,
           not_answered: value.count - value.ans,
           score: value.score,
-          topper_score: '-'
+          topper_score: '-',
+          section_out_of_marks: value.section_out_of_marks
         }
       );
     }
@@ -32,12 +35,13 @@ class ExamSummary extends React.Component {
         time_spent,
         section_data,
         topper_total,
+        total_marks,
       }
     );
   }
 
   render() {
-    const {total_question, total_score, time_spent, section_data, topper_total} = this.formatData();
+    const {total_question, total_score, time_spent, section_data, topper_total, total_marks} = this.formatData();
     return(
       <div>
         <div className="text-center">
@@ -49,6 +53,7 @@ class ExamSummary extends React.Component {
           time_spent={time_spent}
           section_data={section_data}
           topper_total={topper_total}
+          total_marks={total_marks}
         />
         <div className="text-center">
           <a href='/students/tests'>

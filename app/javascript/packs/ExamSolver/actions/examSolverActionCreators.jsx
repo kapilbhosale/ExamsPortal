@@ -131,6 +131,7 @@ export function updateExamSummary(examID) {
         let wrong = 0;
         let score = 0;
         let count = 0;
+        let section_out_of_marks = 0;
         localSAData.questionsBySections[section].forEach((question) => {
           let modelAns = localModelAnsData.questions[question.id];
           if (question.answerProps.answer) {
@@ -144,8 +145,9 @@ export function updateExamSummary(examID) {
             ans++;
           }
           count++;
+          section_out_of_marks += modelAns.pm;
         })
-        resultSummary[section] = {ans, correct, wrong, score, count}
+        resultSummary[section] = {ans, correct, wrong, score, count, section_out_of_marks}
       })
     }
     dispatch({ type: actionTypes.SET_EXAM_SUMMARY, val: resultSummary });

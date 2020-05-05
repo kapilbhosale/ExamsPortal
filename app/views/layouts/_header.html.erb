@@ -5,7 +5,7 @@
         <div>
           <span style="margin-top: -13px;">
             <% logo_props = get_logo(request.subdomain) %>
-            <%= image_tag logo_props[:logo], width: logo_props[:width] %>
+            <%= image_tag logo_props[:logo], width: logo_props[:width], height: logo_props[:height] %>
             <%= get_header_name(request.subdomain) %>
           </span>
         </div>
