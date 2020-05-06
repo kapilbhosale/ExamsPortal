@@ -18,7 +18,7 @@
 #
 
 class VideoLecture < ApplicationRecord
-  validates :thumbnail, presence: true
+  # validates :thumbnail, presence: true
   validates :title, presence: true
   validates :subject, presence: true
 

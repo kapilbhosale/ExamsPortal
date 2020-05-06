@@ -20,7 +20,9 @@ class Admin::VideoLecturesController < Admin::BaseController
 
     vl = VideoLecture.create(video_lecture_params.merge(video_type: video_type))
 
-    AdminModule::VimeoThumbnailFetcher.new(vl.id, current_org.id).call
+    if vl.video_id.present?
+      AdminModule::VimeoThumbnailFetcher.new(vl.id, current_org.id).call
+    end
 
     batches = Batch.where(id: params[:batch_ids])
     vl.batches << batches
