@@ -107,7 +107,7 @@ class Admin::StudentsController < Admin::BaseController
 
     # to check if input is number or string
     if search_term.to_i.to_s == search_term
-      return { roll_number_eq: search_term } if search_term.length <= 5
+      return { roll_number_eq: search_term } if search_term.length <= 7
       return { parent_mobile_cont: search_term }
     end
 
