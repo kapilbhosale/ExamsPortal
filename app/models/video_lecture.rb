@@ -2,20 +2,21 @@
 #
 # Table name: video_lectures
 #
-#  id          :bigint(8)        not null, primary key
-#  by          :string
-#  description :string
-#  enabled     :boolean          default(TRUE)
-#  subject     :integer
-#  tag         :string
-#  thumbnail   :string
-#  title       :string
-#  url         :string
-#  video_type  :integer          default("vimeo")
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  org_id      :integer          default(0)
-#  video_id    :string
+#  id                 :bigint(8)        not null, primary key
+#  by                 :string
+#  description        :string
+#  enabled            :boolean          default(TRUE)
+#  subject            :integer
+#  tag                :string
+#  thumbnail          :string
+#  title              :string
+#  uploaded_thumbnail :string
+#  url                :string
+#  video_type         :integer          default("vimeo")
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  org_id             :integer          default(0)
+#  video_id           :string
 #
 
 class VideoLecture < ApplicationRecord

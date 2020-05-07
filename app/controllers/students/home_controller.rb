@@ -37,7 +37,7 @@ class Students::HomeController < Students::BaseController
   def exam
     exam = Exam.find_by(id: params[:id])
     @student_id = current_student.id
-    if exam.blank? || exam.show_exam_at < Time.current
+    if exam.blank? || exam.show_exam_at > Time.current
       flash[:error] = "invalid exam"
       redirect_to root_path
     end
@@ -53,7 +53,7 @@ class Students::HomeController < Students::BaseController
 
   def confirmation
     @exam = Exam.find_by(id: params[:exam_id])
-    if @exam.blank? || @exam.show_exam_at < Time.current
+    if @exam.blank? || @exam.show_exam_at > Time.current
       flash[:error] = "invalid exam"
       redirect_to root_path
     end

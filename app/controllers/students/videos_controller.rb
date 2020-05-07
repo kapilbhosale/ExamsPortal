@@ -1,6 +1,7 @@
 
 class Students::VideosController < Students::BaseController
   before_action :authenticate_student!, except: [:index]
+  layout false, only: [:show_lecture]
 
   def index
   end
