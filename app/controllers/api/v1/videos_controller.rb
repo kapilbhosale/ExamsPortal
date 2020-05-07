@@ -11,7 +11,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     lectures_data = {}
     lectures.each do |lect|
       lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject", "video_type")
-      lect_data['thumbnail_url'] = lect.thumbnail
+      lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
       if lect.vimeo?
         lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"

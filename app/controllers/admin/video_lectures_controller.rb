@@ -58,7 +58,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       url: params[:url].present? ? params[:url] : "https://player.vimeo.com/video/#{params[:video_id]}",
       by: params[:by],
       tag: params[:tag],
-      enabled: params[:enabled] == 'false' ? false : true
+      enabled: params[:enabled] == 'false' ? false : true,
+      uploaded_thumbnail: params[:thumbnail]
     }
   end
 
@@ -69,7 +70,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       url: params[:url].present? ? params[:url] : "https://player.vimeo.com/video/#{params[:video_id]}",
       by: params[:by],
       tag: params[:tag],
-      subject: VideoLecture.subjects[params[:subject]]
+      subject: VideoLecture.subjects[params[:subject]],
+      uploaded_thumbnail: params[:thumbnail]
     }
   end
 end

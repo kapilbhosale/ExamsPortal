@@ -31,7 +31,7 @@ class VideoLecture < ApplicationRecord
   has_many :batches, through: :batch_video_lectures
 
   belongs_to :org
-  # mount_uploader :thumbnail, PhotoUploader
+  mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
 
   def set_thumbnail
