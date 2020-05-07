@@ -5,6 +5,10 @@ class Students::ExamsController < Students::BaseController
 
   def exam_data
     exam_id = params[:id]
+    exam = Exam.find_by(id: exam_id)
+    if exam.blank? || exam.show_exam_at > Time.current
+      render json: {error: 'Invalid exam ID'} and return
+    end
     student_id = current_student.id
 
     student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
