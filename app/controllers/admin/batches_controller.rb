@@ -9,7 +9,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def create
-    @response = Batches::AddBatchService.new(params[:batch][:name, current_org]).call
+    @response = Batches::AddBatchService.new(params[:batch][:name], current_org).call
     set_flash
     redirect_to admin_batches_path
   end

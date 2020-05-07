@@ -4,9 +4,9 @@ module Batches
   class AddBatchService
     attr_reader :name, :org
 
-    def initialize(name, current_org)
+    def initialize(name, org)
       @name = name
-      @org = current_org
+      @org = org
     end
 
     def call
