@@ -2,7 +2,7 @@ class AddBatchError < StandardError; end
 
 module Batches
   class AddBatchService
-    attr_reader :name, org
+    attr_reader :name, :org
 
     def initialize(name, current_org)
       @name = name
