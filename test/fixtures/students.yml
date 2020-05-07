@@ -4,12 +4,14 @@
 #
 #  id                     :bigint(8)        not null, primary key
 #  address                :text
+#  api_key                :string
 #  college                :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
 #  date_of_birth          :date
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  fcm_token              :string
 #  gender                 :integer          default(0)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
