@@ -12,8 +12,15 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
 
   private
 
+  def study_pdf_for_student
+    @study_pdf_for_student ||= begin
+      study_pdf_ids = BatchStudyPdf.where(batch_id: current_student.batches&.ids).pluck(:study_pdf_id)
+      StudyPdf.where(id: study_pdf_ids).where(org: current_org)
+    end
+  end
+
   def exam_data
-    StudyPdf.where(org: current_org).exam_papers.map do |spdf|
+    study_pdf_for_student.exam_papers.map do |spdf|
       {
         name: spdf.name,
         description: spdf.description,
@@ -25,7 +32,7 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
   end
 
   def dpp_data
-    StudyPdf.where(org: current_org).dpp.map do |spdf|
+    study_pdf_for_student.dpp.map do |spdf|
       {
         name: spdf.name,
         description: spdf.description,

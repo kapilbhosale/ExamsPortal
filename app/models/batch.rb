@@ -23,6 +23,8 @@ class Batch < ApplicationRecord
   has_many :batch_study_pdfs
   has_many :study_pdfs, through: :batch_study_pdfs
 
+  belongs_to :org
+
   def self.all_batches
     Batch.all{|batch| [batch.id, batch.name]}
   end

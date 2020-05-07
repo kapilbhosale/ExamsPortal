@@ -30,6 +30,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)
+#  org_id                 :integer          default(0)
 #
 # Indexes
 #
