@@ -9,8 +9,8 @@
 #
 
 class Batch < ApplicationRecord
-  has_many  :student_batches
-  has_many  :students, through: :student_batches
+  has_many  :student_batches, dependent: :destroy
+  has_many  :students, through: :student_batches, dependent: :destroy
 
   has_many :exams_batches
   has_many :exams, through: :exams_batches

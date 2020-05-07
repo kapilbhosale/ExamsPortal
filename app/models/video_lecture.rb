@@ -14,6 +14,7 @@
 #  video_type  :integer          default("vimeo")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  org_id      :integer          default(0)
 #  video_id    :string
 #
 
@@ -28,7 +29,9 @@ class VideoLecture < ApplicationRecord
   has_many :batch_video_lectures
   has_many :batches, through: :batch_video_lectures
 
+  belongs_to :org
   # mount_uploader :thumbnail, PhotoUploader
+  # after_create :send_push_notifications
 
   def set_thumbnail
     require 'net/http'
@@ -62,6 +65,28 @@ class VideoLecture < ApplicationRecord
       puts " FAILED #{post_data}"
       puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
     end
+  end
+
+  def send_push_notifications
+    fcm = FCM.new(org.fcm_server_key)
+    batches.each do |batch|
+      reg_ids = batch.students.where.not(fcm_token: nil).pluck(:fcm_token)
+      fcm.send(reg_ids, push_options)
+    end
+  end
+
+  def push_options
+    {
+      priority: 'high',
+      data: {
+        message: 'New Video Lecture Added'
+      },
+      notification: {
+        body: "New Video of subject #{subject}, Name: #{title}, Please visit and take a look. Study Hard.",
+        title: "New Video of subject #{subject} Added - '#{title}'",
+        image: org.data['push_image']
+      }
+    }
   end
 end
 

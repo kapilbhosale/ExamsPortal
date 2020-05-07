@@ -38,8 +38,7 @@ class Exam < ApplicationRecord
 
   enum exam_type: { jee: 0, cet: 1, other: 2 }
 
-  after_create :send_push_notifications
-
+  # after_create :send_push_notifications
   # has_one :style, as: :component, dependent: :destroy
 
   def appeared_student_ids

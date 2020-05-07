@@ -28,7 +28,7 @@ class StudyPdf < ApplicationRecord
   has_many :batch_study_pdfs
   has_many :batches, through: :batch_study_pdfs
 
-  after_create :send_push_notifications
+  # after_create :send_push_notifications
 
   def send_push_notifications
     fcm = FCM.new(org.fcm_server_key)

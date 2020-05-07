@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_05_060156) do
+ActiveRecord::Schema.define(version: 2020_05_07_055056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -360,6 +360,7 @@ ActiveRecord::Schema.define(version: 2020_05_05_060156) do
     t.datetime "updated_at", null: false
     t.boolean "enabled", default: true
     t.integer "video_type", default: 0
+    t.integer "org_id", default: 0
   end
 
 end

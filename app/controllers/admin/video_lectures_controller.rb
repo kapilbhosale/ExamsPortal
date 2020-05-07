@@ -18,7 +18,7 @@ class Admin::VideoLecturesController < Admin::BaseController
     end
     video_type = params[:video_id].present? ? 0 : 1
 
-    vl = VideoLecture.create(video_lecture_params.merge(video_type: video_type))
+    vl = VideoLecture.create(video_lecture_params.merge(video_type: video_type, org_id: current_org.id))
 
     if vl.video_id.present?
       AdminModule::VimeoThumbnailFetcher.new(vl.id, current_org.id).call
@@ -26,6 +26,8 @@ class Admin::VideoLecturesController < Admin::BaseController
 
     batches = Batch.where(id: params[:batch_ids])
     vl.batches << batches
+    vl.send_push_notifications
+
     flash[:success] = "Video Lecture addes successfully.."
     redirect_to admin_video_lectures_path
   end

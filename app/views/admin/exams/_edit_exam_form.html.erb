@@ -1,5 +1,17 @@
+
+
 <%= form_for(@exam, url: admin_exam_path(@exam.id), method: 'patch') do |form| %>
 <div class="form-group">
+  <div class="row col-md-12">
+    Id: &nbsp;&nbsp;&nbsp;<b><%= @exam.id %></b>
+  </div>
+  <div class="row  col-md-12">
+    Exam Name:&nbsp;&nbsp;&nbsp;<b><%= @exam.name %></b>
+  </div>
+  <div class="row col-md-12">
+    publish on: &nbsp;&nbsp;&nbsp;<b><%= @exam.show_exam_at.strftime("%d-%b-%y %r") %></b>
+  </div>
+
   <label class="control-label col-sm-2">Publish Result</label>
   <div class="custom-controls-stacked">
     <label class="custom-control custom-radio custom-control-inline">

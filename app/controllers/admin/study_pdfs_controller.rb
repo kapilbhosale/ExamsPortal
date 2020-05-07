@@ -34,12 +34,12 @@ class Admin::StudyPdfsController < Admin::BaseController
       study_pdf.pdf_type = (params[:pdf_type].to_i || 1) if params[:pdf_type].present?
       study_pdf.org = current_org
       if study_pdf.save
-        study_pdf.send_push_notifications
         if params[:batches].present?
           params[:batches].each do |batch_id|
             BatchStudyPdf.create(study_pdf: study_pdf, batch_id: batch_id)
           end
         end
+        study_pdf.send_push_notifications
         flash[:success] = "PDF added, successfully"
       else
         flash[:error] = "Error in adding PDF.."
