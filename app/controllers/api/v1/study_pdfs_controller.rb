@@ -3,9 +3,11 @@
 class Api::V1::StudyPdfsController < Api::V1::ApiController
 
   def index
+    last_tab = current_org.subdomain == 'exams' ? 'Eagle View' : 'Other Notes'
     json_data = {
       'Exam Paper PDF' => exam_data,
-      'DPP' => dpp_data
+      'DPP' => dpp_data,
+      last_tab => other_data
     }
     render json: json_data, status: :ok
   end
@@ -33,6 +35,17 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
 
   def dpp_data
     study_pdf_for_student.dpp.map do |spdf|
+      {
+        name: spdf.name,
+        description: spdf.description,
+        added_on: spdf.created_at.strftime("%d-%B-%Y %I:%M%p"),
+        solution_paper_link: spdf.solution_paper.url
+      }
+    end
+  end
+
+  def other_data
+    study_pdf_for_student.eagle_view.map do |spdf|
       {
         name: spdf.name,
         description: spdf.description,
