@@ -1,49 +1,56 @@
-<div class="text-center">
-  <p class="warning blink-bg">
-    Note: Videos will be removed after 24 Hrs.
-  </p>
-</div>
+<% if request.subdomain == 'videos' %>
+  <div class="text-center">
+    <h2>Please Update App. You are using old app.</h2>
+    <a href="https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new&hl=en_IN" class="btn btn-danger" role="button">Update Application</a>
+  </div>
+<% else %>
+  <div class="text-center"></div>
+    <p class="warning blink-bg">
+      Note: Videos will be removed after 24 Hrs.
+    </p>
+  </div>
 
-<div class="tabbable-panel">
-  <div class="tabbable-line">
-    <ul class="nav nav-tabs ">
-      <li class="active">
-        <a href="#tab_chem" data-toggle="tab">
-          Chemistry
-        </a>
-      </li>
-      <li>
-        <a href="#tab_phy" data-toggle="tab">
-          Physics
-        </a>
-      </li>
-      <li>
-        <a href="#tab_bio" data-toggle="tab">
-          Biology
-        </a>
-      </li>
-      <li>
-        <a href="#tab_maths" data-toggle="tab">
-          Maths
-        </a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id="tab_chem">
-        <%= render 'chem' %>
-      </div>
-      <div class="tab-pane" id="tab_phy">
-        <%= render 'phy' %>
-      </div>
-      <div class="tab-pane" id="tab_bio">
-        <%= render 'bio' %>
-      </div>
-      <div class="tab-pane" id="tab_maths">
-        <%= render 'maths' %>
+  <div class="tabbable-panel">
+    <div class="tabbable-line">
+      <ul class="nav nav-tabs ">
+        <li class="active">
+          <a href="#tab_chem" data-toggle="tab">
+            Chemistry
+          </a>
+        </li>
+        <li>
+          <a href="#tab_phy" data-toggle="tab">
+            Physics
+          </a>
+        </li>
+        <li>
+          <a href="#tab_bio" data-toggle="tab">
+            Biology
+          </a>
+        </li>
+        <li>
+          <a href="#tab_maths" data-toggle="tab">
+            Maths
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab_chem">
+          <%= render 'chem' %>
+        </div>
+        <div class="tab-pane" id="tab_phy">
+          <%= render 'phy' %>
+        </div>
+        <div class="tab-pane" id="tab_bio">
+          <%= render 'bio' %>
+        </div>
+        <div class="tab-pane" id="tab_maths">
+          <%= render 'maths' %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <style>
   .card-horizontal {
