@@ -23,6 +23,9 @@ class Batch < ApplicationRecord
   has_many :batch_study_pdfs
   has_many :study_pdfs, through: :batch_study_pdfs
 
+  has_many :batch_notifications
+  has_many :notifications, through: :batch_notifications
+
   belongs_to :org
 
   def self.all_batches

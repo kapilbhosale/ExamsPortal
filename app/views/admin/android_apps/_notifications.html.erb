@@ -1,0 +1,47 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3">PDFs</h5>
+        </div>
+        <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
+          <%= link_to 'Add New Notification', new_admin_notification_path, method: :get, class: "btn btn-warning btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @notifications.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Title</th>
+                  <th>Desc.</th>
+                  <th>Batch(s)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @notifications.each do |notification| %>
+                  <tr>
+                    <td><%= notification.id %></td>
+                    <td><%= notification.name %></td>
+                    <td><%= notification.description %></td>
+                    <td><%= notification.batches.pluck(:name).join(', ') %></td>
+                    <td>
+                      <%= link_to 'Del', admin_notification_path(notification), method: :delete, class: "btn btn-danger btn-sm" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="alert alert-info">No Notification's were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

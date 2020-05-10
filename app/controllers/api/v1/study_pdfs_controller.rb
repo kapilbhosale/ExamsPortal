@@ -3,7 +3,7 @@
 class Api::V1::StudyPdfsController < Api::V1::ApiController
 
   def index
-    last_tab = current_org.subdomain == 'exams' ? 'Eagle View' : 'Other Notes'
+    last_tab = current_org&.subdomain == 'exams' ? 'Eagle View' : 'Other Notes'
     json_data = {
       'Exam Paper PDF' => exam_data,
       'DPP' => dpp_data,
