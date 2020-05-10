@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'release-saraswati'
+set :branch, 'develop'
 set :sidekiq_env, :production
 set :stage, :production
 
