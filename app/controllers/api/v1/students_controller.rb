@@ -10,10 +10,16 @@ class Api::V1::StudentsController < Api::V1::ApiController
       parent_mobile: params[:parentMobile]
     )
     if student.blank?
-      render json: {message: 'Invalid roll number and parent mobile'}, status: :unauthorized and return
+      render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
+    end
+
+    if student.app_login?
+      render json: { message: 'You are ALREADY logged in some other mobile. Please Contact Admin.'}, status: :unauthorized and return
     end
 
     sign_in(student)
+    student.update(app_login: true)
+
     render json: student_json(student), status: :ok
   end
 
@@ -37,7 +43,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
         parent_mobile_number: student.parent_mobile,
         api_key: student.api_key,
         fcm_token: student.fcm_token,
-        vimeo_access_token: current_org.vimeo_access_token
+        vimeo_access_token: current_org&.vimeo_access_token
       }, otp: '111111'
     }
   end

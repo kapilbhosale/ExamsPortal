@@ -52,6 +52,7 @@ Rails.application.routes.draw do
       root to: 'students#index'
       get :import, on: :collection
       post :process_import, on: :collection
+      get :reset_login
     end
     resources :batches do
       root to: 'batches#index'

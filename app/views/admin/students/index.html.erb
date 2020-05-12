@@ -35,6 +35,7 @@
                     <th>Email</th>
                     <th>Password</th>
                     <th>Parent Mobile</th>
+                    <th>App Login</th>
                     <th><button class="btn btn-danger clearfix btn-sm">
                           <span class="fa fa-file-pdf-o"></span>
                           <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
@@ -56,6 +57,7 @@
                       <td><%= student.email %></td>
                       <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
+                      <td><%= student.app_login? ? 'YES' : '-' %></td>
                       <td>
                         <%= link_to '', '#', class: "fa fa-bar-chart" %>&nbsp; &nbsp;
                         <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp; &nbsp;

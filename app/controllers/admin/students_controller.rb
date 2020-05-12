@@ -79,6 +79,16 @@ class Admin::StudentsController < Admin::BaseController
     redirect_to admin_students_path
   end
 
+  def reset_login
+    @student = Student.find_by(id: params[:student_id])
+    if @student&.update!(app_login: false)
+      flash[:success] = 'Student App Login Reset, successfully.'
+    else
+      flash[:error] = 'Error in resetting Student App Login.'
+    end
+    redirect_to admin_students_path
+  end
+
   def destroy
     @response = Students::DeleteStudentService.new(params[:id]).call
     set_flash

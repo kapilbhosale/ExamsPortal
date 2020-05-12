@@ -117,11 +117,25 @@
               <% end %>
             </div>
           </div>
+          <div class="col-sm-6 col-md-7">
+            <div class="form-group">
+              <h3>
+                <%= @student.app_login? ? 'Student Already Logged In' : 'No login of this student.'%>
+              </h3>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-footer text-right">
-        <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-        <button type="submit" class="btn btn-success">Update Student</button>
+      <div class="card-footer">
+        <% if @student.app_login? %>
+          <div class="col-md-2">
+            <%= link_to "Reset App login", admin_student_reset_login_path(@student), class: 'btn btn-danger' %>
+          </div>
+        <% end %>
+        <div class="col-md-10 text-right">
+          <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">Update Student</button>
+        </div>
       </div>
     <% end %>
   </div>

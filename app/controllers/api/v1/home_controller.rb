@@ -29,7 +29,7 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def app_version
-    version_code = current_org.data['version_code'] || '1.0.0'
+    version_code = current_org&.data.dig('version_code') || '1.0.0'
     render json: { version_code: version_code, force_update: true }, status: :ok
   end
 end

@@ -5,6 +5,7 @@
 #  id                     :bigint(8)        not null, primary key
 #  address                :text
 #  api_key                :string
+#  app_login              :boolean          default(FALSE)
 #  college                :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
