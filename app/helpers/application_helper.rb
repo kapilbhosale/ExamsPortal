@@ -22,6 +22,8 @@ module ApplicationHelper
       return { logo: 'dayanand-logo', width: 30}
     elsif %w[pis].include? subdomain
       return { logo: 'ankush-logo', width: 45, height: 40 }
+    elsif %w[bhosale].include? subdomain
+      return { logo: 'bhosale-logo', width: 90, height: 40}
     end
 
     { logo: 'exams-logo', width: 30 }
@@ -42,9 +44,8 @@ module ApplicationHelper
       return ''
     end
 
-    if %w[dayanand].include?(subdomain)
-      return 'DSCL'
-    end
+    return 'DSCL' if %w[dayanand].include?(subdomain)
+    return '' if %w[bhosale].include?(subdomain)
 
     return 'PIS, Jalna' if ['pis'].include? subdomain
 
