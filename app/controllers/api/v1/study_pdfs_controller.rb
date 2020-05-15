@@ -17,7 +17,7 @@ class Api::V1::StudyPdfsController < Api::V1::ApiController
   def study_pdf_for_student
     @study_pdf_for_student ||= begin
       study_pdf_ids = BatchStudyPdf.where(batch_id: current_student.batches&.ids).pluck(:study_pdf_id)
-      StudyPdf.where(id: study_pdf_ids).where(org: current_org)
+      StudyPdf.where(id: study_pdf_ids).where(org: current_org).order(id: :desc)
     end
   end
 
