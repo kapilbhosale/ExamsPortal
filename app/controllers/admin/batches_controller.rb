@@ -1,7 +1,7 @@
 class Admin::BatchesController < Admin::BaseController
 
   def index
-    @batches = Batch.all
+    @batches = Batch.where(org: current_org).all
   end
 
   def new
@@ -15,11 +15,11 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def show
-    @batch = Batch.find_by(id: params[:id])
+    @batch = Batch.find_by(org: current_org, id: params[:id])
   end
 
   def edit
-    @batch = Batch.find_by(id: params[:id])
+    @batch = Batch.find_by(org: current_org, id: params[:id])
   end
 
   def update
@@ -29,7 +29,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def destroy
-    @response = Batches::DeleteBatchService.new(params[:id]).call
+    @response = Batches::DeleteBatchService.new(params[:id], current_org).call
     set_flash
     redirect_to admin_batches_path
   end

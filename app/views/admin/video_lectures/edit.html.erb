@@ -44,7 +44,7 @@
 
         <%
           batches_11_ids = [2, 3,11, 7, 8]
-          batches_12_ids = Batch.all.ids - batches_11_ids
+          batches_12_ids = @batches.ids - batches_11_ids
 
           batches_11 = Batch.where(id: batches_11_ids)
           batches_12 = Batch.where(id: batches_12_ids)

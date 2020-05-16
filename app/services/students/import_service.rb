@@ -2,11 +2,12 @@ class ImportError < StandardError; end
 
 module Students
   class ImportService
-    attr_reader :batch
+    attr_reader :batch, :org
 
-    def initialize(csv_file_path, batch_id)
+    def initialize(csv_file_path, batch_id, org)
       @csv_file_path = csv_file_path
       @batch = Batch.find(batch_id)
+      @org = org
     end
 
     def import
@@ -29,6 +30,7 @@ module Students
           student.raw_password = rand_password
           student.parent_mobile = rand_password
 
+          student.org = org
           student.save
           StudentBatch.create(student: student, batch: batch)
           @students_added << student

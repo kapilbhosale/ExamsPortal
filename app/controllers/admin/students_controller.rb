@@ -1,7 +1,9 @@
 class Admin::StudentsController < Admin::BaseController
   ITEMS_PER_PAGE = 20
   def index
-    @search = Student.includes(:student_batches, :batches).joins(:batches)
+    @search = Student
+      .where(org: current_org)
+      .includes(:student_batches, :batches).joins(:batches)
 
     if params[:q].present? && params[:q][:batch_id].present?
       @search = @search.where(batches: {id: params[:q][:batch_id]})
@@ -10,7 +12,7 @@ class Admin::StudentsController < Admin::BaseController
     @search = @search.search(search_params)
 
     @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
-    @batches = Batch.all_batches
+    @batches = Batch.where(org: current_org).all_batches
 
     @students_data = @students.includes(:batches).order(:roll_number).map do |student|
       {
@@ -55,11 +57,16 @@ class Admin::StudentsController < Admin::BaseController
 
   def new
     @student = Student.new
-    @student_data = {roll_number: Student.suggest_roll_number, batches: Batch.all_batches, categories: Category.all}
+    @student_data = {
+      roll_number: Student.suggest_roll_number(current_org),
+      batches: Batch.where(org: current_org).all_batches,
+      categories: Category.all
+    }
   end
 
   def create
-    @response = Students::AddStudentService.new(student_params, params[:student][:batches]).call
+    binding.pry
+    @response = Students::AddStudentService.new(student_params, params[:student][:batches], current_org).call
     set_flash
     redirect_to admin_students_path
   end
@@ -69,8 +76,8 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def edit
-    @student = Student.find_by(id: params[:id])
-    @student_data = {roll_number: Student.suggest_roll_number, batches: Batch.all_batches, categories: Category.all}
+    @student = Student.find_by(id: params[:id], org: current_org)
+    @student_data = {roll_number: Student.suggest_roll_number, batches: Batch.where(org: current_org).all_batches, categories: Category.all}
   end
 
   def update
@@ -80,7 +87,7 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def reset_login
-    @student = Student.find_by(id: params[:student_id])
+    @student = Student.find_by(id: params[:student_id], org: current_org)
     if @student.present?
       new_api_key = @student.api_key + '-1'
       @student.update!(app_login: false, api_key: new_api_key)
@@ -92,19 +99,19 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def destroy
-    @response = Students::DeleteStudentService.new(params[:id]).call
+    @response = Students::DeleteStudentService.new(params[:id], current_org).call
     set_flash
     redirect_to admin_students_path
   end
 
   def import
-    @student_data = {batches: Batch.all_batches}
+    @student_data = {batches: Batch.where(org: current_org).all_batches}
   end
 
   def process_import
     csv_file_path = params[:csv_file].tempfile.path
     batch_id = params[:batch_id]
-    import_service = Students::ImportService.new(csv_file_path, batch_id)
+    import_service = Students::ImportService.new(csv_file_path, batch_id, current_org)
     @response = import_service.import
     flash[:notice] = "Student imported - #{@response}"
     render 'import'

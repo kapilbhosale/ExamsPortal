@@ -17,6 +17,7 @@
 #  sign_in_count          :integer          default(0), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  org_id                 :integer          default(0)
 #
 # Indexes
 #
@@ -50,6 +51,10 @@ class Admin < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  belongs_to :org
+
+  validates :org_id, presence: true
 
   attr_writer :login
 

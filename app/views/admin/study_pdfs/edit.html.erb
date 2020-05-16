@@ -28,7 +28,7 @@
           </div>
           <% selected_batch_ids = @study_pdf.batches.ids %>
           <div class="form-group">
-            <% Batch.all.each do |batch| %>
+            <% @batches.each do |batch| %>
               <label class="checkbox-inline">
                 <input name="batches[]" type="checkbox" value='<%= batch.id %>' <%= selected_batch_ids.include?(batch.id) ? ' checked' : '' %>>
                 <%= batch.name %>

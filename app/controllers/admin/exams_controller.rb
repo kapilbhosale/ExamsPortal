@@ -1,11 +1,16 @@
 class Admin::ExamsController < Admin::BaseController
   before_action :sections, only: [:new, :create]
   def index
-    @exams = Exam.includes(:batches).order(id: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    @exams = Exam
+      .where(org: current_org)
+      .includes(:batches)
+      .order(id: :desc)
+      .page(params[:page])
+      .per(params[:limit] || ITEMS_PER_PAGE)
   end
 
   def new
-    @batches = Batch.all_batches
+    @batches = Batch.where(org: current_org).all_batches
     @sections = Section.jee.all.select(:id, :name, :description)
   end
 
@@ -15,13 +20,14 @@ class Admin::ExamsController < Admin::BaseController
     if @response[:status]
       redirect_to admin_exams_path
     else
-      @batches = Batch.all_batches
+      @batches = Batch.where(org: current_org).all_batches
+      @sections = Section.jee.all.select(:id, :name, :description)
       render 'new'
     end
   end
 
   def show
-    exam = Exam.includes(questions: :options).find_by(id: params[:id])
+    exam = Exam.where(org: current_org).find_by_exam_typeincludes(questions: :options).find_by(id: params[:id])
     if exam.present?
       @questions_by_section = exam.questions.group_by(&:section_id)
       @sections_by_id = Section.all.index_by(&:id)
@@ -36,14 +42,14 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def destroy
-    @response = Exams::DeleteExamService.new(params[:id]).delete
+    @response = Exams::DeleteExamService.new(params[:id], current_org).delete
     set_flash
     redirect_to admin_exams_path
   end
 
   def edit
-    @exam = Exam.find_by(id: params[:id])
-    @batches = Batch.all_batches
+    @exam = Exam.find_by(id: params[:id], org: current_org)
+    @batches = Batch.where(org: current_org).all_batches
     respond_to do |format|
       format.html do
       end
@@ -53,7 +59,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def update
-    @response = Exams::UpdateExamService.new(params).update
+    @response = Exams::UpdateExamService.new(params, current_org).update
     set_flash
     redirect_to admin_exams_path
   end

@@ -1,11 +1,11 @@
 class Admin::ReportsController < Admin::BaseController
 
   def index
-    @exams = Exam.all.order(id: :desc)
+    @exams = Exam.where(org: current_org).all.order(id: :desc)
   end
 
   def show
-    exam = Exam.find_by(id: params[:id])
+    exam = Exam.find_by(id: params[:id], org: current_org)
     @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
 
     respond_to do |format|
@@ -25,7 +25,7 @@ class Admin::ReportsController < Admin::BaseController
   end
 
   def student_progress
-    student = Student.find_by(id: params[:id])
+    student = Student.find_by(id: params[:id], org: current_org)
   end
 
   private

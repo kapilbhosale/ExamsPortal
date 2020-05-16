@@ -45,6 +45,7 @@ class Student < ApplicationRecord
   belongs_to :category, optional: true
   has_many   :student_batches
   has_many   :batches, through: :student_batches
+  belongs_to :org
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}
@@ -74,8 +75,8 @@ class Student < ApplicationRecord
     end
   end
 
-  def self.suggest_roll_number
-    self.last&.roll_number.to_i + 1
+  def self.suggest_roll_number(org)
+    self.where(org: org).last&.roll_number.to_i + 1
   end
 
   def self.to_csv

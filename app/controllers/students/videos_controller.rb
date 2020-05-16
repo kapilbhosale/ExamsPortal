@@ -7,7 +7,9 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    lectures = VideoLecture.includes(:batches)
+    lectures = VideoLecture
+      .where(org: current_org)
+      .includes(:batches)
       .where(batches: {id: current_student.batches})
       .where(enabled: true)
       .order(id: :desc)

@@ -1,12 +1,16 @@
 class Admin::StudyPdfsController < Admin::BaseController
   #  pdf controller section
-  def edit
-    @study_pdf = StudyPdf.find_by(id: params[:id])
+  def new
+    @batches = Batch.where(org: current_org).all_batches
+  end
 
+  def edit
+    @study_pdf = StudyPdf.find_by(org: current_org, id: params[:id])
+    @batches = Batch.where(org: current_org).all_batches
   end
 
   def update
-    study_pdf = StudyPdf.find_by(id: params[:id])
+    study_pdf = StudyPdf.find_by(org: current_org, id: params[:id])
     study_pdf.name = params[:exam_name]
     study_pdf.question_paper_link = params[:question_paper] if params[:question_paper].present?
     study_pdf.solution_paper_link = params[:solution_paper] if params[:solution_paper].present?
@@ -50,7 +54,7 @@ class Admin::StudyPdfsController < Admin::BaseController
   end
 
   def destroy
-    spdf = StudyPdf.find_by(id: params[:id])
+    spdf = StudyPdf.find_by(org: current_org, id: params[:id])
     spdf.destroy if spdf.present?
     flash[:success] = "PDF deleted, successfully"
     redirect_to admin_android_apps_path

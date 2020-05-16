@@ -66,7 +66,6 @@ gem 'redis'
 gem 'redis-rails'
 gem 'hiredis'
 
-gem 'scout_apm'
 gem 'rmagick'
 
 gem 'figaro'

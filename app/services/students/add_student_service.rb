@@ -2,11 +2,12 @@ class AddStudentError < StandardError; end
 
 module Students
   class AddStudentService
-    attr_reader :student_params, :batch_ids
+    attr_reader :student_params, :batch_ids, :org
 
-    def initialize(student_params, batch_ids)
+    def initialize(student_params, batch_ids, org)
       @student_params = student_params
       @batch_ids = batch_ids
+      @org = org
     end
 
     def call
@@ -15,6 +16,7 @@ module Students
       student_params.merge!({email: email_id, password: rand_password, raw_password: rand_password})
       @student = Student.new(student_params)
       build_batches
+      @student.org = org
       @student.save!
 
       # SyncStudentWithAppService.new(@student).sync
@@ -28,6 +30,7 @@ module Students
 
     def validate_request
       raise AddStudentError, 'Name must be present' if name.blank?
+      raise AddStudentError, 'No Batch Selected' if batch_ids.blank?
     end
 
     def build_batches

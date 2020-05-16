@@ -2,10 +2,11 @@ class UpdateExamError < StandardError; end
 
 module Exams
   class UpdateExamService
-    attr_reader :exam_params, :exam
-    def initialize(exam_params)
+    attr_reader :exam_params, :exam, :org
+    def initialize(exam_params, org)
       @exam_params = exam_params
       @exam = Exam.find_by(id: exam_params[:id])
+      @org = org
     end
 
     def update
@@ -21,6 +22,7 @@ module Exams
 
     def validate_request
       raise UpdateExamError, 'Exam does not exists' if exam.nil?
+      raise UpdateExamError, 'Exam not belongs to your org' if exam.org != org
     end
 
     def build_batches
