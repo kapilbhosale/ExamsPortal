@@ -21,7 +21,7 @@ module Batches
 
     def validate_request
       raise DeleteBatchError, 'Batch does not exists' if batch.blank?
-      raise DeleteBatchError, 'Can not delete batch, org mismatch', if batch.org_id != org.id
+      raise DeleteBatchError, 'Can not delete batch, org mismatch' if batch.org_id != org.id
     end
   end
 end
