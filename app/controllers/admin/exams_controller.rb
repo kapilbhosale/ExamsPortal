@@ -27,7 +27,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def show
-    exam = Exam.where(org: current_org).find_by_exam_typeincludes(questions: :options).find_by(id: params[:id])
+    exam = Exam.where(org: current_org).includes(questions: :options).find_by(id: params[:id])
     if exam.present?
       @questions_by_section = exam.questions.group_by(&:section_id)
       @sections_by_id = Section.all.index_by(&:id)

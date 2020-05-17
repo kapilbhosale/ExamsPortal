@@ -77,7 +77,7 @@ class Admin::StudentsController < Admin::BaseController
 
   def edit
     @student = Student.find_by(id: params[:id], org: current_org)
-    @student_data = {roll_number: Student.suggest_roll_number, batches: Batch.where(org: current_org).all_batches, categories: Category.all}
+    @student_data = {roll_number: Student.suggest_roll_number(current_org), batches: Batch.where(org: current_org).all_batches, categories: Category.all}
   end
 
   def update
