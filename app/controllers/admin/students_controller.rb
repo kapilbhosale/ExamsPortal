@@ -65,7 +65,6 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def create
-    binding.pry
     @response = Students::AddStudentService.new(student_params, params[:student][:batches], current_org).call
     set_flash
     redirect_to admin_students_path
