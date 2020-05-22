@@ -43,7 +43,7 @@ require 'csv'
 
 class Student < ApplicationRecord
   belongs_to :category, optional: true
-  has_many   :student_batches
+  has_many   :student_batches, dependent: :destroy
   has_many   :batches, through: :student_batches
   belongs_to :org
 
