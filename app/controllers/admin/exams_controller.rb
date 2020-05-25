@@ -39,6 +39,21 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def change_question_answer
+    if params[:option_ids].blank?
+      flash[:error] = 'Atleast one option must be slected'
+      redirect_back(fallback_location: admin_exams_path) and return
+    end
+    question = Question.find_by(id: params[:question_id])
+    if question.exams.pluck(:org_id).first == current_org.id
+      question.options.pluck(:id, :is_answer)
+      question.options.update_all(is_answer: false)
+      question.options.where(id: params[:option_ids]).update_all(is_answer: true)
+      flash[:notice] = 'Options updated successfully..!'
+      redirect_back(fallback_location: admin_exams_path)
+    else
+      flash[:error] = 'Cannot update this question, invalid org'
+      redirect_back(fallback_location: admin_exams_path)
+    end
   end
 
   def destroy

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       collection do
         get 'question_bank', to: 'exams#question_bank'
         get 'new_jee', to: 'exams#new_jee'
+        post 'change_question_answer'
       end
     end
     resources :practice_questions
