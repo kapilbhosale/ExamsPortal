@@ -13,12 +13,22 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
     end
 
-    if student.app_login?
-      render json: { message: 'You are ALREADY logged in some other mobile. Please Contact Admin.'}, status: :unauthorized and return
+    unless login_allowed?(student)
+      message = "You are ALREADY logged in some other mobile. \n"
+      message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
+      message += 'Please Contact Admin. '
+      message += current_org&.data&.dig('admin_contacts')
+      render json: { message: message }, status: :unauthorized and return
     end
 
     sign_in(student)
-    student.update(app_login: true)
+    student.update(
+      app_login: true,
+      deviceUniqueId: device_params[:deviceUniqueId],
+      deviceName: device_params[:deviceName],
+      manufacturer: device_params[:manufacturer],
+      brand: device_params[:brand]
+    )
 
     render json: student_json(student), status: :ok
   end
@@ -32,6 +42,30 @@ class Api::V1::StudentsController < Api::V1::ApiController
   end
 
   private
+
+  # return true if allowed to login, false if not allowed to login
+  def login_allowed?(student)
+    return true if !student.app_login?
+
+    if device_params[:deviceUniqueId].present? && student.deviceUniqueId.blank?
+      return true
+    end
+
+    return true if student.deviceUniqueId == device_params[:deviceUniqueId]
+
+    return false if student.app_login? && student.deviceUniqueId != device_params[:deviceUniqueId]
+
+    false
+  end
+
+  def device_params 
+    {
+      deviceUniqueId: params[:deviceUniqueId],
+      deviceName: params[:deviceName],
+      manufacturer: params[:manufacturer],
+      brand: params[:brand],
+    }
+  end
 
   def student_json(student)
     {

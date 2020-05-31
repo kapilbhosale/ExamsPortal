@@ -122,6 +122,13 @@
               <h3>
                 <%= @student.app_login? ? 'Student Already Logged In' : 'No login of this student.'%>
               </h3>
+              <p>
+                <b>Login Device details: </b>
+                device Unique Id: <%= @student.deviceUniqueId%>
+                deviceName: <%= @student.deviceName%>
+                manufacturer: <%= @student.manufacturer%>
+                brand: <%= @student.brand%>
+              </p>
             </div>
           </div>
         </div>

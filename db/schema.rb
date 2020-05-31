@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_16_100427) do
+ActiveRecord::Schema.define(version: 2020_05_31_092636) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
@@ -334,6 +334,10 @@ ActiveRecord::Schema.define(version: 2020_05_16_100427) do
     t.string "fcm_token"
     t.integer "org_id", default: 0
     t.boolean "app_login", default: false
+    t.string "deviceUniqueId"
+    t.string "deviceName"
+    t.string "manufacturer"
+    t.string "brand"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
