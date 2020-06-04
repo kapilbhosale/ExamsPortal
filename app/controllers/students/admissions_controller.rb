@@ -4,6 +4,7 @@ require 'base64'
 class Students::AdmissionsController < ApplicationController
   # layout false, only: [:show]
   MERCHANT_ID = "3300260987"
+  skip_before_action :verify_authenticity_token, only: [:admission_done]
 
   def show
     # @url = eazy_pay_url
