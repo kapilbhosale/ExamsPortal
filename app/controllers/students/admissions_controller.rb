@@ -6,12 +6,17 @@ class Students::AdmissionsController < ApplicationController
   MERCHANT_ID = "3300260987"
 
   def show
-    @url = eazy_pay_url
+    # @url = eazy_pay_url
   end
 
   def create
-    # binding.pry
-    redirect_to eazy_pay_url
+    if params[:name].present?
+      na = NewAdmission.create(
+        first_name: params[:name],
+        parent_mobile: params[:parent_mobile]
+      )
+    end
+    redirect_to eazy_pay_url(na.id.to_s, '2', na.parent_mobile.to_s)
   end
 
   def admission_done
@@ -33,11 +38,11 @@ class Students::AdmissionsController < ApplicationController
       crypt_string
     end
 
-    def eazy_pay_url
+    def eazy_pay_url(record_id, amount, parent_mobile)
       icid = "270074"
-      reference_number = "112"    # db id for the the admission table
-      sub_merchant_id = "123456"     #student roll _number
-      transaction_amount = '11'
+      reference_number = record_id    # db id for the the admission table
+      sub_merchant_id = parent_mobile     #student roll _number
+      transaction_amount = amount
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
