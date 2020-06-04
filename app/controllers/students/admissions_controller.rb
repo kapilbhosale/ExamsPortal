@@ -41,7 +41,7 @@ class Students::AdmissionsController < ApplicationController
       transaction_amount = '101'
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
-      return_url = "https://localhost:3000/students"
+      return_url = "https://exams.smartclassapp.in/admission-done"
 
       plain_url = "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory fields=#{mandatory_fields}&optional fields=&returnurl=#{(return_url)}&Reference No=#{(reference_number)}&submerchantid=#{(sub_merchant_id)}&transaction amount=#{(transaction_amount)}&paymode=#{('9')}"
 
