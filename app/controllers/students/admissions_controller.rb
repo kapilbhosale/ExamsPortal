@@ -35,7 +35,7 @@ class Students::AdmissionsController < ApplicationController
 
     def eazy_pay_url
       icid = "270074"
-      reference_number = "10003"    # db id for the the admission table
+      reference_number = "112"    # db id for the the admission table
       sub_merchant_id = "123456"     #student roll _number
       transaction_amount = '11'
 
