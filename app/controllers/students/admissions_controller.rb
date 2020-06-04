@@ -15,7 +15,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def admission_done
-    binding.pry
     puts params
     @params = params
   end
