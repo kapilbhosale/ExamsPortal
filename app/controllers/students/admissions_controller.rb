@@ -36,9 +36,9 @@ class Students::AdmissionsController < ApplicationController
 
     def eazy_pay_url
       icid = "270074"
-      reference_number = "10002"    # db id for the the admission table
-      sub_merchant_id = "12345"     #student roll _number
-      transaction_amount = '101'
+      reference_number = "10003"    # db id for the the admission table
+      sub_merchant_id = "123456"     #student roll _number
+      transaction_amount = '11'
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
