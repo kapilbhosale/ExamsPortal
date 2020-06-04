@@ -2,17 +2,20 @@ require 'openssl'
 require 'base64'
 
 class Students::AdmissionsController < ApplicationController
-  layout false, only: [:show]
+  # layout false, only: [:show]
   MERCHANT_ID = "3300260987"
 
   def show
+    @url = eazy_pay_url
   end
 
   def create
+    # binding.pry
     redirect_to eazy_pay_url
   end
 
   def admission_done
+    binding.pry
     puts params
     @params = params
   end
@@ -38,11 +41,10 @@ class Students::AdmissionsController < ApplicationController
       transaction_amount = '101'
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
-      return_url = "https://exams.smaartclassapp.in/admission-done"
+      return_url = "https://localhost:3000/students"
 
       plain_url = "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory fields=#{mandatory_fields}&optional fields=&returnurl=#{(return_url)}&Reference No=#{(reference_number)}&submerchantid=#{(sub_merchant_id)}&transaction amount=#{(transaction_amount)}&paymode=#{('9')}"
 
-      encrypted_url = "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory fields=#{encrypt(mandatory_fields)}&optional fields=&returnurl=#{encrypt(return_url)}&Reference No=#{encrypt(reference_number)}&submerchantid=#{encrypt(sub_merchant_id)}&transaction amount=#{encrypt(transaction_amount)}&paymode=#{encrypt('9')}"
-      encrypted_url
+      "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory%20fields=#{encrypt(mandatory_fields)}&optional%20fields=&returnurl=#{encrypt(return_url)}&Reference No=#{encrypt(reference_number)}&submerchantid=#{encrypt(sub_merchant_id)}&transaction%20amount=#{encrypt(transaction_amount)}&paymode=#{encrypt('9')}"
     end
 end

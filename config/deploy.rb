@@ -44,8 +44,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse kapil/develop`
-        puts "WARNING: HEAD is not the same as kapil/develop"
+      unless `git rev-parse HEAD` == `git rev-parse kapil/rcc-payment`
+        puts "WARNING: HEAD is not the same as kapil/rcc-payment"
         puts "Run `git push` to sync changes."
         exit
       end
