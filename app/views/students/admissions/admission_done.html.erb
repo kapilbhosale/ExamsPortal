@@ -1,3 +1,58 @@
-<p> process completed.. Thank you.</p>
+<div style="text-align: center;">
+  <% if @status == true %>
+    <div>
+      <h3 style="color: green;"> 
+        Congratulations, Payment Sucessfull.
+      </h3>
+      <p>
+        RCC team will Activate Your account.
+        Please take a screenshot of this page:
+      </p>
+      <table class="table" style="text-align: left;">
+        <tr>
+          <td>status: </td>
+          <td>Success</td>
+        </tr>
+        <tr>
+          <td>reference no: </td>
+          <td><%= @new_admission&.id %></td>
+        </tr>
+      </table>
+    </div>
+  <% else %>
+  <div>
+    <h3 style="color: red;"> 
+      Payment Failed.
+    </h3>
+    <p>
+      Please take a screenshot of this page, for further reference.
+    </p>
+    <table class="table" style="text-align: left;">
+      <tr>
+        <td>status: </td>
+        <td>Failed</td>
+      </tr>
+      <tr>
+        <td>reference no: </td>
+        <td><%= @new_admission&.id %></td>
+      </tr>
+      <tr>
+        <td>error code: </td>
+        <td><%= @error_code %></td>
+      </tr>
+      <tr>
+        <td>error: </td>
+        <td><%= @erorr_info %></td>
+      </tr>
+    </table>
+  </div>
+  <% end %>
 
-<%= @params.inspect %>
+  <p style="color: peru;">
+    Note: Do not Panic, in case of faulure. We will figure it out.
+    Contact numbers:
+    9075402222,
+    9075392222
+  </p>
+</div>
+

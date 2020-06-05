@@ -4,6 +4,7 @@
 #
 #  id                   :bigint(8)        not null, primary key
 #  address              :text
+#  batch                :integer          default(NULL)
 #  city                 :string
 #  district             :string
 #  email                :string
@@ -12,6 +13,7 @@
 #  last_exam_percentage :string
 #  last_name            :string
 #  middle_name          :string
+#  name                 :string
 #  parent_mobile        :string           not null
 #  payment_status       :integer          default("initial")
 #  school_name          :string
@@ -32,14 +34,18 @@ class NewAdmission < ApplicationRecord
   }
 
   enum gender: { male: 1, female: 2, other: 3 }
-  enum course: { physics: 1, chemistry: 2, biology: 3, pcb: 4 }
+  # enum course: { physics: 1, chemistry: 2, biology: 3, pcb: 4 }
+  enum batch: { '11th': 1, '12th': 2, 'repeater': 3, 'crash_course': 4 }
 
   after_create :create_unique_payment_id
 
   private
 
   def create_unique_payment_id
-    self.payment_id = SecureRandom.uuid
+    self.payment_id = loop do
+      payment_id = (SecureRandom.random_number * 10000000000000000).to_i
+      break payment_id unless self.class.exists?(payment_id: payment_id)
+    end
     save
   end
 end
