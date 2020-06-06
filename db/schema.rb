@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_05_071837) do
+ActiveRecord::Schema.define(version: 2020_06_06_114101) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,11 @@ ActiveRecord::Schema.define(version: 2020_06_05_071837) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.integer "batch", default: 0
+    t.integer "rcc_branch", default: 0
+    t.jsonb "payment_callback_data", default: {}
+    t.string "error_code"
+    t.string "error_info"
+    t.string "reference_id"
   end
 
   create_table "notifications", force: :cascade do |t|

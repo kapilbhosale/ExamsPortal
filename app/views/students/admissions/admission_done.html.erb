@@ -8,6 +8,9 @@
         RCC team will Activate Your account.
         Please write down the Reference Number for futher communication.
       </p>
+      <p style="color: green;">
+        Also, take printout of the receipt.
+      </p>
       <table class="table" style="text-align: left;">
         <tr>
           <td>status: </td>
@@ -18,6 +21,9 @@
           <td><%= @new_admission&.id %></td>
         </tr>
       </table>
+      <div style="text-align: right;">
+        <button class="btn"><i class="fa fa-home"></i> Print Receipt</button>
+      </div>
     </div>
   <% else %>
     <div>
@@ -26,6 +32,9 @@
       </h3>
       <p>
         Please write down the Reference Number, error code, and error for futher communication.
+      </p>
+      <p style="color: green;">
+        Also, take printout of the receipt.
       </p>
       <table class="table" style="text-align: left;">
         <tr>
@@ -45,10 +54,15 @@
           <td><%= @erorr_info %></td>
         </tr>
       </table>
+      <div style="text-align: center;">
+        <a href= <%= "/print-receipt/#{@new_admission.reference_id}" %> >
+          <button class="btn"><i class="fa fa-print"></i> Print Receipt </button>
+        </a>
+      </div>
     </div>
   <% end %>
 
-  <p style="color: peru;">
+  <p style="color: peru; padding-top: 20px;">
     Note: Do not Panic, in case of failure. We will figure it out.
     Contact numbers: 9075402222, 9075392222.
   </p>

@@ -11,11 +11,21 @@ class Students::AdmissionsController < ApplicationController
     # @url = eazy_pay_url
   end
 
+  def print_receipt
+    # @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
+    # remove_me
+    @new_admission = NewAdmission.last
+    render pdf: "student information",
+            template: "/students/admissions/receipt.pdf.erb",
+            locals: {students: {}},
+            footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
+  end
+
   def create
     errors = []
-    must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender]
+    must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
-      errors << "#{key} cannot be blank." if new_admission_params[key].blank?
+      errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
     end
     if params[:parent_mobile].length != 10 || !is_number?(params[:parent_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
@@ -24,24 +34,27 @@ class Students::AdmissionsController < ApplicationController
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
 
-    if errors.blank?
-      course_name = new_admission_params.delete(:course)
-      course_id = Course.find_by(name: course_name)&.id
+    course_name = new_admission_params.delete(:course)
+    course = Course.find_by(name: course_name)
 
+    errors << "Invalid Course, please contact admin." if course.blank?
+
+    if errors.blank?
       new_admission = NewAdmission.new
       new_admission.name = new_admission_params[:name]
       new_admission.email = new_admission_params[:email]
       new_admission.parent_mobile = new_admission_params[:parent_mobile]
       new_admission.student_mobile = new_admission_params[:student_mobile]
       new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
-      new_admission.course_id = course_id
+      new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
+      new_admission.course_id = course.id
       new_admission.gender = new_admission_params[:gender]
 
       if new_admission.save
         new_admission.in_progress!
         redirect_to eazy_pay_url(
           new_admission.payment_id,
-          '2',
+          course.fees.to_s,
           "#{new_admission.parent_mobile}#{new_admission.id}")
       else
         flash[:error] = new_admission.errors.full_messages
@@ -49,7 +62,7 @@ class Students::AdmissionsController < ApplicationController
       end
     else
       flash[:error] = errors
-      redirect_back(fallback_loceation: '/new-admission')
+      redirect_back(fallback_location: '/new-admission')
     end
   end
 
@@ -61,10 +74,19 @@ class Students::AdmissionsController < ApplicationController
     @status = (params['Response Code'] == 'E000')
     @error_code = params['Response Code']
     @new_admission = NewAdmission.find_by(payment_id: params['ReferenceNo'])
-    if @new_admission && @status
-      @new_admission.success!
-    else
-      @new_admission && @new_admission.failure!
+    
+    # remove_me
+    @new_admission = NewAdmission.first
+    if @new_admission
+      @new_admission.payment_callback_data = params
+      @new_admission.error_code = @error_code
+      @new_admission.error_info = error_info[@error_code]
+      if @status
+        @new_admission.success!
+      else
+        @new_admission && @new_admission.failure!
+      end
+      @new_admission.save
     end
     @erorr_info = error_info[@error_code]
   end
@@ -92,6 +114,7 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
       transaction_amount = amount
+      optional_fields = ""
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
@@ -102,7 +125,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def new_admission_params
-      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender)
+      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch)
     end
 
 

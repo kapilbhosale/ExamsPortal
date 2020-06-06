@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'new-admission', to: 'students/admissions#show'
   get 'admission-done', to: 'students/admissions#admission_done'
   post 'admission-done', to: 'students/admissions#admission_done'
+  get 'print-receipt/:reference_id', to: 'students/admissions#print_receipt'
 
   namespace :students do
     get 'videos' => 'videos#lectures'
