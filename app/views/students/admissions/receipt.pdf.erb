@@ -6,10 +6,48 @@
       <table class="table table-vcenter text-nowrap">
         <tbody>
           <tr>
+            <td>status: </td>
+            <td><%= @new_admission.error_code == "E000" ? 'Sucessfully, Paid.' : 'Transaction Failed' %></td>
+          </tr>
+          <tr>
+            <td>reference no: </td>
+            <td><%= @new_admission&.id %></td>
+          </tr>
+          <tr>
+            <td>error code: </td>
+            <td><%= @new_admission.error_code %></td>
+          </tr>
+          <tr>
+            <td>error info: </td>
+            <td><%= @new_admission.error_info %></td>
+          </tr>
+          <tr>
             <td>Name of Student: </td>
-            <td><%= @new_admission.name </td>
+            <td><%= @new_admission.name %></td>
+          </tr>
+          <tr>
+            <td>RCC Branch: </td>
+            <td><%= @new_admission.rcc_branch %></td>
+          </tr>
+          <tr>
+            <td>Course Selected: </td>
+            <td><%= @new_admission.course.name %></td>
+          </tr>
+          <tr>
+            <td>Total Fees Paid: </td>
+            <td><b><%= @new_admission.course.fees %></b></td>
+          </tr>
+          <tr>
+            <td>Total Fees Paid: </td>
+            <td><b><%= @new_admission.course.fees %></b></td>
+          </tr>
+          <tr>
+            <td>Date of Payment: </td>
+            <td><%= @new_admission.created_at.strftime("%F, %T") %></td>
           </tr>
         </tbody>
       </table>
+      <b>Please Keep this receipt for further reference.</b>
+      <p>Thank you, for your admission.</p>
   </div>
 </div>

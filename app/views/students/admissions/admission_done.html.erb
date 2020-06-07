@@ -21,8 +21,10 @@
           <td><%= @new_admission&.id %></td>
         </tr>
       </table>
-      <div style="text-align: right;">
-        <button class="btn"><i class="fa fa-home"></i> Print Receipt</button>
+      <div style="text-align: center;">
+        <a href= <%= "/print-receipt/#{@new_admission.reference_id}"%> target="_blank">
+          <button class="btn"><i class="fa fa-print"></i> Print Receipt </button>
+        </a>
       </div>
     </div>
   <% else %>
@@ -55,7 +57,7 @@
         </tr>
       </table>
       <div style="text-align: center;">
-        <a href= <%= "/print-receipt/#{@new_admission.reference_id}" %> >
+        <a href= <%= "/print-receipt/#{@new_admission.reference_id}"%> target="_blank">
           <button class="btn"><i class="fa fa-print"></i> Print Receipt </button>
         </a>
       </div>

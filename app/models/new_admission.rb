@@ -30,6 +30,9 @@
 #
 
 class NewAdmission < ApplicationRecord
+
+  belongs_to :course
+
   enum payment_status: {
     initial: 0,
     initiated: 1,

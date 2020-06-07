@@ -12,9 +12,7 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def print_receipt
-    # @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
-    # remove_me
-    @new_admission = NewAdmission.last
+    @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
     render pdf: "student information",
             template: "/students/admissions/receipt.pdf.erb",
             locals: {students: {}},
@@ -74,9 +72,7 @@ class Students::AdmissionsController < ApplicationController
     @status = (params['Response Code'] == 'E000')
     @error_code = params['Response Code']
     @new_admission = NewAdmission.find_by(payment_id: params['ReferenceNo'])
-    
-    # remove_me
-    @new_admission = NewAdmission.first
+
     if @new_admission
       @new_admission.payment_callback_data = params
       @new_admission.error_code = @error_code
