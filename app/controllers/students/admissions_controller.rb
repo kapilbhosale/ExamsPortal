@@ -32,8 +32,8 @@ class Students::AdmissionsController < ApplicationController
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
 
-    course_name = new_admission_params.delete(:course)
-    course = Course.find_by(name: course_name)
+    selected_courses = new_admission_params.delete(:course)
+    course = Course.get_course(selected_courses)
 
     errors << "Invalid Course, please contact admin." if course.blank?
 
@@ -88,7 +88,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   private
-    # data = "8001|1234|80|9000000001"
 
     def is_number? string
       true if Float(string) rescue false
@@ -121,7 +120,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def new_admission_params
-      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch)
+      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, course: [])
     end
 
 

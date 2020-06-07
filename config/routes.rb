@@ -88,7 +88,9 @@ Rails.application.routes.draw do
       get 'app-version', to: 'home#app_version'
 
       resources :notifications, only: [:index]
-      resources :videos, only: [:index]
+      resources :videos, only: [:index] do
+        get 'get_yt_url'
+      end
       resources :study_pdfs, only: [:index]
     end
   end

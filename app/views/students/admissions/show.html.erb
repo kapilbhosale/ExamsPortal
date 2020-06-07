@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Bootstrap Example</title>
+    <title>RCC Admissions</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -107,7 +107,6 @@
           </div>
           <div class="form-group">
             <select id="batch" class="form-control" name="batch">
-                <option value="foundation">Foundation</option>
                 <option value="11th">11th</option>
                 <option value="12th">12th</option>
                 <option value="repeater">Repeater</option>
@@ -122,23 +121,19 @@
           </div>
           <div class="form-group" style="text-align: center;">
             <div id="c" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course" id="inlineRadio1" value="chem">
+              <input class="form-check-input" type="checkbox" name="course[]" value="chem">
               <label class="form-check-label" for="inlineRadio1">Chemistry</label>
             </div>
             <div id="p" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course" id="inlineRadio2" value="phy">
+              <input class="form-check-input" type="checkbox" name="course[]" value="phy">
               <label class="form-check-label" for="inlineRadio2">Physics</label>
             </div>
             <div id="b" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course" id="inlineRadio2" value="bio">
+              <input class="form-check-input" type="checkbox" name="course[]" value="bio">
               <label class="form-check-label" for="inlineRadio2">Biology</label>
             </div>
-            <!-- <div id="pc" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course" id="inlineRadio2" value="pc">
-              <label class="form-check-label" for="inlineRadio2">P + C </label>
-            </div> -->
             <div id="pcb" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course" id="inlineRadio2" value="pcb">
+              <input class="form-check-input" type="checkbox" name="course[]" value="pcb">
               <label class="form-check-label" for="inlineRadio2">P + C + B</label>
             </div>
           </div>
@@ -146,7 +141,8 @@
 
         <div class="form-group form-check" style="background-color: rgb(240, 202, 202); padding: 10px 10px 10px 30px;">
           <label class="form-check-label">
-            <input class="form-check-input" type="checkbox" name="remember" required> I agree, to proceed my admission with RCC.
+            <input class="form-check-input" type="checkbox" name="remember" required>
+              I agree, to proceed my admission with RCC.
             <div class="valid-feedback">Valid.</div>
             <div class="invalid-feedback">Check this checkbox to continue.</div>
           </label>

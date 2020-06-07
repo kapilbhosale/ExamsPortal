@@ -21,4 +21,18 @@ class Course < ApplicationRecord
       pc: 50_000,
     }
   end
+
+  def self.get_course(courses)
+    return Course.find_by(name: 'pcb') if courses.include?('pcb')
+
+    return Course.find_by(name: courses.first) if courses.length == 1
+    return Course.find_by(name: 'pcb') if courses.length == 3
+    return Course.find_by(name: 'pcb') if courses.length == 4
+
+    return Course.find_by(name: 'pc') if courses.include?('phy') && courses.include?('checm')
+    return Course.find_by(name: 'pb') if courses.include?('phy') && courses.include?('bio')
+    return Course.find_by(name: 'cb') if courses.include?('chem') && courses.include?('bio')
+
+    Course.find_by(name: 'pcb')
+  end
 end
