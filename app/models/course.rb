@@ -11,4 +11,14 @@
 #
 
 class Course < ApplicationRecord
+
+  def self.total_fees_by_name
+    {
+      phy: 25_000,
+      chem: 25_000,
+      bio: 25_000,
+      pdb: 60_000,
+      pc: 50_000,
+    }
+  end
 end
