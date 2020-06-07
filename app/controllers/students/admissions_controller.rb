@@ -52,7 +52,7 @@ class Students::AdmissionsController < ApplicationController
         new_admission.in_progress!
         redirect_to eazy_pay_url(
           new_admission.payment_id,
-          course.fees.to_s,
+          course.fees,
           "#{new_admission.parent_mobile}#{new_admission.id}")
       else
         flash[:error] = new_admission.errors.full_messages
@@ -109,8 +109,8 @@ class Students::AdmissionsController < ApplicationController
       icid = "270074"
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
-      transaction_amount = amount
-      optional_fields = ""
+      transaction_amount = (amount + 120).to_s
+      optional_fields = "#{amount}|120"
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
