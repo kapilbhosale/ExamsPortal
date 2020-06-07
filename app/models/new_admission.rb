@@ -43,7 +43,7 @@ class NewAdmission < ApplicationRecord
 
   enum gender: { male: 1, female: 2, other: 3 }
   # enum course: { physics: 1, chemistry: 2, biology: 3, pcb: 4 }
-  enum batch: { '11th': 1, '12th': 2, 'repeater': 3, 'crash_course': 4 }
+  enum batch: { '11th': 1, '12th': 2, 'repeater': 3, 'crash_course': 4, 'foundation': 5 }
 
   enum rcc_branch: {latur: 0, nanded: 1}
 
