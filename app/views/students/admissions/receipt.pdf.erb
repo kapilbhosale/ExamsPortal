@@ -34,12 +34,8 @@
             <td><%= @new_admission.course.name %></td>
           </tr>
           <tr>
-            <td>Fist Installment of FEES: </td>
+            <td>Installment of Fees paid</td>
             <td><b><%= @new_admission.course.fees %></b></td>
-          </tr>
-          <tr>
-            <td>Remaining Fees: </td>
-            <td><%= Course.total_fees_by_name[@new_admission.course.name.to_sym] - @new_admission.course.fees %></td>
           </tr>
           <tr>
             <td>Date of Payment: </td>
