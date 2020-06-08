@@ -29,7 +29,7 @@ class Course < ApplicationRecord
     return Course.find_by(name: 'pcb') if courses.length == 3
     return Course.find_by(name: 'pcb') if courses.length == 4
 
-    return Course.find_by(name: 'pc') if courses.include?('phy') && courses.include?('checm')
+    return Course.find_by(name: 'pc') if courses.include?('phy') && courses.include?('chem')
     return Course.find_by(name: 'pb') if courses.include?('phy') && courses.include?('bio')
     return Course.find_by(name: 'cb') if courses.include?('chem') && courses.include?('bio')
 
