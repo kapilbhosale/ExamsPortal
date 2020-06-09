@@ -38,6 +38,14 @@
             <td><b><%= @new_admission.course.fees %></b></td>
           </tr>
           <tr>
+            <td>Online processing fees</td>
+            <td>120.00</td>
+          </tr>
+          <tr>
+            <td>Total Fees Paid</td>
+            <td><b><%= @new_admission.course.fees + 120 %></b></td>
+          </tr>
+          <tr>
             <td>Date of Payment: </td>
             <td><%= @new_admission.created_at.strftime("%F, %T") %></td>
           </tr>

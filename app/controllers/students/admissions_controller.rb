@@ -13,7 +13,7 @@ class Students::AdmissionsController < ApplicationController
 
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
-    render pdf: "student information",
+    render pdf: "Payment Receipt",
             template: "/students/admissions/receipt.pdf.erb",
             locals: {students: {}},
             footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
