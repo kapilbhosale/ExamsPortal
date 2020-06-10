@@ -31,7 +31,7 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def get_yt_url
-    lecture = VideoLecture.find_by(id: video_id)
+    lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
     render json: { url_hd: yt_url(lecture), url_sd: yt_url(lecture) }
