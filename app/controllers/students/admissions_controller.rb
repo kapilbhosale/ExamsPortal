@@ -7,6 +7,7 @@ class Students::AdmissionsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:admission_done]
 
   def show
+    redirect_to "/" unless request.subdomain == 'exams'
     @errors = []
     # @url = eazy_pay_url
   end
