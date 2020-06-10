@@ -17,7 +17,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       message = "You are ALREADY logged in some other mobile. \n"
       message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
       message += 'Please Contact Admin. '
-      message += current_org&.data&.dig('admin_contacts')
+      message += current_org&.data&.dig('admin_contacts').to_s
       render json: { message: message }, status: :unauthorized and return
     end
 
