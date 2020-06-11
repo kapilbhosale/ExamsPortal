@@ -90,6 +90,37 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
+    SMS_USER_NAME = "sonkamble005@gmail.com"
+    SMS_PASSWORD = "myadmin"
+
+    def send_sms(new_admission)
+      require 'net/http'
+      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo="+new_admission.parent_mobile+"&Text="+sms_text(new_admission)+"";
+      uri = URI(strUrl)
+
+      Net::HTTP.get(uri)
+    end
+
+    def sms_text(new_admission)
+      "Dear Student,
+
+      Welcome to RCC, Your admission is Confirmed.
+
+      Branc:  #{new_admission.rcc_branch}
+      Course: #{new_admission.course.name}
+      Batch:  #{new_admission.batch}
+      Ref No: #{new_admission.id}
+
+      We will send you Roll Number and Login details before your course.
+
+      Your Course will start on 15th June 2020.
+
+      Thank You
+      Team RCC
+      "
+    end
+
     def is_number? string
       true if Float(string) rescue false
     end
