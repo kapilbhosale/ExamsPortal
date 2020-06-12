@@ -40,6 +40,6 @@ class Api::V1::VideosController < Api::V1::ApiController
   private
 
   def yt_url(lecture)
-    `youtube-dl --get-url --format best '#{lecture.url}'`
+    `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
   end
 end
