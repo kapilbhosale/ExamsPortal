@@ -13,7 +13,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
     end
 
-    if student.app_login?
+    unless login_allowed?(student)
       message = "You are ALREADY logged in some other mobile. \n"
       message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
       message += 'Please Contact Admin. '
