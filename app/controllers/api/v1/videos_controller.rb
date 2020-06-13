@@ -39,7 +39,22 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   private
 
+  def proxy_list
+    [
+      'uvxgivfo-1:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-2:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-3:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-4:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-5:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-6:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-7:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-8:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-9:1l0rqqeoj21y@p.webshare.io:80',
+      'uvxgivfo-10:1l0rqqeoj21y@p.webshare.io:80',
+    ]
+  end
+
   def yt_url(lecture)
-    `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
+    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
   end
 end
