@@ -34,7 +34,13 @@ class Api::V1::VideosController < Api::V1::ApiController
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
-    render json: { url_hd: yt_url(lecture), url_sd: yt_url(lecture) }
+    cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
+    if cached_url.blank?
+      cached_url = yt_url(lecture)
+      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+    end
+
+    render json: { url_hd: cached_url, url_sd: cached_url }
   end
 
   private
