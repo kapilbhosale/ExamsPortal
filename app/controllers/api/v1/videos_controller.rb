@@ -61,6 +61,9 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def yt_url(lecture)
+    str_url = `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
+    return str_url if str_url.present?
+
     `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
   end
 end
