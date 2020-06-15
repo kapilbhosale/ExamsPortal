@@ -53,7 +53,7 @@ class Students::AdmissionsController < ApplicationController
         new_admission.in_progress!
         redirect_to eazy_pay_url(
           new_admission.payment_id,
-          course.fees,
+          get_fees(new_admission_params[:batch], course),
           "#{new_admission.parent_mobile}#{new_admission.id}")
       else
         flash[:error] = new_admission.errors.full_messages
@@ -63,6 +63,20 @@ class Students::AdmissionsController < ApplicationController
       flash[:error] = errors
       redirect_back(fallback_location: '/new-admission')
     end
+  end
+
+  def get_fees(batch, course)
+    if batch == "12th"
+      return 12_000 if course.name == "phy"
+      return 12_000 if course.name == "chem"
+      return 9_000 if course.name == "bio"
+      return 24_000 if course.name == "pc"
+      return 21_000 if course.name == "pb"
+      return 21_000 if course.name == "cb"
+      return 33_000 if course.name == "pcb"
+    end
+
+    course.fees
   end
 
   def admission_done
@@ -80,6 +94,7 @@ class Students::AdmissionsController < ApplicationController
       @new_admission.error_info = error_info[@error_code]
       if @status
         @new_admission.success!
+        add_student(@new_admission)
       else
         @new_admission && @new_admission.failure!
       end
@@ -90,35 +105,78 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
-    SMS_USER_NAME = "sonkamble005@gmail.com"
-    SMS_PASSWORD = "myadmin"
+    def add_student(na)
+      org = Org.first
+      roll_number = Student.suggest_roll_number(org)
+      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
 
-    def send_sms(new_admission)
-      require 'net/http'
-      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo="+new_admission.parent_mobile+"&Text="+sms_text(new_admission)+"";
-      uri = URI(strUrl)
+      student = Student.find_or_initialize_by(email: email)
+      student.roll_number = roll_number
+      student.name = na.name
+      student.mother_name = "-"
+      student.gender = na.gender == 'male' ? 0 : 1
+      student.student_mobile = na.student_mobile
+      student.parent_mobile = na.parent_mobile
+      student.category_id = 1
+      student.password = na.parent_mobile
+      student.raw_password = na.parent_mobile
+      student.org_id = org.id
+      student.save
 
-      Net::HTTP.get(uri)
+      student.batches << get_batches(na.rcc_branch, na.course)
+      send_sms(student)
     end
 
-    def sms_text(new_admission)
-      "Dear Student,
+    SMS_USER_NAME = "divyesh92@yahoo.com"
+    SMS_PASSWORD = "myadmin"
 
-      Welcome to RCC, Your admission is Confirmed.
+    def send_sms(student)
+      require 'net/http'
+      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+sms_text(student)+"";
+      uri = URI(strUrl)
+      puts Net::HTTP.get(uri)
 
-      Branc:  #{new_admission.rcc_branch}
-      Course: #{new_admission.course.name}
-      Batch:  #{new_admission.batch}
-      Ref No: #{new_admission.id}
+      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile+"&Text="+sms_text(student)+"";
+      uri = URI(strUrl)
+      puts Net::HTTP.get(uri)
+    end
 
-      We will send you Roll Number and Login details before your course.
+    def sms_text(student)
+      "Dear Students, Welcome in the world of  RCC.
 
-      Your Course will start on 15th June 2020.
+      Your admission is confirmed.
 
-      Thank You
-      Team RCC
-      "
+      Name: #{student.name}
+      Course: #{student.batches.pluck(:name).join(",")}
+
+      your Login details are
+      Roll Number: #{student.roll_number}
+      Parent Mobile: #{student.parent_mobile}
+
+      Download App from given link
+      https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    end
+
+    def get_batches(rcc_branch, course)
+      if rcc_branch == "latur"
+        return Batch.where(name: 'Latur_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+        return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+      else
+        return Batch.where(name: 'Nanded_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+        return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+      end
     end
 
     def is_number? string
