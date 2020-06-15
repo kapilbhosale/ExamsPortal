@@ -11,7 +11,7 @@ class Admin::NotificationsController < Admin::BaseController
 
   def update
     notification = Notification.find_by(org: current_org, id: params[:id])
-    if params[:title].present? && params[:description].present?
+    if notification && validate_notification_params
       notification.title = params[:title]
       notification.description = params[:description]
       if notification.save
@@ -20,19 +20,18 @@ class Admin::NotificationsController < Admin::BaseController
           params[:batches].each do |batch_id|
             BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
           end
-          flash[:success] = "Notification updated, successfully"
         end
+        flash[:success] = "Notification updated, successfully"
       else
         flash[:error] = "Error in updating notification.."
       end
     end
     redirect_to admin_android_apps_path
-
   end
 
   def create
     notification = Notification.new
-    if params[:title].present? && params[:description].present?
+    if validate_notification_params
       notification.title = params[:title]
       notification.description = params[:description]
       notification.org_id = current_org.id
@@ -41,8 +40,8 @@ class Admin::NotificationsController < Admin::BaseController
           params[:batches].each do |batch_id|
             BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
           end
-          flash[:success] = "Notification created, successfully"
         end
+        flash[:success] = "Notification created, successfully"
       else
         flash[:error] = "Error in creating PDF.."
       end
@@ -55,5 +54,9 @@ class Admin::NotificationsController < Admin::BaseController
     notification.destroy if notification.present?
     flash[:success] = "Notification deleted, successfully"
     redirect_to admin_android_apps_path
+  end
+
+  def validate_notification_params
+    params[:title].present? && params[:description].present?
   end
 end
