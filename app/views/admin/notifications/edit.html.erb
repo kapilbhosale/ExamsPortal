@@ -1,0 +1,30 @@
+<div class="row" >
+  <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
+    <%= form_tag(admin_notification_path(@notification), method: :patch) do %>
+      <div class="card-body">
+        <h3 class="card-title">Edit Notification</h3>
+
+        <div class="form-group">
+          <input type="text" value="<%= @notification.title %>" class="form-control" name="title" id="title" placeholder="Enter title" required>
+        </div>
+
+        <div class="form-group">
+          <input type="text" value="<%= @notification.description %>" class="form-control" name="description" id="description" placeholder="Enter description" required>
+        </div>
+
+        <% selected_batch_ids = @notification.batches.ids %>
+        <div class="form-group">
+          <% @batches.each do |batch| %>
+            <label class="checkbox-inline">
+              <input name="batches[]" type="checkbox" value='<%= batch.id %>' <%= selected_batch_ids.include?(batch.id) ? ' checked' : '' %>>
+              <%= batch.name %>
+            </label>
+          <% end %>
+        </div>
+
+        <input type="submit" class="btn btn-primary pull-right" />
+      </div>
+
+    <% end %>
+  </div>
+</div>
