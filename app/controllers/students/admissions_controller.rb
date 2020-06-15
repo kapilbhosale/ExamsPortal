@@ -94,7 +94,7 @@ class Students::AdmissionsController < ApplicationController
       @new_admission.error_info = error_info[@error_code]
       if @status
         @new_admission.success!
-        add_student(@new_admission)
+        add_student(@new_admission) rescue nil
       else
         @new_admission && @new_admission.failure!
       end
