@@ -53,11 +53,14 @@ module Reports
 
       data = {}
       results.each do |student_exam_id, result|
+        student = student_exams_by_id[student_exam_id].student
+        next if student.blank?
+
         data[student_exam_id] ||= {}
-        data[student_exam_id][:roll_number] = student_exams_by_id[student_exam_id].student.roll_number
-        data[student_exam_id][:name] = student_exams_by_id[student_exam_id].student.name
-        data[student_exam_id][:parent_mobile] = student_exams_by_id[student_exam_id].student.parent_mobile
-        data[student_exam_id][:batch] = student_exams_by_id[student_exam_id].student.batches.pluck(:name).first
+        data[student_exam_id][:roll_number] = student.roll_number
+        data[student_exam_id][:name] = student.name
+        data[student_exam_id][:parent_mobile] = student.parent_mobile
+        data[student_exam_id][:batch] = student.batches.pluck(:name).first
         result.each do |section_id, res|
           data[student_exam_id][section_id] ||= res
         end
