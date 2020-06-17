@@ -115,10 +115,14 @@
           </div>
           <div class="form-group">
             <select id="batch" class="form-control" name="batch">
+              <% if @student.present? %>
+                <option value="12th">12th</option>
+              <% else %>
                 <option value="11th">11th</option>
                 <option value="12th">12th</option>
                 <option value="repeater">Repeater</option>
                 <option value="crash_course">Crash Course</option>
+              <% end %>
             </select>
           </div>
         </div>
