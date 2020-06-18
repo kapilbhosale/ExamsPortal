@@ -47,16 +47,16 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'uvxgivfo-1:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-2:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-3:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-4:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-5:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-6:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-7:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-8:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-9:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-10:1l0rqqeoj21y@p.webshare.io:80',
+      'tzhavepy-1:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-2:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-3:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-4:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-5:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-6:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-7:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-8:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-9:khj0m7z9kmor@p.webshare.io:80',
+      'tzhavepy-10:khj0m7z9kmor@p.webshare.io:80'
     ]
   end
 
@@ -67,3 +67,5 @@ class Api::V1::VideosController < Api::V1::ApiController
     `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
   end
 end
+
+
