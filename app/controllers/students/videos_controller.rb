@@ -28,4 +28,15 @@ class Students::VideosController < Students::BaseController
   def show_lecture
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
   end
+
+  def pay_vimeo
+  end
+
+  def play_yt
+  end
+
+  def play_yt_video
+    render json: { id: 'gfC8Y66tR6o'}
+    # redirect_to 'https://www.youtube.com/watch?v=gfC8Y66tR6o', status: 302
+  end
 end

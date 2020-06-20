@@ -51,16 +51,16 @@
         <div class="col-lg order-lg-first">
           <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-monitor'></i> My Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fe fe-monitor'></i>Online Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-airplay'></i> Mock Tests".html_safe, students_mock_tests_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fe fe-airplay'></i> Video Lectures".html_safe, students_videos_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-book'></i> Question Bank".html_safe, students_question_bank_path, class: current_page?(students_question_bank_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fe fe-book'></i> Study Pdfs".html_safe, students_question_bank_path, class: current_page?(students_question_bank_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-users'></i> External Students".html_safe, students_exam_subscription_path, class: current_page?(students_exam_subscription_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fe fe-users'></i> Notifications".html_safe, students_exam_subscription_path, class: current_page?(students_exam_subscription_path) ? "nav-link active" : "nav-link" %>
             </li>
           </ul>
         </div>

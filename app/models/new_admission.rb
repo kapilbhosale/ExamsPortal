@@ -27,6 +27,7 @@
 #  course_id             :integer
 #  payment_id            :string
 #  reference_id          :string
+#  student_id            :integer
 #
 
 class NewAdmission < ApplicationRecord
