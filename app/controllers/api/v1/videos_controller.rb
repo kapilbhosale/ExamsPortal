@@ -47,16 +47,36 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'tzhavepy-1:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-2:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-3:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-4:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-5:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-6:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-7:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-8:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-9:khj0m7z9kmor@p.webshare.io:80',
-      'tzhavepy-10:khj0m7z9kmor@p.webshare.io:80'
+      'qfzffyfo-1:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-2:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-3:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-4:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-5:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-6:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-7:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-8:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-9:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-10:gui1kqghpfhk@p.webshare.io:80',
+      'qxvxhkkv-1:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-2:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-3:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-4:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-5:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-6:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-7:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-8:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-9:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-10:hsgwq3c9l72g@p.webshare.io:80',
+      'xiunxxgd-1:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-2:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-3:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-4:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-5:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-6:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-7:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-8:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-9:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-10:kay3ohis2hz6@p.webshare.io:80'
     ]
   end
 
@@ -64,8 +84,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     str_url = `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
     return str_url if str_url.present?
 
-    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
+    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(29)]}`
   end
 end
-
 
