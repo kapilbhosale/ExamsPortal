@@ -147,7 +147,17 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
+  INITIAL_ONLINE_ROLL_NUMBER = 63632
     def suggest_online_roll_number(org, batch)
+      rn = Student
+        .where(org_id: org.id)
+        .where(id: batch.students.ids)
+        .where.not(new_admission_id: nil)
+        .pluck(:roll_number).max rescue nil
+
+      return rn + 1 if rn
+
+      INITIAL_ONLINE_ROLL_NUMBER
     end
 
     def add_student(na)
@@ -157,7 +167,7 @@ class Students::AdmissionsController < ApplicationController
       batches = get_batches(na.rcc_branch, na.course)
 
       student = Student.find_or_initialize_by(email: email)
-      student.roll_number = roll_number
+      student.roll_number = suggest_online_roll_number(org, batches.first)
       student.name = na.name
       student.mother_name = "-"
       student.gender = na.gender == 'male' ? 0 : 1
@@ -167,6 +177,7 @@ class Students::AdmissionsController < ApplicationController
       student.password = na.parent_mobile
       student.raw_password = na.parent_mobile
       student.org_id = org.id
+      student.new_admission_id = na.id
       student.save
 
       student.batches << batches
