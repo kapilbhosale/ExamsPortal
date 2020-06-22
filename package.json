@@ -8,6 +8,7 @@
     "global": "^4.3.2",
     "immutable": "^3.8.2",
     "mirror-creator": "^1.1.0",
+    "plyr": "^3.6.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-countdown-clock": "https://github.com/deepakjadhav288/react-countdown-clock/tarball/258158225b9a40f9220d2f14e435a35a73bc3b9f",

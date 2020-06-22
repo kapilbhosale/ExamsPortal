@@ -11,7 +11,12 @@ class Admin::StudentsController < Admin::BaseController
 
     @search = @search.search(search_params)
 
-    @students = @search.result.order(created_at: :desc).page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    @students = @search.result.order(created_at: :desc)
+
+    if request.format.html?
+      @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    end
+
     @batches = Batch.where(org: current_org).all_batches
 
     @students_data = @students.includes(:batches).order(:roll_number).map do |student|
@@ -21,7 +26,8 @@ class Admin::StudentsController < Admin::BaseController
           name: student.name,
           email: student.email,
           raw_password: student.raw_password,
-          parent_mobile: student.parent_mobile
+          parent_mobile: student.parent_mobile,
+          student_mobile: student.student_mobile,
       }
     end
 
@@ -37,12 +43,14 @@ class Admin::StudentsController < Admin::BaseController
       end
       format.csv do
         students_csv = CSV.generate(headers: true) do |csv|
-          csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
+          csv << ['Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Email', 'password', 'Batch']
 
           @students_data.each do |student|
             csv << [
                 student[:roll_number],
                 student[:name],
+                student[:student_mobile],
+                student[:parent_mobile],
                 student[:email],
                 student[:raw_password],
                 student[:batches]

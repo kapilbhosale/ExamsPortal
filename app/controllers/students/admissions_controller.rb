@@ -233,7 +233,7 @@ class Students::AdmissionsController < ApplicationController
         return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
         return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
         return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: 'Latur_11th_PC_2020') if course.name == 'pc'
         return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
         return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
       else
@@ -241,7 +241,7 @@ class Students::AdmissionsController < ApplicationController
         return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
         return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
         return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: 'Nanded_11th_PC_2020') if course.name == 'pc'
         return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
         return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
       end
