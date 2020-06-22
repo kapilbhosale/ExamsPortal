@@ -129,7 +129,13 @@ class Students::AdmissionsController < ApplicationController
             send_sms(student, true)
           end
         else
-          add_student(@new_admission) rescue nil
+          std = add_student(@new_admission) rescue nil
+          PaymentTransaction.create(
+            student_id: std.id,
+            amount: @new_admission.payment_callback_data['Total Amount'].to_f,
+            reference_number: @new_admission.payment_id,
+            new_admission_id: @new_admission.id
+          ) rescue nil
         end
       else
         @new_admission && @new_admission.failure!
@@ -141,10 +147,14 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
+    def suggest_online_roll_number(org, batch)
+    end
+
     def add_student(na)
       org = Org.first
       roll_number = Student.suggest_roll_number(org)
       email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
+      batches = get_batches(na.rcc_branch, na.course)
 
       student = Student.find_or_initialize_by(email: email)
       student.roll_number = roll_number
@@ -159,8 +169,10 @@ class Students::AdmissionsController < ApplicationController
       student.org_id = org.id
       student.save
 
-      student.batches << get_batches(na.rcc_branch, na.course)
+      student.batches << batches
+
       send_sms(student)
+      return student
     end
 
     SMS_USER_NAME = "divyesh92@yahoo.com"

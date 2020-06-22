@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get 'videos' => 'videos#lectures'
     get 'lectures' => 'videos#lectures'
     get 'lectures/:video_id' => 'videos#show_lecture'
+    get 'yt-player' => 'videos#play_yt'
+    get 'play-yt-video' => 'videos#play_yt_video'
 
     post 'authorise', to: 'login#authorise'
     get "auto-auth", to: 'home#auto_auth'

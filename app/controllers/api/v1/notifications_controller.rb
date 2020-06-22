@@ -3,13 +3,19 @@
 class Api::V1::NotificationsController < Api::V1::ApiController
 
   def index
-    json_data = [
+    @notifications = BatchNotification.includes(:notification).where(batch: current_student.batches).map(&:notification)
+    render json: notifications_json, status: :ok
+  end
+
+  private
+
+  def notifications_json
+    @notifications.map do |notification|
       {
-        title: 'Welcome to Online Exams and Video portals',
-        description: 'We are pleased to announce that, today we welcome all students to this online portal. We welcome your suggestions to improve your experience',
-        added_on: '27 April 2020'
+        title: notification.title,
+        description: notification.description,
+        added_on: notification.created_at
       }
-    ]
-    render json: json_data, status: :ok
+    end
   end
 end
