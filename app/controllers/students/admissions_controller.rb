@@ -80,6 +80,26 @@ class Students::AdmissionsController < ApplicationController
       @new_admission.error_info = error_info[@error_code]
       if @status
         @new_admission.success!
+        if @new_admission.student_id.present?
+          student = Student.find_by(id: @new_admission.student_id)
+          if student.present?
+            PaymentTransaction.create(
+              student_id: student.id,
+              amount: @new_admission.payment_callback_data['Total Amount'].to_f,
+              reference_number: @new_admission.payment_id,
+              new_admission_id: @new_admission.id
+            )
+            send_sms(student, true)
+          end
+        else
+          std = add_student(@new_admission) rescue nil
+          PaymentTransaction.create(
+            student_id: std.id,
+            amount: @new_admission.payment_callback_data['Total Amount'].to_f,
+            reference_number: @new_admission.payment_id,
+            new_admission_id: @new_admission.id
+          ) rescue nil
+        end
       else
         @new_admission && @new_admission.failure!
       end
@@ -90,7 +110,35 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
-    SMS_USER_NAME = "sonkamble005@gmail.com"
+    def suggest_online_roll_number(org, batch)
+    end
+
+    def add_student(na)
+      org = Org.first
+      roll_number = Student.suggest_roll_number(org)
+      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
+      batches = get_batches(na.rcc_branch, na.course)
+
+      student = Student.find_or_initialize_by(email: email)
+      student.roll_number = roll_number
+      student.name = na.name
+      student.mother_name = "-"
+      student.gender = na.gender == 'male' ? 0 : 1
+      student.student_mobile = na.student_mobile
+      student.parent_mobile = na.parent_mobile
+      student.category_id = 1
+      student.password = na.parent_mobile
+      student.raw_password = na.parent_mobile
+      student.org_id = org.id
+      student.save
+
+      student.batches << batches
+
+      send_sms(student)
+      return student
+    end
+
+    SMS_USER_NAME = "divyesh92@yahoo.com"
     SMS_PASSWORD = "myadmin"
 
     def send_sms(new_admission)
