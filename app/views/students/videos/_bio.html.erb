@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <% if @bio_videos.present? %>
     <% @bio_videos.each do |video| %>
-      <% video_url = "/students/lectures/#{video[:video_id]}" %>
+      <% video_url = "/students/lectures/#{video[:laptop_vimeo_id]}" %>
       <a href="<%= video_url %>">
         <div class="row" style="padding: 8px 0px; margin-bottom: -25px;">
           <div class="col-sm-12 col-md-6">

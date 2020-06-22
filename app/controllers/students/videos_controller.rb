@@ -12,6 +12,7 @@ class Students::VideosController < Students::BaseController
       .includes(:batches)
       .where(batches: {id: current_student.batches})
       .where(enabled: true)
+      .where.not(laptop_vimeo_id: nil)
       .order(id: :desc)
 
     lectures_data = {}

@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2020_06_22_083353) do
+ActiveRecord::Schema.define(version: 2020_06_22_205614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,6 +392,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_083353) do
     t.integer "video_type", default: 0
     t.integer "org_id", default: 0
     t.string "uploaded_thumbnail"
+    t.integer "laptop_vimeo_id"
   end
 
 end

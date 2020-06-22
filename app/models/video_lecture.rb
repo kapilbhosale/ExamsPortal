@@ -15,6 +15,7 @@
 #  video_type         :integer          default("vimeo")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  laptop_vimeo_id    :integer
 #  org_id             :integer          default(0)
 #  video_id           :string
 #

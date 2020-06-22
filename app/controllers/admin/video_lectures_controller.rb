@@ -62,7 +62,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       tag: params[:tag],
       enabled: params[:enabled] == 'false' ? false : true,
       uploaded_thumbnail: params[:thumbnail],
-      org_id: current_org.id
+      org_id: current_org.id,
+      laptop_vimeo_id: params[:laptop_vimeo_id]
     }
   end
 
@@ -75,7 +76,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       tag: params[:tag],
       subject: VideoLecture.subjects[params[:subject]],
       uploaded_thumbnail: params[:thumbnail],
-      org_id: current_org.id
+      org_id: current_org.id,
+      laptop_vimeo_id: params[:laptop_vimeo_id]
     }
   end
 end
