@@ -2,14 +2,34 @@ require 'openssl'
 require 'base64'
 
 class Students::AdmissionsController < ApplicationController
-  layout false, only: [:show]
+  layout false, only: [:show, :pay_installment, :create_installment]
   MERCHANT_ID = "3300260987"
   skip_before_action :verify_authenticity_token, only: [:admission_done]
 
   def show
-    redirect_to "/" unless request.subdomain == 'exams'
+    redirect_to '/' unless request.subdomain == 'exams'
     @errors = []
     # @url = eazy_pay_url
+  end
+
+  def pay_installment
+    redirect_to '/' unless request.subdomain == 'exams'
+    @errors = []
+  end
+
+  def create_installment
+    if params[:roll_number].present? && params[:parent_mobile].present?
+      @student = Student.find_by(parent_mobile: params[:parent_mobile], roll_number: params[:roll_number])
+      if @student.present?
+        render 'show'
+      else
+        flash[:error] = ['please enter valid roll number and parent mobile']
+        redirect_back(fallback_location: '/pay-installment')
+      end
+    else
+      flash[:error] = ['please enter valid roll number and parent mobile']
+      redirect_back(fallback_location: '/pay-installment')
+    end
   end
 
   def print_receipt
@@ -48,13 +68,16 @@ class Students::AdmissionsController < ApplicationController
       new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
       new_admission.course_id = course.id
       new_admission.gender = new_admission_params[:gender]
+      new_admission.student_id = new_admission_params[:student_id]
 
       if new_admission.save
         new_admission.in_progress!
         redirect_to eazy_pay_url(
           new_admission.payment_id,
-          course.fees,
-          "#{new_admission.parent_mobile}#{new_admission.id}")
+          get_fees(new_admission_params[:batch], course),
+          "#{new_admission.parent_mobile}#{new_admission.id}",
+          !new_admission.student_id.present?
+        )
       else
         flash[:error] = new_admission.errors.full_messages
         redirect_back(fallback_location: '/new-admission')
@@ -63,6 +86,20 @@ class Students::AdmissionsController < ApplicationController
       flash[:error] = errors
       redirect_back(fallback_location: '/new-admission')
     end
+  end
+
+  def get_fees(batch, course)
+    if batch == "12th"
+      return 12_000 if course.name == "phy"
+      return 12_000 if course.name == "chem"
+      return 9_000 if course.name == "bio"
+      return 24_000 if course.name == "pc"
+      return 21_000 if course.name == "pb"
+      return 21_000 if course.name == "cb"
+      return 33_000 if course.name == "pcb"
+    end
+
+    course.fees
   end
 
   def admission_done
@@ -141,32 +178,73 @@ class Students::AdmissionsController < ApplicationController
     SMS_USER_NAME = "divyesh92@yahoo.com"
     SMS_PASSWORD = "myadmin"
 
-    def send_sms(new_admission)
+    def send_sms(student, is_installment=false)
       require 'net/http'
       strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo="+new_admission.parent_mobile+"&Text="+sms_text(new_admission)+"";
+      if is_installment
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+installment_sms_text(student)+"";
+      else
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+sms_text(student)+"";
+      end
       uri = URI(strUrl)
+      puts Net::HTTP.get(uri)
 
-      Net::HTTP.get(uri)
+      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+      if is_installment
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile+"&Text="+installment_sms_text(student)+"";
+      else
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile+"&Text="+sms_text(student)+"";
+      end
+      uri = URI(strUrl)
+      puts Net::HTTP.get(uri)
     end
 
-    def sms_text(new_admission)
-      "Dear Student,
+    def installment_sms_text(student)
+      "Dear Students, Welcome in the world of  RCC.
 
-      Welcome to RCC, Your admission is Confirmed.
+      Your Installment is processed, successfully.
 
-      Branc:  #{new_admission.rcc_branch}
-      Course: #{new_admission.course.name}
-      Batch:  #{new_admission.batch}
-      Ref No: #{new_admission.id}
+      Name: #{student.name}
+      Course: #{student.batches.pluck(:name).join(",")}
 
-      We will send you Roll Number and Login details before your course.
+      Thank you
+      Team RCC"
+    end
 
-      Your Course will start on 15th June 2020.
+    def sms_text(student)
+      "Dear Students, Welcome in the world of  RCC.
 
-      Thank You
-      Team RCC
-      "
+      Your admission is confirmed.
+
+      Name: #{student.name}
+      Course: #{student.batches.pluck(:name).join(",")}
+
+      your Login details are
+      Roll Number: #{student.roll_number}
+      Parent Mobile: #{student.parent_mobile}
+
+      Download App from given link
+      https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    end
+
+    def get_batches(rcc_branch, course)
+      if rcc_branch == "latur"
+        return Batch.where(name: 'Latur_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+        return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+      else
+        return Batch.where(name: 'Nanded_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_chem_2020']) if course.name == 'pc'
+        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+        return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+      end
     end
 
     def is_number? string
@@ -184,12 +262,12 @@ class Students::AdmissionsController < ApplicationController
       crypt_string
     end
 
-    def eazy_pay_url(record_id, amount, parent_mobile)
+    def eazy_pay_url(record_id, amount, parent_mobile, add_processing_fees=true)
       icid = "270074"
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
-      transaction_amount = (amount + 120).to_s
-      optional_fields = "#{amount}|120"
+
+      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
@@ -200,7 +278,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def new_admission_params
-      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, course: [])
+      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, course: [])
     end
 
 

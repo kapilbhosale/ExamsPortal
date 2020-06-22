@@ -56,6 +56,10 @@
       <% end %>
 
       <%= form_tag students_admissions_path, method: :post, class: 'needs-validation form-horizontal' do %>
+        <div class="form-group d-none %>">
+          <input type="text" value="<%= @student&.id %>" class="form-control" name="student_id">
+        </div>
+
         <div class="form-group" style="text-align: center; background-color:rgb(201, 201, 201); padding: 10px;">
           <div class="form-check form-check-inline">
             <label class="form-check-label" for="a">RCC Branch: </label>
@@ -71,20 +75,20 @@
         </div>
 
         <div class="form-group">
-          <input type="text" class="form-control" id="name" placeholder="First middle LastName" name="name" required>
+          <input type="text" value="<%= @student&.name %>" class="form-control" id="name" placeholder="First middle LastName" name="name" required>
         </div>
-        <div class="form-group">
-          <input type="text" class="form-control" id="email" placeholder="Enter your Email" name="email" required>
+        <div class="form-group <%= @student.blank? ? '' : 'd-none' %>">
+          <input type="text" value="<%= @student&.email %>" class="form-control" id="email" placeholder="Enter your Email" name="email" required>
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter your email.</div>
         </div>
         <div class="form-group">
-          <input type="number" class="form-control" id="parent_mobile"  maxlength="10" placeholder="Parent Mobile" name="parent_mobile" required>
+          <input type="number" value="<%= @student&.parent_mobile %>" class="form-control" id="parent_mobile"  maxlength="10" placeholder="Parent Mobile" name="parent_mobile" required>
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter Parent Mobile.</div>
         </div>
         <div class="form-group">
-          <input type="number" class="form-control" id="student_mobile" maxlength="10" placeholder="Student Mobile" name="student_mobile" required>
+          <input type="number" value="<%= @student&.student_mobile %>" class="form-control" id="student_mobile" maxlength="10" placeholder="Student Mobile" name="student_mobile" required>
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter Student Mobile.</div>
         </div>
@@ -93,7 +97,7 @@
             <label class="form-check-label" for="a">Gender: </label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male">
+            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" checked>
             <label class="form-check-label" for="inlineRadio1">Male</label>
           </div>
           <div class="form-check form-check-inline">
@@ -103,21 +107,33 @@
         </div>
         <div>
           <div>
-            <p style="color: gray;">Batch Selection: </p>
+            <% if @student.present? %>
+              <p style="color: gray;">Your Existing Batch: </p>
+            <% else %>
+              <p style="color: gray;">Batch Selection: </p>
+            <% end %>
           </div>
           <div class="form-group">
             <select id="batch" class="form-control" name="batch">
+              <% if @student.present? %>
+                <option value="12th">12th</option>
+              <% else %>
                 <option value="11th">11th</option>
                 <option value="12th">12th</option>
                 <option value="repeater">Repeater</option>
                 <option value="crash_course">Crash Course</option>
+              <% end %>
             </select>
           </div>
         </div>
 
         <div style="background-color:azure; padding: 10px">
           <div>
-            <p style="color: gray;">Course Selection: </p>
+            <% if @student.present? %>
+              <p style="color: gray;">BUY new course or Pay installment: </p>
+            <% else %>
+              <p style="color: gray;">Course Selection: </p>
+            <% end %>
           </div>
           <div class="form-group" style="text-align: center;">
             <div id="c" class="form-check form-check-inline">

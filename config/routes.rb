@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post 'admission-done', to: 'students/admissions#admission_done'
   get 'print-receipt/:reference_id', to: 'students/admissions#print_receipt'
 
+  get 'pay-installment', to: 'students/admissions#pay_installment'
+
   namespace :students do
     get 'videos' => 'videos#lectures'
     get 'lectures' => 'videos#lectures'
@@ -40,7 +42,9 @@ Rails.application.routes.draw do
     patch 'home/update_profile', to: 'home#update_profile'
 
     resources :model_answers
-    resources :admissions
+    resources :admissions do
+      post :create_installment, on: :collection
+    end
   end
 
 

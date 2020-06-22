@@ -34,27 +34,57 @@ class Api::V1::VideosController < Api::V1::ApiController
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
-    render json: { url_hd: yt_url(lecture), url_sd: yt_url(lecture) }
+    cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
+    if cached_url.blank?
+      cached_url = yt_url(lecture)
+      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+    end
+
+    render json: { url_hd: cached_url, url_sd: cached_url }
   end
 
   private
 
   def proxy_list
     [
-      'uvxgivfo-1:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-2:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-3:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-4:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-5:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-6:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-7:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-8:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-9:1l0rqqeoj21y@p.webshare.io:80',
-      'uvxgivfo-10:1l0rqqeoj21y@p.webshare.io:80',
+      'qfzffyfo-1:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-2:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-3:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-4:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-5:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-6:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-7:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-8:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-9:gui1kqghpfhk@p.webshare.io:80',
+      'qfzffyfo-10:gui1kqghpfhk@p.webshare.io:80',
+      'qxvxhkkv-1:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-2:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-3:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-4:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-5:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-6:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-7:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-8:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-9:hsgwq3c9l72g@p.webshare.io:80',
+      'qxvxhkkv-10:hsgwq3c9l72g@p.webshare.io:80',
+      'xiunxxgd-1:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-2:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-3:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-4:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-5:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-6:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-7:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-8:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-9:kay3ohis2hz6@p.webshare.io:80',
+      'xiunxxgd-10:kay3ohis2hz6@p.webshare.io:80'
     ]
   end
 
   def yt_url(lecture)
-    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
+    str_url = `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
+    return str_url if str_url.present?
+
+    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(29)]}`
   end
 end
+
