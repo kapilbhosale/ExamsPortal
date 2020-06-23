@@ -25,7 +25,8 @@ class VideoLecture < ApplicationRecord
   validates :title, presence: true
   validates :subject, presence: true
 
-  enum subject: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4 }
+  enum subject: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4,
+    english: 5, econonics: 6, 'bk & a/c': 7,  's.p': 8, 'o.c.m.': 9, 'maths(com)': 10}
   enum video_type: { vimeo: 0, youtube: 1 }
 
   has_many :batch_video_lectures

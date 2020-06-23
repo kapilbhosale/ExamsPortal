@@ -27,6 +27,16 @@ class Api::V1::VideosController < Api::V1::ApiController
       'Biology' => lectures_data['bio'],
       'Maths' => lectures_data['maths'],
     }
+
+    if current_org&.subdomain == 'yashwant-clg'
+      json_data['English'] = lectures_data['english']
+      json_data['Econonics'] = lectures_data['econonics']
+      json_data['BK & A/C'] = lectures_data['bk & a/c']
+      json_data['S.P.'] = lectures_data['s.p']
+      json_data['O.C.M.'] = lectures_data['o.c.m.']
+      json_data['MATHS(com)'] = lectures_data['maths(com)']
+    end
+
     render json: json_data, status: :ok
   end
 
@@ -38,6 +48,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     if cached_url.blank?
       cached_url = yt_url(lecture)
       REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+      # expiry_time.
     end
 
     render json: { url_hd: cached_url, url_sd: cached_url }
