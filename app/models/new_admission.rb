@@ -48,6 +48,8 @@ class NewAdmission < ApplicationRecord
 
   enum rcc_branch: {latur: 0, nanded: 1}
 
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+
   after_create :create_unique_payment_id
   after_create :create_unique_reference_id
 

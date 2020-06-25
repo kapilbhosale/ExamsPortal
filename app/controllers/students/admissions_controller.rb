@@ -46,11 +46,17 @@ class Students::AdmissionsController < ApplicationController
     must_have_params.each do |key|
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
     end
+
     if params[:parent_mobile].length != 10 || !is_number?(params[:parent_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
+
     if params[:student_mobile].length != 10 || !is_number?(params[:student_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
+    end
+
+    if params[:email] && !params[:email].downcase.match?(URI::MailTo::EMAIL_REGEXP)
+      errors << "Please enter valid email."
     end
 
     selected_courses = new_admission_params.delete(:course)
@@ -72,12 +78,7 @@ class Students::AdmissionsController < ApplicationController
 
       if new_admission.save
         new_admission.in_progress!
-        redirect_to eazy_pay_url(
-          new_admission.payment_id,
-          get_fees(new_admission_params[:batch], course),
-          "#{new_admission.parent_mobile}#{new_admission.id}",
-          !new_admission.student_id.present?
-        )
+        redirect_to get_eazy_pay_url(new_admission, course)
       else
         flash[:error] = new_admission.errors.full_messages
         redirect_back(fallback_location: '/new-admission')
@@ -85,6 +86,25 @@ class Students::AdmissionsController < ApplicationController
     else
       flash[:error] = errors
       redirect_back(fallback_location: '/new-admission')
+    end
+  end
+
+  def get_eazy_pay_url(new_admission, course)
+    if new_admission.batch == '12th'
+      eazy_pay_url_v2(
+        new_admission.payment_id,
+        get_fees(new_admission_params[:batch], course),
+        "#{new_admission.parent_mobile}#{new_admission.id}",
+        !new_admission.student_id.present?,
+        new_admission
+      )
+    else
+      eazy_pay_url(
+        new_admission.payment_id,
+        get_fees(new_admission_params[:batch], course),
+        "#{new_admission.parent_mobile}#{new_admission.id}",
+        !new_admission.student_id.present?
+      )
     end
   end
 
@@ -273,6 +293,17 @@ class Students::AdmissionsController < ApplicationController
       crypt_string
     end
 
+    def encrypt_v2(data)
+      key = "2777771948205271"
+      cipher = OpenSSL::Cipher.new("AES-128-ECB")
+      cipher.encrypt()
+      cipher.key = key
+      crypt = cipher.update(data) + cipher.final
+
+      crypt_string = (Base64.encode64(crypt))
+      crypt_string
+    end
+
     def eazy_pay_url(record_id, amount, parent_mobile, add_processing_fees=true)
       icid = "270074"
       reference_number = record_id    # db id for the the admission table
@@ -288,10 +319,26 @@ class Students::AdmissionsController < ApplicationController
       "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory%20fields=#{encrypt(mandatory_fields)}&optional%20fields=&returnurl=#{encrypt(return_url)}&Reference No=#{encrypt(reference_number)}&submerchantid=#{encrypt(sub_merchant_id)}&transaction%20amount=#{encrypt(transaction_amount)}&paymode=#{encrypt('9')}"
     end
 
+
+    def eazy_pay_url_v2(record_id, amount, parent_mobile, add_processing_fees=true, new_admission)
+      icid = "274822"
+      reference_number = record_id    # db id for the the admission table
+      sub_merchant_id = parent_mobile     #student roll _number
+
+      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+
+      mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.student_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course}|#{new_admission.batch}|NA|NA"
+
+      return_url = "https://exams.smartclassapp.in/admission-done"
+
+      # plain_url = "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory fields=#{mandatory_fields}&optional fields=&returnurl=#{(return_url)}&Reference No=#{(reference_number)}&submerchantid=#{(sub_merchant_id)}&transaction amount=#{(transaction_amount)}&paymode=#{('9')}"
+
+      "https://eazypay.icicibank.com/EazyPG?merchantid=#{icid}&mandatory%20fields=#{encrypt_v2(mandatory_fields)}&optional%20fields=&returnurl=#{encrypt_v2(return_url)}&Reference No=#{encrypt_v2(reference_number)}&submerchantid=#{encrypt_v2(sub_merchant_id)}&transaction%20amount=#{encrypt_v2(transaction_amount)}&paymode=#{encrypt_v2('9')}"
+    end
+
     def new_admission_params
       params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, course: [])
     end
-
 
     def error_info
       {
