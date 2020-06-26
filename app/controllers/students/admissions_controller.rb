@@ -328,7 +328,7 @@ class Students::AdmissionsController < ApplicationController
 
       transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
 
-      mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.student_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course}|#{new_admission.batch}|NA|NA"
+      mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.parent_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course&.name}|#{new_admission.batch}|NA|NA"
 
       return_url = "https://exams.smartclassapp.in/admission-done"
 
