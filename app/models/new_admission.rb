@@ -19,6 +19,7 @@
 #  parent_mobile         :string           not null
 #  payment_callback_data :jsonb
 #  payment_status        :integer          default("initial")
+#  prev_receipt_number   :text
 #  rcc_branch            :integer          default("latur")
 #  school_name           :string
 #  student_mobile        :string

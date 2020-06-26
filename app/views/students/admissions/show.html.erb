@@ -92,6 +92,13 @@
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter Student Mobile.</div>
         </div>
+
+        <% if @student.present? %>
+          <div class="form-group">
+            <input type="number" class="form-control" id="prev_receipt_number" maxlength="20" placeholder="Your Previous Payment, Receipt Number" name="prev_receipt_number">
+          </div>
+        <% end %>
+
         <div class="form-group" style="text-align: center; background-color:rgb(239, 239, 239);">
           <div class="form-check form-check-inline">
             <label class="form-check-label" for="a">Gender: </label>

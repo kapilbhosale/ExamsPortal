@@ -75,6 +75,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.course_id = course.id
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
+      new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
 
       if new_admission.save
         new_admission.in_progress!
@@ -337,7 +338,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def new_admission_params
-      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, course: [])
+      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, :prev_receipt_number, course: [])
     end
 
     def error_info

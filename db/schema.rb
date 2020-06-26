@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_205614) do
+ActiveRecord::Schema.define(version: 2020_06_26_113746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -176,6 +176,7 @@ ActiveRecord::Schema.define(version: 2020_06_22_205614) do
     t.string "error_info"
     t.string "reference_id"
     t.integer "student_id"
+    t.text "prev_receipt_number"
   end
 
   create_table "notifications", force: :cascade do |t|
