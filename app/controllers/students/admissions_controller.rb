@@ -49,6 +49,8 @@ class Students::AdmissionsController < ApplicationController
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
     end
 
+    @student = Student.find_by(id: new_admission_params[:student_id])
+
     if params[:parent_mobile].length != 10 || !is_number?(params[:parent_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
@@ -88,6 +90,10 @@ class Students::AdmissionsController < ApplicationController
       end
     else
       flash[:error] = errors
+      flash[:error] << "Please try again, please fill form completely."
+      if @student.present?
+        redirect_to '/pay-installment' and return
+      end
       redirect_back(fallback_location: '/new-admission')
     end
   end
