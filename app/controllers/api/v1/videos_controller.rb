@@ -25,16 +25,20 @@ class Api::V1::VideosController < Api::V1::ApiController
       'Chemistry' => lectures_data['chem'],
       'Physics' => lectures_data['phy'],
       'Biology' => lectures_data['bio'],
-      'Maths' => lectures_data['maths'],
+      'Maths' => lectures_data['maths']
     }
 
     if current_org&.subdomain == 'yashwant-clg'
-      json_data['English'] = lectures_data['english']
-      json_data['Econonics'] = lectures_data['econonics']
-      json_data['BK & A/C'] = lectures_data['bk & a/c']
-      json_data['S.P.'] = lectures_data['s.p']
-      json_data['O.C.M.'] = lectures_data['o.c.m.']
-      json_data['MATHS(com)'] = lectures_data['maths(com)']
+      json_data.merge!(
+        {
+          'English' => lectures_data['english'],
+          'Econonics' => lectures_data['econonics'],
+          'BK & A/C' => lectures_data['bk & a/c'],
+          'S.P.' => lectures_data['s.p'],
+          'O.C.M.' => lectures_data['o.c.m.'],
+          'MATHS(com)' => lectures_data['maths(com)']
+        }
+      )
     end
 
     render json: json_data, status: :ok
