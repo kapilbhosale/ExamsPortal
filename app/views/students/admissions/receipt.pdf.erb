@@ -36,15 +36,15 @@
           </tr>
           <tr>
             <td>Installment of Fees paid</td>
-            <td><b><%= status ? @new_admission.course.fees : '-' %></b></td>
+            <td><b><%= status ? @fees : '-' %></b></td>
           </tr>
           <tr>
             <td>Online processing fees</td>
-            <td><% status ? 120.00 : '-' %></td>
+            <td><% status ? @processing_fees : '-' %></td>
           </tr>
           <tr>
             <td>Total Fees Paid</td>
-            <td><b><%= status ?  @new_admission.course.fees + 120 : '-' %></b></td>
+            <td><b><%= status ?  @fees + @processing_fees : '-' %></b></td>
           </tr>
           <tr>
             <td>Date of Payment: </td>
