@@ -51,11 +51,11 @@ class Students::AdmissionsController < ApplicationController
 
     @student = Student.find_by(id: new_admission_params[:student_id])
 
-    if params[:parent_mobile].length != 10 || !is_number?(params[:parent_mobile])
+    if params[:parent_mobile]&.length != 10 || !is_number?(params[:parent_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
 
-    if params[:student_mobile].length != 10 || !is_number?(params[:student_mobile])
+    if params[:student_mobile]&.length != 10 || !is_number?(params[:student_mobile])
       errors << "Invalid Parent mobile, must be of lenght 10 or not a number"
     end
 
