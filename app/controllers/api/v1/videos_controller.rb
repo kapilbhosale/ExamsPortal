@@ -33,7 +33,7 @@ class Api::V1::VideosController < Api::V1::ApiController
           'Econonics' => lectures_data['econonics'],
           'BK & A/C' => lectures_data['bk & a/c'],
           'S.P.' => lectures_data['s.p'],
-          'O.C.M.' => lectures_data['o.c.m.'],
+          'O.C.M' => lectures_data['o.c.m.'],
           'MATHS(com)' => lectures_data['maths(com)']
         }
     else
