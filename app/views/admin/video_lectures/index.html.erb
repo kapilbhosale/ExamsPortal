@@ -1,3 +1,8 @@
+<style>
+  td {
+    word-break: break-all;
+  }
+</style>
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -10,46 +15,46 @@
         </div>
       </div>
       <% if @video_lectures.present? %>
-        <div class="table-responsive">
+        <div class="table table-responsive">
           <table class="table card-table table-vcenter text-nowrap">
             <thead>
-              <tr>
-                <th class="w-1">No.</th>
-                <th>Subject</th>
-                <th>Title</th>
-                <th>Teacher</th>
-                <th>Tag</th>
-                <th>Video ID</th>
-                <th>Show video</th>
-                <th></th>
+              <tr class="d-flex">
+                <th class="col-md-1">No.</th>
+                <th class="col-md-1">Subject</th>
+                <th class="col-md-5">Title</th>
+                <th class="col-md-1">Teacher</th>
+                <th class="col-md-1">Tag</th>
+                <th class="col-md-1">Video ID</th>
+                <th class="col-md-1">Show video</th>
+                <th class="col-md-1"></th>
               </tr>
             </thead>
             <tbody>
               <% @video_lectures.each do |vl| %>
-                <tr class="<%= get_vl_row_class(vl.subject) %>">
-                  <td>
+                <tr class="<%= get_vl_row_class(vl.subject) %> d-flex" </tr>
+                  <td class="col-md-1">
                     <span class="text-muted"><%= vl.id %></span>
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= vl.subject %>
                   </td>
-                  <td>
-                    <%= link_to vl.title, edit_admin_video_lecture_path(vl) %>
+                  <td class="col-md-5">
+                    <%= link_to "#{vl.title.first(50)} ...", edit_admin_video_lecture_path(vl) %>
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= vl.by %>
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= vl.tag %>
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= vl.video_id %>
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= time_ago_in_words(vl.created_at) %> | 
                     <input type="checkbox" <%= vl.enabled ? "checked" : ""%> >
                   </td>
-                  <td>
+                  <td class="col-md-1">
                     <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
                     <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
                     <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
