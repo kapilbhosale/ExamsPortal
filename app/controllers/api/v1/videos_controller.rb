@@ -36,6 +36,14 @@ class Api::V1::VideosController < Api::V1::ApiController
           'O.C.M' => lectures_data['o.c.m.'],
           'MATHS(com)' => lectures_data['maths(com)']
         }
+    if current_org&.subdomain == 'epa'
+      json_data = {
+        'Current Affairs' => lectures_data['current affairs'],
+        'GS & GK' => lectures_data['gs&gk'],
+        'Marathi' => lectures_data['marathi'],
+        'Maths' => lectures_data['maths'],
+        'English' => lectures_data['eng']
+      }
     else
       json_data = {
         'Chemistry' => lectures_data['chem'],

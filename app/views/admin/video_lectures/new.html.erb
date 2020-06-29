@@ -43,18 +43,30 @@
         <div class="form-group" style="padding: 15px;">
           <label class="control-label col-sm-4" for="email">Subject</label>
           <div class="col-sm-8">
-            <label class="radio-inline"><input type="radio" value="chem" name="subject">Chem</label>
-            <label class="radio-inline"><input type="radio" value="phy" name="subject">Phy</label>
-            <label class="radio-inline"><input type="radio" value="bio" name="subject">Bio</label>
-            <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
-            <label class="radio-inline"><input type="radio" value="other" name="subject">Other</label>
             <% if request.subdomain == 'yashwant-clg' %>
-            <label class="radio-inline"><input type="radio" value="english" name="subject">English</label>
-            <label class="radio-inline"><input type="radio" value="econonics" name="subject">Econonics</label>
-            <label class="radio-inline"><input type="radio" value="bk & a/c" name="subject">BK & A/C</label>
-            <label class="radio-inline"><input type="radio" value="s.p" name="subject">S.P.</label>
-            <label class="radio-inline"><input type="radio" value="o.c.m." name="subject">O.C.M.</label>
-            <label class="radio-inline"><input type="radio" value="maths(com)" name="subject">MATHS(com)</label>
+              <label class="radio-inline"><input type="radio" value="chem" name="subject">Chem</label>
+              <label class="radio-inline"><input type="radio" value="phy" name="subject">Phy</label>
+              <label class="radio-inline"><input type="radio" value="bio" name="subject">Bio</label>
+              <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
+              <label class="radio-inline"><input type="radio" value="other" name="subject">Other</label>
+              <label class="radio-inline"><input type="radio" value="english" name="subject">English</label>
+              <label class="radio-inline"><input type="radio" value="econonics" name="subject">Econonics</label>
+              <label class="radio-inline"><input type="radio" value="bk & a/c" name="subject">BK & A/C</label>
+              <label class="radio-inline"><input type="radio" value="s.p" name="subject">S.P.</label>
+              <label class="radio-inline"><input type="radio" value="o.c.m." name="subject">O.C.M.</label>
+              <label class="radio-inline"><input type="radio" value="maths(com)" name="subject">MATHS(com)</label>
+            <% eslif request.subdomain == 'epa' %>
+              <label class="radio-inline"><input type="radio" value="current affairs" name="subject">Current Affairs</label>
+              <label class="radio-inline"><input type="radio" value="gs&gk" name="subject">GS & GK</label>
+              <label class="radio-inline"><input type="radio" value="marathi" name="subject">Marathi</label>
+              <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
+              <label class="radio-inline"><input type="radio" value="eng" name="subject">English</label>
+            <% else %>
+              <label class="radio-inline"><input type="radio" value="chem" name="subject">Chem</label>
+              <label class="radio-inline"><input type="radio" value="phy" name="subject">Phy</label>
+              <label class="radio-inline"><input type="radio" value="bio" name="subject">Bio</label>
+              <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
+              <label class="radio-inline"><input type="radio" value="other" name="subject">Other</label>
             <% end %>
           </div>
         </div>
