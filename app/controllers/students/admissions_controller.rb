@@ -102,7 +102,7 @@ class Students::AdmissionsController < ApplicationController
     if new_admission.batch == '12th'
       eazy_pay_url_v2(
         new_admission.payment_id,
-        get_fees(new_admission_params[:batch], course),
+        get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
         "#{new_admission.parent_mobile}#{new_admission.id}",
         !new_admission.student_id.present?,
         new_admission
@@ -110,17 +110,18 @@ class Students::AdmissionsController < ApplicationController
     else
       eazy_pay_url(
         new_admission.payment_id,
-        get_fees(new_admission_params[:batch], course),
+        get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
         "#{new_admission.parent_mobile}#{new_admission.id}",
         !new_admission.student_id.present?
       )
     end
   end
 
-  def get_fees(batch, course)
+  def get_fees(batch, course, is_installment = false)
     if batch == "12th"
       return 12_000 if course.name == "phy"
       return 12_000 if course.name == "chem"
+      return 6_000 if is_installment && course.name == "bio"
       return 9_000 if course.name == "bio"
       return 24_000 if course.name == "pc"
       return 21_000 if course.name == "pb"
