@@ -163,6 +163,7 @@ class Students::AdmissionsController < ApplicationController
               student.batches << batches
               student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               student.api_key = student.api_key + '+1'
+              student.app_login = false
               student.save
             end
             send_sms(student, true)
