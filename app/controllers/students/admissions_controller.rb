@@ -156,6 +156,14 @@ class Students::AdmissionsController < ApplicationController
               reference_number: @new_admission.payment_id,
               new_admission_id: @new_admission.id
             )
+            batches = get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
+            if batches.present?
+              student.batches.destroy_all
+              student.batches << batches
+              student.roll_number = suggest_online_roll_number(Org.first, batches, true)
+              student.api_key = student.api_key + '+1'
+              student.save
+            end
             send_sms(student, true)
           end
         else
@@ -178,7 +186,8 @@ class Students::AdmissionsController < ApplicationController
   private
 
   INITIAL_ONLINE_ROLL_NUMBER = 63632
-    def suggest_online_roll_number(org, batch)
+  INITIAL_TW_ROLL_NUMBER = 51000
+    def suggest_online_roll_number(org, batch, is_12th=false)
       rn = Student
         .where(org_id: org.id)
         .where(id: batch.students.ids)
@@ -187,14 +196,14 @@ class Students::AdmissionsController < ApplicationController
 
       return rn + 1 if rn
 
-      INITIAL_ONLINE_ROLL_NUMBER
+      is_12th ? INITIAL_TW_ROLL_NUMBER : INITIAL_ONLINE_ROLL_NUMBER
     end
 
     def add_student(na)
       org = Org.first
       roll_number = Student.suggest_roll_number(org)
       email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
-      batches = get_batches(na.rcc_branch, na.course)
+      batches = get_batches(na.rcc_branch, na.course, na.batch)
 
       student = Student.find_or_initialize_by(email: email)
       student.roll_number = suggest_online_roll_number(org, batches.first)
@@ -246,10 +255,16 @@ class Students::AdmissionsController < ApplicationController
       Your Installment is processed, successfully.
 
       Name: #{student.name}
-      Course: #{student.batches.pluck(:name).join(",")}
+      New Batch: #{student.batches.pluck(:name).join(",")}
 
-      Thank you
-      Team RCC"
+      your Login details are
+      Roll Number: #{student.roll_number}
+      Parent Mobile: #{student.parent_mobile}
+
+      Remove your app and Reinstall it from
+      https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new
+
+      Thank you, Team RCC"
     end
 
     def sms_text(student)
@@ -268,23 +283,43 @@ class Students::AdmissionsController < ApplicationController
       https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
     end
 
-    def get_batches(rcc_branch, course)
-      if rcc_branch == "latur"
-        return Batch.where(name: 'Latur_11th_PCB_2020') if course.name == 'pcb'
-        return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
-        return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
-        return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: 'Latur_11th_PC_2020') if course.name == 'pc'
-        return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
-        return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+    def get_batches(rcc_branch, course, batch)
+      if batch == '11th'
+        if rcc_branch == "latur"
+          return Batch.where(name: 'Latur_11th_PCB_2020') if course.name == 'pcb'
+          return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
+          return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
+          return Batch.where(name: 'Latur_11th_PC_2020') if course.name == 'pc'
+          return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+          return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+        else
+          return Batch.where(name: 'Nanded_11th_PCB_2020') if course.name == 'pcb'
+          return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
+          return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
+          return Batch.where(name: 'Nanded_11th_PC_2020') if course.name == 'pc'
+          return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
+          return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+        end
       else
-        return Batch.where(name: 'Nanded_11th_PCB_2020') if course.name == 'pcb'
-        return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
-        return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
-        return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: 'Nanded_11th_PC_2020') if course.name == 'pc'
-        return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
-        return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+        if rcc_branch == "latur"
+          return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
+          return Batch.where(name: 'Ltr_12th-Physics_2020-21') if course.name == 'phy'
+          return Batch.where(name: 'Ltr_12th-Chemistry_2020-21') if course.name == 'chem'
+          return Batch.where(name: 'Ltr_12th-Biology_2020-21') if course.name == 'bio'
+          return Batch.where(name: 'Ltr_12th-PC_2020-21') if course.name == 'pc'
+          return Batch.where(name: 'Latur-12th Phy + Bio 2021') if course.name == 'pb'
+          return Batch.where(name: 'Latur-12th Chem + Bio 2021') if course.name == 'cb'
+        else
+          return Batch.where(name: 'Ned_12th-PCB_2020-21') if course.name == 'pcb'
+          return Batch.where(name: 'Ned_12th-Physics_2020-21') if course.name == 'phy'
+          return Batch.where(name: 'Ned_12th-Chemistry_2020-21') if course.name == 'chem'
+          return Batch.where(name: 'Ned_12th-Biology_2020-21') if course.name == 'bio'
+          return Batch.where(name: 'Ned_12th-PC_2020-21') if course.name == 'pc'
+          return Batch.where(name: 'Ned-12th Phy + Bio 2021') if course.name == 'pb'
+          return Batch.where(name: 'Ned-12th Chem + Bio 2021') if course.name == 'cb'
+        end
       end
     end
 
