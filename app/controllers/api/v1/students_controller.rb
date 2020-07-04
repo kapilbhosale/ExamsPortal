@@ -47,6 +47,8 @@ class Api::V1::StudentsController < Api::V1::ApiController
   def login_allowed?(student)
     return true if !student.app_login?
 
+    return true if demo_account?(student)
+
     if device_params[:deviceUniqueId].present? && student.deviceUniqueId.blank?
       return true
     end
@@ -56,6 +58,10 @@ class Api::V1::StudentsController < Api::V1::ApiController
     return false if student.app_login? && student.deviceUniqueId != device_params[:deviceUniqueId]
 
     false
+  end
+
+  def demo_account?(student)
+    student.roll_number == 100 && student.parent_mobile == '999999'
   end
 
   def device_params 
