@@ -162,7 +162,8 @@ class Students::AdmissionsController < ApplicationController
               student.new_admission_id = @new_admission.id
               student.save
               student.batches << batches
-              student.roll_number = suggest_online_roll_number(Org.first, batches, true)
+              # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
+              student.roll_number = suggest_tw_online_roll_number
               student.api_key = student.api_key + '+1'
               student.app_login = false
               student.save
@@ -190,6 +191,14 @@ class Students::AdmissionsController < ApplicationController
 
   INITIAL_ONLINE_ROLL_NUMBER = 63632
   INITIAL_TW_ROLL_NUMBER = 51200
+    def suggest_tw_online_roll_number
+      online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
+      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:roll_number).max rescue nil
+      return rn + 1 if rn
+
+      INITIAL_TW_ROLL_NUMBER
+    end
+
     def suggest_online_roll_number(org, batch, is_12th=false)
       rn = Student
         .where(org_id: org.id)
