@@ -189,7 +189,7 @@ class Students::AdmissionsController < ApplicationController
   private
 
   INITIAL_ONLINE_ROLL_NUMBER = 63632
-  INITIAL_TW_ROLL_NUMBER = 51000
+  INITIAL_TW_ROLL_NUMBER = 51200
     def suggest_online_roll_number(org, batch, is_12th=false)
       rn = Student
         .where(org_id: org.id)
