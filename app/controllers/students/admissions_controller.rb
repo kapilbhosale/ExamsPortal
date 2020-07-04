@@ -160,6 +160,7 @@ class Students::AdmissionsController < ApplicationController
             if batches.present?
               # student.batches.destroy_all
               student.new_admission_id = @new_admission.id
+              student.save
               student.batches << batches
               student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               student.api_key = student.api_key + '+1'
