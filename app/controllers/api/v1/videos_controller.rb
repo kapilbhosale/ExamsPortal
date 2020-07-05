@@ -41,7 +41,7 @@ class Api::V1::VideosController < Api::V1::ApiController
         'Current Affairs' => lectures_data['current affairs'],
         'GS & GK' => lectures_data['gs&gk'],
         'Marathi' => lectures_data['marathi'],
-        'Maths' => lectures_data['maths'],
+        'Maths' => lectures_data['math'],
         'English' => lectures_data['eng']
       }
     else
