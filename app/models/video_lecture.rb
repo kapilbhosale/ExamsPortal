@@ -15,6 +15,7 @@
 #  video_type         :integer          default("vimeo")
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  genre_id           :integer          default(0)
 #  laptop_vimeo_id    :integer
 #  org_id             :integer          default(0)
 #  video_id           :string
@@ -35,6 +36,7 @@ class VideoLecture < ApplicationRecord
   has_many :batches, through: :batch_video_lectures
 
   belongs_to :org
+  belongs_to :genre
   mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
 

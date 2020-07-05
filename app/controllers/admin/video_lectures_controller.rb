@@ -6,11 +6,13 @@ class Admin::VideoLecturesController < Admin::BaseController
   def new
     @video_lecture = VideoLecture.new
     @batches = Batch.where(org: current_org).all_batches
+    @genres = Genre.where(org_id: current_org.id)
   end
 
   def edit
     @video_lecture = VideoLecture.find_by(org: current_org, id: params[:id])
     @batches = Batch.where(org: current_org).all_batches
+    @genres = Genre.where(org_id: current_org.id)
   end
 
   def create
@@ -63,7 +65,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       enabled: params[:enabled] == 'false' ? false : true,
       uploaded_thumbnail: params[:thumbnail],
       org_id: current_org.id,
-      laptop_vimeo_id: params[:laptop_vimeo_id]
+      laptop_vimeo_id: params[:laptop_vimeo_id],
+      genre_id: params[:genre_id]
     }
   end
 
@@ -77,7 +80,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       subject: VideoLecture.subjects[params[:subject]],
       uploaded_thumbnail: params[:thumbnail],
       org_id: current_org.id,
-      laptop_vimeo_id: params[:laptop_vimeo_id]
+      laptop_vimeo_id: params[:laptop_vimeo_id],
+      genre_id: params[:genre_id]
     }
   end
 end

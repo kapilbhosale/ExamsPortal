@@ -79,6 +79,7 @@ Rails.application.routes.draw do
     resources :android_apps
     resources :study_pdfs
     resources :notifications
+    resources :genres
   end
 
   get 'current-server-time', to: 'home#current_server_time'
@@ -94,6 +95,8 @@ Rails.application.routes.draw do
       get 'dashboard_data', to: 'home#dashboard_data'
       get 'gallery', to: 'home#gallery'
       get 'app-version', to: 'home#app_version'
+      get 'categories', to: 'videos#categories'
+      get 'categories/:id/videos', to: 'videos#category_videos'
 
       resources :notifications, only: [:index]
       resources :videos, only: [:index] do

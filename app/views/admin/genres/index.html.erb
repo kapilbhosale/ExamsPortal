@@ -1,0 +1,50 @@
+<style>
+  td {
+    word-break: break-all;
+  }
+</style>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5>Genres</h5>
+        </div>
+        <div class="col-md-6 text-right">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Genre'.html_safe, new_admin_genre_path %>
+        </div>
+      </div>
+      <% if @genres.present? %>
+        <div class="table table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr class="d-flex">
+                <th class="col-md-1">Id.</th>
+                <th class="col-md-4">Name</th>
+                <th class="col-md-3"> Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @genres.each do |genre| %>
+                <tr class="d-flex">
+                  <td class="col-md-1">
+                    <span class="text-muted"><%= genre.id %></span>
+                  </td>
+                  <td class="col-md-4">
+                    <%= genre.name %>
+                  </td>
+                  <td class="col-md-3">
+                    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No genres were found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

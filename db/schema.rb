@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_26_113746) do
+ActiveRecord::Schema.define(version: 2020_07_02_192456) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,6 +148,13 @@ ActiveRecord::Schema.define(version: 2020_06_26_113746) do
     t.datetime "show_exam_at"
     t.integer "org_id", default: 0
     t.index ["name"], name: "index_exams_on_name"
+  end
+
+  create_table "genres", force: :cascade do |t|
+    t.string "name"
+    t.integer "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "new_admissions", force: :cascade do |t|
@@ -394,6 +401,7 @@ ActiveRecord::Schema.define(version: 2020_06_26_113746) do
     t.integer "org_id", default: 0
     t.string "uploaded_thumbnail"
     t.integer "laptop_vimeo_id"
+    t.integer "genre_id", default: 0
   end
 
 end

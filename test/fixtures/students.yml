@@ -35,6 +35,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)
+#  new_admission_id       :integer
 #  org_id                 :integer          default(0)
 #
 # Indexes
