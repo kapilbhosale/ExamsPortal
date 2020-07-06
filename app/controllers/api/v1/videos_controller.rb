@@ -101,6 +101,7 @@ class Api::V1::VideosController < Api::V1::ApiController
                                  .where(enabled: true)
                                  .order(id: :desc)
     lectures_json = lectures_json(video_lectures)
+    lectures_json = lectures_json.delete_if { |_, value| value.blank? }
 
     render json: lectures_json, status: :ok
   end
