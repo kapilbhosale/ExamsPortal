@@ -71,7 +71,11 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def categories
-    video_lectures = VideoLecture.includes(:genre, :batches).where(batches: { id: current_student.batches }).where(enabled: true)
+    video_lectures = VideoLecture
+      .includes(:genre, :batches)
+      .where(org_id: current_org.id)
+      .where(batches: { id: current_student.batches.ids })
+      .where(enabled: true)
     categories_data = {}
     video_lectures.all.each do |vl|
       categories_data[vl.subject] ||= {}
@@ -97,7 +101,8 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def category_videos
     video_lectures = VideoLecture.includes(:batches)
-                                 .where(batches: {id: current_student.batches}, genre_id: params[:id].to_i)
+                                 .where(org_id: current_org.id)
+                                 .where(batches: {id: current_student.batches.ids}, genre_id: params[:id].to_i)
                                  .where(enabled: true)
                                  .order(id: :desc)
     lectures_json = lectures_json(video_lectures)
