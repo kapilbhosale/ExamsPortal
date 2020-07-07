@@ -36,7 +36,7 @@ class VideoLecture < ApplicationRecord
   has_many :batches, through: :batch_video_lectures
 
   belongs_to :org
-  belongs_to :genre
+  belongs_to :genre, optional: true
   mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
 
