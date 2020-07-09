@@ -61,7 +61,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
   end
 
   def demo_account?(student)
-    student.roll_number == 100 && student.parent_mobile == '999999'
+    student.roll_number == 101 && student.parent_mobile == '999999'
   end
 
   def device_params 
