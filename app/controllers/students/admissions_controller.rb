@@ -171,13 +171,20 @@ class Students::AdmissionsController < ApplicationController
             send_sms(student, true)
           end
         else
-          std = add_student(@new_admission) rescue nil
-          PaymentTransaction.create(
-            student_id: std.id,
-            amount: @new_admission.payment_callback_data['Total Amount'].to_f,
+          pay_transaction = PaymentTransaction.find_by(
             reference_number: @new_admission.payment_id,
             new_admission_id: @new_admission.id
           ) rescue nil
+
+          if pay_transaction.blank?
+            std = add_student(@new_admission) rescue nil
+            PaymentTransaction.create(
+              student_id: std.id,
+              amount: @new_admission.payment_callback_data['Total Amount'].to_f,
+              reference_number: @new_admission.payment_id,
+              new_admission_id: @new_admission.id
+            ) rescue nil
+          end
         end
       else
         @new_admission && @new_admission.failure!
