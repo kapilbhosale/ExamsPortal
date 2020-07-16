@@ -11,7 +11,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     client_identifier = model&.org&.subdomain || 'client-org'
-    "uploads/#{client_identifier}/#{model.class.to_s.underscore}/#{Time.now.to_i}/#{mounted_as}/#{model.id}"
+    "uploads/#{client_identifier}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
