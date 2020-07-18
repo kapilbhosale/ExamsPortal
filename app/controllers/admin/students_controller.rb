@@ -1,5 +1,6 @@
 class Admin::StudentsController < Admin::BaseController
   ITEMS_PER_PAGE = 20
+
   def index
     @search = Student
       .where(org: current_org)
