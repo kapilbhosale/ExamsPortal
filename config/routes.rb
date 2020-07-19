@@ -103,6 +103,7 @@ Rails.application.routes.draw do
         get 'get_yt_url'
       end
       resources :study_pdfs, only: [:index]
+      resources :meetings, only: [:index]
     end
   end
 end
