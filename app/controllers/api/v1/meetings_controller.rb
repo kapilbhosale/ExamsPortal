@@ -8,8 +8,8 @@ class Api::V1::MeetingsController < Api::V1::ApiController
       zoom_app_secret: 'zi6R0FMfQVhNIjXFUFycm8u0MvGjJhBdeXge',
       zoom_domain: 'zoom.us',
       upcoming: {
-        zoom_meeting_id: 92049513891,
-        password: '0XzS9a',
+        zoom_meeting_id: '92695080428',
+        password: 'Y4pC4r',
         datetime: '1595179508',
         date: '19-july-2020',
         time: '11.30 PM',
@@ -18,8 +18,8 @@ class Api::V1::MeetingsController < Api::V1::ApiController
       },
       all: [
         {
-          zoom_meeting_id: 92049513891,
-          password: '2yj8zL',
+          zoom_meeting_id: '92695080428',
+          password: 'Y4pC4r',
           datetime: '1595179508',
           date: '19-july-2020',
           time: '11.30 PM',
