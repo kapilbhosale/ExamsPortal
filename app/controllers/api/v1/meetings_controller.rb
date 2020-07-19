@@ -4,6 +4,9 @@ class Api::V1::MeetingsController < Api::V1::ApiController
 
   def index
     meetings_data = {
+      zoom_app_key: '5oNVTIJJEMjDO4HiQuk0Ao476WcnHwTD43wB',
+      zoom_app_secret: 'zi6R0FMfQVhNIjXFUFycm8u0MvGjJhBdeXge',
+      zoom_domain: 'zoom.us',
       upcoming: {
         zoom_meeting_id: 92049513891,
         password: '0XzS9a',

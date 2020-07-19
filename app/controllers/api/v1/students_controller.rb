@@ -83,10 +83,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
         parent_mobile_number: student.parent_mobile,
         api_key: student.api_key,
         fcm_token: student.fcm_token,
-        vimeo_access_token: current_org&.vimeo_access_token,
-        zoom_app_key: '5oNVTIJJEMjDO4HiQuk0Ao476WcnHwTD43wB',
-        zoom_app_secret: 'zi6R0FMfQVhNIjXFUFycm8u0MvGjJhBdeXge',
-        zoom_domain: 'zoom.us',
+        vimeo_access_token: current_org&.vimeo_access_token
       }, otp: '111111'
     }
   end
