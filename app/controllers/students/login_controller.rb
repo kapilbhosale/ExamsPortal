@@ -4,15 +4,36 @@ class Students::LoginController < Students::BaseController
 
   def authorise
     student = Student.find_by(
+      org_id: current_org.id,
       roll_number: login_params[:login],
       parent_mobile: login_params[:password]
     )
     if student&.valid_password?(login_params[:password])
       student.remember_me = login_params[:remember_me]
-      sign_in_and_redirect(student, event: :authentication)
+
+      if student.app_login == true
+        flash[:error] = "You using Mobile App. Details: #{student.deviceName}, #{student.brand}, #{student.manufacturer}. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
+        redirect_to("/student/sign_in") and return
+      end
+
+      if student.is_laptop_login == false
+        # save cookies somehow.
+        cookies.signed["laptop_login_cookie_#{student.id}"] = { value: student.parent_mobile, expires: 1.year, httponly: true }
+        student.is_laptop_login = true
+        student.save
+        sign_in_and_redirect(student, event: :authentication)
+      else
+        stored_cookie = cookies.signed["laptop_login_cookie_#{student.id}"]
+        if student.parent_mobile == stored_cookie
+          sign_in_and_redirect(student, event: :authentication)
+        else
+          flash[:error] = "New laptop login found. Use same laptop and browser you used earlier. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
+          redirect_to("/student/sign_in") and return
+        end
+      end
     else
-      flash[:error] = "Invalid Login, Please try again."
-      redirect_to "/student/sign_in"
+      flash[:error] = "Invalid Login, Please try again. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
+      redirect_to("/student/sign_in") and return
     end
   end
 

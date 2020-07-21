@@ -4,6 +4,7 @@ require 'csv'
 # Table name: students
 #
 #  id                     :bigint(8)        not null, primary key
+#  access_type            :integer          default(0)
 #  address                :text
 #  api_key                :string
 #  app_login              :boolean          default(FALSE)
@@ -18,6 +19,7 @@ require 'csv'
 #  encrypted_password     :string           default(""), not null
 #  fcm_token              :string
 #  gender                 :integer          default(0)
+#  is_laptop_login        :boolean          default(FALSE)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
 #  manufacturer           :string
@@ -65,6 +67,8 @@ class Student < ApplicationRecord
   after_save :set_api_key
 
   attr_writer :login
+
+  enum access_types: { not_set: 0, mobile: 1, laptop: 2 }
 
   def login
     @login || self.roll_number || self.email

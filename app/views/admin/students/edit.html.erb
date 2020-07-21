@@ -103,7 +103,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-md-7">
+          <div class="col-sm-12 col-md-12">
             <div class="form-group">
               <% if @student.errors.any? %>
                 <div class="error-msg">
@@ -117,26 +117,38 @@
               <% end %>
             </div>
           </div>
-          <div class="col-sm-6 col-md-7">
-            <div class="form-group">
-              <h3>
-                <%= @student.app_login? ? 'Student Already Logged In' : 'No login of this student.'%>
-              </h3>
-              <p>
-                <b>Login Device details: </b>
-                device Unique Id: <%= @student.deviceUniqueId%>
-                deviceName: <%= @student.deviceName%>
-                manufacturer: <%= @student.manufacturer%>
-                brand: <%= @student.brand%>
-              </p>
+
+          <div class="col-md-12">
+            <div class="col-sm-6 col-md-6">
+                <h5>
+                  <span class="badge badge-primary">MOBILE</span>
+                  <%= @student.app_login? ? ' - YES' : ' - NO'%>
+                </h5>
+                <% if @student.app_login? %>
+                <p>
+                  <b>Login Device details: </b>
+                  device Unique Id: <%= @student.deviceUniqueId %>
+                  deviceName: <%= @student.deviceName %>
+                  manufacturer: <%= @student.manufacturer %>
+                  brand: <%= @student.brand %>
+                </p>
+                <% end %>
+            </div>
+
+            <div class="col-sm-6 col-md-6">
+                <h5>
+                  <span class="badge badge-danger">LAPTOP</span>
+                  <%= @student.is_laptop_login? ? ' - YES' : '- NO'%>
+                </h5>
             </div>
           </div>
+
         </div>
       </div>
       <div class="card-footer">
-        <% if @student.app_login? %>
+        <% if @student.app_login? || @student.is_laptop_login? %>
           <div class="col-md-2">
-            <%= link_to "Reset App login", admin_student_reset_login_path(@student), class: 'btn btn-danger' %>
+            <%= link_to "Reset App logins", admin_student_reset_login_path(@student), class: 'btn btn-danger' %>
           </div>
         <% end %>
         <div class="col-md-10 text-right">

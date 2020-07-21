@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_02_192456) do
+ActiveRecord::Schema.define(version: 2020_07_21_184948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,15 @@ ActiveRecord::Schema.define(version: 2020_07_02_192456) do
     t.index ["batch_id"], name: "index_batch_video_lectures_on_batch_id"
     t.index ["video_lecture_id", "batch_id"], name: "batch_vl_index", unique: true
     t.index ["video_lecture_id"], name: "index_batch_video_lectures_on_video_lecture_id"
+  end
+
+  create_table "batch_zoom_meetings", force: :cascade do |t|
+    t.bigint "zoom_meeting_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_batch_zoom_meetings_on_batch_id"
+    t.index ["zoom_meeting_id"], name: "index_batch_zoom_meetings_on_zoom_meeting_id"
   end
 
   create_table "batches", force: :cascade do |t|
@@ -350,6 +359,8 @@ ActiveRecord::Schema.define(version: 2020_07_02_192456) do
     t.string "manufacturer"
     t.string "brand"
     t.integer "new_admission_id"
+    t.boolean "is_laptop_login", default: false
+    t.integer "access_type", default: 0
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
@@ -402,6 +413,18 @@ ActiveRecord::Schema.define(version: 2020_07_02_192456) do
     t.string "uploaded_thumbnail"
     t.integer "laptop_vimeo_id"
     t.integer "genre_id", default: 0
+  end
+
+  create_table "zoom_meetings", force: :cascade do |t|
+    t.string "zoom_meeting_id"
+    t.string "password"
+    t.datetime "datetime_of_meeting"
+    t.string "subject"
+    t.string "teacher_name"
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
 end

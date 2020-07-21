@@ -15,7 +15,9 @@
   <body>
     <div class="page">
       <div class="page-main">
-        <%= render 'layouts/header' %>
+        <% unless current_student&.app_login == true %>
+          <%= render 'layouts/header' %>
+        <% end %>
         <div class="my-3 my-md-5">
           <div class="container">
             <% flash.each do |key, value| %>
