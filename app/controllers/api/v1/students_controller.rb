@@ -51,6 +51,8 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
   # return true if allowed to login, false if not allowed to login
   def login_allowed?(student)
+    return false if student.is_laptop_login
+
     return true if !student.app_login?
 
     return true if demo_account?(student)
@@ -62,8 +64,6 @@ class Api::V1::StudentsController < Api::V1::ApiController
     return true if student.deviceUniqueId == device_params[:deviceUniqueId]
 
     return false if student.app_login? && student.deviceUniqueId != device_params[:deviceUniqueId]
-
-    return false if student.is_laptop_login
 
     false
   end
