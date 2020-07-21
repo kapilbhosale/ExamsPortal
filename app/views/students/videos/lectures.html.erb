@@ -1,57 +1,50 @@
-<% if request.subdomain == 'exams' %>
-  <div class="text-center"></div>
-    <h1> video's portal under work, please visit again.</h1>
-    <h2 style="color: cornflowerblue;"> Use Mobile Application.</h2>
-    <p> It will start in 2 days</p>
-  </div>
-<% else %>
-  <!-- <div class="text-center"></div>
-    <p class="warning blink-bg">
-      Note: Videos will be removed after 24 Hrs.
-    </p>
-  </div> -->
 
-  <div class="tabbable-panel">
-    <div class="tabbable-line">
-      <ul class="nav nav-tabs ">
-        <li class="active">
-          <a href="#tab_chem" data-toggle="tab">
-            Chemistry
-          </a>
-        </li>
-        <li>
-          <a href="#tab_phy" data-toggle="tab">
-            Physics
-          </a>
-        </li>
-        <li>
-          <a href="#tab_bio" data-toggle="tab">
-            Biology
-          </a>
-        </li>
-        <li>
-          <a href="#tab_maths" data-toggle="tab">
-            Maths
-          </a>
-        </li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="tab_chem">
-          <%= render 'chem' %>
-        </div>
-        <div class="tab-pane" id="tab_phy">
-          <%= render 'phy' %>
-        </div>
-        <div class="tab-pane" id="tab_bio">
-          <%= render 'bio' %>
-        </div>
-        <div class="tab-pane" id="tab_maths">
-          <%= render 'maths' %>
-        </div>
+<!-- <div class="text-center"></div>
+  <p class="warning blink-bg">
+    Note: Videos will be removed after 24 Hrs.
+  </p>
+</div> -->
+
+<div class="tabbable-panel">
+  <div class="tabbable-line">
+    <ul class="nav nav-tabs ">
+      <li class="active">
+        <a href="#tab_chem" data-toggle="tab">
+          Chemistry
+        </a>
+      </li>
+      <li>
+        <a href="#tab_phy" data-toggle="tab">
+          Physics
+        </a>
+      </li>
+      <li>
+        <a href="#tab_bio" data-toggle="tab">
+          Biology
+        </a>
+      </li>
+      <li>
+        <a href="#tab_maths" data-toggle="tab">
+          Maths
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab_chem">
+        <%= render 'chem' %>
+      </div>
+      <div class="tab-pane" id="tab_phy">
+        <%= render 'phy' %>
+      </div>
+      <div class="tab-pane" id="tab_bio">
+        <%= render 'bio' %>
+      </div>
+      <div class="tab-pane" id="tab_maths">
+        <%= render 'maths' %>
       </div>
     </div>
   </div>
-<% end %>
+</div>
 
 <style>
   .card-horizontal {
