@@ -100,6 +100,7 @@ class Admin::StudentsController < Admin::BaseController
       new_api_key = @student.api_key + '-1'
       @student.update!(
         app_login: false,
+        is_laptop_login: false,
         api_key: new_api_key,
         deviceUniqueId: nil,
         deviceName: nil,

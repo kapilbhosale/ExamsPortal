@@ -14,10 +14,16 @@ class Api::V1::StudentsController < Api::V1::ApiController
     end
 
     unless login_allowed?(student)
-      message = "You are ALREADY logged in some other mobile. \n"
-      message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
+      if student.is_laptop_login
+        message = "You are using Laptop for access, please continue using latop only."
+      else
+        message = "You are ALREADY logged in some other mobile. \n"
+        message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
+      end
+
       message += 'Please Contact Admin. '
       message += current_org&.data&.dig('admin_contacts').to_s
+
       render json: { message: message }, status: :unauthorized and return
     end
 
@@ -56,6 +62,8 @@ class Api::V1::StudentsController < Api::V1::ApiController
     return true if student.deviceUniqueId == device_params[:deviceUniqueId]
 
     return false if student.app_login? && student.deviceUniqueId != device_params[:deviceUniqueId]
+
+    return false if student.is_laptop_login
 
     false
   end
