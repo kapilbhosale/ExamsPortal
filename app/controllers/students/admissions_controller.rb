@@ -99,22 +99,22 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_eazy_pay_url(new_admission, course)
-    if new_admission.batch == '12th'
-      eazy_pay_url_v2(
-        new_admission.payment_id,
-        get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
-        "#{new_admission.parent_mobile}#{new_admission.id}",
-        !new_admission.student_id.present?,
-        new_admission
-      )
-    else
-      eazy_pay_url(
-        new_admission.payment_id,
-        get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
-        "#{new_admission.parent_mobile}#{new_admission.id}",
-        !new_admission.student_id.present?
-      )
-    end
+    eazy_pay_url_v2(
+      new_admission.payment_id,
+      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
+      "#{new_admission.parent_mobile}#{new_admission.id}",
+      !new_admission.student_id.present?,
+      new_admission
+    )
+    # if new_admission.batch == '12th'
+    # else
+    #   eazy_pay_url(
+    #     new_admission.payment_id,
+    #     get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
+    #     "#{new_admission.parent_mobile}#{new_admission.id}",
+    #     !new_admission.student_id.present?
+    #   )
+    # end
   end
 
   def get_fees(batch, course, is_installment = false)
@@ -128,7 +128,6 @@ class Students::AdmissionsController < ApplicationController
       return 21_000 if course.name == "cb"
       return 33_000 if course.name == "pcb"
     end
-
     course.fees
   end
 
@@ -305,21 +304,21 @@ class Students::AdmissionsController < ApplicationController
     def get_batches(rcc_branch, course, batch)
       if batch == '11th'
         if rcc_branch == "latur"
-          return Batch.where(name: 'Latur_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'Latur_11th_phy_2020') if course.name == 'phy'
-          return Batch.where(name: 'Latur_11th_chem_2020') if course.name == 'chem'
-          return Batch.where(name: 'Latur_11th_Bio_2020') if course.name == 'bio'
-          return Batch.where(name: 'Latur_11th_PC_2020') if course.name == 'pc'
-          return Batch.where(name: ['Latur_11th_phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
-          return Batch.where(name: ['Latur_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+          return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'
+          return Batch.where(name: 'B-2_Latur_11th_Phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'B-2_Latur_11th_Chem_2020') if course.name == 'chem'
+          return Batch.where(name: 'B-2_Latur_11th_Bio_2020') if course.name == 'bio'
+          return Batch.where(name: 'B-2_Latur_11th_PC_2020') if course.name == 'pc'
+          return Batch.where(name: 'B-2_Latur_11th_PB_2020') if course.name == 'pb'
+          return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
         else
-          return Batch.where(name: 'Nanded_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'Nanded_11th_Phy_2020') if course.name == 'phy'
-          return Batch.where(name: 'Nanded_11th_chem_2020') if course.name == 'chem'
-          return Batch.where(name: 'Nanded_11th_Bio_2020') if course.name == 'bio'
-          return Batch.where(name: 'Nanded_11th_PC_2020') if course.name == 'pc'
-          return Batch.where(name: ['Nanded_11th_Phy_2020', 'Latur_11th_Bio_2020']) if course.name == 'pb'
-          return Batch.where(name: ['Nanded_11th_chem_2020', 'Latur_11th_Bio_2020']) if course.name == 'cb'
+          return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
+          return Batch.where(name: 'B-2_Nanded_11th_Phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
+          return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
+          return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'
+          return Batch.where(name: 'B-2_Nanded_11th_PB_2020') if course.name == 'pb'
+          return Batch.where(name: 'B-2_Nanded_11th_CB_2020') if course.name == 'cb'
         end
       else
         if rcc_branch == "latur"
