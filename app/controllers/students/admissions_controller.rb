@@ -207,7 +207,7 @@ class Students::AdmissionsController < ApplicationController
     INITIAL_ONLINE_ROLL_NUMBER = 1001
     def suggest_online_roll_number(org, batch, is_12th=false)
       new_11_batch_ids = [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
-      s_ids = StudentBatch.where(batch_id: new_11_batch_ids).where(student_id: online_s_ids).pluck(:student_id)
+      s_ids = StudentBatch.where(batch_id: new_11_batch_ids).pluck(:student_id)
       rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:roll_number).max rescue nil
       return rn + 1 if rn
 
