@@ -48,6 +48,7 @@ Rails.application.routes.draw do
       post :create_installment, on: :collection
     end
     resources :study_pdfs
+    resources :notifications
   end
 
 

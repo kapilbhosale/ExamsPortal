@@ -7,8 +7,12 @@
               <h5 class="card-title"><%= exam_paper[:name] %></h5>
               <p class="card-text"><%= exam_paper[:description] %></p>
               <p class="card-text"><%= exam_paper[:added_on] %></p>
-              <a href="<%= exam_paper[:question_paper_link] %>" class="btn btn-danger">Question Paper</a>
-              <a href="<%= exam_paper[:solution_paper_link] %>" class="btn btn-primary">Solutions</a>
+              <% if exam_paper[:question_paper_link].present? %>
+                <a href="<%= exam_paper[:question_paper_link] %>" class="btn btn-danger">Question Paper</a>
+              <% end %>
+              <% if exam_paper[:solution_paper_link].present? %>
+                <a href="<%= exam_paper[:solution_paper_link] %>" class="btn btn-primary">Solutions</a>
+              <% end %>
             </div>
           </div>
         </div>
