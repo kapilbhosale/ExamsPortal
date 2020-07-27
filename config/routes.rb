@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     resources :admissions do
       post :create_installment, on: :collection
     end
+    resources :study_pdfs
   end
 
 

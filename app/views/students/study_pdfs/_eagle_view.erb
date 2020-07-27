@@ -1,0 +1,16 @@
+<% @other_data.each_slice(2) do |other_datas| %>
+  <div class="row">
+    <% other_datas.each do |other_data| %>
+        <div class="col-sm-6 col-sx-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= other_data[:name] %></h5>
+              <p class="card-text"><%= other_data[:description] %></p>
+              <p class="card-text"><%= other_data[:added_on] %></p>
+              <a href="<%= other_data[:solution_paper_link] %>" class="btn btn-primary">View Notes</a>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+<% end %>
