@@ -29,7 +29,7 @@ class Admin::ExamsController < Admin::BaseController
   def show
     exam = Exam.where(org: current_org).includes(questions: :options).find_by(id: params[:id])
     if exam.present?
-      @questions_by_section = exam.questions.group_by(&:section_id)
+      @questions_by_section = exam.questions.order(:id).group_by(&:section_id)
       @sections_by_id = Section.all.index_by(&:id)
       @all_styles = exam.questions.collect {|x| x.css_style}.join(' ')
     else

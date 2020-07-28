@@ -202,8 +202,8 @@ module Exams
       end
     end
 
-    def answer_input(input)
-      input.downcase!
+    def answer_input(_input)
+      input = _input.squish.downcase
       return 1 if input == 'a'
       return 2 if input == 'b'
       return 3 if input == 'c'
