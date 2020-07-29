@@ -26,6 +26,8 @@ module ApplicationHelper
       return { logo: 'bhosale-logo', width: 90, height: 40}
     elsif %w[jnc-science-clg].include? subdomain
       return { logo: 'jnc-logo', width: 90, height: 40}
+    elsif %w[demo].include? subdomain
+      return { logo: 'edu-circle-logo', height: 40}
     end
 
     { logo: 'exams-logo', width: 30 }

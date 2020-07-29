@@ -82,6 +82,7 @@ Rails.application.routes.draw do
     resources :study_pdfs
     resources :notifications
     resources :genres
+    resources :zoom_meetings
   end
 
   get 'current-server-time', to: 'home#current_server_time'
