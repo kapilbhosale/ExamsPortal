@@ -151,9 +151,9 @@ module Exams
 
     def question_type_from_sections
       {
-        "phy-I" => Question.question_types[:multi_select], 
-        "phy-II" => Question.question_types[:input], 
-        "phy-III" => Question.question_types[:single_select], 
+        "phy-I" => Question.question_types[:multi_select],
+        "phy-II" => Question.question_types[:input],
+        "phy-III" => Question.question_types[:single_select],
         "chem-I"=> Question.question_types[:multi_select],
         "chem-II" => Question.question_types[:input], 
         "chem-III" =>  Question.question_types[:single_select], 
