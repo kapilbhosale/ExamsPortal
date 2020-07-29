@@ -3,6 +3,16 @@ class Students::ExamsController < Students::BaseController
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 
+  def is_exam_valid
+    exam_id = params[:id]
+    student_id = current_student.id
+    student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
+    if student_exam&.ended_at.present?
+      render json: { error: 'Invalid exam or already submitted' } and return
+    end
+    render json: {}
+  end
+
   def exam_data
     exam_id = params[:id]
     exam = Exam.find_by(id: exam_id)
@@ -10,7 +20,6 @@ class Students::ExamsController < Students::BaseController
       render json: { error: 'Invalid exam ID' } and return
     end
     student_id = current_student.id
-
     student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
     if student_exam
       # this must be very rare case, when student changes the computer

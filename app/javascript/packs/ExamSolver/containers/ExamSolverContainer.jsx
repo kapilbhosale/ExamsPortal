@@ -33,6 +33,7 @@ class ExamSolverContainer extends Component {
         document.getElementById("mySidenav").style.width = "320px";
       }
     }
+    this.actions().isExamValid();
     this.actions().initialize();
   }
 

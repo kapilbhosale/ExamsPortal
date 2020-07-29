@@ -153,11 +153,13 @@ class Students::HomeController < Students::BaseController
 
   def submit
     # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
-    sync_data_now(current_student.id, params[:exam_id], params[:questions])
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    head :ok unless student_exam
-    student_exam.update!(ended_at: Time.current)
-    return {}, status: :ok
+    if student_exam && student_exam.ended_at.blank?
+      sync_data_now(current_student.id, params[:exam_id], params[:questions])
+      student_exam.update!(ended_at: Time.current)
+      return {}, status: :ok
+    end
+    return {error: "Exam Already submitted"}, status: 422
   end
 
   def sync_data_now(student_id, exam_id, questions_data)

@@ -1,3 +1,4 @@
+import window from 'global';
 import actionTypes from '../constants/examSolverConstants';
 
 export function saveAndNext(questionIndex) {
@@ -105,8 +106,8 @@ export function getCurrentServerTime() {
       url: '/current-server-time',
       method: 'get',
       success: (data) => {
-        console.log("==============  Current time from server is : " + data.time);
-        dispatch({type: actionTypes.SET_CURRENT_TIME, val: data.time }); 
+      
+        dispatch({type: actionTypes.SET_CURRENT_TIME, val: data.time });
       },
       error: (data) => {
         console.log("==============  Error : ");
@@ -318,6 +319,22 @@ function formatDataToOldFormat(data) {
     ...timeData}
   return (formattedData);
 }
+
+export function isExamValid() {
+  return (dispatch, getState) => {
+    const store = getState().$$examSolverStore;
+    $.ajax({
+      url: `/students/is_exam_valid?t=${new Date().getTime()}`,
+      method: 'get',
+      data: { id: store.get('examId') },
+      success: (data) => {
+        if( data.error) {
+          window.location = '/students/tests';
+        }
+      }
+    });
+  }
+};
 
 export function initialize() {
   return (dispatch, getState) => {

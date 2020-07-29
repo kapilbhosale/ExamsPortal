@@ -12,7 +12,7 @@ class SectionList extends React.Component {
       mobile: 575,
     };
     function isMobileDevice() {
-      console.log("WINDOW WIDTH", $win.width())
+      console.log("WINDOW WIDTH", $win.width()) 
       return $win.width() < MEDIAQUERY.mobile;
     }
 
