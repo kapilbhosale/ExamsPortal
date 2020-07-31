@@ -28,7 +28,8 @@ class VideoLecture < ApplicationRecord
 
   enum subject: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4,
     english: 5, econonics: 6, 'bk & a/c': 7,  's.p': 8, 'o.c.m.': 9, 'maths(com)': 10,
-    'current affairs': 11, 'gs&gk': 12, marathi: 13, math: 14, 'eng': 15
+    'current affairs': 11, 'gs&gk': 12, marathi: 13, math: 14, 'eng': 15,
+    reasoning: 16,
   }
   enum video_type: { vimeo: 0, youtube: 1 }
 

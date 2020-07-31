@@ -42,7 +42,8 @@ class Api::V1::VideosController < Api::V1::ApiController
         'GS & GK' => lectures_data['gs&gk'],
         'Marathi' => lectures_data['marathi'],
         'Maths' => lectures_data['math'],
-        'English' => lectures_data['eng']
+        'English' => lectures_data['eng'],
+        'Reasoning' => lectures_data['reasoning']
       }
     else
       json_data = {
