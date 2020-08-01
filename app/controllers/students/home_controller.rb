@@ -34,7 +34,7 @@ class Students::HomeController < Students::BaseController
   end
 
   def exam
-    exam = Exam.find_by(id: params[:id])
+    exam = Exam.find_by(org_id: current_org.id, id: params[:id])
     @student_id = current_student.id
     if exam.blank? || exam.show_exam_at > Time.current
       flash[:error] = "invalid exam"

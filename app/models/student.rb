@@ -105,14 +105,12 @@ class Student < ApplicationRecord
   end
 
   def set_api_key
-    return if api_key.present?
-
     self.api_key = generated_api_key
     save
   end
 
   def generated_api_key
-    Digest::MD5.hexdigest "#{roll_number}-#{parent_mobile}"
+    Digest::MD5.hexdigest "#{org_id}-#{roll_number}-#{parent_mobile}"
     # SecureRandom.uuid.gsub(/\-/,'')
   end
 end
