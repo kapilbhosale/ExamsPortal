@@ -64,7 +64,7 @@ class Student < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable,
   :trackable, :validatable, authentication_keys: [:login]
 
-  after_save :set_api_key
+  before_save :set_api_key
 
   attr_writer :login
 
@@ -106,7 +106,6 @@ class Student < ApplicationRecord
 
   def set_api_key
     self.api_key = generated_api_key
-    save
   end
 
   def generated_api_key
