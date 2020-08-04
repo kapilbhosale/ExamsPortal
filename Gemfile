@@ -33,7 +33,10 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'sucker_punch', '~> 2.0'
+# gem 'sucker_punch', '~> 2.0'
+gem 'sidekiq'
+
+gem 'rollbar'
 
 gem 'webpacker'
 gem 'foreman'
@@ -100,6 +103,7 @@ group :development do
   gem 'capistrano-rails',   require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano3-puma',   require: false
+  # gem 'capistrano-sidekiq', require: false, git: 'https://github.com/seuros/capistrano-sidekiq', branch: 'master'
 
   # deployment gems
   # gem 'mina'

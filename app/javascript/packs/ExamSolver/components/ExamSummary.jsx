@@ -48,6 +48,7 @@ class ExamSummary extends React.Component {
           <p>Quick Result Summary</p>
         </div>
         <Summary
+          is_result_processed={true}
           total_question={total_question}
           total_score={total_score}
           time_spent={time_spent}

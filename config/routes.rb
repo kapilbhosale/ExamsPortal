@@ -2,6 +2,12 @@ Rails.application.routes.draw do
   devise_for :admin
   devise_for :student
 
+  require 'sidekiq/web'
+  Sidekiq::Web.use Rack::Auth::Basic do |username, password|
+    username == 'kapil' && password == 'kapil@7588584810'
+  end
+  mount Sidekiq::Web => '/sidekiq'
+
   # authenticate :admin, -> (admin) { admin.present? } do
   #   mount PgHero::Engine, at: "pghero"
   # end

@@ -2,7 +2,7 @@
 lock "~> 3.13.0"
 
 set :application, "SmartExams"
-set :repo_url, "git@github.com:kapilbhosale/SmartExams.git"
+set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
 
 set :rails_env, :production
@@ -26,7 +26,22 @@ set :rvm_ruby_version, 'ruby-2.5.1@smart-exams'
 set :keep_releases, 5
 
 set :linked_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
-set :linked_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb', 'config/application.yml')
+set :linked_files, fetch(:shared_files, []).push(
+  'config/database.yml',
+  'config/sidekiq.yml',
+  'config/secrets.yml',
+  'config/puma.rb',
+  'config/application.yml')
+
+set :sidekiq_roles, :app
+# set :sidekiq_default_hooks, false
+# ensure this path exists in production before deploying.
+set :sidekiq_pid, File.join(shared_path, 'tmp', 'pids', 'sidekiq.pid')
+set :sidekiq_env, fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
+set :sidekiq_log, File.join(shared_path, 'log', 'sidekiq.log')
+set :sidekiq_config, "#{current_path}/config/sidekiq.yml"
+
+set :default_shell, '/bin/bash -l'
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
@@ -44,8 +59,8 @@ namespace :deploy do
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
-      unless `git rev-parse HEAD` == `git rev-parse kapil/rcc-payment`
-        puts "WARNING: HEAD is not the same as kapil/rcc-payment"
+      unless `git rev-parse HEAD` == `git rev-parse origin/sidekiq-integration`
+        puts "WARNING: HEAD is not the same as origin/sidekiq-integration"
         puts "Run `git push` to sync changes."
         exit
       end
@@ -86,6 +101,15 @@ namespace :deploy do
     end
   end
 
+  desc 'Sidekiq Restart'
+  task :sidekiq_restart do
+    on roles(:app) do
+      within release_path do
+        execute("sudo service sidekiq restart")
+      end
+    end
+  end
+
   before "deploy:assets:precompile", "deploy:yarn_install"
   after  :compile_assets, :webpack_compile
 
@@ -93,4 +117,5 @@ namespace :deploy do
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
   after  :finishing,    :restart
+  after  :restart,    :sidekiq_restart
 end
