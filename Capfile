@@ -38,6 +38,11 @@ require 'capistrano/puma'
 require 'capistrano/rails'
 require 'capistrano/bundler'
 require 'capistrano/rvm'
+# require 'capistrano/sidekiq'
+# Default sidekiq tasks
+# install_plugin Capistrano::Sidekiq
+# # Then select your service manager
+# install_plugin Capistrano::Sidekiq::Systemd
 
 install_plugin Capistrano::Puma
 install_plugin Capistrano::Puma::Nginx

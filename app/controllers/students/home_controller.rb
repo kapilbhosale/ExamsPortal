@@ -74,7 +74,8 @@ class Students::HomeController < Students::BaseController
   # end
 
   def sync
-    SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    SyncWorker.perform_async(current_student.id, exam_params[:exam_id], exam_params[:questions].to_h)
     return {}, status: :ok
   end
 
@@ -92,21 +93,25 @@ class Students::HomeController < Students::BaseController
     @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
     student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
 
-    ses = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+    ses_sync = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     if student_exam_summaries.blank?
-      if ses
-        Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
-        StudentExamScoreCalculator.new(@student_exam.id).calculate
-        ses.destroy
+      if ses_sync
+        if ses_sync.end_exam_sync
+          Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
+          StudentExamScoreCalculator.new(@student_exam.id).calculate
+          # ses.destroy
+        end
       end
       student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
     else
-      if ses && student_exam_summaries.first.updated_at < ses.updated_at
+      if ses_sync && student_exam_summaries.first.updated_at < ses_sync.updated_at
         student_exam_summaries.destroy_all
-        if ses
-          Students::SyncService.new(current_student.id, params[:exam_id], ses.sync_data).call
-          StudentExamScoreCalculator.new(@student_exam.id).calculate
-          ses.destroy
+        if ses_sync
+          if ses_sync.end_exam_sync
+            Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
+            StudentExamScoreCalculator.new(@student_exam.id).calculate
+            # ses.destroy
+          end
         end
         student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
       end
@@ -122,6 +127,7 @@ class Students::HomeController < Students::BaseController
     total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
     time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
     section_data = student_exam_summaries.map do |student_exam_summary|
+      #TODO::Kapil store topper in cache & remove it when anyone submit the same exam.
       topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
       total_score += student_exam_summary.score
       total_question += student_exam_summary.no_of_questions
@@ -142,6 +148,7 @@ class Students::HomeController < Students::BaseController
     end
 
     @summary_data = {
+      is_result_processed: ses_sync&.end_exam_sync,
       total_question: total_question,
       total_score: total_score,
       time_spent: time_spent,
@@ -152,10 +159,10 @@ class Students::HomeController < Students::BaseController
   end
 
   def submit
-    # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
     if student_exam && student_exam.ended_at.blank?
-      sync_data_now(current_student.id, params[:exam_id], params[:questions])
+      SyncWorker.perform_async(current_student.id, exam_params[:exam_id], exam_params[:questions].to_h, true)
+      # sync_data_now(current_student.id, params[:exam_id], params[:questions])
       student_exam.update!(ended_at: Time.current)
       return {}, status: :ok
     end
@@ -187,6 +194,11 @@ class Students::HomeController < Students::BaseController
   end
 
   private
+
+  def exam_params
+    params.permit!
+    params.permit(:exam_id, questions: {})
+  end
 
   def set_flash
     key = @response[:status] ? :success : :warning

@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'zoom-api-integration'
+set :branch, 'sidekiq-integration'
 set :sidekiq_env, :production
 set :stage, :production
 

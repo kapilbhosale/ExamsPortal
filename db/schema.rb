@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_21_184948) do
+ActiveRecord::Schema.define(version: 2020_08_04_180809) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -309,6 +309,7 @@ ActiveRecord::Schema.define(version: 2020_07_21_184948) do
     t.jsonb "sync_data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "end_exam_sync", default: false
     t.index ["exam_id"], name: "index_student_exam_syncs_on_exam_id"
     t.index ["student_id"], name: "index_student_exam_syncs_on_student_id"
   end
