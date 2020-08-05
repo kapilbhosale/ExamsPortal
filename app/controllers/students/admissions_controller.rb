@@ -199,7 +199,7 @@ class Students::AdmissionsController < ApplicationController
   INITIAL_TW_ROLL_NUMBER = 51200
     def suggest_tw_online_roll_number
       online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
-      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).max rescue nil
+      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
       return rn + 1 if rn
 
       INITIAL_TW_ROLL_NUMBER
@@ -209,7 +209,7 @@ class Students::AdmissionsController < ApplicationController
     def suggest_online_roll_number(org, batch, is_12th=false)
       new_11_batch_ids = [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
       s_ids = StudentBatch.where(batch_id: new_11_batch_ids).pluck(:student_id)
-      rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).max rescue nil
+      rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
       return rn + 1 if rn
 
       INITIAL_ONLINE_ROLL_NUMBER
