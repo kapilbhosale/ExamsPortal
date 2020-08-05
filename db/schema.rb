@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_04_180809) do
+ActiveRecord::Schema.define(version: 2020_08_05_073046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -362,6 +362,7 @@ ActiveRecord::Schema.define(version: 2020_08_04_180809) do
     t.integer "new_admission_id"
     t.boolean "is_laptop_login", default: false
     t.integer "access_type", default: 0
+    t.integer "suggested_roll_number"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"

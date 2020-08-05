@@ -35,6 +35,7 @@ require 'csv'
 #  sign_in_count          :integer          default(0), not null
 #  ssc_marks              :float
 #  student_mobile         :string(20)
+#  suggested_roll_number  :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)

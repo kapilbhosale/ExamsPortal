@@ -163,6 +163,7 @@ class Students::AdmissionsController < ApplicationController
               student.batches << batches
               # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               student.roll_number = suggest_tw_online_roll_number
+              student.suggested_roll_number = suggest_tw_online_roll_number
               student.api_key = student.api_key + '+1'
               student.app_login = false
               student.save
@@ -198,17 +199,17 @@ class Students::AdmissionsController < ApplicationController
   INITIAL_TW_ROLL_NUMBER = 51200
     def suggest_tw_online_roll_number
       online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
-      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:roll_number).max rescue nil
+      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).max rescue nil
       return rn + 1 if rn
 
       INITIAL_TW_ROLL_NUMBER
     end
 
-    INITIAL_ONLINE_ROLL_NUMBER = 1001
+    INITIAL_ONLINE_ROLL_NUMBER = 1100
     def suggest_online_roll_number(org, batch, is_12th=false)
       new_11_batch_ids = [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
       s_ids = StudentBatch.where(batch_id: new_11_batch_ids).pluck(:student_id)
-      rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:roll_number).max rescue nil
+      rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).max rescue nil
       return rn + 1 if rn
 
       INITIAL_ONLINE_ROLL_NUMBER
@@ -222,6 +223,7 @@ class Students::AdmissionsController < ApplicationController
 
       student = Student.find_or_initialize_by(email: email)
       student.roll_number = suggest_online_roll_number(org, batches.first)
+      student.suggested_roll_number = suggest_online_roll_number(org, batches.first)
       student.name = na.name
       student.mother_name = "-"
       student.gender = na.gender == 'male' ? 0 : 1
