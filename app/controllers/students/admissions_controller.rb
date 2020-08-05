@@ -35,7 +35,7 @@ class Students::AdmissionsController < ApplicationController
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
     @fees = get_fees(@new_admission.batch, @new_admission.course)
-    @processing_fees = !new_admission.student_id.present? ? 120 : 0
+    @processing_fees = !@new_admission.student_id.present? ? 120 : 0
     render pdf: "Payment Receipt",
             template: "/students/admissions/receipt.pdf.erb",
             locals: {students: {}},
