@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::HomeController < Api::V1::ApiController
-  skip_before_action :authenticate
+  skip_before_action :authenticate, only: [:gallery, :app_version]
 
   def dashboard_data
     exam_portal_link = "#{helpers.full_domain_path}/students/auto-auth"
