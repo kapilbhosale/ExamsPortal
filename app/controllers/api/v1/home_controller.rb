@@ -5,7 +5,7 @@ class Api::V1::HomeController < Api::V1::ApiController
 
   def dashboard_data
     exam_portal_link = "#{helpers.full_domain_path}/students/auto-auth"
-    exam_portal_link += "?r=#{current_student&.roll_number}&m=#{current_student.parent_mobile}"
+    exam_portal_link += "?r=#{current_student&.roll_number}&m=#{current_student&.parent_mobile}"
 
     json_data = {
       'top_banners_data' => top_banners_data,
