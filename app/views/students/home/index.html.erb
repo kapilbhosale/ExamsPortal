@@ -1,1 +1,5 @@
-<%= render @subdomain.present? ? @subdomain : 'exams' %>
+<% if lookup_context.exists?(@subdomain, "students/home", true) %>
+  <%= render @subdomain.present? ? @subdomain : 'exams' %>
+<% else %>
+  <%= render 'common' %>
+<% end %>

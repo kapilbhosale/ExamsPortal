@@ -5,6 +5,7 @@ class Students::HomeController < Students::BaseController
 
   def index
     @subdomain = request.subdomain
+    @org = Org.find_by(subdomain: @subdomain)
     student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
     sign_in_and_redirect(student) if student.present?
   end

@@ -3,6 +3,7 @@
 # Table name: students
 #
 #  id                     :bigint(8)        not null, primary key
+#  access_type            :integer          default(0)
 #  address                :text
 #  api_key                :string
 #  app_login              :boolean          default(FALSE)
@@ -17,6 +18,7 @@
 #  encrypted_password     :string           default(""), not null
 #  fcm_token              :string
 #  gender                 :integer          default(0)
+#  is_laptop_login        :boolean          default(FALSE)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
 #  manufacturer           :string
@@ -32,6 +34,7 @@
 #  sign_in_count          :integer          default(0), not null
 #  ssc_marks              :float
 #  student_mobile         :string(20)
+#  suggested_roll_number  :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  category_id            :bigint(8)
