@@ -25,7 +25,7 @@ module Batches
     end
 
     def already_exists?
-      Batch.find_by(name: name).present?
+      Batch.find_by(org: org, name: name).present?
     end
   end
 end
