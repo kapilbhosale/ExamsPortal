@@ -6,6 +6,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
   def login
     student = Student.find_by(
+      org_id: current_org&.id,
       roll_number: params[:rollNumber],
       parent_mobile: params[:parentMobile]
     )
