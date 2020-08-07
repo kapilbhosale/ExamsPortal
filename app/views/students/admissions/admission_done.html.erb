@@ -57,7 +57,7 @@
         </tr>
       </table>
       <div style="text-align: center;">
-        <a href= <%= "/print-receipt/#{@new_admission.reference_id}"%> target="_blank">
+        <a href= <%= "/print-receipt/#{@new_admission&.reference_id}"%> target="_blank">
           <button class="btn"><i class="fa fa-print"></i> Print Receipt </button>
         </a>
       </div>

@@ -63,12 +63,10 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    selected_courses = new_admission_params.delete(:course)
-    course = Course.get_course(selected_courses)
-
-    errors << "Invalid Course, please contact admin." if course.blank?
-
     if errors.blank?
+      selected_courses = new_admission_params.delete(:course)
+      course = Course.get_course(selected_courses)
+
       new_admission = NewAdmission.new
       new_admission.name = new_admission_params[:name]
       new_admission.email = new_admission_params[:email]
@@ -258,9 +256,9 @@ class Students::AdmissionsController < ApplicationController
 
       strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
       if is_installment
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile+"&Text="+installment_sms_text(student)+"";
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile.to_s+"&Text="+installment_sms_text(student)+"";
       else
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile+"&Text="+sms_text(student)+"";
+        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile.to_s+"&Text="+sms_text(student)+"";
       end
       uri = URI(strUrl)
       puts Net::HTTP.get(uri)
