@@ -1,4 +1,5 @@
 class Students::StudyPdfsController < Students::BaseController
+  before_action :authenticate_student!
 
   def index
     @exam_paper_data = exam_data
