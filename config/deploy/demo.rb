@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'sidekiq-integration'
+set :branch, 'rcc-payment'
 set :sidekiq_env, :production
 set :stage, :production
 
