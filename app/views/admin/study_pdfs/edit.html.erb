@@ -1,30 +1,46 @@
+
+
 <div class="row" >
   <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
-    <%= form_tag(admin_study_pdf_path(@study_pdf), method: :patch, multipart: true) do %>
-      <div class="card-body">
-        <h3 class="card-title">Edit PDF</h3>
+    <% if @study_pdf_types.present? %>
+      <%= form_tag(admin_study_pdf_path(@study_pdf), method: :patch, multipart: true) do %>
+        <div class="card-body">
+          <h3 class="card-title">Edit PDF</h3>
           <div class="custom-file form-group" style="margin-bottom: 10px;">
             <label> * PDF type: </label> &nbsp;&nbsp;
-            <% StudyPdf.pdf_types.each do |key, val| %>
+            <% @study_pdf_types.each do |study_pdf_type| %>
               <label class="radio-inline">
-                <input name="pdf_type" type="radio" value='<%= val %>' <%= @study_pdf.pdf_type == key ? ' checked' : '' %>>
-                <%= key %>
+                <input name="pdf_type_id" type="radio" value="<%= study_pdf_type.id %>" data-type="<%= study_pdf_type.pdf_type %>" <%= study_pdf_type.id == @study_pdf.study_pdf_type_id ? 'checked' : ''%> required>
+                <%= study_pdf_type.name %>
               </label>
             <% end %>
           </div>
 
           <div class="form-group">
-            <input type="text" value="<%= @study_pdf.name %>" class="form-control" name="exam_name" id="examName" placeholder="Enter pdf Name" required>
+            <input type="text" value="<%= @study_pdf.name %>" class="form-control" name="pdf_name" id="examName" placeholder="Enter pdf Name" required>
           </div>
 
-          <div class="custom-file form-group" style="margin-bottom: 10px;">
-            <input type="file" id="customFileQ" name="question_paper" accept="application/pdf">
-            <label class="custom-file-label" for="customFileQ"> <%= @study_pdf.question_paper.url %> </label>
+          <div id="qna" class="<%= @study_pdf.study_pdf_type.qna? ? '' : 'hidden' %>">
+            <div class="custom-file form-group" style="margin-bottom: 10px;">
+              <input type="file" id="customFileQ" name="question_paper" accept="application/pdf">
+              <label class="custom-file-label qpl" for="customFileQ">
+                <%= link_to 'PDF', @study_pdf.question_paper&.url, target: "_blank" %>
+              </label>
+            </div>
+
+            <div class="custom-file form-group" style="margin-bottom: 10px;">
+              <input type="file" id="customFileS" name="solution_paper" accept="application/pdf">
+              <label class="custom-file-label spl" for="customFileS">
+                <%= link_to 'PDF', @study_pdf.solution_paper&.url, target: "_blank" %>
+              </label>
+            </div>
           </div>
 
-          <div class="custom-file form-group" style="margin-bottom: 10px;">
-            <input type="file" value="<%= @study_pdf.solution_paper.url %>" id="customFileS" name="solution_paper" accept="application/pdf">
-            <label class="custom-file-label" for="customFileS"><%= @study_pdf.solution_paper.url %></label>
+          <div class="custom-file form-group <%= @study_pdf.study_pdf_type.qna? ? 'hidden' : '' %>" id="single_link" style="margin-bottom: 10px;">
+            <input type="file" id="customFileS" name="solution_paper" accept="application/pdf">
+            <label class="custom-file-label spl1" for="customFileS">
+              <%= link_to 'PDF', @study_pdf.solution_paper&.url, target: "_blank" %>
+            </label>
           </div>
           <% selected_batch_ids = @study_pdf.batches.ids %>
           <div class="form-group">
@@ -37,18 +53,46 @@
           </div>
 
           <input type="submit" class="btn btn-primary pull-right" />
+        </div>
+      <% end %>
+    <% else %>
+    <div class="card-body">
+      <h3 class="card-title">Add New PDF</h3>
+      <div class="text-center">
+        <span>
+          Please add
+          <span style="color: red;">'PDF types'</span>
+          first.
+        </span>
       </div>
-
+    </div>
     <% end %>
   </div>
 </div>
 
 <script>
-  $(document).ready(function(){
+  $(document).ready(
+    function(){
       $('input[type="file"]').change(function(e){
           var fileName = e.target.files[0].name;
           var label = e.target.parentElement.lastElementChild;
           label.innerText = fileName;
       });
-  });
+
+      $('input[type="radio"]').change(function(event){
+        var pdfType = event.target.getAttribute("data-type");
+        $('input[type="file"]').val('');
+        $('.spl').text('Choose Solution Paper PDF');
+        $('.qpl').text('Choose Question Paper PDF');
+        $('.spl1').text('Choose PDF File');
+        if (pdfType === 'qna') {
+          $('#qna').removeClass('hidden')
+          $('#single_link').addClass('hidden')
+        } else {
+          $('#qna').addClass('hidden')
+          $('#single_link').removeClass('hidden')
+        }
+      });
+    }
+  );
 </script>

@@ -16,4 +16,6 @@
 
 class StudyPdfType < ApplicationRecord
   enum pdf_type: { single_link: 0, qna: 1 }
+  belongs_to :org
+  has_many :study_pdfs
 end

@@ -37,7 +37,7 @@
                     <td><%= study_pdf.batches.pluck(:name).join(', ') %></td>
                     <td><%= link_to 'link', study_pdf.question_paper&.url, target: "_blank" %></td>
                     <td><%= link_to 'link', study_pdf.solution_paper&.url, target: "_blank" %></td>
-                    <td><%= study_pdf.pdf_type %></td>
+                    <td><%= study_pdf.study_pdf_type&.name %></td>
                     <td>
                       <%= link_to 'Edit', edit_admin_study_pdf_path(study_pdf), method: :get, class: "btn btn-warning btn-sm" %>
                       <%= link_to 'Del', admin_study_pdf_path(study_pdf), method: :delete, class: "btn btn-danger btn-sm" %>
