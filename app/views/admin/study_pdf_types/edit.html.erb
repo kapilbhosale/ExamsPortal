@@ -1,0 +1,41 @@
+<div class="row card">
+  <div class="col-lg-8">
+    <%= form_tag(admin_study_pdf_type_path(@study_pdf_type), method: :patch) do %>
+      <div class="card-body">
+        <h3 class="card-title">Edit New PDF Type</h3>
+
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="name">Name of PDF Type *</label>
+          <div class="col-sm-8">
+            <input type="text" value="<%= @study_pdf_type.name %>" class="form-control" placeholder="Enter Video Folder name" name="name" required>
+          </div>
+        </div>
+
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="name">Type of PDF *</label>
+          <div class="col-sm-8">
+            <label>
+              <input type="radio" name="pdf_type" value="single_link" required <%= @study_pdf_type.pdf_type == 'single_link' ? 'checked' : '' %> >
+              <span style="font-weight: normal;">Single PDF</span>
+            </label>
+            &nbsp; &nbsp; &nbsp;
+            <label>
+              <input type="radio" name="pdf_type" value="qna" required <%= @study_pdf_type.pdf_type == 'qna' ? 'checked' : '' %> >
+              <span style="font-weight: normal;">Question paper Solution</span>
+            </label>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="offset-md-4 col-sm-8">
+            <p class="text-muted" style="font-weight: normal;">Use Single PDF type for Notes, Topic Revision, DPP etc.</p>
+            <p class="text-muted" style="font-weight: normal;">Use Question paper and Solution for types which have two PDF.</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="text-center" style="padding: 25px; margin-bottom: 20px;">
+        <input type="submit" class="btn btn-primary" />
+      </div>
+    <% end %>
+  </div>
+</div>

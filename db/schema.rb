@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_10_134842) do
+ActiveRecord::Schema.define(version: 2020_08_10_191800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -368,6 +368,15 @@ ActiveRecord::Schema.define(version: 2020_08_10_134842) do
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+  end
+
+  create_table "study_pdf_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "pdf_type", default: 0, null: false
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_study_pdf_types_on_org_id"
   end
 
   create_table "study_pdfs", force: :cascade do |t|

@@ -2,10 +2,13 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <div class="col-md-2">
+        <div class="col-md-8">
           <h5 class="pt-3">PDFs</h5>
         </div>
-        <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
+        <div class="col-md-3 text-right">
+          <%= link_to '+ Add New PDF Type', admin_study_pdf_types_path, method: :get, class: "btn btn-warning btn-sm" %>
+        </div>
+        <div class="col-md-1 text-right">
           <%= link_to 'Add New PDF', new_admin_study_pdf_path, method: :get, class: "btn btn-info btn-sm" %>
         </div>
       </div>

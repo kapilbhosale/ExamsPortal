@@ -10,8 +10,11 @@
         <div class="col-md-6">
           <h5>Video Lectures</h5>
         </div>
-        <div class="col-md-6 text-right">
-          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Video Lecture'.html_safe, new_admin_video_lecture_path %>
+        <div class="col-md-4 text-right">
+          <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Add Video Folder</a>
+        </div>
+        <div class="col-md-2 text-right">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Video Lecture'.html_safe, new_admin_video_lecture_path %>
         </div>
       </div>
       <% if @video_lectures.present? %>

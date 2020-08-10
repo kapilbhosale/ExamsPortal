@@ -89,6 +89,7 @@ Rails.application.routes.draw do
     resources :study_pdfs
     resources :notifications
     resources :genres
+    resources :study_pdf_types
     resources :zoom_meetings
     resources :subjects
   end
