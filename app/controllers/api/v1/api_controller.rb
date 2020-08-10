@@ -26,7 +26,7 @@ class Api::V1::ApiController < ApplicationController
   end
 
   def set_current_org
-    @current_org = Org.find_by(subdomain: request.subdomain)
+    @current_org = Org.find_by(subdomain: request.subdomain) || @current_student.org
   end
 
 end

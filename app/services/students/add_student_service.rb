@@ -11,8 +11,10 @@ module Students
     end
 
     def call
+      validate_request
+
       rand_password = student_params[:parent_mobile] #('0'..'9').to_a.shuffle.first(6).join
-      email_id = "#{student_params[:roll_number]}-#{student_params[:parent_mobile]}-#{org.id}-#{@batch_ids.first}@se.com"
+      email_id = "#{org.id}-#{student_params[:roll_number]}-#{student_params[:parent_mobile]}@eduaakr.com"
       student_params.merge!({email: email_id, password: rand_password, raw_password: rand_password})
       @student = Student.new(student_params)
       @student.org = org
@@ -29,7 +31,8 @@ module Students
     private
 
     def validate_request
-      raise AddStudentError, 'Name must be present' if name.blank?
+      raise AddStudentError, 'Name must be present' if student_params[:name].blank?
+      raise AddStudentError, 'parent mobile be present' if student_params[:parent_mobile].blank?
       raise AddStudentError, 'No Batch Selected' if batch_ids.blank?
     end
 

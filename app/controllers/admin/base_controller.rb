@@ -1,12 +1,13 @@
 class Admin::BaseController < ApplicationController
-  before_action :authenticate_admin!, :set_current_org
+  before_action :authenticate_admin!
+  before_action :set_current_org
   before_action :verify_admin_org
 
   layout 'admin/dashboard'
   attr_reader :current_org
 
   def set_current_org
-    @current_org = Org.find_by(subdomain: request.subdomain)
+    @current_org = Org.find_by(subdomain: request.subdomain) || current_admin&.org
   end
 
   def verify_admin_org

@@ -17,7 +17,7 @@
         <div class="my-3 my-md-5">
           <div class="container">
             <% flash.each do |key, value| %>
-              <div id="alert" class="alert alert-<%= key == 'notice' ? 'success' : 'warning' %>">
+              <div id="alert" class="alert alert-<%= key == 'success' ? 'success' : 'danger' %>">
                 <%= value %>
               </div>
             <% end %>
