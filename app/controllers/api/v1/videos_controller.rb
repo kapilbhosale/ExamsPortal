@@ -3,14 +3,14 @@
 class Api::V1::VideosController < Api::V1::ApiController
 
   def index
-    lectures = VideoLecture.includes(:batches)
+    lectures = VideoLecture.includes(:batches, :subjects)
       .where(batches: {id: current_student.batches})
       .where(enabled: true)
       .order(id: :desc)
 
     lectures_data = {}
     lectures.each do |lect|
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject", "video_type")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
       if lect.vimeo?
@@ -18,43 +18,11 @@ class Api::V1::VideosController < Api::V1::ApiController
       else
         lect_data['play_url'] = lect.url
       end
-      lectures_data[lect.subject] ||= []
-      lectures_data[lect.subject] << lect_data
+      lectures_data[lect.subject&.name] ||= []
+      lectures_data[lect.subject&.name] << lect_data
     end
 
-    if current_org&.subdomain == 'yashwant-clg'
-      json_data =
-        {
-          'Physics' => lectures_data['phy'],
-          'Chemistry' => lectures_data['chem'],
-          'Biology' => lectures_data['bio'],
-          'Maths' => lectures_data['maths'],
-          'English' => lectures_data['english'],
-          'Econonics' => lectures_data['econonics'],
-          'BK & A/C' => lectures_data['bk & a/c'],
-          'S.P.' => lectures_data['s.p'],
-          'O.C.M' => lectures_data['o.c.m.'],
-          'MATHS(com)' => lectures_data['maths(com)']
-        }
-    elsif current_org&.subdomain == 'epa'
-      json_data = {
-        'Current Affairs' => lectures_data['current affairs'],
-        'GS & GK' => lectures_data['gs&gk'],
-        'Marathi' => lectures_data['marathi'],
-        'Maths' => lectures_data['math'],
-        'English' => lectures_data['eng'],
-        'Reasoning' => lectures_data['reasoning']
-      }
-    else
-      json_data = {
-        'Chemistry' => lectures_data['chem'],
-        'Physics' => lectures_data['phy'],
-        'Biology' => lectures_data['bio'],
-        'Maths' => lectures_data['maths']
-      }
-    end
-
-    render json: json_data, status: :ok
+    render json: lectures_data, status: :ok
   end
 
   def get_yt_url
@@ -73,30 +41,26 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def categories
     video_lectures = VideoLecture
-      .includes(:genre, :batches)
+      .includes(:genre, :subject, :batches)
       .where(org_id: current_org.id)
       .where(batches: { id: current_student.batches.ids })
       .where(enabled: true)
     categories_data = {}
     video_lectures.all.each do |vl|
-      categories_data[vl.subject] ||= {}
-      categories_data[vl.subject][vl.genre_id] ||= {
+      subject_id = vl.subject&.name
+      categories_data[subject_name] ||= {}
+      categories_data[subject_name][vl.genre_id] ||= {
         id: vl.genre_id,
         name: vl&.genre&.name || 'Default',
         count: 0,
         new: 0
       }
-      categories_data[vl.subject][vl.genre_id][:count] += 1
+      categories_data[subject_name][vl.genre_id][:count] += 1
       if vl.created_at >= Time.zone.now.beginning_of_day
-        categories_data[vl.subject][vl.genre_id][:new] += 1
+        categories_data[subject_name][vl.genre_id][:new] += 1
       end
     end
-    json_data = {
-      'Chemistry' => categories_data['chem'],
-      'Physics' => categories_data['phy'],
-      'Biology' => categories_data['bio'],
-      'Maths' => categories_data['maths']
-    }
+    json_data = categories_data
     render json: json_data, status: :ok
   end
 

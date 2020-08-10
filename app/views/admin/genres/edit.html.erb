@@ -1,11 +1,13 @@
 <div class="card">
   <div class="col-lg-8">
     <%= form_tag(admin_genre_path(@genre), method: :patch) do %>
-      <h3 class="card-title">Edit Genre</h3>
-      <div class="form-group" style="padding: 15px; margin-bottom: 25px;">
-        <label class="control-label col-sm-2" for="name">Name</label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" placeholder="Enter genre name" name="name" value= "<%= @genre.name %>" required>
+      <div class="card-body">
+        <h3 class="card-title">Edit Video Folder</h3>
+        <div class="form-group" style="padding: 15px; margin-bottom: 25px;">
+          <label class="control-label col-sm-2" for="name">Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Enter Video Folder name" name="name" value= "<%= @genre.name %>" required>
+          </div>
         </div>
       </div>
       <div class="text-center" style="padding: 25px; margin-bottom: 20px;">

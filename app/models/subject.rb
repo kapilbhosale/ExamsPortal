@@ -20,7 +20,9 @@ class Subject < ApplicationRecord
   belongs_to :org
   has_many :video_lectures
 
+  NAME_REGEX = /\A[a-zA-Z0-9 \.\(\)]+\z/
   validates :name, uniqueness: { scope: :org_id }
+  validates :name, format: { with: NAME_REGEX, message: 'No special Characters allowed in name.'}
 
   private
   def add_name_map
