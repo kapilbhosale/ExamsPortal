@@ -5,24 +5,32 @@ class Admin::ZoomMeetingsController < Admin::BaseController
   end
 
   def edit
+    @zoom_meeting = ZoomMeeting.find_by(org: current_org, id: params[:id])
+    @selected_batch_ids = @zoom_meeting.batches.ids
+    @batches = Batch.where(org: current_org).all_batches
   end
 
   def update
-    notification = Notification.find_by(org: current_org, id: params[:id])
-    if notification && validate_notification_params
-      notification.title = params[:title]
-      notification.description = params[:description]
-      if notification.save
+    meeting = ZoomMeeting.find_by(org: current_org, id: params[:id])
+    if meeting && validate_meeting_params
+      meeting.zoom_meeting_id = params[:zoom_meeting_id]
+      meeting.password = params[:password]
+      meeting.subject = params[:subject]
+      meeting.teacher_name = params[:teacher_name]
+      meeting.datetime_of_meeting = params[:datetime_of_meeting]
+      if meeting.save
         if params[:batches].present?
-          BatchNotification.where(notification_id: notification.id).destroy_all
+          BatchZoomMeeting.where(zoom_meeting_id: meeting.id).destroy_all
           params[:batches].each do |batch_id|
-            BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
+            BatchZoomMeeting.create(batch_id: batch_id, zoom_meeting_id: meeting.id)
           end
         end
-        flash[:success] = "Notification updated, successfully"
+        flash[:success] = "Meeting updated, successfully"
       else
-        flash[:error] = "Error in updating notification.."
+        flash[:error] = "Error in updating Meeting.."
       end
+    else
+      flash[:error] = "No Meeting found."
     end
     redirect_to admin_android_apps_path
   end

@@ -22,6 +22,8 @@ class ZoomMeeting < ApplicationRecord
   has_many :batches, through: :batch_zoom_meetings
   belongs_to :org
 
+  before_save :sanitize_meeting_id
+
   def to_json
     {
       zoom_meeting_id: zoom_meeting_id,
@@ -31,5 +33,11 @@ class ZoomMeeting < ApplicationRecord
       date: datetime_of_meeting.strftime("%d-%B-%Y"),
       time: datetime_of_meeting.strftime("%r"),
     }
+  end
+
+  private
+
+  def sanitize_meeting_id
+    self.zoom_meeting_id = zoom_meeting_id.squish.gsub(/\s/, "")
   end
 end

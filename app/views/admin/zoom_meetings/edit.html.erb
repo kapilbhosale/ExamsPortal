@@ -1,0 +1,44 @@
+<div class="row" >
+  <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
+    <%= form_tag(admin_zoom_meeting_path(@zoom_meeting), method: :PUT) do %>
+      <div class="card-body">
+        <h3 class="card-title">Edit Zoom Meeting</h3>
+
+        <div class="form-group">
+          <input type="text" value="<%= @zoom_meeting.zoom_meeting_id %>" class="form-control" name="zoom_meeting_id" id="zoom_meeting_id" placeholder="Enter Zoom Meeting Id" required>
+        </div>
+
+        <div class="form-group">
+          <input type="text" value="<%= @zoom_meeting.password %>" class="form-control" name="password" id="password" placeholder="Enter Zoom Meeting Password" required>
+        </div>
+
+        <div class="form-group">
+          <input type="text" value="<%= @zoom_meeting.subject %>" class="form-control" name="subject" id="teacher_name" placeholder="Enter subject" required>
+        </div>
+
+        <div class="form-group">
+          <input type="text" value="<%= @zoom_meeting.teacher_name %>" class="form-control" name="teacher_name" id="teacher_name" placeholder="Enter teacher name" required>
+        </div>
+
+        <div class="form-group">
+          <p>Time Of Meeting</p>
+          <input type="datetime-local" value="<%= @zoom_meeting.datetime_of_meeting.strftime('%Y-%m-%dT%R') %>" name="datetime_of_meeting" id="datetime_of_meeting" placeholder="Time of meeting" required>
+        </div>
+
+        <div class="form-group">
+          <p>Select Batches</p>
+          <% @batches.each do |batch| %>
+            <label class="checkbox-inline">
+              <input name="batches[]" type="checkbox" value=<%= batch.id %> <%= @selected_batch_ids.include?(batch.id) ? "checked" : "" %> >
+              <%= batch.name %>
+            </label>
+          <% end %>
+        </div>
+
+        <input type="submit" class="btn btn-primary pull-right" />
+        <br>
+      </div>
+
+    <% end %>
+  </div>
+</div>
