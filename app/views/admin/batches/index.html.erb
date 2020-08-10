@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5>Batches</h5>
+        </div>
+        <div class="col-md-6 text-right">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Batch'.html_safe, new_admin_batch_path %>
+        </div>
+      </div>
+      <% if @batches.present? %>
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th class="w-1">No.</th>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Total Students</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @batches.each do |batch| %>
+                <tr>
+                  <td>
+                    <span class="text-muted"><%= batch.id %></span>
+                  </td>
+                  <td>
+                    <%= link_to batch.name, admin_batch_path(batch) %>
+                  </td>
+                  <td>
+                    <%= batch.created_at.strftime("%d-%B-%Y") %>
+                  </td>
+                  <td>
+                    <a href="/students" class="text-inherit"><%= batch.students.count %></a>
+                  </td>
+                  <td>
+                    <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure, You want to delete the batch, It will delete all students in the batch. Permanently??'} %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No batches were found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

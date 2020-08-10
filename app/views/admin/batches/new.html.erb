@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-lg-8">
+    <%= form_for :batch, url: admin_batches_path, html: {class: 'card'} do  |form| %>
+      <div class="card-body">
+        <h3 class="card-title">Add Batch</h3>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Batch Name</label>
+              <%= form.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <% if @batch.errors.any? %>
+                <div class="error-msg">
+                  <h6>
+                    <%= pluralize(@batch.errors.count, "error") %> prohibited this article from being saved:
+                  </h6>
+                  <ul>
+                    <% @batch.errors.full_messages.each do |msg| %>
+                      <li><%= msg %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <%= link_to "Cancel", admin_batches_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+        <button type="submit" class="btn btn-success">Add New Batch</button>
+      </div>
+    <% end %>
+  </div>
+</div>
