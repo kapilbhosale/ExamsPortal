@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_10_115118) do
+ActiveRecord::Schema.define(version: 2020_08_10_130841) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -387,7 +387,9 @@ ActiveRecord::Schema.define(version: 2020_08_10_115118) do
     t.string "name_map", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "org_id"
     t.index ["name_map"], name: "index_subjects_on_name_map"
+    t.index ["org_id"], name: "index_subjects_on_org_id"
   end
 
   create_table "topics", force: :cascade do |t|
