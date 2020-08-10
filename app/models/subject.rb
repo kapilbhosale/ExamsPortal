@@ -18,6 +18,7 @@
 class Subject < ApplicationRecord
   before_create :add_name_map
   belongs_to :org
+  has_many :video_lectures
 
   validates :name, uniqueness: { scope: :org_id }
 

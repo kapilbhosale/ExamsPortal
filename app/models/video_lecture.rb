@@ -6,7 +6,7 @@
 #  by                 :string
 #  description        :string
 #  enabled            :boolean          default(TRUE)
-#  subject            :integer
+#  subject_name       :integer
 #  tag                :string
 #  thumbnail          :string
 #  title              :string
@@ -18,24 +18,32 @@
 #  genre_id           :integer          default(0)
 #  laptop_vimeo_id    :integer
 #  org_id             :integer          default(0)
+#  subject_id         :integer
 #  video_id           :string
+#
+# Indexes
+#
+#  index_video_lectures_on_subject_id  (subject_id)
 #
 
 class VideoLecture < ApplicationRecord
   # validates :thumbnail, presence: true
   validates :title, presence: true
-  validates :subject, presence: true
+  validates :subject_name, presence: true
 
-  enum subject: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4,
+  enum subject_name: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4,
     english: 5, econonics: 6, 'bk & a/c': 7,  's.p': 8, 'o.c.m.': 9, 'maths(com)': 10,
     'current affairs': 11, 'gs&gk': 12, marathi: 13, math: 14, 'eng': 15,
     reasoning: 16,
+    default: 100,
   }
+
   enum video_type: { vimeo: 0, youtube: 1 }
 
   has_many :batch_video_lectures
   has_many :batches, through: :batch_video_lectures
 
+  belongs_to :subject
   belongs_to :org
   belongs_to :genre, optional: true
   mount_uploader :uploaded_thumbnail, PhotoUploader

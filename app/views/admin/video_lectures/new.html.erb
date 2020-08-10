@@ -2,80 +2,77 @@
   <div class="col-lg-8">
     <%= form_tag admin_video_lectures_path,  multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
       <div class="card-body">
-        <h3 class="card-title">Add Video Lecture</h3>
+        <h3 class="card-title">
+          <b>Add Video Lecture</b>
+        </h3>
 
-        <div class="form-group" style="padding: 15px;">
-          <label class="control-label col-sm-4" for="email">Banner_Image</label>
-          <div class="col-sm-8">
-            <input type="file" class="form-control" id="banner_url" placeholder="Enter Banner Image URL" name="thumbnail" required>
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Image *</label>
+
+          <div class="col-sm-8 custom-file form-group">
+            <input type="file" id="banner_url" name="thumbnail" required>
+            <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
           </div>
         </div>
 
-        <div class="form-group" style="padding: 15px; margin-bottom: 25px;">
-          <label class="control-label col-sm-4" for="email">Video Title</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Video Title" name="title" required>
+        <% if @is_vimeo_configured %>
+          <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+            <div class="row form-group">
+              <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
+              </div>
+            </div>
+              &nbsp; &nbsp; &nbsp; OR
+              <div class="row form-group">
+                <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
+                <div class="col-sm-8">
+                  <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id">
+                </div>
+              </div>
           </div>
-        </div>
-        <div style="border-color: coral; border-style: solid; margin-top: 10px;">
-          <div class="form-group" style="margin-top: 10px;padding: 5px;">
-            <label class="control-label col-sm-4" for="email">YouTube Url</label>
+        <% else %>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
             <div class="col-sm-8">
               <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
             </div>
           </div>
-          &nbsp; &nbsp; &nbsp; OR
-          <div class="form-group" style="padding: 20px;">
-            <label class="control-label col-sm-4">Vimeo Video ID</label>
-            <div class="col-sm-8">
-              <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id">
-            </div>
+        <% end %>
+
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Enter Video Title" name="title" required>
           </div>
         </div>
 
-        <div class="form-group" style="padding: 25px;">
-          <label class="control-label col-sm-4" for="email">Teacher</label>
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
           <div class="col-sm-8">
             <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by" required>
           </div>
         </div>
 
-        <div class="form-group" style="padding: 15px;">
-          <label class="control-label col-sm-4" for="email">Subject</label>
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
           <div class="col-sm-8">
-            <% if request.subdomain == 'yashwant-clg' %>
-              <label class="radio-inline"><input type="radio" value="chem" name="subject">Chem</label>
-              <label class="radio-inline"><input type="radio" value="phy" name="subject">Phy</label>
-              <label class="radio-inline"><input type="radio" value="bio" name="subject">Bio</label>
-              <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
-              <label class="radio-inline"><input type="radio" value="other" name="subject">Other</label>
-              <label class="radio-inline"><input type="radio" value="english" name="subject">English</label>
-              <label class="radio-inline"><input type="radio" value="econonics" name="subject">Econonics</label>
-              <label class="radio-inline"><input type="radio" value="bk & a/c" name="subject">BK & A/C</label>
-              <label class="radio-inline"><input type="radio" value="s.p" name="subject">S.P.</label>
-              <label class="radio-inline"><input type="radio" value="o.c.m." name="subject">O.C.M.</label>
-              <label class="radio-inline"><input type="radio" value="maths(com)" name="subject">MATHS(com)</label>
-            <% elsif request.subdomain == 'epa' %>
-              <label class="radio-inline"><input type="radio" value="current affairs" name="subject">Current Affairs</label>
-              <label class="radio-inline"><input type="radio" value="gs&gk" name="subject">GS & GK</label>
-              <label class="radio-inline"><input type="radio" value="marathi" name="subject">Marathi</label>
-              <label class="radio-inline"><input type="radio" value="math" name="subject">Maths</label>
-              <label class="radio-inline"><input type="radio" value="eng" name="subject">English</label>
-              <label class="radio-inline"><input type="radio" value="reasoning" name="subject">Reasoning</label>
-            <% else %>
-              <label class="radio-inline"><input type="radio" value="chem" name="subject">Chem</label>
-              <label class="radio-inline"><input type="radio" value="phy" name="subject">Phy</label>
-              <label class="radio-inline"><input type="radio" value="bio" name="subject">Bio</label>
-              <label class="radio-inline"><input type="radio" value="maths" name="subject">Maths</label>
-              <label class="radio-inline"><input type="radio" value="other" name="subject">Other</label>
-            <% end %>
+            <div class="form-group">
+              <select class="form-control" name="subject_id">
+                <% @subjects.each do |subject| %>
+                  <option value="<%= subject.id %>">
+                    <%= subject.name.humanize %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div class="form-group" style="padding: 15px;">
-          <label class="control-label col-sm-4" for="email">Genre</label>
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
           <div class="col-sm-8">
-            <select name="genre_id" id="video_lecture_genre_id">
+            <select class="form-control" name="genre_id" id="video_lecture_genre_id">
               <% @genres.each do |genre| %>
                 <option value="<%=genre.id%>"> <%= genre.name %></option>
               <% end %>
@@ -83,32 +80,45 @@
           </div>
         </div>
 
-        <div class="form-group" style="padding: 15px;">
-          <label class="control-label col-sm-4" for="email">TAG</label>
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">TAG</label>
           <div class="col-sm-8">
             <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag">
           </div>
         </div>
 
-        <div class="form-group" style="padding: 20px;">
-          <label class="control-label col-sm-4">Vimeo Laptop Video Id</label>
-          <div class="col-sm-8">
-            <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id">
+        <% if @is_vimeo_configured %>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+            <div class="col-sm-8">
+              <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id">
+            </div>
           </div>
-        </div>
+        <% end %>
 
-        <div class="form-group" style="padding: 15px;">
-          <div class="col-sm-12" style="background-color: antiquewhite;">
+        <div class="row form-group">
+          <p>Select Batches: </p>
+          <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
             <% @batches.each do |batch| %>
               <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %>><%= batch.name %></label>
             <% end %>
           </div>
         </div>
       </div>
-      <div class="card-footer text-right" style="padding: 25px;">
+      <div class="card-footer text-right">
         <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
         <button type="submit" class="btn btn-success">Add New Video Lecture</button>
       </div>
     <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+      $('input[type="file"]').change(function(e){
+          var fileName = e.target.files[0].name;
+          var label = e.target.parentElement.lastElementChild;
+          label.innerText = fileName;
+      });
+  });
+</script>

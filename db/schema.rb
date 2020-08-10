@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_10_130841) do
+ActiveRecord::Schema.define(version: 2020_08_10_134842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -410,7 +410,7 @@ ActiveRecord::Schema.define(version: 2020_08_10_130841) do
     t.string "thumbnail"
     t.string "by"
     t.string "tag"
-    t.integer "subject"
+    t.integer "subject_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "enabled", default: true
@@ -419,6 +419,8 @@ ActiveRecord::Schema.define(version: 2020_08_10_130841) do
     t.string "uploaded_thumbnail"
     t.integer "laptop_vimeo_id"
     t.integer "genre_id", default: 0
+    t.integer "subject_id"
+    t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 
   create_table "zoom_meetings", force: :cascade do |t|
