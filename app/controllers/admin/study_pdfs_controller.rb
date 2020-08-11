@@ -37,7 +37,7 @@ class Admin::StudyPdfsController < Admin::BaseController
     else
       flash[:error] = "PDF not found, please try agian."
     end
-    redirect_to admin_android_apps_path
+    redirect_to "#{admin_android_apps_path}#pdfs"
   end
 
   def create
@@ -64,7 +64,7 @@ class Admin::StudyPdfsController < Admin::BaseController
       flash[:error] = errors.join(", ")
     end
 
-    redirect_to admin_android_apps_path
+    redirect_to "#{admin_android_apps_path}#pdfs"
   end
 
   def validate_pdf_data(params)
@@ -89,6 +89,7 @@ class Admin::StudyPdfsController < Admin::BaseController
     spdf = StudyPdf.find_by(org: current_org, id: params[:id])
     spdf.destroy if spdf.present?
     flash[:success] = "PDF deleted, successfully"
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#pdfs"
   end
 end

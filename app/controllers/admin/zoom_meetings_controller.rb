@@ -32,7 +32,8 @@ class Admin::ZoomMeetingsController < Admin::BaseController
     else
       flash[:error] = "No Meeting found."
     end
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#zoom_meetings"
   end
 
   def create
@@ -55,14 +56,16 @@ class Admin::ZoomMeetingsController < Admin::BaseController
         flash[:error] = "Error in creating Meeting.."
       end
     end
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#zoom_meetings"
   end
 
   def destroy
     meeting = ZoomMeeting.find_by(org: current_org, id: params[:id])
     meeting.destroy if meeting.present?
     flash[:success] = "Meeting deleted, successfully"
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#zoom_meetings"
   end
 
   def validate_meeting_params

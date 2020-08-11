@@ -26,7 +26,8 @@ class Admin::NotificationsController < Admin::BaseController
         flash[:error] = "Error in updating notification.."
       end
     end
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#notifications"
   end
 
   def create
@@ -46,14 +47,16 @@ class Admin::NotificationsController < Admin::BaseController
         flash[:error] = "Error in creating PDF.."
       end
     end
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#notifications"
   end
 
   def destroy
     notification = Notification.find_by(org: current_org, id: params[:id])
     notification.destroy if notification.present?
     flash[:success] = "Notification deleted, successfully"
-    redirect_to admin_android_apps_path
+
+    redirect_to "#{admin_android_apps_path}#notifications"
   end
 
   def validate_notification_params
