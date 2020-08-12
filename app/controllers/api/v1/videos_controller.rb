@@ -47,7 +47,7 @@ class Api::V1::VideosController < Api::V1::ApiController
       .where(enabled: true)
     categories_data = {}
     video_lectures.all.each do |vl|
-      subject_id = vl.subject&.name
+      subject_name = vl.subject&.name
       categories_data[subject_name] ||= {}
       categories_data[subject_name][vl.genre_id] ||= {
         id: vl.genre_id,
