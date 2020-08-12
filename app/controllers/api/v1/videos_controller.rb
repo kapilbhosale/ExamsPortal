@@ -3,7 +3,7 @@
 class Api::V1::VideosController < Api::V1::ApiController
 
   def index
-    lectures = VideoLecture.includes(:batches, :subjects)
+    lectures = VideoLecture.includes(:batches, :subject)
       .where(batches: {id: current_student.batches})
       .where(enabled: true)
       .order(id: :desc)
