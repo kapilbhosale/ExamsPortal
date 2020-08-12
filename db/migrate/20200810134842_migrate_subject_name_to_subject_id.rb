@@ -12,9 +12,9 @@ class MigrateSubjectNameToSubjectId < ActiveRecord::Migration[5.2]
       video_lectrue.save
     end
 
-    # delete subjects with no videos
-    Subject.all.each do |subject|
-      subject.destroy if subject.video_lectures.blank?
-    end
+    # # delete subjects with no videos
+    # Subject.all.each do |subject|
+    #   subject.destroy if subject.video_lectures.blank?
+    # end
   end
 end
