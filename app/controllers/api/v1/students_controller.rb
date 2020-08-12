@@ -5,11 +5,19 @@ class Api::V1::StudentsController < Api::V1::ApiController
   skip_before_action :verify_authenticity_token
 
   def login
-    student = Student.find_by(
-      org_id: current_org&.id,
-      roll_number: params[:rollNumber],
-      parent_mobile: params[:parentMobile]
-    )
+    if request.subdomain == 'app'
+      student = Student.find_by(
+        roll_number: params[:rollNumber],
+        parent_mobile: params[:parentMobile]
+      )
+    else
+      student = Student.find_by(
+        org_id: current_org&.id,
+        roll_number: params[:rollNumber],
+        parent_mobile: params[:parentMobile]
+      )
+    end
+
     if student.blank?
       render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
     end

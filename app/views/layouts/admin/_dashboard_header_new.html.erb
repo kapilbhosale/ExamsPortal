@@ -2,7 +2,10 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="/">
-      Smart Exams
+        <% if @current_org.data.dig('name_and_logo', 'logo').present? %>
+          <%= image_tag @current_org.data.dig('name_and_logo', 'logo') %>
+        <% end %>
+        <%= @current_org&.name %>
       </a>
       <% if admin_signed_in? %>
         <div class="d-flex order-lg-2 ml-auto">

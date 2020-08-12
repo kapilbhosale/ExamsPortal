@@ -3,11 +3,19 @@ class Students::LoginController < Students::BaseController
   skip_before_action :verify_authenticity_token, only: [:authorise]
 
   def authorise
-    student = Student.find_by(
-      org_id: current_org.id,
-      roll_number: login_params[:login],
-      parent_mobile: login_params[:password]
-    )
+    if request.subdomain == 'app'
+      student = Student.find_by(
+        roll_number: login_params[:login],
+        parent_mobile: login_params[:password]
+      )
+    else
+      student = Student.find_by(
+        org_id: current_org.id,
+        roll_number: login_params[:login],
+        parent_mobile: login_params[:password]
+      )
+    end
+
     if student&.valid_password?(login_params[:password])
       student.remember_me = login_params[:remember_me]
 

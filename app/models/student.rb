@@ -59,6 +59,7 @@ class Student < ApplicationRecord
   validates  :gender, numericality: {only_integer: true}
   validates  :ssc_marks, numericality: true, allow_nil: true
   validates  :photo, file_size: { less_than: 2.megabytes }
+  validates  :parent_mobile, uniqueness: { scope: :roll_number }
 
   mount_uploader :photo, PhotoUploader
 
