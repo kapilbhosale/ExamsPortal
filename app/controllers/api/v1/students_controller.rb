@@ -31,7 +31,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       end
 
       message += 'Please Contact Admin. '
-      message += current_org&.data&.dig('admin_contacts').to_s
+      message += student.org&.data&.dig('admin_contacts').to_s
 
       render json: { message: message }, status: :unauthorized and return
     end
