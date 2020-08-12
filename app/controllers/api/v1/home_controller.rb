@@ -15,7 +15,8 @@ class Api::V1::HomeController < Api::V1::ApiController
         appeared: 0,
         total: 0,
       },
-      'exam_portal_link' => exam_portal_link
+      'exam_portal_link' => exam_portal_link,
+      'org_data' => current_org.data['org_data']
     }
     render json: json_data, status: :ok
   end
