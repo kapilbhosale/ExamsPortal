@@ -38,7 +38,7 @@
           <div class="form-group">
             <% @batches.each do |batch| %>
               <label class="checkbox-inline">
-                <input name="batches[]" type="checkbox" value=<%= batch.id %> required>
+                <input name="batches[]" type="checkbox" value=<%= batch.id %>>
                 <%= batch.name %>
               </label>
             <% end %>

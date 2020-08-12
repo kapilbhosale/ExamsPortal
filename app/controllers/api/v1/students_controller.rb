@@ -5,7 +5,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
   skip_before_action :verify_authenticity_token
 
   def login
-    if request.subdomain == 'app'
+    if request.subdomain == 'app' || request.subdomain == 'demo'
       student = Student.find_by(
         roll_number: params[:rollNumber],
         parent_mobile: params[:parentMobile]

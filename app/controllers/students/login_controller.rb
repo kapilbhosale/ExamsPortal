@@ -3,7 +3,7 @@ class Students::LoginController < Students::BaseController
   skip_before_action :verify_authenticity_token, only: [:authorise]
 
   def authorise
-    if request.subdomain == 'app'
+    if request.subdomain == 'app' || request.subdomain == 'demo'
       student = Student.find_by(
         roll_number: login_params[:login],
         parent_mobile: login_params[:password]
