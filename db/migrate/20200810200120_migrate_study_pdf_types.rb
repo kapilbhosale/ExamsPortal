@@ -27,6 +27,7 @@ class MigrateStudyPdfTypes < ActiveRecord::Migration[5.2]
       end
 
       study_pdf.study_pdf_type_id = study_pdf_type.id
+      study_pdf.save
     end
   end
 end
