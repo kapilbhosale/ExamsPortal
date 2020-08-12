@@ -123,7 +123,7 @@ class Api::V1::VideosController < Api::V1::ApiController
   def lectures_json(lectures)
     lectures_data = {}
     lectures.each do |lect|
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject", "video_type")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
       if lect.vimeo?
@@ -131,29 +131,9 @@ class Api::V1::VideosController < Api::V1::ApiController
       else
         lect_data['play_url'] = lect.url
       end
-      lectures_data[lect.subject] ||= []
-      lectures_data[lect.subject] << lect_data
+      lectures_data[lect.subject&.name] ||= []
+      lectures_data[lect.subject&.name] << lect_data
     end
-    if current_org&.subdomain == 'yashwant-clg'
-      {
-        'Physics' => lectures_data['phy'],
-        'Chemistry' => lectures_data['chem'],
-        'Biology' => lectures_data['bio'],
-        'Maths' => lectures_data['maths'],
-        'English' => lectures_data['english'],
-        'Econonics' => lectures_data['econonics'],
-        'BK & A/C' => lectures_data['bk & a/c'],
-        'S.P.' => lectures_data['s.p'],
-        'O.C.M' => lectures_data['o.c.m.'],
-        'MATHS(com)' => lectures_data['maths(com)']
-      }
-    else
-      {
-        'Chemistry' => lectures_data['chem'],
-        'Physics' => lectures_data['phy'],
-        'Biology' => lectures_data['bio'],
-        'Maths' => lectures_data['maths']
-      }
-    end
+    lectures_data
   end
 end
