@@ -98,8 +98,8 @@ class VideoLecture < ApplicationRecord
         message: 'New Video Lecture Added'
       },
       notification: {
-        body: "New Video of subject #{subject}, Name: #{title}, Please visit and take a look. Study Hard.",
-        title: "New Video of subject #{subject} Added - '#{title}'",
+        body: "New Video of subject #{subject.name}, Name: #{title}, Please visit and take a look. Study Hard.",
+        title: "New Video of subject #{subject.name} Added - '#{title}'",
         image: org.data['push_image']
       }
     }

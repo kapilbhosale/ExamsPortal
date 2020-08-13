@@ -49,8 +49,8 @@ class StudyPdf < ApplicationRecord
         message: 'New PDF Material Added'
       },
       notification: {
-        body: "New #{pdf_type}, Name: #{name}, Please visit and take a look. Study Hard.",
-        title: "New #{pdf_type} Added - '#{name}'",
+        body: "New #{study_pdf_type.name}, Name: #{name}, Please visit and take a look. Study Hard.",
+        title: "New #{study_pdf_type.name} Added - '#{name}'",
         image: org.data['push_image']
       }
     }
