@@ -2,6 +2,7 @@
 
 class Api::V1::StudentsController < Api::V1::ApiController
   skip_before_action :authenticate, only: [:login]
+  skip_before_action :set_current_org, only: [:login]
   skip_before_action :verify_authenticity_token
 
   def login
