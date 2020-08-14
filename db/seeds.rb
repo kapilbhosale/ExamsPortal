@@ -172,3 +172,4 @@ end
 
 
 Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
+SuperAdmin.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

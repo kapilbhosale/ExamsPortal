@@ -7,10 +7,12 @@
 #  name_map   :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  org_id     :integer
 #
 # Indexes
 #
 #  index_subjects_on_name_map  (name_map)
+#  index_subjects_on_org_id    (org_id)
 #
 
 require 'test_helper'

@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :super_admins, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   devise_for :admin
   devise_for :student
 
