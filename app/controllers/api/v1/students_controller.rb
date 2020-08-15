@@ -12,8 +12,9 @@ class Api::V1::StudentsController < Api::V1::ApiController
         parent_mobile: params[:parentMobile]
       )
     else
+      org = Org.find_by(subdomain: request.subdomain)
       student = Student.find_by(
-        org_id: current_org&.id,
+        org_id: org&.id,
         roll_number: params[:rollNumber],
         parent_mobile: params[:parentMobile]
       )
