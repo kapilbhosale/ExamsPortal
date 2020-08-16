@@ -35,9 +35,12 @@ module Exams
         exam_section = es_by_id[question.section_id]
         questions[question.id] = {
           type: question.question_type,
-          ans: true_options_by_q_id[question.id]&.id,
+          ans: (question.input? ?
+            true_options_by_q_id[question.id]&.data.to_f.round(2) :
+            true_options_by_q_id[question.id]&.id),
           pm: exam_section.positive_marks,
-          nm: exam_section.negative_marks}
+          nm: exam_section.negative_marks
+        }
       end
       model_ans_data = {
         exam_id: exam_id,

@@ -315,6 +315,9 @@ ActiveRecord::Schema.define(version: 2020_08_14_191438) do
     t.integer "score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "input_questions_present", default: false
+    t.integer "correct_input_questions", default: 0
+    t.integer "incorrect_input_questions", default: 0
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
   end

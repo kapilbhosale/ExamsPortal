@@ -133,22 +133,45 @@ export function updateExamSummary(examID) {
         let score = 0;
         let count = 0;
         let section_out_of_marks = 0;
+        let input_questions_present = false;
+        let correct_input_questions = 0;
+        let incorrect_input_questions = 0;
         localSAData.questionsBySections[section].forEach((question) => {
           let modelAns = localModelAnsData.questions[question.id];
           if (question.answerProps.answer) {
-            if (modelAns.ans === question.answerProps.answer[0]) {
-              correct++;
-              score += modelAns.pm;
+            if ( modelAns.type === 'input') {
+              input_questions_present = true
+              if ( modelAns.ans === parseFloat(parseFloat(question.answerProps.answer[0]).toFixed(2)) ) {
+                correct_input_questions++;
+                score += modelAns.pm;
+              } else {
+                incorrect_input_questions++;
+              }
             } else {
-              wrong++;
-              score += modelAns.nm;
+              if (modelAns.ans === question.answerProps.answer[0]) {
+                correct++;
+                score += modelAns.pm;
+              } else {
+                wrong++;
+                score += modelAns.nm;
+              }
             }
             ans++;
           }
           count++;
           section_out_of_marks += modelAns.pm;
         })
-        resultSummary[section] = {ans, correct, wrong, score, count, section_out_of_marks}
+        resultSummary[section] = {
+          ans,
+          correct,
+          wrong,
+          score,
+          count,
+          section_out_of_marks,
+          input_questions_present,
+          correct_input_questions,
+          incorrect_input_questions
+        }
       })
     }
     dispatch({ type: actionTypes.SET_EXAM_SUMMARY, val: resultSummary });

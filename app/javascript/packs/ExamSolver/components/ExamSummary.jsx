@@ -23,8 +23,11 @@ class ExamSummary extends React.Component {
           incorrect: value.wrong,
           not_answered: value.count - value.ans,
           score: value.score,
-          topper_score: '-',
-          section_out_of_marks: value.section_out_of_marks
+          topper_score: 'NA',
+          section_out_of_marks: value.section_out_of_marks,
+          input_questions_present: value.input_questions_present,
+          correct_input_questions: value.correct_input_questions,
+          incorrect_input_questions: value.incorrect_input_questions,
         }
       );
     }

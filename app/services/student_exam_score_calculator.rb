@@ -9,11 +9,13 @@ class StudentExamScoreCalculator
   def calculate
     sections.each do |section|
       @current_section = section
-      if exam.exam_type == 'jee'
-        counts = jee_correct_incorrect_counts
-      else
-        counts = cet_correct_incorrect_counts
-      end
+      # if exam.exam_type == 'jee'
+      #   counts = jee_correct_incorrect_counts
+      # else
+      #   counts = cet_correct_incorrect_counts
+      # end
+
+      counts = jee_correct_incorrect_counts
       StudentExamSummary.create!(
         student_exam_id: @student_exam.id,
         answered: answered,
@@ -23,6 +25,9 @@ class StudentExamScoreCalculator
         score: score(counts),
         no_of_questions: no_of_questions,
         section_id: @current_section.id,
+        input_questions_present: counts[:input_questions_present],
+        correct_input_questions: counts[:input_correct_count],
+        incorrect_input_questions: counts[:input_incorrect_count],
       )
     end
   end
@@ -71,32 +76,32 @@ class StudentExamScoreCalculator
     answered - correct
   end
 
-  def correct_incorrect_counts
-    correct_count, in_correct_count = 0, 0
-    se_sea.select do |sea|
-      next if sea.option_id == 0
-      next if sea.question.section_id != @current_section.id
-      if sea.question.single_select?
-        sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
-      elsif sea.question.input?
-        correct_count += 1 if sea.question.options.first.data == sea.ans
-      end
-    end
-    { correct_count: correct_count, in_correct_count: in_correct_count }
-  end
-
   def jee_correct_incorrect_counts
     correct_count, in_correct_count = 0, 0
+    input_correct_count, input_incorrect_count = 0, 0
+    input_questions_present = false
     se_sea.select do |sea|
       next if sea.option_id == 0
       next if sea.question.section_id != @current_section.id
+
       if sea.question.single_select?
-        sea.option.is_answer ? correct_count += 1 : in_correct_count +=1
+        sea.option.is_answer ? correct_count += 1 : in_correct_count += 1
       elsif sea.question.input?
-        correct_count += 1 if sea.question.options.first.data == sea.ans
+        if sea.question.options.first.data.to_f.round(2) == sea.ans.to_f.round(2)
+          input_correct_count += 1
+        else
+          input_incorrect_count += 1
+        end
+        input_questions_present = true
       end
     end
-    { correct_count: correct_count, in_correct_count: in_correct_count }
+    {
+      correct_count: correct_count,
+      in_correct_count: in_correct_count,
+      input_correct_count: input_correct_count,
+      input_incorrect_count: input_incorrect_count,
+      input_questions_present: input_questions_present
+    }
   end
 
   def cet_correct_incorrect_counts
@@ -111,6 +116,8 @@ class StudentExamScoreCalculator
 
   def score(counts)
     exam_section = ExamSection.find_by(exam: exam, section: @current_section)
-    (counts[:correct_count] * exam_section.positive_marks) + (counts[:in_correct_count] * exam_section.negative_marks)
+    (counts[:correct_count] * exam_section.positive_marks) +
+      (counts[:in_correct_count] * exam_section.negative_marks) +
+      (counts[:input_correct_count] * exam_section.positive_marks)
   end
 end

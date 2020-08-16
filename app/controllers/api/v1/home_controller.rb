@@ -16,7 +16,7 @@ class Api::V1::HomeController < Api::V1::ApiController
         total: 0,
       },
       'exam_portal_link' => exam_portal_link,
-      'org_data' => current_org.data['org_data']
+      'org_data' => current_org&.data&.dig('org_data')
     }
     render json: json_data, status: :ok
   end
@@ -30,7 +30,7 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def app_version
-    version_code = current_org&.data.dig('version_code') || '1.0.0'
+    version_code = current_org&.data&.dig('version_code') || '1.0.0'
     render json: { version_code: version_code, force_update: true }, status: :ok
   end
 end

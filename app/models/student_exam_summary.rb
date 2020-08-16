@@ -2,17 +2,20 @@
 #
 # Table name: student_exam_summaries
 #
-#  id              :bigint(8)        not null, primary key
-#  answered        :integer
-#  correct         :integer
-#  incorrect       :integer
-#  no_of_questions :integer
-#  not_answered    :integer
-#  score           :integer
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  section_id      :bigint(8)
-#  student_exam_id :bigint(8)
+#  id                        :bigint(8)        not null, primary key
+#  answered                  :integer
+#  correct                   :integer
+#  correct_input_questions   :integer          default(0)
+#  incorrect                 :integer
+#  incorrect_input_questions :integer          default(0)
+#  input_questions_present   :boolean          default(FALSE)
+#  no_of_questions           :integer
+#  not_answered              :integer
+#  score                     :integer
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  section_id                :bigint(8)
+#  student_exam_id           :bigint(8)
 #
 # Indexes
 #

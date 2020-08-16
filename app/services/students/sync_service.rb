@@ -42,7 +42,7 @@ module Students
           # commenting so as to store the ans/question props
 
           student_exam_answer = student_exam_answer_by_qid[question_id]
-          next if question.input? && student_exam_answer&.ans == student_ans
+          next if question.input? && student_exam_answer&.ans.to_f.round(2) == student_ans.to_f.round(2)
           next if question.single_select? && student_exam_answer&.option_id == student_ans.to_i
 
           if question.input?

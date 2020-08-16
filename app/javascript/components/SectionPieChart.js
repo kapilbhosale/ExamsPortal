@@ -9,7 +9,7 @@ class SectionPieChart extends React.Component {
 
   render() {
     const section_data = this.props.data;
-    const data = [
+    let data = [
       {
         "id": `Correct [${section_data.correct}]`,
         "label": "correct",
@@ -29,6 +29,24 @@ class SectionPieChart extends React.Component {
         "color": "gray"
       }
     ];
+
+    if (section_data.input_questions_present) {
+      let input_data = [
+        {
+          "id": `Input Correct [${section_data.correct_input_questions}]`,
+          "label": "correct",
+          "value": section_data.correct_input_questions,
+          "color": "rgb(2, 160, 0, 0.5)"
+        },
+        {
+          "id": `Input Wrong [${section_data.incorrect_input_questions}]`,
+          "label": "wrong",
+          "value": section_data.incorrect_input_questions,
+          "color": "rgb(195, 0, 0, 0.5)"
+        },
+      ];
+      data = data.concat(input_data);
+    }
 
     return(
       <div>
