@@ -16,6 +16,7 @@ class Admin::VideoLecturesController < Admin::BaseController
     @batches = Batch.where(org: current_org).all_batches
     @genres = Genre.where(org_id: current_org.id)
     @subjects = Subject.where(org_id: current_org.id)
+    @is_vimeo_configured = current_org.vimeo_access_token.present?
   end
 
   def create
