@@ -12,9 +12,9 @@
  *
  *= require_tree .
  *= require_self
+ *= stub "active_admin"
  */
 
- *=stub "active_admin"
 
 body {
     -webkit-user-select: none;
