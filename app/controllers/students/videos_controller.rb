@@ -15,15 +15,11 @@ class Students::VideosController < Students::BaseController
       .where.not(laptop_vimeo_id: nil)
       .order(id: :desc)
 
-    lectures_data = {}
+    @lectures_data = {}
     lectures.each do |lect|
-      lectures_data[lect.subject] ||= []
-      lectures_data[lect.subject] << lect
+      @lectures_data[lect.subject&.name] ||= []
+      @lectures_data[lect.subject&.name] << lect
     end
-    @chem_videos = lectures_data['chem']
-    @phy_videos = lectures_data['phy']
-    @bio_videos = lectures_data['bio']
-    @maths_videos = lectures_data['maths']
   end
 
   def show_lecture

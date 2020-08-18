@@ -1,35 +1,53 @@
-<div class="tabbable-panel">
-  <div class="tabbable-line">
-    <ul class="nav nav-tabs ">
-      <li class="active">
-        <a href="#tab_exam_paper" data-toggle="tab">
-          Exam Paper
-        </a>
-      </li>
-      <li>
-        <a href="#tab_dpp" data-toggle="tab">
-          DPP
-        </a>
-      </li>
-      <li>
-        <a href="#tab_eagle_view" data-toggle="tab">
-          Eagle View
-        </a>
-      </li>
-    </ul>
-    <div class="tab-content">
-      <div class="tab-pane active" id="tab_exam_paper">
-        <%= render 'exam_paper' %>
-      </div>
-      <div class="tab-pane" id="tab_dpp">
-        <%= render 'dpp' %>
-      </div>
-      <div class="tab-pane" id="tab_eagle_view">
-        <%= render 'eagle_view' %>
+<% if @json_data.blank? %>
+  <div>
+    No PDF added.
+  </div>
+<% else %>
+  <div class="tabbable-panel">
+    <div class="tabbable-line">
+      <ul class="nav nav-tabs ">
+        <% @json_data.keys.each_with_index do |key, index| %>
+          <li class="<%= index == 0 ? 'active': '' %>">
+            <a href="#<%=key.parameterize %>" data-toggle="tab">
+              <%= key.humanize %>
+            </a>
+          </li>
+        <% end %>
+      </ul>
+      <div class="tab-content">
+        <% active_class = true %>
+        <% @json_data.each do |key, pdf_datas_slice| %>
+          <div class="tab-pane <%= active_class ? 'active' : '' %>" id="<%= key.parameterize %>">
+            <% pdf_datas_slice.each_slice(2) do |pdf_datas| %>
+              <div class="row">
+                <% pdf_datas.each do |pdf_data| %>
+                    <div class="col-sm-6 col-sx-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title"><%= pdf_data[:name] %></h5>
+                          <p class="card-text"><%= pdf_data[:description] %></p>
+                          <p class="card-text"><%= pdf_data[:added_on] %></p>
+                          <% if pdf_data[:question_paper_link].present? %>
+                            <a href="<%= pdf_data[:question_paper_link] %>" class="btn btn-danger">Question Paper</a>
+                          <% end %>
+                          <% if pdf_data[:solution_paper_link].present? %>
+                            <a href="<%= pdf_data[:solution_paper_link] %>" class="btn btn-primary">
+                              Solutions
+                            </a>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+          <% active_class = false %>
+        <% end %>
       </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <style>
   .card-horizontal {
