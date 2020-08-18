@@ -38,7 +38,7 @@
                   <% ans = @data[:student_ans_by_question][question.id]&.ans %>
                     <%
                       if ans.present?
-                        option_class = question.options.first.data == ans ? 'correct-ans' : 'wrong-ans'
+                        option_class = question.options.first.data.to_f.round(2) == ans.to_f.round(2) ? 'correct-ans' : 'wrong-ans'
                       end
                     %>
 
