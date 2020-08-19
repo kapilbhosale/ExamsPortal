@@ -8,6 +8,7 @@ require 'csv'
 #  address                :text
 #  api_key                :string
 #  app_login              :boolean          default(FALSE)
+#  app_reset_count        :integer          default(0)
 #  brand                  :string
 #  college                :string
 #  current_sign_in_at     :datetime
@@ -111,7 +112,8 @@ class Student < ApplicationRecord
   end
 
   def generated_api_key
-    Digest::MD5.hexdigest "#{org_id}-#{roll_number}-#{parent_mobile}"
+    key = Digest::MD5.hexdigest "#{org_id}-#{roll_number}-#{parent_mobile}"
     # SecureRandom.uuid.gsub(/\-/,'')
+    "#{key}-#{app_reset_count}"
   end
 end

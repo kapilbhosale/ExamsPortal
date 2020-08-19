@@ -97,15 +97,14 @@ class Admin::StudentsController < Admin::BaseController
   def reset_login
     @student = Student.find_by(id: params[:student_id], org: current_org)
     if @student.present?
-      new_api_key = @student.api_key + '-1'
       @student.update!(
         app_login: false,
         is_laptop_login: false,
-        api_key: new_api_key,
         deviceUniqueId: nil,
         deviceName: nil,
         manufacturer: nil,
-        brand: nil
+        brand: nil,
+        app_reset_count: @student.app_reset_count + 1
       )
       flash[:success] = 'Student App Login Reset, successfully.'
     else
