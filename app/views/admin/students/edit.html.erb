@@ -119,7 +119,7 @@
           </div>
 
           <div class="col-md-12">
-            <div class="col-sm-6 col-md-6">
+            <div class="col-sm-5 col-md-5">
                 <h5>
                   <span class="badge badge-primary">MOBILE</span>
                   <%= @student.app_login? ? ' - YES' : ' - NO'%>
@@ -135,11 +135,17 @@
                 <% end %>
             </div>
 
-            <div class="col-sm-6 col-md-6">
+            <div class="col-sm-5 col-md-5">
                 <h5>
                   <span class="badge badge-danger">LAPTOP</span>
                   <%= @student.is_laptop_login? ? ' - YES' : '- NO'%>
                 </h5>
+            </div>
+            <div class="col-sm-2 col-md-2">
+              <h5>
+                <span class="badge badge-warning">Reset Count</span>
+                <%= @student.app_reset_count %>
+              </h5>
             </div>
           </div>
 
