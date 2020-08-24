@@ -61,6 +61,13 @@
             <li class="nav-item">
               <%= link_to "<i class='fe fe-users'></i> Notifications".html_safe, students_notifications_path, class: current_page?(students_notifications_path) ? "nav-link active" : "nav-link" %>
             </li>
+            <% if request.subdomain == 'exams' && current_student.present? %>
+            <li class="nav-item">
+              <a class="" href="https://docs.google.com/forms/d/e/1FAIpQLScV2YhtsejvBk1C6nrgqQB0eezVbSK_keuy2ucHIxZI4zh4Qg/viewform" role="button" target="_blank">
+                <Button class="btn btn-sm btn-danger">Study Material Dispatch Form</Button>
+              </a>
+            </li>
+            <% end %>
           </ul>
         </div>
       </div>
