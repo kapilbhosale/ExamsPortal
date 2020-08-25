@@ -18,6 +18,8 @@ class Admin::ZoomMeetingsController < Admin::BaseController
       meeting.subject = params[:subject]
       meeting.teacher_name = params[:teacher_name]
       meeting.datetime_of_meeting = params[:datetime_of_meeting]
+      meeting.live_type = ZoomMeeting.live_types[params[:live_type].to_s]
+      meeting.vimeo_live_url = params[:vimeo_live_url]
       if meeting.save
         if params[:batches].present?
           BatchZoomMeeting.where(zoom_meeting_id: meeting.id).destroy_all
@@ -45,6 +47,8 @@ class Admin::ZoomMeetingsController < Admin::BaseController
       meeting.teacher_name = params[:teacher_name]
       meeting.datetime_of_meeting = params[:datetime_of_meeting]
       meeting.org_id = current_org.id
+      meeting.live_type = ZoomMeeting.live_types[params[:live_type].to_s]
+      meeting.vimeo_live_url = params[:vimeo_live_url]
       if meeting.save
         if params[:batches].present?
           params[:batches].each do |batch_id|
@@ -69,6 +73,10 @@ class Admin::ZoomMeetingsController < Admin::BaseController
   end
 
   def validate_meeting_params
-    params[:zoom_meeting_id].present? && params[:password].present? && params[:datetime_of_meeting].present?
+    if(params[:live_type] == 'zoom')
+      params[:zoom_meeting_id].present? && params[:password].present? && params[:datetime_of_meeting].present?
+    else
+      params[:vimeo_live_url].present?
+    end
   end
 end

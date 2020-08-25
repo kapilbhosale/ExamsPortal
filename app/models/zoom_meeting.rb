@@ -4,9 +4,11 @@
 #
 #  id                  :bigint(8)        not null, primary key
 #  datetime_of_meeting :datetime
+#  live_type           :integer          default(0)
 #  password            :string
 #  subject             :string
 #  teacher_name        :string
+#  vimeo_live_url      :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  org_id              :bigint(8)
@@ -24,6 +26,8 @@ class ZoomMeeting < ApplicationRecord
 
   before_save :sanitize_meeting_id
 
+  enum live_type: {zoom: 0, vimeo: 1}
+
   def to_json
     {
       zoom_meeting_id: zoom_meeting_id,
@@ -38,6 +42,6 @@ class ZoomMeeting < ApplicationRecord
   private
 
   def sanitize_meeting_id
-    self.zoom_meeting_id = zoom_meeting_id.squish.gsub(/\s/, "")
+    self.zoom_meeting_id = zoom_meeting_id.squish.gsub(/\s/, "") if zoom_meeting_id.present?
   end
 end

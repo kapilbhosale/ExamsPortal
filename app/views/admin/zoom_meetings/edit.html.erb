@@ -4,12 +4,30 @@
       <div class="card-body">
         <h3 class="card-title">Edit Zoom Meeting</h3>
 
-        <div class="form-group">
-          <input type="text" value="<%= @zoom_meeting.zoom_meeting_id %>" class="form-control" name="zoom_meeting_id" id="zoom_meeting_id" placeholder="Enter Zoom Meeting Id" required>
+        <div class="pull-right">
+          <label class="selectgroup-item">
+            <input type="radio" name="live_type" value="zoom" class="selectgroup-input"  <%= @zoom_meeting.zoom? ? 'checked' : '' %>>
+            <span class="selectgroup-button">Zoom Live</span>
+          </label>
+          <label class="selectgroup-item">
+            <input type="radio" name="live_type" value="vimeo" class="selectgroup-input"  <%= @zoom_meeting.vimeo? ? 'checked' : '' %> >
+            <span class="selectgroup-button">Vimeo Live</span>
+          </label>
+        </div>
+        <div id="zoom-container">
+          <div class="form-group">
+            <input type="text" value="<%= @zoom_meeting.zoom_meeting_id %>" class="form-control" name="zoom_meeting_id" id="zoom_meeting_id" placeholder="Enter Zoom Meeting Id" required>
+          </div>
+
+          <div class="form-group">
+            <input type="text" value="<%= @zoom_meeting.password %>" class="form-control" name="password" id="password" placeholder="Enter Zoom Meeting Password" required>
+          </div>
         </div>
 
-        <div class="form-group">
-          <input type="text" value="<%= @zoom_meeting.password %>" class="form-control" name="password" id="password" placeholder="Enter Zoom Meeting Password" required>
+        <div id="vimeo-container">
+          <div class="form-group">
+            <input type="text" value="<%= @zoom_meeting.vimeo_live_url %>" class="form-control" name="vimeo_live_url" id="vimeo_live_url" placeholder="Enter Vimeo Live URL">
+          </div>
         </div>
 
         <div class="form-group">
@@ -42,3 +60,24 @@
     <% end %>
   </div>
 </div>
+
+<script>
+  $(document).ready(() => {
+
+    <% if @zoom_meeting.zoom? %>
+      $('#vimeo-container').hide();
+    <% else %>
+      $('#zoom-container').hide();
+    <% end %>
+
+    $("input[type='radio']").click(function() {
+      if(this.value === 'vimeo') {
+        $('#zoom-container').hide();
+        $('#vimeo-container').show();
+      } else {
+        $('#zoom-container').show();
+        $('#vimeo-container').hide();
+      }
+    });
+  });
+</script>

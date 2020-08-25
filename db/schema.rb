@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_072906) do
+ActiveRecord::Schema.define(version: 2020_08_25_190444) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -179,6 +179,18 @@ ActiveRecord::Schema.define(version: 2020_08_19_072906) do
     t.integer "org_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "sender_id"
+    t.string "sender_type"
+    t.string "sender_name"
+    t.text "message"
+    t.bigint "messageable_id"
+    t.string "messageable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable_type_and_messageable_id"
   end
 
   create_table "new_admissions", force: :cascade do |t|
@@ -478,6 +490,8 @@ ActiveRecord::Schema.define(version: 2020_08_19_072906) do
     t.bigint "org_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "live_type", default: 0
+    t.string "vimeo_live_url"
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
