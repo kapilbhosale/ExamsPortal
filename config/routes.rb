@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     end
     resources :study_pdfs
     resources :notifications
+    resources :live_classes
   end
 
 
