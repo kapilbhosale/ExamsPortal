@@ -31,6 +31,20 @@ class Api::V1::VideosController < Api::V1::ApiController
     render json: lectures_data, status: :ok
   end
 
+  def set_yt_url
+    lecture = VideoLecture.find_by(id: params[:video_id])
+    render json: {} and return if lecture.blank?
+
+    cached_url = REDIS_CACHE.set("lecture-#{lecture.id}")
+    if cached_url.blank?
+      cached_url = yt_url(lecture)
+      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+      # expiry_time.
+    end
+
+    render json: { url_hd: cached_url, url_sd: cached_url }
+  end
+
   def get_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
@@ -43,6 +57,13 @@ class Api::V1::VideosController < Api::V1::ApiController
     end
 
     render json: { url_hd: cached_url, url_sd: cached_url }
+  end
+
+  def set_view_count
+    lecture = VideoLecture.find_by(id: params[:video_id])
+    render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
+    count = REDIS_CACHE.get("lecture-count-#{lecture.id}") || 0
+    REDIS_CACHE.set("lecture-count-#{lecture.id}", count + 1)
   end
 
   def categories
@@ -88,36 +109,16 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'lavtrqwu-1:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-2:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-3:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-4:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-5:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-6:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-7:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-8:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-9:g23565b4790l@p.webshare.io:80',
-      'lavtrqwu-10:g23565b4790l@p.webshare.io:80',
-      'pwhlocmq-1:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-2:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-3:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-4:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-5:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-6:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-7:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-8:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-9:ebg4tkw62oup@p.webshare.io:80',
-      'pwhlocmq-10:ebg4tkw62oup@p.webshare.io:80',
-      'iylfweeq-1:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-2:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-3:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-4:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-5:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-6:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-7:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-8:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-9:u2c67lfqt9r1@p.webshare.io:80',
-      'iylfweeq-10:u2c67lfqt9r@p.webshare.io:80',
+      'jpuerdtg-dest:397agm6x94s1@45.72.30.159:80',
+      'jpuerdtg-dest:397agm6x94s1@209.127.191.180:80',
+      'jpuerdtg-dest:397agm6x94s1@45.130.255.147:80',
+      'jpuerdtg-dest:397agm6x94s1@193.8.127.117:80',
+      'jpuerdtg-dest:397agm6x94s1@193.8.215.243:80',
+      'jpuerdtg-dest:397agm6x94s1@45.130.125.157:80',
+      'jpuerdtg-dest:397agm6x94s1@45.130.255.140:80',
+      'jpuerdtg-dest:397agm6x94s1@45.130.255.198:80',
+      'jpuerdtg-dest:397agm6x94s1@185.164.56.221:80',
+      'jpuerdtg-dest:397agm6x94s1@45.136.231.226:80',
     ]
   end
 
@@ -125,7 +126,8 @@ class Api::V1::VideosController < Api::V1::ApiController
     str_url = `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
     return str_url if str_url.present?
 
-    `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(29)]}`
+    url_from_proxy = `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
+    url_from_proxy.squish
   end
 
   def lectures_json(lectures)
