@@ -59,6 +59,7 @@ module Exams
                     :publish_result,
                     :questions_zip,
                     :show_exam_at,
+                    :exam_available_till,
       )
     end
 

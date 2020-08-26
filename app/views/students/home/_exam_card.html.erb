@@ -24,14 +24,30 @@
                   Continue Exam
                 </a>
               <% else %>
-                <a href="<%= students_exam_confirmation_path(exam_id: exam.id) %>" class="btn btn-primary">
-                  Appear Exam
-                </a>
+                <% if exam.exam_available_till.present? && Time.current > exam.exam_available_till %>
+                  <div class="col-md-12">
+                    <p class="text-danger">
+                      Exam Expired, <%= exam.exam_available_till.strftime("%d-%b %I:%M %p") %>
+                    </p>
+                  </div>
+                <% else %>
+                  <a href="<%= students_exam_confirmation_path(exam_id: exam.id) %>" class="btn btn-primary">
+                    Appear Exam
+                  </a>
+                <% end %>
               <% end %>
           <% else %>
-            <a href="<%= students_exam_confirmation_path(exam_id: exam.id) %>" class="btn btn-primary">
-              Appear Exam
-            </a>
+            <% if exam.exam_available_till.present? && Time.current > exam.exam_available_till %>
+              <div class="col-md-12">
+                <p class="text-danger">
+                  Exam Expired, <%= exam.exam_available_till.strftime("%d-%b %I:%M %p") %>
+                </p>
+              </div>
+            <% else %>
+              <a href="<%= students_exam_confirmation_path(exam_id: exam.id) %>" class="btn btn-primary">
+                Appear Exam
+              </a>
+            <% end %>
           <% end %>
         </div>
       </div>

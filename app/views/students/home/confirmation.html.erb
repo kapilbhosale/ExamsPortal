@@ -1,3 +1,4 @@
+
 <% if @exam.present? %>
   <div class="container">
     <div class="text-center" style="width: 100%; padding: 10px 4px; background-color: antiquewhite;">
@@ -21,10 +22,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2 text-center">
-        <a href="/students/exam/<%= @exam.id %>" onclick="localStorage.clear()">
-          <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
-        </a>
+      <div class="col-md-4 text-center">
+        <% if @exam.exam_available_till.present? && Time.current > @exam.exam_available_till %>
+          <p class="text-danger">
+            Exam Expired, <%= @exam.exam_available_till.strftime("%d-%b-%y %r") %>
+          </p>
+        <% else %>
+          <a href="/students/exam/<%= @exam.id %>" onclick="localStorage.clear()">
+            <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
+          </a>
+        <% end %>
       </div>
       <div class="text-center" style="width: 100%; padding-top: 20px;">
         <span class="text-danger text-center">

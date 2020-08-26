@@ -74,6 +74,7 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def update
+
     @response = Exams::UpdateExamService.new(params, current_org).update
     set_flash
     redirect_to admin_exams_path

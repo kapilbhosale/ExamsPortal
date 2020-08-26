@@ -46,7 +46,7 @@
                         <%= check_box_tag :publish_result, 'true', false, 'data-toggle': "modal", 'data-target': '#publishResultModal', checked: exam.publish_result, disabled: true %>
                       </td>
                       <td>
-                        <%= link_to '', edit_admin_exam_path(exam.id), remote: true, class: 'glyphicon glyphicon-pencil'%> &nbsp;
+                        <%= link_to '', edit_admin_exam_path(exam.id), class: 'glyphicon glyphicon-pencil'%> &nbsp;
                         <%= link_to '', admin_exam_path(exam), method: :delete, data: {confirm: 'Are you sure?'}, remote: true, class: 'glyphicon glyphicon-trash'%>
                       </td>
                     </tr>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_25_190444) do
+ActiveRecord::Schema.define(version: 2020_08_26_083746) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,7 @@ ActiveRecord::Schema.define(version: 2020_08_25_190444) do
     t.integer "exam_type", default: 0
     t.datetime "show_exam_at"
     t.integer "org_id", default: 0
+    t.datetime "exam_available_till"
     t.index ["name"], name: "index_exams_on_name"
   end
 
@@ -492,6 +493,7 @@ ActiveRecord::Schema.define(version: 2020_08_25_190444) do
     t.datetime "updated_at", null: false
     t.integer "live_type", default: 0
     t.string "vimeo_live_url"
+    t.string "vimeo_live_show_url"
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 

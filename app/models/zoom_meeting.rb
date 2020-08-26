@@ -4,10 +4,11 @@
 #
 #  id                  :bigint(8)        not null, primary key
 #  datetime_of_meeting :datetime
-#  live_type           :integer          default(0)
+#  live_type           :integer          default("zoom")
 #  password            :string
 #  subject             :string
 #  teacher_name        :string
+#  vimeo_live_show_url :string
 #  vimeo_live_url      :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null

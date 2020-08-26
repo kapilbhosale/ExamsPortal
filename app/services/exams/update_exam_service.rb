@@ -12,7 +12,7 @@ module Exams
     def update
       validate_request
       build_batches
-      exam.update!({publish_result: exam_params[:exam][:publish_result]})
+      exam.update!(udpate_exam_params)
       return {status: true, message: 'Exam details updated successfully'}
     rescue UpdateExamError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
@@ -23,6 +23,16 @@ module Exams
     def validate_request
       raise UpdateExamError, 'Exam does not exists' if exam.nil?
       raise UpdateExamError, 'Exam not belongs to your org' if exam.org != org
+    end
+
+    def udpate_exam_params
+      exam_params.permit(
+        :name,
+        :description,
+        :no_of_questions,
+        :time_in_minutes,
+        :show_exam_at,
+        :exam_available_till).merge!(publish_result: exam_params[:publish_result] == 'Yes')
     end
 
     def build_batches
