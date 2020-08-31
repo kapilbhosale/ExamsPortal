@@ -19,15 +19,16 @@ module Reports
     end
 
     def syn_data_to_se
-      ses_ids_to_delete = []
+      processed_student_exam_ids = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id}).pluck(:student_exam_id)
       exam.batches.each do |batch|
         student_ids = batch.students.ids
-        StudentExamSync.where(student_id: student_ids, exam_id: exam.id).find_each do |ses|
+        all_student_exam_ids = StudentExam.where(exam: exam, student_id: student_ids).ids
+        unprocessed_student_exam_ids = all_student_exam_ids - processed_student_exam_ids
+        unprossed_student_ids = StudentExam.where(id: unprocessed_student_exam_ids).pluck(:student_id)
+        StudentExamSync.where(student_id: unprossed_student_ids, exam_id: exam.id).find_each do |ses|
           Students::SyncService.new(ses.student_id, exam.id, ses.sync_data).call
-          ses_ids_to_delete << ses.id
         end
       end
-      StudentExamSync.where(id: ses_ids_to_delete).delete_all
     end
 
     def prepare_report

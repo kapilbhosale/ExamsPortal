@@ -152,7 +152,7 @@ class Students::HomeController < Students::BaseController
     end
 
     @summary_data = {
-      is_result_processed: ses_sync&.end_exam_sync,
+      is_result_processed: student_exam_summaries.present? || ses_sync&.end_exam_sync,
       total_question: total_question,
       total_score: total_score,
       time_spent: time_spent,
