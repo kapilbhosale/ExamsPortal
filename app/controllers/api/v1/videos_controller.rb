@@ -10,6 +10,8 @@ class Api::V1::VideosController < Api::V1::ApiController
 
     lectures_data = {}
     lectures.each do |lect|
+      next if lect.publish_at.present? && lect.publish_at > Time.current
+
       lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
@@ -47,6 +49,8 @@ class Api::V1::VideosController < Api::V1::ApiController
       .where(enabled: true)
     categories_data = {}
     video_lectures.all.each do |vl|
+      next if vl.publish_at.present? && vl.publish_at > Time.current
+
       subject_name = vl.subject&.name
       categories_data[subject_name] ||= {}
       categories_data[subject_name][vl.genre_id] ||= {

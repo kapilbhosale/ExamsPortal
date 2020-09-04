@@ -97,6 +97,13 @@
         <% end %>
 
         <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+          <div class="col-sm-8">
+            <input type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+          </div>
+        </div>
+
+        <div class="row form-group">
           <p>Select Batches: </p>
           <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
             <% @batches.each do |batch| %>

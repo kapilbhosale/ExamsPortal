@@ -75,6 +75,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       laptop_vimeo_id: params[:laptop_vimeo_id],
       genre_id: params[:genre_id],
       subject_id: params[:subject_id],
+      publish_at: params[:publish_at]
     }
   end
 
@@ -90,7 +91,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       uploaded_thumbnail: params[:thumbnail],
       org_id: current_org.id,
       laptop_vimeo_id: params[:laptop_vimeo_id],
-      genre_id: params[:genre_id]
+      genre_id: params[:genre_id],
+      publish_at: params[:publish_at]
     }
   end
 end

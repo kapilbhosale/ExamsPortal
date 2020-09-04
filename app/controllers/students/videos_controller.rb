@@ -17,6 +17,8 @@ class Students::VideosController < Students::BaseController
 
     @lectures_data = {}
     lectures.each do |lect|
+      next if lect.publish_at.present? && lect.publish_at > Time.current
+
       @lectures_data[lect.subject&.name] ||= []
       @lectures_data[lect.subject&.name] << lect
     end

@@ -6,6 +6,7 @@
 #  by                 :string
 #  description        :string
 #  enabled            :boolean          default(TRUE)
+#  publish_at         :datetime
 #  subject_name       :integer
 #  tag                :string
 #  thumbnail          :string

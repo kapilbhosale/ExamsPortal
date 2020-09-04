@@ -19,7 +19,7 @@
           <th>Title</th>
           <th>Teacher</th>
           <th>Folder</th>
-          <th>Tag</th>
+          <th>Publish at</th>
           <th>Show video</th>
           <th>Actions</th>
         </tr>
@@ -43,7 +43,7 @@
               <%= vl.genre&.name %>
             </td>
             <td>
-              <%= vl.tag %>
+              <%= vl&.publish_at&.strftime("%d-%b %I:%M %p") || '-' %>
             </td>
             <td>
               <%= time_ago_in_words(vl.created_at) %> | 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_051846) do
+ActiveRecord::Schema.define(version: 2020_09_04_053006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -496,6 +496,7 @@ ActiveRecord::Schema.define(version: 2020_09_04_051846) do
     t.integer "laptop_vimeo_id"
     t.integer "genre_id", default: 0
     t.integer "subject_id"
+    t.datetime "publish_at"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 
