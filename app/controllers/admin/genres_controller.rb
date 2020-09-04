@@ -28,6 +28,24 @@ class Admin::GenresController < Admin::BaseController
     redirect_to admin_genres_path
   end
 
+  def hide
+    genre = Genre.find_by(id: params[:genre_id], org_id: current_org.id)
+    genre.hidden = true
+    genre.save
+    VideoLecture.where(genre_id: genre.id).update_all(enabled: false)
+    flash[:success] = "Action successful"
+    redirect_to admin_genres_path
+  end
+
+  def show
+    genre = Genre.find_by(id: params[:genre_id], org_id: current_org.id)
+    genre.hidden = false
+    genre.save
+    VideoLecture.where(genre_id: genre.id).update_all(enabled: true)
+    flash[:success] = "Action successful"
+    redirect_to admin_genres_path
+  end
+
   def destroy
     genre = Genre.find_by(id: params[:id])
     genre.destroy

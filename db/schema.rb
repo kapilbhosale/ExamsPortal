@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_26_083746) do
+ActiveRecord::Schema.define(version: 2020_09_04_051846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_083746) do
     t.integer "org_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "hidden", default: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -272,6 +273,22 @@ ActiveRecord::Schema.define(version: 2020_08_26_083746) do
     t.index ["hash"], name: "index_practice_questions_on_hash"
     t.index ["question_id"], name: "index_practice_questions_on_question_id"
     t.index ["topic_id"], name: "index_practice_questions_on_topic_id"
+  end
+
+  create_table "progress_reports", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "exam_id"
+    t.boolean "is_imported", default: false
+    t.integer "exam_type", default: 0
+    t.date "exam_date"
+    t.string "exam_name"
+    t.decimal "percentage"
+    t.integer "rank"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_progress_reports_on_exam_id"
+    t.index ["student_id"], name: "index_progress_reports_on_student_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -494,6 +511,7 @@ ActiveRecord::Schema.define(version: 2020_08_26_083746) do
     t.integer "live_type", default: 0
     t.string "vimeo_live_url"
     t.string "vimeo_live_show_url"
+    t.string "zoom_meeting_url"
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 

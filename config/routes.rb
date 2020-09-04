@@ -91,17 +91,16 @@ Rails.application.routes.draw do
     resources :android_apps
     resources :study_pdfs
     resources :notifications
-    resources :genres
+    resources :genres do
+      get :hide
+      get :show
+    end
     resources :study_pdf_types
     resources :zoom_meetings
     resources :subjects
   end
 
   get 'current-server-time', to: 'home#current_server_time'
-
-
-
-
 
   namespace :api do
     namespace :v1 do
