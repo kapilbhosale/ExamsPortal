@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     get "summary/:exam_id", to: 'home#summary', as: :exam_summary
     # get :exam_data, to: 'home#exam_data'
     get :exam_data, to: 'exams#exam_data'
+    get :exam_data_s3, to: 'exams#exam_data_s3'
     get :is_exam_valid, to: 'exams#is_exam_valid'
     get "exam/:id", to: 'home#exam'
     put "sync/:exam_id/", to: 'home#sync'

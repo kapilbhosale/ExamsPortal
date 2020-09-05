@@ -373,35 +373,75 @@ export function initialize() {
       dispatch(loading(false));
       return;
     }
+
+    let student_ans = null;
+    let time_data = null;
+    let s3_url = null;
     $.ajax({
-      url: '/students/exam_data',
-      method: 'get',
+      type: 'GET',
+      url: '/students/exam_data_s3',
+      dataType: 'json',
       data: { id: store.get('examId') },
       success: (data) => {
-        data = formatDataToOldFormat(data)
-        const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
-        if (localData) {
-          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
-          const questionCounts = JSON.parse(localData).questionsCountByStatus;
-          dispatch(updateQuestionsCount(questionCounts));
-          dispatch(loading(false));
-        } else {
-          dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
-          let questionCounts = {};
-          data.sections.forEach((section) => {
-            questionCounts[section] = {
-              answered: 0,
-              notAnswered: 0,
-              marked: 0,
-              notVisited: data.questionsBySections[section] ? data.questionsBySections[section].length : 0,
+        student_ans = data.student_ans
+        time_data = data.time_data
+        s3_url = data.s3_url
+
+        $.ajax({
+          type: 'GET',
+          url: s3_url,
+          dataType: 'json',
+          crossDomain: true,
+          success: (data) => {
+            const preparedData = {
+              student_ans: student_ans,
+              time_data: time_data,
+              questions: data.questions,
+              model_ans: data.model_ans,
             }
-          });
-          dispatch(updateQuestionsCount(questionCounts));
-          dispatch(loading(false));
-        }
+            debugger;
+            processExamData(preparedData, store, dispatch);
+            debugger;
+          }
+        }).fail(function() {
+          $.ajax({
+            type: 'GET',
+            url: '/students/exam_data',
+            dataType: 'json',
+            data: { id: store.get('examId') },
+            success: (data) => {
+              processExamData(data, store, dispatch);
+            }
+          })
+        });
+        // data processing ends here.
+      }
+    })
+  };
+}
+
+function processExamData(data, store, dispatch) {
+  data = formatDataToOldFormat(data)
+  const localData = localStorage.getItem(`${data.studentId}-${store.get('examId')}-store`);
+  if (localData) {
+    dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: JSON.parse(localData) });
+    const questionCounts = JSON.parse(localData).questionsCountByStatus;
+    dispatch(updateQuestionsCount(questionCounts));
+    dispatch(loading(false));
+  } else {
+    dispatch({ type: actionTypes.LOAD_EXAM_DATA, val: data});
+    let questionCounts = {};
+    data.sections.forEach((section) => {
+      questionCounts[section] = {
+        answered: 0,
+        notAnswered: 0,
+        marked: 0,
+        notVisited: data.questionsBySections[section] ? data.questionsBySections[section].length : 0,
       }
     });
-  };
+    dispatch(updateQuestionsCount(questionCounts));
+    dispatch(loading(false));
+  }
 }
 
 export function updateQuestionsCount(sectionQuestionsCount) {

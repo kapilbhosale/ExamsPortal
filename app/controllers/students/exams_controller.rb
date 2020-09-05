@@ -50,6 +50,32 @@ class Students::ExamsController < Students::BaseController
     }
   end
 
+  def exam_data_s3
+    exam_id = params[:id]
+    exam = Exam.find_by(id: exam_id)
+    if exam.blank? || exam.show_exam_at > Time.current
+      render json: { error: 'Invalid exam ID' }, status: 422 and return
+    end
+
+    student_id = current_student.id
+    student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
+    if student_exam.blank?
+      student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
+    end
+
+    time_data = {
+      startedAt: student_exam.started_at,
+      currentTime: DateTime.current.iso8601,
+      studentId: student_id
+    }
+
+    render json: {
+      student_ans: {},
+      time_data: time_data,
+      s3_url: "https://smart-exams-production.s3.ap-south-1.amazonaws.com/json-data/#{current_org.subdomain}-#{exam.id}.json"
+    }
+  end
+
   def exam_question_ids(exam_id)
     _exam_question_ids = REDIS_CACHE.smembers("exam_questions_ids_#{exam_id}")
     return _exam_question_ids if _exam_question_ids.present?
