@@ -25,8 +25,8 @@ class CountDownTimer extends React.Component {
 
     componentDidUpdate(prevProps) {
       if (this.props.currentQuestionIndex !== prevProps.currentQuestionIndex) {
-        this.props.updateTimeSpentOnQuestion(this.state.timeSpent);
-       this.setState({currentQuestionIndex: this.props.currentQuestionIndex, timeSpent: 0});
+        this.props.updateTimeSpentOnQuestion(prevProps.currentQuestionIndex, this.state.timeSpent);
+        this.setState({currentQuestionIndex: this.props.currentQuestionIndex, timeSpent: 0});
       }
     }
 

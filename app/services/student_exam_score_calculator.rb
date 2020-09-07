@@ -9,12 +9,6 @@ class StudentExamScoreCalculator
   def calculate
     sections.each do |section|
       @current_section = section
-      # if exam.exam_type == 'jee'
-      #   counts = jee_correct_incorrect_counts
-      # else
-      #   counts = cet_correct_incorrect_counts
-      # end
-
       counts = jee_correct_incorrect_counts
       StudentExamSummary.create!(
         student_exam_id: @student_exam.id,
@@ -23,6 +17,7 @@ class StudentExamScoreCalculator
         correct: counts[:correct_count],
         incorrect: counts[:in_correct_count],
         score: score(counts),
+        total_score: total_score,
         no_of_questions: no_of_questions,
         section_id: @current_section.id,
         input_questions_present: counts[:input_questions_present],
@@ -119,5 +114,10 @@ class StudentExamScoreCalculator
     (counts[:correct_count] * exam_section.positive_marks) +
       (counts[:in_correct_count] * exam_section.negative_marks) +
       (counts[:input_correct_count] * exam_section.positive_marks)
+  end
+
+  def total_score
+    exam_section = ExamSection.find_by(exam: exam, section: @current_section)
+    exam_section.positive_marks * @current_section.questions.count
   end
 end

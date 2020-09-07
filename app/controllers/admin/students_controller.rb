@@ -94,6 +94,10 @@ class Admin::StudentsController < Admin::BaseController
     redirect_to admin_students_path
   end
 
+  def progress_report
+    
+  end
+
   def reset_login
     @student = Student.find_by(id: params[:student_id], org: current_org)
     if @student.present?

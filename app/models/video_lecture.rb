@@ -43,6 +43,7 @@ class VideoLecture < ApplicationRecord
 
   has_many :batch_video_lectures
   has_many :batches, through: :batch_video_lectures
+  has_many :messages, as: :messageable
 
   belongs_to :subject
   belongs_to :org

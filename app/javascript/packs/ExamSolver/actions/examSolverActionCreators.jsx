@@ -251,12 +251,12 @@ export function timeIsUp() {
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
   }
 }
-export function updateTimeSpentOnQuestion(timeSpent) {
+export function updateTimeSpentOnQuestion(questionIndex, timeSpent) {
   return (dispatch, getState) => {
-    const store = getState().$$examSolverStore;
-    const currentSection = store.get('currentSection');
-    const currentQuestionIndex = store.get('currentQuestionIndex').toJS();
-    const questionIndex = currentQuestionIndex[currentSection];
+    // const store = getState().$$examSolverStore;
+    // const currentSection = store.get('currentSection');
+    // const currentQuestionIndex = store.get('currentQuestionIndex').toJS();
+    // const questionIndex = currentQuestionIndex[currentSection];
     dispatch({
       type: actionTypes.UPDATE_TIME_SPENT_ON_QUESTION,
       val: { questionIndex: questionIndex, timeSpent: timeSpent},

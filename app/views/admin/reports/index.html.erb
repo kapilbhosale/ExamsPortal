@@ -12,11 +12,10 @@
             <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
               <th>Question</th>
-              <th>Added Ques</th>
-              <th>Time</th>
-              <th>Added on</th>
+              <th>Students Appeared</th>
+              <th>Exam Date</th>
+              <th>Progress Report</th>
               <th>Reports</th>
             </tr>
             </thead>
@@ -25,15 +24,17 @@
                 <% @exams.each do |exam| %>
                   <tr>
                     <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                    <td class="text-truncate"><%= exam.description %> ...</td>
                     <td><%= exam.no_of_questions %></td>
-                    <td><%= exam.questions.count %></td>
-                    <td><%= exam.time_in_minutes %> mins</td>
-                    <td><%= exam.created_at.to_date %></td>
+                    <td><%= @students_count_by_exam_id[exam.id] %></td>
+                    <td><%= exam.show_exam_at.strftime("%d-%b-%y %r") %> </td>
+                    <td>
+                      <%= link_to 'Generate', admin_report_generate_progress_report_path(exam) %>
+                    </td>
                     <td class="text-center">
                       &nbsp;
-                      <%= link_to ' ', admin_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report', class: 'fa fa-list' %>
+                      <%= link_to 'Summary', admin_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report'%>
                       &nbsp;&nbsp;
+                      <%= link_to 'Detailed', admin_report_exam_detailed_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report'%>
                     </td>
                   </tr>
                 <% end %>

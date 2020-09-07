@@ -6,8 +6,8 @@ class Students::StudyPdfsController < Students::BaseController
     study_pdfs = StudyPdf.includes(:study_pdf_type).where(id: study_pdf_ids).where(org: current_org).order(id: :desc)
     @json_data = {}
     study_pdfs.each do |study_pdf|
-      @json_data[study_pdf.study_pdf_type.name] ||= []
-      @json_data[study_pdf.study_pdf_type.name] << {
+      @json_data[study_pdf.study_pdf_type&.name || 'Default'] ||= []
+      @json_data[study_pdf.study_pdf_type&.name || 'Default'] << {
         name: study_pdf.name,
         description: study_pdf.description,
         added_on: study_pdf.created_at.strftime("%d-%B-%Y %I:%M%p"),

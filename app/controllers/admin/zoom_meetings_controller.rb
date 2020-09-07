@@ -10,6 +10,12 @@ class Admin::ZoomMeetingsController < Admin::BaseController
     @batches = Batch.where(org: current_org).all_batches
   end
 
+  def chats
+    @live_class = ZoomMeeting.find_by(id: params[:zoom_meeting_id])
+    @admin = current_admin
+    @messages = Message.where(messageable: @live_class)
+  end
+
   def update
     meeting = ZoomMeeting.find_by(org: current_org, id: params[:id])
     if meeting && validate_meeting_params
@@ -20,6 +26,7 @@ class Admin::ZoomMeetingsController < Admin::BaseController
       meeting.datetime_of_meeting = params[:datetime_of_meeting]
       meeting.live_type = ZoomMeeting.live_types[params[:live_type].to_s]
       meeting.vimeo_live_url = params[:vimeo_live_url]
+      meeting.zoom_meeting_url = params[:zoom_meeting_url]
       if meeting.save
         if params[:batches].present?
           BatchZoomMeeting.where(zoom_meeting_id: meeting.id).destroy_all
@@ -49,7 +56,9 @@ class Admin::ZoomMeetingsController < Admin::BaseController
       meeting.org_id = current_org.id
       meeting.live_type = ZoomMeeting.live_types[params[:live_type].to_s]
       meeting.vimeo_live_url = params[:vimeo_live_url]
+      meeting.zoom_meeting_url = params[:zoom_meeting_url]
       if meeting.save
+        meeting.update({vimeo_live_show_url: "students/live_classes/#{meeting.id}"})
         if params[:batches].present?
           params[:batches].each do |batch_id|
             BatchZoomMeeting.create(batch_id: batch_id, zoom_meeting_id: meeting.id)

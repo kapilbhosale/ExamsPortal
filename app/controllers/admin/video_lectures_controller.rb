@@ -19,6 +19,12 @@ class Admin::VideoLecturesController < Admin::BaseController
     @is_vimeo_configured = current_org.vimeo_access_token.present?
   end
 
+  def chats
+    @video_lecture = VideoLecture.find_by(id: params[:video_lecture_id])
+    @admin = current_admin
+    @messages = Message.where(messageable: @video_lecture)
+  end
+
   def create
     if params[:url].present? && params[:video_id].present?
       flash[:error] = "Please Enter Either youtube url or Vimeo Id"

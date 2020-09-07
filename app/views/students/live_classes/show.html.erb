@@ -1,0 +1,128 @@
+<div class="col-md-8">
+  <h5>Your Live class </h5>
+  <div style="padding:56.25% 0 0 0;position:relative;">
+      <iframe src="<%= @video_url %>" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>
+  </div>
+  <div class="col-md-4">
+  <h4>live Chat Messages</h4>
+  <div class="msg-container">
+    <% @messages.each do |message| %>
+      <div class="<%= message.sender_type == 'Student' ? 'student-msg' : 'admin-msg' %>">
+        <p>
+        <b>[<%= message.sender_id%>] <%= message.sender_name%>:</b>
+        <%= message.message %>
+        </p>
+        <span class="time-right">
+        <%= message.created_at.strftime("%I:%M %p") %>
+        </span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="input-group">
+    <input id="chatMessage" type="text" class="form-control" placeholder="Enter your message..." data-name="<%= @student.name %>" data-roll_number="<%= @student.roll_number %>">
+    <span id="sendMessage" class="input-group-addon btn btn-primary">
+        Send
+    </span>
+  </div>
+</div>
+
+<script src="https://player.vimeo.com/api/player.js"></script>
+<script>
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.onkeydown = function(e) {
+    if(event.keyCode == 123) {
+      return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+      return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)){
+      return false;
+    }
+    if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)){
+      return false;
+    }
+    if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)){
+      return false;
+    }
+  }
+
+  function setupActionCable() {
+    App.video_chat = App.cable.subscriptions.create({channel: 'VideoChatChannel', id: "<%= @vimeo_live.id %>"}, {
+      connected: function () {
+        console.log("AC:: ACTION CABLE ==> Connected");
+      },
+      disconnected: function () {
+        console.log("AC:: ACTION CABLE dis-connected");
+      },
+      received: function (data) {
+        console.log("AC:: DATA => ", data);
+        $(".msg-container").append(data.message);
+        $(".msg-container").animate({ scrollTop: $('.msg-container').prop("scrollHeight")}, 1000);
+      }
+    });
+  };
+
+  $(document).ready(function(){
+    setupActionCable();
+
+    $("#sendMessage").click(function(){
+      var msg = $("#chatMessage").val();
+      var name = $("#chatMessage").data("name");
+      var roll_number = $("#chatMessage").data("roll_number");
+      $("#chatMessage").val('');
+
+      var formData = {
+        message: msg,
+        sender_name: "<%= @student.name %>",
+        sender_type: 'Student',
+        sender_id: "<%= @student.id %>",
+        messageable_type: "<%= @vimeo_live&.class&.name %>",
+        messageable_id: "<%= @vimeo_live&.id %>",
+      };
+
+      $.ajax({
+        url : "/students/messages",
+        type: "POST",
+        data : formData,
+        success: function(data, textStatus, jqXHR) {
+          console.log("SUCCESS", data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("ERROR", errorThrown);
+        }
+      });
+
+    });
+  });
+</script>
+
+
+<style>
+.msg-container {
+  height: 400px;
+  overflow-y: auto;
+}
+.student-msg {
+  background-color: #bfbfbf;
+  padding: 10px 5px 25px 5px;
+  border-radius: 5px;
+  margin: 10px 0px;
+}
+.admin-msg {
+  background-color: #99cdf9;
+  padding: 10px 5px 25px 5px;
+  border-radius: 5px;
+  margin: 10px 0px;
+}
+.time-right {
+  float: right;
+  color: #000;
+}
+
+.time-left {
+  float: left;
+  color: #000;
+}
+</style>;

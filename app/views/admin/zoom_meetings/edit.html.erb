@@ -22,6 +22,11 @@
           <div class="form-group">
             <input type="text" value="<%= @zoom_meeting.password %>" class="form-control" name="password" id="password" placeholder="Enter Zoom Meeting Password" required>
           </div>
+
+          <div class="form-group">
+            <input type="text" value="<%= @zoom_meeting.zoom_meeting_url %>"  class="form-control" name="zoom_meeting_url" id="zoom_meeting_url" placeholder="Enter Zoom Meeting URL">
+            <span style="font-size: 10px">This URL is only required for web access to zoom meetings</span>
+          </div>
         </div>
 
         <div id="vimeo-container">

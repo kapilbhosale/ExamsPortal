@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   devise_for :admin
   devise_for :student
 
+  mount ActionCable.server => '/cable'
+
   require 'sidekiq/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == 'kapil' && password == 'kapil@7588584810'
@@ -59,6 +61,8 @@ Rails.application.routes.draw do
     end
     resources :study_pdfs
     resources :notifications
+    resources :progress_cards
+    resources :messages
     resources :live_classes
   end
 
@@ -67,7 +71,10 @@ Rails.application.routes.draw do
   namespace :admin do
     root to: 'dashboard#show'
     resource :dashboard
-    resources :reports
+    resources :reports do
+      get :exam_detailed_report
+      get :generate_progress_report
+    end
     resources :exams do
       collection do
         get 'question_bank', to: 'exams#question_bank'
@@ -81,6 +88,7 @@ Rails.application.routes.draw do
       get :import, on: :collection
       post :process_import, on: :collection
       get :reset_login
+      get :progress_report
     end
     resources :batches do
       root to: 'batches#index'
@@ -88,7 +96,9 @@ Rails.application.routes.draw do
     get 'dashboard/profile', to: 'dashboard#profile'
     patch 'dashboard/update_profile', to: 'dashboard#update_profile'
 
-    resources :video_lectures
+    resources :video_lectures do
+      get :chats
+    end
     resources :android_apps
     resources :study_pdfs
     resources :notifications
@@ -97,7 +107,10 @@ Rails.application.routes.draw do
       get :show
     end
     resources :study_pdf_types
-    resources :zoom_meetings
+    resources :messages
+    resources :zoom_meetings do
+      get :chats
+    end
     resources :subjects
   end
 

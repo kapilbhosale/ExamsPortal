@@ -32,6 +32,8 @@ class Students::HomeController < Students::BaseController
       .where('show_exam_at <= ?', Time.current - 1.days )
       .order(created_at: :desc)
     @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
+
+    @progress_report_data = ProgressReport.where(student_id: current_student.id).order(id: :desc)
   end
 
   def exam

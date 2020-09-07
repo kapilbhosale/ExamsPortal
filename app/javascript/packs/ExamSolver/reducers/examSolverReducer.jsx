@@ -107,8 +107,10 @@ export default function examSolverReducer($$state = $$initialState, action) {
       let questionsBySections = $$state.get('questionsBySections').toJS();
       if (questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent) {
         questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent += val.timeSpent;
+        questionsBySections[currentSection][val.questionIndex].answerProps['visits'] += 1;
       } else {
-        questionsBySections[currentSection][val.questionIndex].answerProps['timeSpent'] = 1;
+        questionsBySections[currentSection][val.questionIndex].answerProps['timeSpent'] = val.timeSpent;
+        questionsBySections[currentSection][val.questionIndex].answerProps['visits'] = 1;
       }
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     default:

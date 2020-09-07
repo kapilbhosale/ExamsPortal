@@ -12,6 +12,7 @@
 #  no_of_questions           :integer
 #  not_answered              :integer
 #  score                     :integer
+#  total_score               :integer          default(0)
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #  section_id                :bigint(8)

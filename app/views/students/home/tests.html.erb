@@ -1,38 +1,24 @@
-<div class="container">
-  <div class="row">
-      <div class="col-xs-8" style="padding-left: -10px;">
-        <div class="col-md-8" style="color: #e91e63; margin-top: -2px; margin-left: -10px;">
-          आपले स्वागत आहे
-        </div>
-      </div>
-      <div class="col-xs-4">
-        <div style="text-align: right; padding-bottom: 10px;">
-          <% if current_student %>
-            <span style="color: darkblue; background-color: bisque; padding: 5px;">
-              <b><%= current_student&.name&.split[1] || current_student&.name %></b>
-            </span>
-          <% end %>
-        </div>
-      </div>
-  </div>
+<div class="col-md-12 col-xs-12">
+  <ul class="nav nav-tabs">
+    <li>
+      <a data-toggle="tab" href="#progress_card">
+        Progress Card
+      </a>
+    </li>
+    <li class="active">
+      <a data-toggle="tab" href="#new_exams">
+        New Exams
+      </a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#previous_exams">
+        Previous Exams
+      </a>
+    </li>
+  </ul>
 </div>
-
-
-<ul class="nav nav-tabs">
-  <li class="active">
-    <a data-toggle="tab" href="#new_exams">
-      <h5>New Exams</h5>
-    </a>
-  </li>
-  <li>
-    <a data-toggle="tab" href="#previous_exams">
-      <h5>Previous Exams</h5>
-    </a>
-  </li>
-</ul>
 <div class="tab-content">
   <div id="new_exams" class="tab-pane fade in active">
-    <br>
     <% if @new_exams.size == 0 %>
       <div class="well"> 
         No New exams available for your batch right now. 
@@ -47,14 +33,66 @@
     <% end %>
   </div>
   <div id="previous_exams" class="tab-pane fade">
-    <br>
     <% if @previous_exams.size == 0 %>
       <div class="well"> No exams available for your batch right now. Please try after some time. </div>
     <% else %>
       <div class="row">
-      <% @previous_exams.each do |exam| %>
-        <%= render partial: "exam_card", locals: {exam: exam} %>
-      <% end %>
-    </div>
+        <% @previous_exams.each do |exam| %>
+          <%= render partial: "exam_card", locals: {exam: exam} %>
+        <% end %>
+      </div>
     <% end %>
   </div>
+
+  <div id="progress_card" class="tab-pane fade">
+    <div>
+      <div class="table-responsive" style="background-color: white;">
+        <table class="table table-sm table-condensed table-striped table-bordered ">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Date</th>
+              <th scope="col">Exam Name</th>
+              <th scope="col">Score</th>
+              <th scope="col">Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @progress_report_data.each_with_index do |report_data, index| %>
+              <tr>
+                <th scope="row"><%= index + 1 %></th>
+                <td style="color: #467fcf">
+                  <%= report_data.exam_date.strftime("%d-%B") %>
+                  <br/>
+                  <span class="badge badge-secondary pull-right">
+                    <%= report_data.is_imported ? 'Theory' : 'Objective' %>
+                  </span>
+                </td>
+                <td>
+                  <% report_data.exam_name.chars.each_slice(25).each do |slice| %>
+                    <%= slice.join('') %>
+                    <br>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="badge badge-info">
+                    Percentage: <%= report_data.percentage.round(2) %>
+                  </span>
+                  <% report_data.data.each do |key, val| %>
+                  <br>
+                    <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="badge badge-info">
+                    -
+                  </span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

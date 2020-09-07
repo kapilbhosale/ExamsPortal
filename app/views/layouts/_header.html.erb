@@ -56,6 +56,9 @@
               <%= link_to "<i class='fe fe-airplay'></i> Video Lectures".html_safe, students_videos_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
+              <%= link_to "<i class='fe fe-airplay'></i> Live Classes".html_safe, students_live_classes_path, class: current_page?(students_live_classes_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
               <%= link_to "<i class='fe fe-book'></i> Study Pdfs".html_safe, students_study_pdfs_path, class: current_page?(students_study_pdfs_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">

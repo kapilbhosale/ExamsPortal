@@ -2,6 +2,45 @@ class Admin::ReportsController < Admin::BaseController
 
   def index
     @exams = Exam.where(org: current_org).all.order(id: :desc)
+    @students_count_by_exam_id = StudentExam.where(exam: @exams).group(:exam_id).count
+  end
+
+  def generate_progress_report
+    exam = Exam.find_by(id: params[:report_id], org: current_org)
+    Reports::ExamCsvReportService.new(exam.id).prepare_report
+    progress_report_data = {}
+
+    # prepate report by deleting existing reports first.
+    ProgressReport.where(exam_id: exam.id).delete_all
+
+    StudentExamSummary.includes(:student_exam, :section).where({student_exams: {exam_id: exam.id}}).find_each do |ses|
+      progress_report_data[ses.student_exam.student_id] ||= {
+        exam_date: exam.show_exam_at,
+        exam_name: exam.name,
+        exam_id: exam.id,
+        student_id: ses.student_exam.student_id,
+        percentage: 0,
+        data: {
+          ses.section.name => {},
+          total: { score: 0, total: 0 }
+        }
+      }
+
+      total_score = ses.total_score
+      if total_score.zero?
+        exam_section = ExamSection.find_by(exam: exam, section: ses.section)
+        total_score = exam_section.positive_marks * ses.section.questions.count
+      end
+
+      progress_report_data[ses.student_exam.student_id][:data][ses.section.name] = { score: ses.score, total: total_score }
+      progress_report_data[ses.student_exam.student_id][:data][:total][:score] += ses.score
+      progress_report_data[ses.student_exam.student_id][:data][:total][:total] += total_score
+      progress_report_data[ses.student_exam.student_id][:percentage] += 100 * ses.score.to_f / total_score.to_f
+    end
+    ProgressReport.create(progress_report_data.values)
+
+    flash[:success] = "Report Card generated, Do not Regenrate it."
+    redirect_to admin_reports_path
   end
 
   def show
@@ -20,6 +59,17 @@ class Admin::ReportsController < Admin::BaseController
       end
       format.csv do
         send_data @response, filename: "#{exam.name}_result.csv"
+      end
+    end
+  end
+
+  def exam_detailed_report
+    exam = Exam.find_by(id: params[:report_id], org: current_org)
+    @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
+
+    respond_to do |format|
+      format.csv do
+        send_data @response, filename: "#{exam.name}_detailed_student_analysis_report.csv"
       end
     end
   end

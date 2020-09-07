@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-2">
-          <h5 class="pt-3">Zoom Meetings</h5>
+          <h5 class="pt-3">Live Classes</h5>
         </div>
         <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
           <%= link_to 'Add New Meeting', new_admin_zoom_meeting_path, method: :get, class: "btn btn-warning btn-sm" %>
@@ -36,6 +36,7 @@
                     <td><%= meeting.datetime_of_meeting&.strftime("%d-%b-%y %r") %></td>
                     <td><%= meeting.batches.pluck(:name).join(', ') %></td>
                     <td>
+                      <%= link_to '<i class="glyphicon glyphicon-envelope"></i>'.html_safe, admin_zoom_meeting_chats_path(meeting), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
                       <%= link_to 'Edit', edit_admin_zoom_meeting_path(meeting), method: :get, class: "btn btn-warning btn-sm" %>
                       <%= link_to 'Del', admin_zoom_meeting_path(meeting), method: :delete, class: "btn btn-danger btn-sm" %>
                     </td>
