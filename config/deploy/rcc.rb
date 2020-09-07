@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'jspm'
+set :branch, 'main_branch'
 set :sidekiq_env, :production
 set :stage, :production
 
