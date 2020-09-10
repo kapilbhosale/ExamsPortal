@@ -118,6 +118,6 @@ class StudentExamScoreCalculator
 
   def total_score
     exam_section = ExamSection.find_by(exam: exam, section: @current_section)
-    exam_section.positive_marks * @current_section.questions.count
+    exam_section.positive_marks * no_of_questions
   end
 end

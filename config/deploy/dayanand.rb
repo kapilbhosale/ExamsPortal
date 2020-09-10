@@ -1,3 +1,4 @@
+# bhosale  dayanand  ganesh  munde  scholars  waghaj  yashwant
 set :rails_env, :production
 set :branch, 'jspm'
 set :sidekiq_env, :production
