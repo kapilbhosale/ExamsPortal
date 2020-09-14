@@ -1,6 +1,29 @@
 class Admin::VideoLecturesController < Admin::BaseController
+  require 'ostruct'
   def index
-    @video_lectures = VideoLecture.includes(:subject, :genre).where(org: current_org).all.order(id: :desc)
+    @search = VideoLecture.includes(:subject, :genre).where(org: current_org).all.order(id: :desc)
+
+    if params[:q].present?
+      if params[:q][:subject_id].present?
+        @search = @search.where(subject_id: params[:q][:subject_id])
+      end
+
+      if params[:q][:teacher_name].present?
+        @search = @search.where(by: params[:q][:teacher_name])
+      end
+
+      if params[:q][:genre_id].present?
+        @search = @search.where(genre_id: params[:q][:genre_id])
+      end
+    end
+
+    @search = @search.search(search_params)
+    @video_lectures = @search.result.order(created_at: :desc)
+    @subjects = Subject.where(org: current_org).all
+    @teachers = VideoLecture.where(org: current_org).pluck(:by).uniq.map do |teacher|
+      OpenStruct.new({id: teacher, name: teacher})
+    end
+    @folders = Genre.where(org: current_org).all
   end
 
   def new
@@ -100,5 +123,11 @@ class Admin::VideoLecturesController < Admin::BaseController
       genre_id: params[:genre_id],
       publish_at: params[:publish_at]
     }
+  end
+
+  def search_params
+    return {} if params[:q].blank?
+
+    {}
   end
 end

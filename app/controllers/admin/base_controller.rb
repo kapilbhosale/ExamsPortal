@@ -6,6 +6,8 @@ class Admin::BaseController < ApplicationController
   layout 'admin/dashboard'
   attr_reader :current_org
 
+  ITEMS_PER_PAGE = 20
+
   def set_current_org
     @current_org = Org.find_by(subdomain: request.subdomain) || current_admin&.org
   end

@@ -12,4 +12,5 @@
 
 class Genre < ApplicationRecord
   has_many :video_lectures
+  belongs_to :org
 end

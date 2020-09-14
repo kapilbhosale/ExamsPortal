@@ -37,7 +37,7 @@ class Exam < ApplicationRecord
 
   belongs_to :org
 
-  enum exam_type: { jee: 0, cet: 1, other: 2 }
+  enum exam_type: { jee: 0, cet: 1, other: 2, jee_advance: 3 }
 
   # after_create :send_push_notifications
   # has_one :style, as: :component, dependent: :destroy

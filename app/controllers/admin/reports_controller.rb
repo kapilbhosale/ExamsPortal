@@ -90,33 +90,3 @@ class Admin::ReportsController < Admin::BaseController
     ProgressReport.create(progress_report_data.values)
   end
 end
-
-exam_ids = []
-StudentExamSummary.where.not(total_score: nil).includes(:student_exam).find_each do |ses|
-  exam_ids << ses.student_exam.exam_id
-end
-exam_ids = exam_ids.uniq
-
-
-Model.where("(data -> 'bar' -> 'baz' ->> 'qux') IS NOT NULL")
-ProgressReport.where("(data -> 'total' ->> 'total') > 1000").limit(1)
-
-
-ProgressReport.where("CAST((data -> 'total' ->> 'total') AS INT) > ?", 1000).pluck(:exam_id).uniq
-
-def total_marks(exam)
-  totals = {
-    grand: 0
-  }
-  exam_sections = ExamSection.where(exam_id: exam.id).includes(:section).index_by(&:section_id)
-  exam.questions.group(:section_id).count.each do |section_id, q_count|
-    totals[:grand] += exam_sections[section_id].positive_marks * q_count
-    totals[exam_sections[section_id].section.name] = exam_sections[section_id].positive_marks * q_count
-  end
-  totals
-end
-
-exam_totals_by_id = {}
-Exam.all.each do |exam|
-  exam_totals_by_id[exam.id] = total_marks(exam)
-end

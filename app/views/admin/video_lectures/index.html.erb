@@ -1,14 +1,30 @@
 <div class="container card">
   <div class="card-header">
-    <div class="col-md-6">
-      <h5>Video Lectures</h5>
+    <div class="col-md-12">
+      <div class="col-md-6">
+        <h5>Video Lectures</h5>
+      </div>
+      <div class="col-md-4 text-right">
+        <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Add Video Folder</a>
+      </div>
+      <div class="col-md-2 text-right">
+        <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Video Lecture'.html_safe, new_admin_video_lecture_path %>
+      </div>
     </div>
-    <div class="col-md-4 text-right">
-      <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Add Video Folder</a>
-    </div>
-    <div class="col-md-2 text-right">
-      <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Video Lecture'.html_safe, new_admin_video_lecture_path %>
-    </div>
+  </div>
+  <div class="col-md-12">
+    <%= search_form_for @search, url: admin_video_lectures_path, class:"form-inline my-2 my-lg-0" do |f| %>
+      <span class="p-2">Subject</span>
+      <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2'} )%>
+
+      <span class="p-2">Teacher</span>
+      <%= f.collection_select(:teacher_name, @teachers, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:teacher_name)}, { class: 'form-control mr-sm-2'} )%>
+
+      <span class="p-2">Folder</span>
+      <%= f.collection_select(:genre_id, @folders, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:genre_id)}, { class: 'form-control mr-sm-2'} )%>
+
+      <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
+    <% end %>
   </div>
   <div class="table-responsive">
     <table class="table card-table">
@@ -34,7 +50,7 @@
               <%= vl.subject&.name&.humanize %>
             </td>
             <td>
-              <%= link_to "#{vl.title.length > 40 ? vl.title.first(50) + '...' : vl.title }", edit_admin_video_lecture_path(vl) %>
+              <%= link_to "#{vl.title.length > 40 ? vl.title.first(45) + '...' : vl.title }", edit_admin_video_lecture_path(vl) %>
             </td>
             <td>
               <%= vl.by %>
