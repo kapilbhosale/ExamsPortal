@@ -21,8 +21,9 @@ class Api::V1::VideosController < Api::V1::ApiController
       else
         lect_data['play_url'] = lect.url
       end
-      lect_data['views_count'] = tracker_by_id[lect.id].data['view_count']
-      lect_data['total_views_count'] = tracker_by_id[lect.id].data['view_count']
+
+      lect_data['views_count'] = tracker_by_id[lect.id].present? ? tracker_by_id[lect.id].data['view_count'] : 0
+      lect_data['total_views_count'] = tracker_by_id[lect.id].present? ? tracker_by_id[lect.id].data['allocated_views'] || lect.view_limit : lect.view_limit || 10000
 
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data

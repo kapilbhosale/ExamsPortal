@@ -3,7 +3,9 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-10">
-          <h5>Views Report: <b><%= @vieo_lecture.title %></b></h5>
+          <h5>Views Report:
+            <%= link_to @vieo_lecture.title, edit_admin_video_lecture_path(@vieo_lecture) %>
+          </h5>
         </div>
         <div class="col-md-2">
           <h5>Views: <b><%= @vieo_lecture.view_limit %></b></h5>
