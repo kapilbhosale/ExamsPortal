@@ -132,6 +132,7 @@ Rails.application.routes.draw do
       end
       resources :study_pdfs, only: [:index]
       resources :meetings, only: [:index]
+      resources :trackers
     end
   end
 end

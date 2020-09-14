@@ -8,6 +8,7 @@ class Api::V1::VideosController < Api::V1::ApiController
       .where(enabled: true)
       .order(id: :desc)
 
+    tracker_by_id = Tracker.where(student_id: current_student.id, resource_type: 'VideoLecture').index_by(&:resource_id)
     lectures_data = {}
     lectures.each do |lect|
       next if lect.publish_at.present? && lect.publish_at > Time.current
@@ -20,6 +21,9 @@ class Api::V1::VideosController < Api::V1::ApiController
       else
         lect_data['play_url'] = lect.url
       end
+      lect_data['views_count'] = tracker_by_id[lect.id].data['view_count']
+      lect_data['total_views_count'] = tracker_by_id[lect.id].data['view_count']
+
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data
     end
