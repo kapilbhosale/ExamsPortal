@@ -89,6 +89,44 @@ class Admin::VideoLecturesController < Admin::BaseController
     redirect_to admin_video_lectures_path
   end
 
+  def student_video_views
+    @vieo_lecture = VideoLecture.find_by(org: current_org, id: params[:video_lecture_id])
+
+    @tracker_by_id = Tracker.where(resource_id: @vieo_lecture.id, resource_type: 'VideoLecture').index_by(&:student_id)
+    @search = Student
+      .where(org: current_org)
+      .includes(:student_batches, :batches).joins(:batches)
+
+    if params[:q].present? && params[:q][:batch_id].present?
+      @search = @search.where(batches: {id: params[:q][:batch_id]})
+    end
+
+    @search = @search.search(search_params)
+
+    @students = @search.result.order(created_at: :desc)
+
+    if request.format.html?
+      @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    end
+
+    @batches = Batch.where(org: current_org).all_batches
+  end
+
+  def modity_student_views
+    video_lecture = VideoLecture.find_by(org: current_org, id: params[:video_lecture_id])
+    student = Student.find_by(id: params[:student_id])
+    tracker = Tracker.find_by(resource_id: video_lecture.id, resource_type: 'VideoLecture', student_id: student.id)
+    if tracker.present?
+      view_count = tracker.data['allocated_views'].present? ? tracker.data['allocated_views'].to_i : video_lecture.view_limit.to_i
+      tracker.data['allocated_views'] = view_count + params[:views].to_i
+      tracker.save
+      flash[:success] = "limits increased successfully"
+    else
+      flash[:error] = "Can not Increase view limit"
+    end
+    redirect_to admin_video_lecture_student_video_views_path(video_lecture)
+  end
+
   private
 
   def update_lectrue_params
@@ -104,7 +142,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       laptop_vimeo_id: params[:laptop_vimeo_id],
       genre_id: params[:genre_id],
       subject_id: params[:subject_id],
-      publish_at: params[:publish_at]
+      publish_at: params[:publish_at],
+      view_limit: params[:view_limit]
     }
   end
 
@@ -121,13 +160,22 @@ class Admin::VideoLecturesController < Admin::BaseController
       org_id: current_org.id,
       laptop_vimeo_id: params[:laptop_vimeo_id],
       genre_id: params[:genre_id],
-      publish_at: params[:publish_at]
+      publish_at: params[:publish_at],
+      view_limit: params[:view_limit]
     }
   end
 
   def search_params
     return {} if params[:q].blank?
 
-    {}
+    search_term = params[:q][:name_and_roll_number]&.strip
+
+    # to check if input is number or string
+    if search_term.to_i.to_s == search_term
+      return { roll_number_eq: search_term } if search_term.length <= 7
+      return { parent_mobile_cont: search_term }
+    end
+
+    { name_cont: search_term }
   end
 end

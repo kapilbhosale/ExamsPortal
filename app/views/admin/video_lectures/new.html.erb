@@ -1,137 +1,139 @@
-<div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
-  <div class="col-lg-8">
-    <%= form_tag admin_video_lectures_path,  multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
-      <div class="card-body">
-        <h3 class="card-title">
-          <b>Add Video Lecture</b>
-        </h3>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Image *</label>
+<%= form_tag admin_video_lectures_path,  multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
+  <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
+    <div class="col-lg-8">
+        <div class="card-body">
+          <h3 class="card-title">
+            <b>Add Video Lecture</b>
+          </h3>
 
-          <div class="col-sm-8 custom-file form-group">
-            <input type="file" id="banner_url" name="thumbnail" required>
-            <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Image *</label>
+
+            <div class="col-sm-8 custom-file form-group">
+              <input type="file" id="banner_url" name="thumbnail" required>
+              <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
+            </div>
           </div>
-        </div>
 
-        <% if @is_vimeo_configured %>
-          <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+          <% if @is_vimeo_configured %>
+            <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+              <div class="row form-group">
+                <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
+                </div>
+              </div>
+                &nbsp; &nbsp; &nbsp; OR
+                <div class="row form-group">
+                  <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id">
+                  </div>
+                </div>
+            </div>
+          <% else %>
             <div class="row form-group">
               <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
               </div>
             </div>
-              &nbsp; &nbsp; &nbsp; OR
-              <div class="row form-group">
-                <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
-                <div class="col-sm-8">
-                  <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id">
-                </div>
-              </div>
-          </div>
-        <% else %>
+          <% end %>
+
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+            <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
+              <input type="text" class="form-control" placeholder="Enter Video Title" name="title" required>
             </div>
           </div>
-        <% end %>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Video Title" name="title" required>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by">
+            </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by">
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
+            <div class="col-sm-8">
+              <div class="form-group">
+                <select class="form-control" name="subject_id">
+                  <% @subjects.each do |subject| %>
+                    <option value="<%= subject.id %>">
+                      <%= subject.name.humanize %>
+                    </option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
-          <div class="col-sm-8">
-            <div class="form-group">
-              <select class="form-control" name="subject_id">
-                <% @subjects.each do |subject| %>
-                  <option value="<%= subject.id %>">
-                    <%= subject.name.humanize %>
-                  </option>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
+            <div class="col-sm-8">
+              <select class="form-control" name="genre_id" id="video_lecture_genre_id">
+                <% @genres.each do |genre| %>
+                  <option value="<%=genre.id%>"> <%= genre.name %></option>
                 <% end %>
               </select>
             </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
-          <div class="col-sm-8">
-            <select class="form-control" name="genre_id" id="video_lecture_genre_id">
-              <% @genres.each do |genre| %>
-                <option value="<%=genre.id%>"> <%= genre.name %></option>
-              <% end %>
-            </select>
-          </div>
-        </div>
-
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">TAG</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag">
-          </div>
-        </div>
-
-        <% if @is_vimeo_configured %>
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+            <label class="control-label col-sm-4 text-right" for="email">TAG</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id">
+              <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag">
             </div>
           </div>
-        <% end %>
 
+          <% if @is_vimeo_configured %>
+            <div class="row form-group">
+              <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+              <div class="col-sm-8">
+                <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id">
+              </div>
+            </div>
+          <% end %>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+            <div class="col-sm-8">
+              <input type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <p>Select Batches: </p>
+            <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
+              <% @batches.each do |batch| %>
+                <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %>><%= batch.name %></label>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">Add New Video Lecture</button>
+        </div>
+    </div>
+    <div class=col-lg-4>
+      <a href="#" id="btn-more-actions" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
+      <br>
+      <hr>
+      <div class="more-container hidden">
         <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+          <label class="control-label col-sm-4 text-right" for="email">View Limits</label>
           <div class="col-sm-8">
-            <input type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value="3">
           </div>
-        </div>
-
-        <div class="row form-group">
-          <p>Select Batches: </p>
-          <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
-            <% @batches.each do |batch| %>
-              <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %>><%= batch.name %></label>
-            <% end %>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-        <button type="submit" class="btn btn-success">Add New Video Lecture</button>
-      </div>
-    <% end %>
-  </div>
-  <div class=col-lg-4>
-    <a href="#" id="btn-more-actions" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
-    <br>
-    <hr>
-    <div class="more-container hidden">
-      <div class="row form-group">
-        <label class="control-label col-sm-4 text-right" for="email">View Limits</label>
-        <div class="col-sm-8">
-          <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value="2">
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>
+
 
 <script>
   $(document).ready(function(){

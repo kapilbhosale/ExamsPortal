@@ -98,6 +98,8 @@ Rails.application.routes.draw do
 
     resources :video_lectures do
       get :chats
+      get :student_video_views
+      get :modity_student_views
     end
     resources :android_apps
     resources :study_pdfs

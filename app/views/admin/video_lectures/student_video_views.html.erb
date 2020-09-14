@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-10">
+          <h5>Views Report: <b><%= @vieo_lecture.title %></b></h5>
+        </div>
+        <div class="col-md-2">
+          <h5>Views: <b><%= @vieo_lecture.view_limit %></b></h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
+          <%= search_form_for @search, url: admin_video_lecture_student_video_views_path, class:"form-inline my-2 my-lg-0" do |f| %>
+            <%= f.text_field :name_and_roll_number, placeholder: 'Name, Roll no, parent mob', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
+            <span class="p-2">Batch</span>
+            <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
+            <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
+          <% end %>
+        </div>
+        <div class="table-responsive">
+          <% if @students.present? %>
+              <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th><%= sort_link(@search, :roll_number) %></th>
+                    <th>Batch(s)</th>
+                    <th><%= sort_link(@search, :name) %></th>
+                    <th>Parent Mobile</th>
+                    <th>View Count</th>
+                    <th>actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @students.each do |student| %>
+                    <tr>
+                      <td><%= student.roll_number %></td>
+                      <td><%= student&.batches&.each&.map(&:name).join(', ') %>
+                      </td>
+                      <td><%= student.name %></td>
+                      <td><%= student.parent_mobile %></td>
+                      <td>
+                        <%= @tracker_by_id[student.id] ? @tracker_by_id[student.id].data['view_count'] || 0 : 0 %>
+                        /
+                        <%= @tracker_by_id[student.id] ? @tracker_by_id[student.id].data['allocated_views'] || @vieo_lecture.view_limit : @vieo_lecture.view_limit %>
+                      </td>
+                      <td>
+                        <%= form_tag(admin_video_lecture_modity_student_views_path(@vieo_lecture), method: :get) do %>
+                          <input type="text" name="student_id" value="<%= student.id %>" class="hidden">
+                          <input type="number" name="views" value="0" class="col-lg-3">
+                          <input type="submit" class="btn btn-sm btn-warning" value="Add Views"/>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <%= paginate @students %>
+          <% else %>
+            <div class="alert alert-info">No students were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" >
+  $(function(){
+    $('#limit').change(
+      function() {
+        $('#limit_form').submit();
+      });
+  });
+</script>

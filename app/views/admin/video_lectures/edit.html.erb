@@ -1,137 +1,154 @@
 
-<div class="row card">
-  <div class="col-lg-8">
-    <%= form_tag admin_video_lecture_path(@video_lecture), method: :patch, multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
-      <div class="card-body">
-        <h3 class="card-title">
-          Edit Video Lecture
-        </h3>
-        <div class="row form-group text-center">
-          <label class="control-label col-sm-4 text-right">Thubmnail</label>
-          <div class="col-sm-8">
-            <%= (image_tag @video_lecture.uploaded_thumbnail.url, size: "150") rescue "Banner Image" %>
+<%= form_tag admin_video_lecture_path(@video_lecture), method: :patch, multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
+  <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
+    <div class="col-lg-8">
+        <div class="card-body">
+          <h3 class="card-title">
+            Edit Video Lecture
+          </h3>
+          <div class="row form-group text-center">
+            <label class="control-label col-sm-4 text-right">Thubmnail</label>
+            <div class="col-sm-8">
+              <%= (image_tag @video_lecture.uploaded_thumbnail.url, size: "150") rescue "Banner Image" %>
+            </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right">Show Video</label>
-          <div class="col-sm-8">
-            <label class="radio-inline"><input type="radio" value="true" name="enabled" <%= @video_lecture.enabled ? "checked" : "" %> >show</label>
-            <label class="radio-inline"><input type="radio" value="false" name="enabled" <%= @video_lecture.enabled ? "" : "checked" %> >hide</label>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right">Show Video</label>
+            <div class="col-sm-8">
+              <label class="radio-inline"><input type="radio" value="true" name="enabled" <%= @video_lecture.enabled ? "checked" : "" %> >show</label>
+              <label class="radio-inline"><input type="radio" value="false" name="enabled" <%= @video_lecture.enabled ? "" : "checked" %> >hide</label>
+            </div>
           </div>
-        </div>
 
-        <% if @is_vimeo_configured %>
-          <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+          <% if @is_vimeo_configured %>
+            <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+              <div class="row form-group">
+                <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter youtube video url" name="url" value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
+                </div>
+              </div>
+                &nbsp; &nbsp; &nbsp; OR
+                <div class="row form-group">
+                  <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id" value= "<%= @video_lecture.video_id %>" />
+                  </div>
+                </div>
+            </div>
+          <% else %>
             <div class="row form-group">
               <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
               <div class="col-sm-8">
                 <input type="text" class="form-control" placeholder="Enter youtube video url" name="url" value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
               </div>
             </div>
-              &nbsp; &nbsp; &nbsp; OR
-              <div class="row form-group">
-                <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
-                <div class="col-sm-8">
-                  <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id" value= "<%= @video_lecture.video_id %>" />
-                </div>
-              </div>
-          </div>
-        <% else %>
+          <% end %>
+
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+            <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter youtube video url" name="url" value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
+              <input type="text" class="form-control" placeholder="Enter Video Title" name="title" value= "<%= @video_lecture.title %>" required />
             </div>
           </div>
-        <% end %>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Video Title" name="title" value= "<%= @video_lecture.title %>" required />
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by" value="<%= @video_lecture.by %>" />
+            </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by" value="<%= @video_lecture.by %>" />
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
+            <div class="col-sm-8">
+              <div class="form-group">
+                <select class="form-control" name="subject_id">
+                  <% @subjects.each do |subject| %>
+                    <option value="<%= subject.id %>" <%= @video_lecture.subject_id == subject.id ? 'selected' : '' %>>
+                      <%= subject.name.humanize %>
+                    </option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
-          <div class="col-sm-8">
-            <div class="form-group">
-              <select class="form-control" name="subject_id">
-                <% @subjects.each do |subject| %>
-                  <option value="<%= subject.id %>" <%= @video_lecture.subject_id == subject.id ? 'selected' : '' %>>
-                    <%= subject.name.humanize %>
-                  </option>
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
+            <div class="col-sm-8">
+              <select class="form-control" name="genre_id" id="video_lecture_genre_id">
+                <% @genres.each do |genre| %>
+                  <option value="<%=genre.id%>" <%= @video_lecture.genre_id == genre.id ? 'selected' : '' %>> <%= genre.name %></option>
                 <% end %>
               </select>
             </div>
           </div>
-        </div>
 
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
-          <div class="col-sm-8">
-            <select class="form-control" name="genre_id" id="video_lecture_genre_id">
-              <% @genres.each do |genre| %>
-                <option value="<%=genre.id%>" <%= @video_lecture.genre_id == genre.id ? 'selected' : '' %>> <%= genre.name %></option>
-              <% end %>
-            </select>
-          </div>
-        </div>
-
-        <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">TAG</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag" value="<%= @video_lecture.tag %>" />
-          </div>
-        </div>
-
-        <% if @is_vimeo_configured %>
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+            <label class="control-label col-sm-4 text-right" for="email">TAG</label>
             <div class="col-sm-8">
-              <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id" value="<%= @video_lecture.laptop_vimeo_id %>" />
+              <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag" value="<%= @video_lecture.tag %>" />
             </div>
           </div>
-        <% end %>
 
+          <% if @is_vimeo_configured %>
+            <div class="row form-group">
+              <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+              <div class="col-sm-8">
+                <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id" value="<%= @video_lecture.laptop_vimeo_id %>" />
+              </div>
+            </div>
+          <% end %>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+            <div class="col-sm-8">
+              <input value="<%= @video_lecture&.publish_at&.strftime('%Y-%m-%dT%R') %>" type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <p>Select Batches: </p>
+            <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
+              <% @batches.each do |batch| %>
+                <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">update Video Lecture</button>
+        </div>
+    </div>
+    <div class=col-lg-4>
+      <a href="#" id="btn-more-actions" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
+      <br>
+      <hr>
+      <div class="more-container hidden">
         <div class="row form-group">
-          <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+          <label class="control-label col-sm-4 text-right" for="email">View Limits</label>
           <div class="col-sm-8">
-            <input value="<%= @video_lecture&.publish_at&.strftime('%Y-%m-%dT%R') %>" type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value= "<%= @video_lecture.view_limit %>" >
           </div>
         </div>
 
-        <div class="row form-group">
-          <p>Select Batches: </p>
-          <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
-            <% @batches.each do |batch| %>
-              <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
-            <% end %>
-          </div>
-        </div>
+        <a href="<%= admin_video_lecture_student_video_views_path(@video_lecture) %>" id="btn-student-views" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">Show Student Views</a>
       </div>
-      <div class="card-footer text-right">
-        <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-        <button type="submit" class="btn btn-success">update Video Lecture</button>
-      </div>
-    <% end %>
+    </div>
   </div>
-</div>
-
+<% end %>
 <script>
   $(document).ready(function(){
       $('input[type="file"]').change(function(e){
           var fileName = e.target.files[0].name;
           var label = e.target.parentElement.lastElementChild;
           label.innerText = fileName;
+      });
+      $('#btn-more-actions').on("click", function(){
+        $('.more-container').toggleClass("hidden");
       });
   });
 </script>
