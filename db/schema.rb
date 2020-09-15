@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_192433) do
+ActiveRecord::Schema.define(version: 2020_09_15_192708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -349,6 +349,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_192433) do
     t.integer "correct_input_questions", default: 0
     t.integer "incorrect_input_questions", default: 0
     t.integer "total_score", default: 0
+    t.jsonb "extra_data", default: {}
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
   end

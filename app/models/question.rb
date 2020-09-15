@@ -34,4 +34,8 @@ class Question < ApplicationRecord
   def correct_option_id
     options.where(is_answer: true).first.id
   end
+
+  def correct_ans
+    options.where(is_answer: true).ids.join(',')
+  end
 end

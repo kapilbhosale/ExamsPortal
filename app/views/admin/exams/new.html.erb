@@ -46,18 +46,18 @@
             </div>
           </div>
 
-          <div class="hidden form-group">
+          <div class="form-group">
             <label class="control-label col-sm-2" for="exam_type">Exam Type:</label>
             <div class="custom-controls-stacked" style="padding-top: 8px;">
               <label class="custom-control custom-radio custom-control-inline">
-                <input checked="checked" id="exam_type_yes" name="exam_type" type="radio" value="jee" /> &nbsp; JEE
+                <input checked="checked" id="radio_regular" name="exam_type" type="radio" value="jee" /> &nbsp; Regular
               </label>
               <label class="custom-control custom-radio custom-control-inline">
-                <input id="exam_type_no" name="exam_type" type="radio" value="cet" /> &nbsp; CET
+                <input id="radio_jee_advance" name="exam_type" type="radio" value="jee_advance" /> &nbsp; JEE Advance
               </label>
-              <label class="custom-control custom-radio custom-control-inline">
-                <input id="exam_type_no" name="exam_type" type="radio" value="other" /> &nbsp; Other
-              </label>
+              <p style="font-size: 10px; padding-left: 100px" class="hidden" id="jee-advance-instructions">
+                For JEE advance, +ve and -ve Marks are only for Single Input questions. For 'Multi Input' & 'Numeric Input' marks will be calculated as per rules of JEE Advance.
+              </p>
             </div>
           </div>
 
@@ -133,3 +133,13 @@
   </div>
 </div>
 
+<script>
+  $(document).ready(function(){
+    $('#radio_jee_advance').on("click", function(){
+      $('#jee-advance-instructions').removeClass("hidden");
+    });
+    $('#radio_regular').on("click", function(){
+      $('#jee-advance-instructions').addClass("hidden");
+    });
+  });
+</script>

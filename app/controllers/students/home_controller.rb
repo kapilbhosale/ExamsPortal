@@ -97,6 +97,7 @@ class Students::HomeController < Students::BaseController
     student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
 
     ses_sync = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+
     if student_exam_summaries.blank?
       if ses_sync
         if ses_sync.end_exam_sync
@@ -135,10 +136,11 @@ class Students::HomeController < Students::BaseController
       total_score += student_exam_summary.score
       total_question += student_exam_summary.no_of_questions
       topper_total += topper_score
-      section_out_of_marks = ( es_by_section_id[student_exam_summary.section.id]&.positive_marks || 1 ) * student_exam_summary.no_of_questions
+      section_out_of_marks = es_by_section_id[student_exam_summary.section.id].total_marks
       total_marks += section_out_of_marks
 
       {
+        exam_type: exam.exam_type,
         section_name: student_exam_summary.section.name,
         total_question: student_exam_summary.no_of_questions,
         correct: student_exam_summary.correct,
@@ -149,7 +151,8 @@ class Students::HomeController < Students::BaseController
         not_answered: student_exam_summary.not_answered,
         score: student_exam_summary.score,
         topper_score: topper_score,
-        section_out_of_marks: section_out_of_marks
+        section_out_of_marks: section_out_of_marks,
+        extra_data: student_exam_summary.extra_data
       }
     end
 

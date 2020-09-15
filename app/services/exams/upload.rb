@@ -127,7 +127,14 @@ module Exams
         # assuming that there will be only 4 rows in question, as per defined structure.
 
         question_val = rows[0].at('td').text.strip
-        question_type = question_val.downcase.strip.start_with?('[input]') ? 2 : 0
+        if question_val.downcase.strip.start_with?('[input]')
+          question_type = 2
+        elsif question_val.downcase.strip.start_with?('[multi]')
+          question_type = 1
+        else
+          question_type = 0
+        end
+
         question = rows[0].at('td').children.to_s.strip
         img_base64 = nil
         img_name = rows[0].at('td').children.at('img')&.attributes&.dig('src')&.value
@@ -165,7 +172,6 @@ module Exams
 
     def create_questions_and_options
       @questions_data.each do |question_data|
-
         # title = replace_local_img_path(question_data[:question])
         # explanation = replace_local_img_path(question_data[:explanation])
         title = question_data[:question]
@@ -183,16 +189,26 @@ module Exams
         if question_data[:question_type] == 0
           question_data[:options].each_with_index do |option, index|
             create_option_params << {
-              question: question,
+              question_id: question.id,
               # data: replace_local_img_path(option),
               data: option[:data],
               is_image: option[:is_image],
               is_answer: answer_input(question_data[:answer]) == index + 1
             }
           end
+        elsif question_data[:question_type] == 1
+          question_data[:options].each_with_index do |option, index|
+            create_option_params << {
+              question_id: question.id,
+              # data: replace_local_img_path(option),
+              data: option[:data],
+              is_image: option[:is_image],
+              is_answer: multi_answer_input(question_data[:answer]).include?(index + 1)
+            }
+          end
         else
           create_option_params << {
-            question: question,
+            question_id: question.id,
             data: question_data[:answer],
             is_answer: true
           }
@@ -211,6 +227,13 @@ module Exams
       return 5 if input == 'e'
       return 6 if input == 'f'
       input.to_i
+    end
+
+    def multi_answer_input(_input)
+      input = _input.squish.downcase.split(',')
+      input.map do |i|
+        i.squish.downcase.to_i
+      end
     end
 
     def replace_local_img_path(html_code)

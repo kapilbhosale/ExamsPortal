@@ -8,6 +8,7 @@ class Question extends React.Component {
       title, options, currentQuestionIndex, answerQuestion,
       answerProps, question_type, is_image,
     } = this.props;
+
     const onMultiSelectAnswerChanged = (value) => {
       let answer = answerProps.answer;
       if (answer === null) {
@@ -34,7 +35,11 @@ class Question extends React.Component {
                   checked={ isOptionSelected(option.id) }
                   onChange={ (e) => { onMultiSelectAnswerChanged(parseInt(e.target.value)) } }
                 />
-                <div className='display-inline padding-left-10' dangerouslySetInnerHTML={{ __html: option.data }} />
+                <div>
+                  {
+                    getOptionData(option.is_image, option.data)
+                  }
+                </div>
               </label>
             </div>
           )
@@ -78,7 +83,6 @@ class Question extends React.Component {
 
     const inputTypeValue = () => {
       if (answerProps.answer !== null) {
-        console.log('input value--->'+answerProps.answer.join());
         return answerProps.answer.join();
       }
       return '';
@@ -92,7 +96,7 @@ class Question extends React.Component {
             value={ inputTypeValue() }
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
-          <span className='text-muted text-medium'> Write answers upto 2 precisions.</span>
+          <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
         </div>
       );
     }

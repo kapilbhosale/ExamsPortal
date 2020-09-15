@@ -1,6 +1,7 @@
 import ReactOnRails from 'react-on-rails';
 import React from 'react';
 import SectionPieChart from '../components/SectionPieChart'
+import SectionTable from '../components/SectionTable'
 
 class Summary extends React.Component {
   constructor(props) {
@@ -39,7 +40,13 @@ class Summary extends React.Component {
           </tbody>
         </table>
         {
-          data.section_data.map((secData) => <SectionPieChart key={secData.section_name} data={secData}/>)
+          data.section_data.map((secData) => {
+            if (secData.exam_type === 'jee_advance') {
+              return <SectionTable key={secData.section_name} data={secData}/>
+            } else {
+              return <SectionPieChart key={secData.section_name} data={secData}/>
+            }
+          })
         }
       </div>
     );

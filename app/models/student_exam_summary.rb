@@ -6,6 +6,7 @@
 #  answered                  :integer
 #  correct                   :integer
 #  correct_input_questions   :integer          default(0)
+#  extra_data                :jsonb
 #  incorrect                 :integer
 #  incorrect_input_questions :integer          default(0)
 #  input_questions_present   :boolean          default(FALSE)

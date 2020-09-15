@@ -189,7 +189,8 @@ export function submitTest() {
     const dataJSON = parseLocalStorageDataForSync(studentKey)
 
     const localModelAns = localStorage.getItem(`model-ans-${store.get('examId')}`);
-    if (localModelAns) {
+
+    if (localModelAns && !JSON.parse(localModelAns).jee_advance) {
       $.ajax({
         url: '/students/submit/' + store.get('examId'),
         method: 'put',
@@ -399,9 +400,7 @@ export function initialize() {
               questions: data.questions,
               model_ans: data.model_ans,
             }
-            debugger;
             processExamData(preparedData, store, dispatch);
-            debugger;
           }
         }).fail(function() {
           $.ajax({

@@ -35,7 +35,7 @@
                 <div class="col-lg-12">
 
                   <% if question.input? %>
-                  <% ans = @data[:student_ans_by_question][question.id]&.ans %>
+                    <% ans = @data[:student_ans_by_question][question.id]&.ans %>
                     <%
                       if ans.present?
                         option_class = question.options.first.data.to_f.round(2) == ans.to_f.round(2) ? 'correct-ans' : 'wrong-ans'
@@ -45,6 +45,51 @@
                     <div class="col-lg-6">
                       <p><span><b>Model Ans: </b> <%= question.options.first.data %></span></p>
                       <p><span class="<%= option_class %>"><b>Your Ans: </b> <%= ans %></span></p>
+                    </div>
+                  <% elsif question.multi_select? %>
+                    <% ans = @data[:student_ans_by_question][question.id]&.ans %>
+                    <%
+                      if ans.present?
+                        model_ans = question.options.where(is_answer: true).ids
+                        student_ans = ans.split(',').map(&:to_i)
+                        option_class = (student_ans - model_ans).blank? ? 'correct-ans' : 'wrong-ans'
+                      end
+
+                      if (student_ans - model_ans).present?
+                          ans_status = "Wrong"
+                      elsif student_ans.size == model_ans.size && (student_ans & model_ans).size == model_ans.size
+                          ans_status = "Right"
+                      else
+                          ans_status = "Partially Right"
+                      end
+                    %>
+
+                    <div class="col-lg-6">
+                      <p><b> Options:</b></p>
+                      <% tmp_options_hash = {} %>
+
+                      <% question.options.each_with_index do |option, index| %>
+                        <% tmp_options_hash[option.id] = (index+65).chr %>
+
+                        <%
+                          option_class = ""
+                          option_class += ' wrong-ans' if model_ans.exclude?(option.id) && student_ans.include?(option.id)
+                          option_class += ' correct-ans' if model_ans.include?(option.id) && student_ans.include?(option.id)
+                          option_class += ' model-ans' if option.is_answer
+                        %>
+
+                        <div>
+                          <label class="radio-inline <%= option_class %>">
+                            <input disabled type="radio" name="optradio-<%= question.id %>" <%= option.is_answer ? 'checked' : ''  %>>
+                            <% if option.is_image %>
+                              <img src="data:image/jpeg;base64,<%= option.data %>" />
+                            <% else %>
+                              <%= raw(option.data) %>
+                            <% end %>
+                          </label>
+                        </div>
+                      <% end %>
+                      <p> Ans status: <%= ans_status %> </p>
                     </div>
                   <% else %>
                     <div class="col-lg-6">
@@ -76,19 +121,22 @@
                     </div>
                   <% end %>
 
-
                   <div class="col-lg-6" style="border: 1px solid green;">
                     <b>Explanation:</b>
                     <%= raw(question.explanation) %>
                   </div>
                   <% unless question.input? %>
                     <div class="col-lg-12">
-                      <% if student_option_id.present? %>
+                      <% if question.single_select? && student_option_id.present? %>
                         <p>
                           Your ans was : <%= tmp_options_hash[student_option_id] %>
                           <% if question.options.where(is_answer: true).count > 1 %>
                             <b> &nbsp; &nbsp; (BONUS MARK)</b>
                           <% end %>
+                        </p>
+                      <% elsif question.multi_select? && ans.present? %>
+                        <p>
+                          Your ans was : <%= student_ans.map {|i| tmp_options_hash[i]} %>
                         </p>
                       <% else %>
                         <p> You skipped this question </p>
