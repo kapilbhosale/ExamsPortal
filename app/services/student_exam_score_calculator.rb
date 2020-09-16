@@ -143,11 +143,11 @@ class StudentExamScoreCalculator
   end
 
   def question_model_ans(question)
-    question.options.where(is_answer: true).ids
+    question.options.where(is_answer: true).ids || []
   end
 
   def student_multi_ans(ans)
-    ans.split(',').map(&:to_i)
+    ans.split(',').map(&:to_i) || []
   end
 
   def cet_correct_incorrect_counts
