@@ -49,8 +49,9 @@
                   <% elsif question.multi_select? %>
                     <% ans = @data[:student_ans_by_question][question.id]&.ans %>
                     <%
+                      model_ans = question.options.where(is_answer: true).ids || []
+                      student_ans = []
                       if ans.present?
-                        model_ans = question.options.where(is_answer: true).ids || []
                         student_ans = ans.to_s.split(',').map(&:to_i) || []
                         option_class = (student_ans - model_ans).blank? ? 'correct-ans' : 'wrong-ans'
                       end
