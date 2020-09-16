@@ -51,7 +51,7 @@
                     <%
                       if ans.present?
                         model_ans = question.options.where(is_answer: true).ids || []
-                        student_ans = ans.split(',').map(&:to_i) || []
+                        student_ans = ans.to_s.split(',').map(&:to_i) || []
                         option_class = (student_ans - model_ans).blank? ? 'correct-ans' : 'wrong-ans'
                       end
 
