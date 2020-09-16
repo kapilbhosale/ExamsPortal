@@ -134,7 +134,7 @@ class Students::AdmissionsController < ApplicationController
       return 24_000 if course.name == "pc"
       return 24_000 if course.name == "pb"
       return 24_000 if course.name == "cb"
-      return 30_000 if course.name == "pcb"
+      return 25_000 if course.name == "pcb"
     end
     course.fees
   end
