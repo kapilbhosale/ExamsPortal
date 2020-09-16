@@ -9,44 +9,6 @@ class SectionTable extends React.Component {
 
   render() {
     const section_data = this.props.data;
-    let data = [
-      {
-        "id": `Correct [${section_data.correct}]`,
-        "label": "correct",
-        "value": section_data.correct,
-        "color": "rgb(2, 160, 0)"
-      },
-      {
-        "id": `Wrong [${section_data.incorrect}]`,
-        "label": "wrong",
-        "value": section_data.incorrect,
-        "color": "rgb(195, 0, 0)"
-      },
-      {
-        "id": `Not Sovled [${section_data.not_answered}]`,
-        "label": "not_solved",
-        "value": section_data.not_answered,
-        "color": "gray"
-      }
-    ];
-
-    if (section_data.input_questions_present) {
-      let input_data = [
-        {
-          "id": `Input Correct [${section_data.correct_input_questions}]`,
-          "label": "correct",
-          "value": section_data.correct_input_questions,
-          "color": "rgb(2, 160, 0, 0.5)"
-        },
-        {
-          "id": `Input Wrong [${section_data.incorrect_input_questions}]`,
-          "label": "wrong",
-          "value": section_data.incorrect_input_questions,
-          "color": "rgb(195, 0, 0, 0.5)"
-        },
-      ];
-      data = data.concat(input_data);
-    }
 
     return(
       <div>
@@ -74,7 +36,7 @@ class SectionTable extends React.Component {
               <td>{section_data.incorrect}</td>
               <td>-</td>
               <td>{section_data.not_answered}</td>
-              <td>{(section_data.correct * section_data.extra_data.posetive_marks) - (section_data.incorrect * section_data.extra_data.negative_marks)}</td>
+              <td>{(section_data.correct * section_data.extra_data.posetive_marks) + (section_data.incorrect * section_data.extra_data.negative_marks)}</td>
             </tr>
             <tr>
               <td>Multi Select</td>
