@@ -44,7 +44,9 @@
               <%= genre.name %>
             </td>
             <td class="text-center">
-              <b><%= genre.video_lectures_count %></b>
+              <a href="<%= admin_video_lectures_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
+                <%= genre.video_lectures_count %>
+              </a>
             </td>
             <td>
               <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;

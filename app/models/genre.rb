@@ -17,3 +17,4 @@ class Genre < ApplicationRecord
   belongs_to :org
   belongs_to :subject, optional: true
 end
+# Genre.reset_counters(g.id, :video_lectures)
