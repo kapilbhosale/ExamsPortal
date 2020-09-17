@@ -3,6 +3,23 @@
     <%= form_tag(admin_genre_path(@genre), method: :patch) do %>
       <div class="card-body">
         <h3 class="card-title">Edit Video Folder</h3>
+
+        <div class="form-group" style="padding: 15px; margin-bottom: 25px;">
+          <label class="control-label col-sm-2" for="name">Subject *</label>
+          <div class="col-sm-8">
+            <div class="form-group">
+              <select class="form-control" name="subject_id">
+                <option disabled selected value> -- select an option -- </option>
+                <% @subjects.each do |subject| %>
+                  <option value="<%= subject.id %>" <%= @genre.subject_id == subject.id ? 'selected' : '' %>>
+                    <%= subject.name.humanize %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group" style="padding: 15px; margin-bottom: 25px;">
           <label class="control-label col-sm-2" for="name">Name</label>
           <div class="col-sm-8">

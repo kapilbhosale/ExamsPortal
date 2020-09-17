@@ -48,7 +48,7 @@ class VideoLecture < ApplicationRecord
 
   belongs_to :subject
   belongs_to :org
-  belongs_to :genre, optional: true
+  belongs_to :genre, optional: true, counter_cache: true
   mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
 
