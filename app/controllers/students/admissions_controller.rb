@@ -99,7 +99,7 @@ class Students::AdmissionsController < ApplicationController
   def get_eazy_pay_url(new_admission, course)
     eazy_pay_url_v2(
       new_admission.payment_id,
-      new_admission.parent_mobile == '7588584810' ? 2 : get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
+      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
       "#{new_admission.parent_mobile}#{new_admission.id}",
       !new_admission.student_id.present?,
       new_admission
@@ -239,13 +239,18 @@ class Students::AdmissionsController < ApplicationController
 
     def add_student(na)
       org = Org.first
-      roll_number = Student.suggest_roll_number(org)
-      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
       batches = get_batches(na.rcc_branch, na.course, na.batch)
 
+      if @new_admission.batch == 'repeater'
+        roll_number = suggest_rep_online_roll_number
+      else
+        roll_number = suggest_online_roll_number(org, batches.first)
+      end
+
+      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
       student = Student.find_or_initialize_by(email: email)
-      student.roll_number = suggest_online_roll_number(org, batches.first)
-      student.suggested_roll_number = suggest_online_roll_number(org, batches.first)
+      student.roll_number = roll_number
+      student.suggested_roll_number = roll_number
       student.name = na.name
       student.mother_name = "-"
       student.gender = na.gender == 'male' ? 0 : 1
@@ -347,7 +352,8 @@ class Students::AdmissionsController < ApplicationController
           "Latur-REP-#{course.name.upcase}-2020" :
           "Nanded-REP-#{course.name.upcase}-2020"
 
-        return Batch.find_or_create_by(org_id: org.id, name: batch_name)
+        Batch.find_or_create_by(org_id: org.id, name: batch_name)
+        Batch.where(org_id: org.id, name: batch_name)
       else
         if rcc_branch == "latur"
           return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
@@ -416,7 +422,11 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      if parent_mobile == '7588584810'
+        transaction_amount = '2'
+      else
+        transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      end
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.parent_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course&.name}|#{new_admission.batch}|NA|NA"
 
