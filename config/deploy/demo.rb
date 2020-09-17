@@ -1,6 +1,6 @@
 # app-eduaakr  bhargav  chate  demo  eduaakar-site  exams  videos
 set :rails_env, :production
-set :branch, 'bhargav-changes'
+set :branch, 'main_branch'
 set :sidekiq_env, :production
 set :stage, :production
 

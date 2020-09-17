@@ -2,17 +2,22 @@
   <div class="card-header">
     <div class="col-md-12">
       <div class="col-md-6">
-        <h5>Video Lectures</h5>
-      </div>
-      <div class="col-md-4 text-right">
-        <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Add Video Folder</a>
+        <h5 style="margin-top: 7px">Video Lectures</h5>
       </div>
       <div class="col-md-2 text-right">
+        <p id="btn-toggle-filter" class="btn btn-outline-light" style="color: gray">
+          Filters: <span class="	glyphicon glyphicon-filter"></span>
+        </p>
+      </div>
+      <div class="col-md-2 text-right">
+        <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Add Video Folder</a>
+      </div>
+      <div class="col-md-2 text-right" style="margin-top: 7px">
         <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Video Lecture'.html_safe, new_admin_video_lecture_path %>
       </div>
     </div>
   </div>
-  <div class="col-md-12">
+  <div class="row hidden" id="filtes-container">
     <%= search_form_for @search, url: admin_video_lectures_path, class:"form-inline my-2 my-lg-0" do |f| %>
       <span class="p-2">Subject</span>
       <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2'} )%>
@@ -80,3 +85,11 @@
     </table>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+      $('#btn-toggle-filter').on("click", function(){
+        $('#filtes-container').toggleClass("hidden");
+      });
+  });
+</script>

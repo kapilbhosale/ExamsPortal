@@ -23,7 +23,9 @@ class Admin::VideoLecturesController < Admin::BaseController
     @teachers = VideoLecture.where(org: current_org).pluck(:by).uniq.map do |teacher|
       OpenStruct.new({id: teacher, name: teacher})
     end
-    @folders = Genre.where(org: current_org).all
+    @folders = Genre.where(org: current_org).map do |genre|
+      OpenStruct.new({ id: genre.id, name: genre.name.length > 45 ? genre.name.first(45) + '...' : genre.name })
+    end
   end
 
   def new
