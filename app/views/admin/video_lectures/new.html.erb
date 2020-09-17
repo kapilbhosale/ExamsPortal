@@ -4,7 +4,7 @@
     <div class="col-lg-8">
         <div class="card-body">
           <h3 class="card-title">
-            <b>Add Video Lecture</b>
+            <b>Add Video Lecture <span style="color: #45aaf2"><%= @genre.present? ? " Folder : #{@genre.name} " : ''%></span></b>
           </h3>
 
           <div class="row form-group">
@@ -59,9 +59,9 @@
             <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
             <div class="col-sm-8">
               <div class="form-group">
-                <select class="form-control" name="subject_id">
+                <select class="form-control" name="subject_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? && @genre&.subject_id.present? %>">
                   <% @subjects.each do |subject| %>
-                    <option value="<%= subject.id %>">
+                    <option value="<%= subject.id %>" <%= subject.id == @genre&.subject&.id ? 'selected' : '' %>>
                       <%= subject.name.humanize %>
                     </option>
                   <% end %>
@@ -73,9 +73,11 @@
           <div class="row form-group">
             <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
             <div class="col-sm-8">
-              <select class="form-control" name="genre_id" id="video_lecture_genre_id">
+              <select class="form-control" name="genre_id" id="video_lecture_genre_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? %>">
                 <% @genres.each do |genre| %>
-                  <option value="<%=genre.id%>"> <%= genre.name %></option>
+                  <option value="<%= genre.id %>" <%= genre.id == @genre&.id ? 'selected' : '' %>>
+                    <%= genre.name %>
+                  </option>
                 <% end %>
               </select>
             </div>
@@ -132,6 +134,7 @@
       </div>
     </div>
   </div>
+  <input type="hidden" name="is_redirect_needed" value="<%= @genre.present? %>">
 <% end %>
 
 

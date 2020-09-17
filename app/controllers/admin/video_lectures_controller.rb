@@ -29,6 +29,7 @@ class Admin::VideoLecturesController < Admin::BaseController
   end
 
   def new
+    @genre = Genre.find_by(org_id: current_org.id, id: params[:genre_id])
     @video_lecture = VideoLecture.new
     @batches = Batch.where(org: current_org).all_batches
     @genres = Genre.where(org_id: current_org.id)
@@ -71,6 +72,9 @@ class Admin::VideoLecturesController < Admin::BaseController
     else
       flash[:error] = vl.errors.full_messages.join(', ')
     end
+
+    redirect_to admin_genres_path and return if params[:is_redirect_needed] == 'true'
+
     redirect_to admin_video_lectures_path
   end
 

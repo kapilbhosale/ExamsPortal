@@ -57,7 +57,7 @@
                 <%= link_to 'Hide'.html_safe, admin_genre_hide_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Hide folder?'} %>
               <% end %>
               |
-              <a href="#" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
+              <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
                 Add Video
               </a>
             </td>
