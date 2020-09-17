@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::VideosController < Api::V1::ApiController
+  skip_before_action :verify_authenticity_token, only: [:set_yt_url]
 
   def index
     lectures = VideoLecture.includes(:batches, :subject)
