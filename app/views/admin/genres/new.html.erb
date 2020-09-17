@@ -8,7 +8,8 @@
           <label class="control-label col-sm-2" for="name">Subject *</label>
           <div class="col-sm-8">
             <div class="form-group">
-              <select class="form-control" name="subject_id">
+              <select class="form-control" name="subject_id" required>
+                <option disabled selected value> -- select an option -- </option>
                 <% @subjects.each do |subject| %>
                   <option value="<%= subject.id %>">
                     <%= subject.name.humanize %>
