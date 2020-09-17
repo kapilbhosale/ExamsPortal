@@ -46,14 +46,10 @@ class Api::V1::VideosController < Api::V1::ApiController
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: {} and return if lecture.blank?
 
-    cached_url = REDIS_CACHE.set("lecture-#{lecture.id}")
-    if cached_url.blank?
-      cached_url = yt_url(lecture)
-      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
-      # expiry_time.
-    end
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", params[:urls][:url_sd], { ex: (10 * 60) })
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_hd", params[:urls][:url_hd], { ex: (10 * 60) })
 
-    render json: { url_hd: cached_url, url_sd: cached_url }
+    render json: { status: 'ok' }
   end
 
   def categories
