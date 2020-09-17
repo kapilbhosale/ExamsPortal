@@ -17,7 +17,7 @@
       </div>
     </div>
   </div>
-  <div class="row hidden" id="filtes-container">
+  <div class="row hidden" id="filtes-container" style="padding: 6px; background-color: lightgray;">
     <%= search_form_for @search, url: admin_video_lectures_path, class:"form-inline my-2 my-lg-0" do |f| %>
       <span class="p-2">Subject</span>
       <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2'} )%>
