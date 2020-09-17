@@ -114,7 +114,8 @@ Rails.application.routes.draw do
 
       resources :notifications, only: [:index]
       resources :videos, only: [:index] do
-        get 'get_yt_url'
+        get  :get_yt_url
+        post :set_yt_url
       end
       resources :study_pdfs, only: [:index]
       resources :meetings, only: [:index]
