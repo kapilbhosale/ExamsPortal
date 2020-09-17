@@ -190,7 +190,7 @@ class Students::AdmissionsController < ApplicationController
           ) rescue nil
 
           if pay_transaction.blank?
-            std = add_student(@new_admission) rescue nil
+            std = add_student(@new_admission)
             PaymentTransaction.create(
               student_id: std.id,
               amount: @new_admission.payment_callback_data['Total Amount'].to_f,
@@ -349,8 +349,8 @@ class Students::AdmissionsController < ApplicationController
       elsif batch == 'repeater'
         org = Org.first
         batch_name = rcc_branch == "latur" ?
-          "Latur-REP-#{course.name.upcase}-2020" :
-          "Nanded-REP-#{course.name.upcase}-2020"
+          "Ltr-REP-#{course.name.upcase}-2020" :
+          "Ned-REP-#{course.name.upcase}-2020"
 
         Batch.find_or_create_by(org_id: org.id, name: batch_name)
         Batch.where(org_id: org.id, name: batch_name)
@@ -422,11 +422,7 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      if parent_mobile.first(10) == '7588584810'
-        transaction_amount = '2'
-      else
-        transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
-      end
+      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.parent_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course&.name}|#{new_admission.batch}|NA|NA"
 
