@@ -422,7 +422,7 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      if parent_mobile == '7588584810'
+      if parent_mobile.first(10) == '7588584810'
         transaction_amount = '2'
       else
         transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
