@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     get 'videos' => 'videos#lectures'
     get 'lectures' => 'videos#lectures'
     get 'lectures/:video_id' => 'videos#show_lecture'
+    get 'category_videos/:id' => 'videos#category_videos'
     get 'yt-player' => 'videos#play_yt'
     get 'play-yt-video' => 'videos#play_yt_video'
 
