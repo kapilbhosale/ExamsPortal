@@ -191,6 +191,8 @@ class Students::AdmissionsController < ApplicationController
 
           if pay_transaction.blank?
             std = add_student(@new_admission)
+            @new_admission.student_id = std.id
+            @new_admission.save
             PaymentTransaction.create(
               student_id: std.id,
               amount: @new_admission.payment_callback_data['Total Amount'].to_f,
