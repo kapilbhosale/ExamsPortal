@@ -4,7 +4,7 @@ class Admin::StudentsController < Admin::BaseController
   def index
     @search = Student
       .where(org: current_org)
-      .includes(:student_batches, :batches).joins(:batches)
+      .includes(:student_batches, :batches)
 
     if params[:q].present? && params[:q][:batch_id].present?
       @search = @search.where(batches: {id: params[:q][:batch_id]})
