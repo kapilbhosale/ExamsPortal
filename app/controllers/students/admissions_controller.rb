@@ -126,6 +126,16 @@ class Students::AdmissionsController < ApplicationController
       return 21_000 if course.name == "cb"
       return 33_000 if course.name == "pcb"
     end
+    if batch == 'repeater'
+      return 12_000 if course.name == "phy"
+      return 12_000 if course.name == "chem"
+      return 12_000 if course.name == "bio"
+
+      return 24_000 if course.name == "pc"
+      return 24_000 if course.name == "pb"
+      return 24_000 if course.name == "cb"
+      return 25_000 if course.name == "pcb"
+    end
     course.fees
   end
 
@@ -160,8 +170,13 @@ class Students::AdmissionsController < ApplicationController
               student.save
               student.batches << batches
               # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
-              student.roll_number = suggest_tw_online_roll_number
-              student.suggested_roll_number = suggest_tw_online_roll_number
+              if @new_admission.batch == 'repeater'
+                student.roll_number = suggest_rep_online_roll_number
+                student.suggested_roll_number = suggest_rep_online_roll_number
+              else
+                student.roll_number = suggest_tw_online_roll_number
+                student.suggested_roll_number = suggest_tw_online_roll_number
+              end
               student.api_key = student.api_key + '+1'
               student.app_login = false
               student.save
@@ -175,7 +190,9 @@ class Students::AdmissionsController < ApplicationController
           ) rescue nil
 
           if pay_transaction.blank?
-            std = add_student(@new_admission) rescue nil
+            std = add_student(@new_admission)
+            @new_admission.student_id = std.id
+            @new_admission.save
             PaymentTransaction.create(
               student_id: std.id,
               amount: @new_admission.payment_callback_data['Total Amount'].to_f,
@@ -194,13 +211,22 @@ class Students::AdmissionsController < ApplicationController
 
   private
 
-  INITIAL_TW_ROLL_NUMBER = 51200
+    INITIAL_TW_ROLL_NUMBER = 51200
     def suggest_tw_online_roll_number
       online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
       rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
       return rn + 1 if rn
 
       INITIAL_TW_ROLL_NUMBER
+    end
+
+    INITIAL_RP_ROLL_NUMBER = 6001
+    def suggest_rep_online_roll_number
+      online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['repeater']).where.not(student_id: nil).pluck(:student_id)
+      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
+      return rn + 1 if rn
+
+      INITIAL_RP_ROLL_NUMBER
     end
 
     INITIAL_ONLINE_ROLL_NUMBER = 1100
@@ -215,13 +241,18 @@ class Students::AdmissionsController < ApplicationController
 
     def add_student(na)
       org = Org.first
-      roll_number = Student.suggest_roll_number(org)
-      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
       batches = get_batches(na.rcc_branch, na.course, na.batch)
 
+      if @new_admission.batch == 'repeater'
+        roll_number = suggest_rep_online_roll_number
+      else
+        roll_number = suggest_online_roll_number(org, batches.first)
+      end
+
+      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
       student = Student.find_or_initialize_by(email: email)
-      student.roll_number = suggest_online_roll_number(org, batches.first)
-      student.suggested_roll_number = suggest_online_roll_number(org, batches.first)
+      student.roll_number = roll_number
+      student.suggested_roll_number = roll_number
       student.name = na.name
       student.mother_name = "-"
       student.gender = na.gender == 'male' ? 0 : 1
@@ -317,6 +348,14 @@ class Students::AdmissionsController < ApplicationController
           return Batch.where(name: 'B-2_Nanded_11th_PB_2020') if course.name == 'pb'
           return Batch.where(name: 'B-2_Nanded_11th_CB_2020') if course.name == 'cb'
         end
+      elsif batch == 'repeater'
+        org = Org.first
+        batch_name = rcc_branch == "latur" ?
+          "Ltr-REP-#{course.name.upcase}-2020" :
+          "Ned-REP-#{course.name.upcase}-2020"
+
+        Batch.find_or_create_by(org_id: org.id, name: batch_name)
+        Batch.where(org_id: org.id, name: batch_name)
       else
         if rcc_branch == "latur"
           return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'

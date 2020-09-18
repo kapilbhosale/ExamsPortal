@@ -14,6 +14,7 @@ require 'csv'
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
 #  date_of_birth          :date
+#  deleted_at             :datetime
 #  deviceName             :string
 #  deviceUniqueId         :string
 #  email                  :string           default(""), not null
@@ -46,11 +47,14 @@ require 'csv'
 # Indexes
 #
 #  index_students_on_category_id    (category_id)
+#  index_students_on_deleted_at     (deleted_at)
 #  index_students_on_name           (name)
 #  index_students_on_parent_mobile  (parent_mobile)
 #
 
 class Student < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :category, optional: true
   has_many   :student_batches, dependent: :destroy
   has_many   :batches, through: :student_batches

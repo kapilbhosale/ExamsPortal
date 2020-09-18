@@ -10,7 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_17_094231) do
+
+ActiveRecord::Schema.define(version: 2020_09_18_071356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -417,7 +418,9 @@ ActiveRecord::Schema.define(version: 2020_09_17_094231) do
     t.integer "access_type", default: 0
     t.integer "suggested_roll_number"
     t.integer "app_reset_count", default: 0
+    t.datetime "deleted_at"
     t.index ["category_id"], name: "index_students_on_category_id"
+    t.index ["deleted_at"], name: "index_students_on_deleted_at"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
   end

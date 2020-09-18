@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::VideosController < Api::V1::ApiController
+  skip_before_action :verify_authenticity_token, only: [:set_yt_url]
 
   def index
     lectures = VideoLecture.includes(:batches, :subject)
@@ -60,11 +61,14 @@ class Api::V1::VideosController < Api::V1::ApiController
     render json: { url_hd: cached_url, url_sd: cached_url }
   end
 
-  def set_view_count
+  def set_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
-    render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
-    count = REDIS_CACHE.get("lecture-count-#{lecture.id}") || 0
-    REDIS_CACHE.set("lecture-count-#{lecture.id}", count + 1)
+    render json: {} and return if lecture.blank?
+
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", params[:urls][:url_sd], { ex: (10 * 60) })
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_hd", params[:urls][:url_hd], { ex: (10 * 60) })
+
+    render json: { status: 'ok' }
   end
 
   def categories

@@ -22,7 +22,17 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def top_banners_data
-    current_org.data['top_banners']
+    if current_org.subdomain == 'exams' && (current_student&.batches&.ids & [1, 4, 10, 16, 17]).present?
+      banners_data = [
+        {
+          "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/neet_rcc_form.png",
+          "on_click"=>"https://docs.google.com/forms/d/e/1FAIpQLSdzFoYGm4elzKrXIWr3Og19a69sacsoZDDikMkfCcrxIdblAg/viewform"
+        }
+      ]
+      banners_data + current_org.data['top_banners']
+    else
+      current_org.data['top_banners']
+    end
   end
 
   def gallery

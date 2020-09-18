@@ -12,12 +12,18 @@ module Batches
     def call
       validate_request
       batch.destroy!
+      # mark students with no batch as deleted one. paranoid gem.
+      delete_associated_students
       return {status: true, message: 'Batch deleted successfully'}
     rescue DeleteBatchError, ActiveRecord::RecordInvalid => ex
       return{status: false, message: ex.message}
     end
 
     private
+
+    def delete_associated_students
+      Student.includes(:batches).where(batches: { id: nil }).where(deleted_at: nil).update_all(deleted_at: Time.now)
+    end
 
     def validate_request
       raise DeleteBatchError, 'Batch does not exists' if batch.blank?
