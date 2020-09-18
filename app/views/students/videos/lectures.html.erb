@@ -26,7 +26,9 @@
                         <%= folder[:count] %>
                       </text>
                     </svg>
-                    <span class="label label-danger" style="border-radius: 8px; margin-left: 2px; position: absolute"><%= folder[:new] %></span>
+                    <% if folder[:new].to_i > 0 %>
+                      <span class="label label-danger" style="border-radius: 8px; margin-left: 2px; position: absolute"><%= folder[:new] %></span>
+                    <% end %>
                   </div>
                   <div class='col-lg-12' style="height: 40px">
                     <%= folder[:name] %>
