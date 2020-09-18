@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_04_053006) do
+ActiveRecord::Schema.define(version: 2020_09_18_071356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -181,6 +181,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_053006) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "hidden", default: false
+    t.integer "subject_id"
+    t.integer "video_lectures_count", default: 0
   end
 
   create_table "messages", force: :cascade do |t|
@@ -348,6 +350,8 @@ ActiveRecord::Schema.define(version: 2020_09_04_053006) do
     t.boolean "input_questions_present", default: false
     t.integer "correct_input_questions", default: 0
     t.integer "incorrect_input_questions", default: 0
+    t.integer "total_score", default: 0
+    t.jsonb "extra_data", default: {}
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
   end
@@ -413,7 +417,9 @@ ActiveRecord::Schema.define(version: 2020_09_04_053006) do
     t.integer "access_type", default: 0
     t.integer "suggested_roll_number"
     t.integer "app_reset_count", default: 0
+    t.datetime "deleted_at"
     t.index ["category_id"], name: "index_students_on_category_id"
+    t.index ["deleted_at"], name: "index_students_on_deleted_at"
     t.index ["name"], name: "index_students_on_name"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
   end
@@ -478,6 +484,17 @@ ActiveRecord::Schema.define(version: 2020_09_04_053006) do
     t.index ["name_map"], name: "index_topics_on_name_map"
   end
 
+  create_table "trackers", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "resource_type"
+    t.integer "resource_id"
+    t.string "event"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_trackers_on_student_id"
+  end
+
   create_table "video_lectures", force: :cascade do |t|
     t.string "title"
     t.string "url"
@@ -497,6 +514,7 @@ ActiveRecord::Schema.define(version: 2020_09_04_053006) do
     t.integer "genre_id", default: 0
     t.integer "subject_id"
     t.datetime "publish_at"
+    t.integer "view_limit", default: 3
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 

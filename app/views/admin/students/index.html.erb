@@ -14,7 +14,7 @@
       <div class="card-body">
         <div class="col-xl-10 col-lg-10 col-md-10 col-sm-10 col-10">
           <%= search_form_for @search, url: admin_students_path, class:"form-inline my-2 my-lg-0" do |f| %>
-            <%= f.text_field :name_and_roll_number, placeholder: 'Name, Roll no, parent mob', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
+            <%= f.text_field :name_and_roll_number, value: params&.[](:q)&.[](:name_and_roll_number), placeholder: 'Name, Roll no, parent mob', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
             <span class="p-2">Batch</span>
             <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
             <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
