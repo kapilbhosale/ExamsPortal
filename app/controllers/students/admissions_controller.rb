@@ -34,7 +34,7 @@ class Students::AdmissionsController < ApplicationController
 
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
-    @fees = get_fees(@new_admission.batch, @new_admission.course)
+    @fees = get_fees(@new_admission.batch, @new_admission.course, @new_admission.rcc_branch)
     @processing_fees = !@new_admission.student_id.present? ? 120 : 0
     render pdf: "Payment Receipt",
             template: "/students/admissions/receipt.pdf.erb",
@@ -99,7 +99,7 @@ class Students::AdmissionsController < ApplicationController
   def get_eazy_pay_url(new_admission, course)
     eazy_pay_url_v2(
       new_admission.payment_id,
-      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
+      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
       "#{new_admission.parent_mobile}#{new_admission.id}",
       !new_admission.student_id.present?,
       new_admission
@@ -115,7 +115,7 @@ class Students::AdmissionsController < ApplicationController
     # end
   end
 
-  def get_fees(batch, course, is_installment = false)
+  def get_fees(batch, course, is_installment = false, rcc_branch = nil)
     if batch == "12th"
       return 12_000 if course.name == "phy"
       return 12_000 if course.name == "chem"
@@ -135,6 +135,9 @@ class Students::AdmissionsController < ApplicationController
       return 24_000 if course.name == "pb"
       return 24_000 if course.name == "cb"
       return 25_000 if course.name == "pcb"
+    end
+    if batch == '11th' && rcc_branch == 'nanded'
+      return 15_000 if course.name == "phy"
     end
     course.fees
   end
