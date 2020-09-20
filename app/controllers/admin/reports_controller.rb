@@ -77,11 +77,11 @@ class Admin::ReportsController < Admin::BaseController
         }
       }
 
-      total_score = ses.total_score
-      if total_score.zero?
-        exam_section = ExamSection.find_by(exam: exam, section: ses.section)
-        total_score = exam_section.positive_marks * ses.no_of_questions
-      end
+      # total_score = ses.total_score
+      # if total_score.zero?
+      exam_section = ExamSection.find_by(exam: exam, section: ses.section)
+      total_score = exam_section.total_marks
+      # end
       progress_report_data[student_exam_key][:data][ses.section.name] = { score: ses.score, total: total_score }
       progress_report_data[student_exam_key][:data][:total][:score] += ses.score
       progress_report_data[student_exam_key][:data][:total][:total] += total_score
