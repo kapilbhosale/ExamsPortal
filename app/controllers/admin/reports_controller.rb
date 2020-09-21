@@ -58,6 +58,13 @@ class Admin::ReportsController < Admin::BaseController
   end
 
   def prepare_report(exam)
+    student_exam_syncs = StudentExamSync.where(exam_id: exam.id)
+    student_exam_summaries = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id})
+
+    if student_exam_syncs.present? && student_exam_summaries.present?
+      student_exam_summaries.destroy_all
+    end
+
     Reports::ExamCsvReportService.new(exam.id).prepare_report
     progress_report_data = {}
 
