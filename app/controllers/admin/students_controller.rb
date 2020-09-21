@@ -114,7 +114,29 @@ class Admin::StudentsController < Admin::BaseController
     else
       flash[:error] = 'Error in resetting Student App Login.'
     end
-    redirect_to admin_students_path
+    redirect_to edit_admin_student_path(@student)
+  end
+
+  def disable
+    @student = Student.find_by(id: params[:student_id], org: current_org)
+    if @student.present?
+      @student.update!(disable: true, app_reset_count: @student.app_reset_count + 1)
+      flash[:success] = 'Student disabled, successfully.'
+    else
+      flash[:error] = 'Error in disabling Student App Login.'
+    end
+    redirect_to edit_admin_student_path(@student)
+  end
+
+  def enable
+    @student = Student.find_by(id: params[:student_id], org: current_org)
+    if @student.present?
+      @student.update!(disable: false)
+      flash[:success] = 'Student enabled, successfully.'
+    else
+      flash[:error] = 'Error in enabling Student App Login.'
+    end
+    redirect_to edit_admin_student_path(@student)
   end
 
   def destroy

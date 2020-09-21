@@ -19,6 +19,11 @@ class Students::LoginController < Students::BaseController
     if student&.valid_password?(login_params[:password])
       student.remember_me = login_params[:remember_me]
 
+      if student.disable?
+        flash[:error] = "Your Account is Disabled, Please contact admin/office. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
+        redirect_to("/student/sign_in") and return
+      end
+
       if student.app_login == true
         flash[:error] = "You using Mobile App. Details: #{student.deviceName}, #{student.brand}, #{student.manufacturer}. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
         redirect_to("/student/sign_in") and return

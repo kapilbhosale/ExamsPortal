@@ -89,6 +89,8 @@ Rails.application.routes.draw do
       get :import, on: :collection
       post :process_import, on: :collection
       get :reset_login
+      get :disable
+      get :enable
       get :progress_report
     end
     resources :batches do

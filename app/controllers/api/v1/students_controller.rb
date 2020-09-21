@@ -24,6 +24,10 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
     end
 
+    if student.disable?
+      render json: { message: 'Your Account is Disabled, Please contact admin/office.' }, status: :unauthorized and return
+    end
+
     unless login_allowed?(student)
       if student.is_laptop_login
         message = "You are using Laptop for access, please continue using latop only."

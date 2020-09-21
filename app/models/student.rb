@@ -17,6 +17,7 @@ require 'csv'
 #  deleted_at             :datetime
 #  deviceName             :string
 #  deviceUniqueId         :string
+#  disable                :boolean          default(FALSE)
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  fcm_token              :string
