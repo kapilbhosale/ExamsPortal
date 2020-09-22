@@ -3,7 +3,7 @@
 class Api::V1::NotificationsController < Api::V1::ApiController
 
   def index
-    @notifications = BatchNotification.includes(:notification).where(batch: current_student.batches).map(&:notification)
+    @notifications = BatchNotification.includes(:notification).where(batch: current_student.batches).order(id: :desc).map(&:notification)
     render json: notifications_json, status: :ok
   end
 
