@@ -41,6 +41,7 @@ class Admin::NotificationsController < Admin::BaseController
           params[:batches].each do |batch_id|
             BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
           end
+          notification.send_push_notifications
         end
         flash[:success] = "Notification created, successfully"
       else
