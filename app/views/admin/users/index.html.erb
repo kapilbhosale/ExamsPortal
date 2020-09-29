@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3">Admin Users</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
+          <%= link_to '<i class="fe fe-user-plus"> </i> Add User'.html_safe, new_admin_student_path%>
+        </div>
+        <div class="table-responsive">
+          <% if @admins.present? %>
+            <%= form_for :user, url: admin_users_path, method: :get, id: 'user_form' do |form| %>
+              <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Email</th>
+                    <th>Batch(s)</th>
+                    <th>Name</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @admins.each do |admin| %>
+                    <tr>
+                      <td><%= admin.type %></td>
+                      <td><%= admin.email %></td>
+                      <td><%= admin&.batches&.each&.map(&:name).join(', ') %></td>
+                      <td><%= link_to admin.name, admin_user_path(admin) %></td>
+                      <td><%= '' %></td>
+                      <td>
+                        <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_user_path(admin), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp; &nbsp;
+                        <%= link_to '', admin_user_path(admin), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "glyphicon glyphicon-trash" %>&nbsp; &nbsp;
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+          <% else %>
+            <div class="alert alert-info">No Users were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" >
+  $(function(){
+    $('#limit').change(
+      function() {
+        $('#limit_form').submit();
+      });
+  });
+</script>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_18_071356) do
+ActiveRecord::Schema.define(version: 2020_09_25_084641) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
+  end
+
+  create_table "admin_batches", force: :cascade do |t|
+    t.bigint "admin_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_admin_batches_on_admin_id"
+    t.index ["batch_id"], name: "index_admin_batches_on_batch_id"
   end
 
   create_table "admins", force: :cascade do |t|
@@ -181,20 +190,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "hidden", default: false
-    t.integer "subject_id"
-    t.integer "video_lectures_count", default: 0
-  end
-
-  create_table "messages", force: :cascade do |t|
-    t.bigint "sender_id"
-    t.string "sender_type"
-    t.string "sender_name"
-    t.text "message"
-    t.bigint "messageable_id"
-    t.string "messageable_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable_type_and_messageable_id"
   end
 
   create_table "new_admissions", force: :cascade do |t|
@@ -277,22 +272,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.index ["topic_id"], name: "index_practice_questions_on_topic_id"
   end
 
-  create_table "progress_reports", force: :cascade do |t|
-    t.bigint "student_id"
-    t.bigint "exam_id"
-    t.boolean "is_imported", default: false
-    t.integer "exam_type", default: 0
-    t.date "exam_date"
-    t.string "exam_name"
-    t.decimal "percentage"
-    t.integer "rank"
-    t.jsonb "data", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_progress_reports_on_exam_id"
-    t.index ["student_id"], name: "index_progress_reports_on_student_id"
-  end
-
   create_table "questions", force: :cascade do |t|
     t.text "title"
     t.text "explanation"
@@ -350,8 +329,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.boolean "input_questions_present", default: false
     t.integer "correct_input_questions", default: 0
     t.integer "incorrect_input_questions", default: 0
-    t.integer "total_score", default: 0
-    t.jsonb "extra_data", default: {}
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
   end
@@ -484,17 +461,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.index ["name_map"], name: "index_topics_on_name_map"
   end
 
-  create_table "trackers", force: :cascade do |t|
-    t.bigint "student_id"
-    t.string "resource_type"
-    t.integer "resource_id"
-    t.string "event"
-    t.jsonb "data", default: {}
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["student_id"], name: "index_trackers_on_student_id"
-  end
-
   create_table "video_lectures", force: :cascade do |t|
     t.string "title"
     t.string "url"
@@ -514,7 +480,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.integer "genre_id", default: 0
     t.integer "subject_id"
     t.datetime "publish_at"
-    t.integer "view_limit", default: 3
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 
@@ -529,8 +494,6 @@ ActiveRecord::Schema.define(version: 2020_09_18_071356) do
     t.datetime "updated_at", null: false
     t.integer "live_type", default: 0
     t.string "vimeo_live_url"
-    t.string "vimeo_live_show_url"
-    t.string "zoom_meeting_url"
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 

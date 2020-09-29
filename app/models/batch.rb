@@ -26,9 +26,12 @@ class Batch < ApplicationRecord
   has_many :batch_notifications
   has_many :notifications, through: :batch_notifications
 
+  has_many :admin_batches
+  has_many :admins, through: :admin_batches
+
   belongs_to :org
 
   def self.all_batches
-    Batch.all{|batch| [batch.id, batch.name]}
+    Batch.all { |batch| [batch.id, batch.name] }
   end
 end

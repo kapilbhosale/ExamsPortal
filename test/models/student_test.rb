@@ -7,11 +7,13 @@
 #  address                :text
 #  api_key                :string
 #  app_login              :boolean          default(FALSE)
+#  app_reset_count        :integer          default(0)
 #  brand                  :string
 #  college                :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
 #  date_of_birth          :date
+#  deleted_at             :datetime
 #  deviceName             :string
 #  deviceUniqueId         :string
 #  email                  :string           default(""), not null
@@ -44,6 +46,7 @@
 # Indexes
 #
 #  index_students_on_category_id    (category_id)
+#  index_students_on_deleted_at     (deleted_at)
 #  index_students_on_name           (name)
 #  index_students_on_parent_mobile  (parent_mobile)
 #

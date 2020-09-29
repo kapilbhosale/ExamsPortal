@@ -8,9 +8,7 @@
 #  password            :string
 #  subject             :string
 #  teacher_name        :string
-#  vimeo_live_show_url :string
 #  vimeo_live_url      :string
-#  zoom_meeting_url    :string
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
 #  org_id              :bigint(8)

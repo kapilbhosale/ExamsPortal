@@ -344,7 +344,7 @@ class Students::AdmissionsController < ApplicationController
           return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
         else
           return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'B-2_Nanded_11th_Phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'Nanded 11th Phy (VIP) 2020') if course.name == 'phy'
           return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
           return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
           return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'

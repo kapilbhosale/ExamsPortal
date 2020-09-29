@@ -1,13 +1,13 @@
 class Admin::StudyPdfsController < Admin::BaseController
   #  pdf controller section
   def new
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
     @study_pdf_types = StudyPdfType.where(org: current_org)
   end
 
   def edit
     @study_pdf = StudyPdf.find_by(org: current_org, id: params[:id])
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
     @study_pdf_types = StudyPdfType.where(org: current_org)
   end
 

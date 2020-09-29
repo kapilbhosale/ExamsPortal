@@ -57,6 +57,16 @@ class Admin < ApplicationRecord
 
   validates :org_id, presence: true
 
+  has_many :admin_batches
+  has_many :batches, through: :admin_batches
+
+  # Admin accounts are
+  # 1. Admin
+  # 1. Head of Class
+  # 1. teacher
+  # 1. operator
+
+
   attr_writer :login
 
   def login

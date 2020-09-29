@@ -1,7 +1,7 @@
 class Admin::ReportsController < Admin::BaseController
 
   def index
-    @exams = Exam.where(org: current_org).all.order(id: :desc)
+    @exams = Exam.where(org: current_org).includes(:batches).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
   end
 
   def show
