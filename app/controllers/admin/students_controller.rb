@@ -5,6 +5,7 @@ class Admin::StudentsController < Admin::BaseController
     @search = Student
       .where(org: current_org)
       .includes(:student_batches, :batches)
+      .where(batches: {id: current_admin.batches&.ids})
 
     if params[:q].present? && params[:q][:batch_id].present?
       @search = @search.where(batches: {id: params[:q][:batch_id]})
@@ -68,7 +69,7 @@ class Admin::StudentsController < Admin::BaseController
     @student = Student.new
     @student_data = {
       roll_number: Student.suggest_roll_number(current_org),
-      batches: Batch.where(org: current_org).all_batches,
+      batches: Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches,
       categories: Category.all
     }
   end
@@ -85,7 +86,11 @@ class Admin::StudentsController < Admin::BaseController
 
   def edit
     @student = Student.find_by(id: params[:id], org: current_org)
-    @student_data = {roll_number: Student.suggest_roll_number(current_org), batches: Batch.where(org: current_org).all_batches, categories: Category.all}
+    @student_data = {
+      roll_number: Student.suggest_roll_number(current_org),
+      batches: Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches,
+      categories: Category.all
+    }
   end
 
   def update

@@ -1,12 +1,12 @@
 class Admin::NotificationsController < Admin::BaseController
   #  pdf controller section
   def new
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
   end
 
   def edit
     @notification = Notification.find_by(org: current_org, id: params[:id])
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
   end
 
   def update

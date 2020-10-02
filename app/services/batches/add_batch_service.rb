@@ -12,7 +12,7 @@ module Batches
     def call
       validate_request
       batch = Batch.create!(name: name, org: org)
-      return {status: true, message: 'Batch added successfully'}
+      return {status: true, message: 'Batch added successfully', batch: batch}
     rescue AddBatchError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
     end

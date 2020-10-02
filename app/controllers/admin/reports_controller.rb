@@ -1,6 +1,7 @@
 class Admin::ReportsController < Admin::BaseController
 
   def index
+<<<<<<< HEAD
     @exams = Exam.where(org: current_org).all.order(id: :desc)
     @students_count_by_exam_id = StudentExam.where(exam: @exams).group(:exam_id).count
   end
@@ -12,6 +13,9 @@ class Admin::ReportsController < Admin::BaseController
 
     flash[:success] = "Report Card generated, Do not Regenrate it."
     redirect_to admin_reports_path
+=======
+    @exams = Exam.where(org: current_org).includes(:batches).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
+>>>>>>> origin/roles-changes
   end
 
   def show

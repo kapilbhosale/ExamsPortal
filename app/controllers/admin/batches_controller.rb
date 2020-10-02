@@ -1,7 +1,7 @@
 class Admin::BatchesController < Admin::BaseController
 
   def index
-    @batches = Batch.where(org: current_org).all
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all
   end
 
   def new
@@ -10,6 +10,7 @@ class Admin::BatchesController < Admin::BaseController
 
   def create
     @response = Batches::AddBatchService.new(params[:batch][:name], current_org).call
+    current_admin.batches << @response[:batch] if @response[:status]
     set_flash
     redirect_to admin_batches_path
   end

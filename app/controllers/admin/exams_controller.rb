@@ -4,13 +4,14 @@ class Admin::ExamsController < Admin::BaseController
     @exams = Exam
       .where(org: current_org)
       .includes(:batches)
+      .where(batches: {id: current_admin.batches&.ids})
       .order(id: :desc)
       .page(params[:page])
       .per(params[:limit] || ITEMS_PER_PAGE)
   end
 
   def new
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
     @sections = Section.jee.all.select(:id, :name, :description)
   end
 
@@ -20,7 +21,7 @@ class Admin::ExamsController < Admin::BaseController
     if @response[:status]
       redirect_to admin_exams_path
     else
-      @batches = Batch.where(org: current_org).all_batches
+      @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
       @sections = Section.jee.all.select(:id, :name, :description)
       render 'new'
     end
@@ -64,7 +65,7 @@ class Admin::ExamsController < Admin::BaseController
 
   def edit
     @exam = Exam.find_by(id: params[:id], org: current_org)
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
     respond_to do |format|
       format.html do
       end
@@ -74,7 +75,6 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def update
-
     @response = Exams::UpdateExamService.new(params, current_org).update
     set_flash
     redirect_to admin_exams_path

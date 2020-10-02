@@ -105,6 +105,7 @@ Rails.application.routes.draw do
       get :modity_student_views
     end
     resources :android_apps
+    resources :users
     resources :study_pdfs
     resources :notifications
     resources :genres do

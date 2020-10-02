@@ -34,8 +34,8 @@ class Students::AdmissionsController < ApplicationController
 
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
-    @fees = get_fees(@new_admission.batch, @new_admission.course)
-    @processing_fees = !@new_admission.student_id.present? ? 120 : 0
+    @fees = get_fees(@new_admission.batch, @new_admission.course, @new_admission.student_id.present?, @new_admission.rcc_branch)
+    @processing_fees = @new_admission.student_id.present? ? 0 : 120
     render pdf: "Payment Receipt",
             template: "/students/admissions/receipt.pdf.erb",
             locals: {students: {}},
@@ -99,7 +99,7 @@ class Students::AdmissionsController < ApplicationController
   def get_eazy_pay_url(new_admission, course)
     eazy_pay_url_v2(
       new_admission.payment_id,
-      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
+      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
       "#{new_admission.parent_mobile}#{new_admission.id}",
       !new_admission.student_id.present?,
       new_admission
@@ -115,7 +115,7 @@ class Students::AdmissionsController < ApplicationController
     # end
   end
 
-  def get_fees(batch, course, is_installment = false)
+  def get_fees(batch, course, is_installment = false, rcc_branch = nil)
     if batch == "12th"
       return 12_000 if course.name == "phy"
       return 12_000 if course.name == "chem"
@@ -135,6 +135,9 @@ class Students::AdmissionsController < ApplicationController
       return 24_000 if course.name == "pb"
       return 24_000 if course.name == "cb"
       return 25_000 if course.name == "pcb"
+    end
+    if batch == '11th' && rcc_branch == 'nanded'
+      return 15_000 if course.name == "phy"
     end
     course.fees
   end
@@ -341,7 +344,7 @@ class Students::AdmissionsController < ApplicationController
           return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
         else
           return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'B-2_Nanded_11th_Phy_2020') if course.name == 'phy'
+          return Batch.where(name: 'Nanded 11th Phy (VIP) 2020') if course.name == 'phy'
           return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
           return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
           return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'
