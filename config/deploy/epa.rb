@@ -1,8 +1,5 @@
 # Adhyayan+jalna+epa+mpsc+nijc
-<<<<<<< HEAD
 # epa  exams  jalna  jnc-science-clg  mpsc  nijc  videos
-=======
->>>>>>> origin/roles-changes
 set :rails_env, :production
 set :branch, 'main_branch'
 set :sidekiq_env, :production
