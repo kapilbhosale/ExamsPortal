@@ -97,22 +97,22 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_eazy_pay_url(new_admission, course)
-    eazy_pay_url_v2(
-      new_admission.payment_id,
-      get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
-      "#{new_admission.parent_mobile}#{new_admission.id}",
-      !new_admission.student_id.present?,
-      new_admission
-    )
-    # if new_admission.batch == '12th'
-    # else
-    #   eazy_pay_url(
-    #     new_admission.payment_id,
-    #     get_fees(new_admission_params[:batch], course, new_admission.student_id.present?),
-    #     "#{new_admission.parent_mobile}#{new_admission.id}",
-    #     !new_admission.student_id.present?
-    #   )
-    # end
+    # eazy_pay_url_v2(
+    #   new_admission.payment_id,
+    #   get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
+    #   "#{new_admission.parent_mobile}#{new_admission.id}",
+    #   !new_admission.student_id.present?,
+    #   new_admission
+    # )
+    
+    
+      eazy_pay_url(
+        new_admission.payment_id,
+        get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
+        "#{new_admission.parent_mobile}#{new_admission.id}",
+        !new_admission.student_id.present?
+      )
+ 
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil)
