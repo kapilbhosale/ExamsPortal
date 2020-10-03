@@ -190,6 +190,20 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "hidden", default: false
+    t.integer "subject_id"
+    t.integer "video_lectures_count", default: 0
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "sender_id"
+    t.string "sender_type"
+    t.string "sender_name"
+    t.text "message"
+    t.bigint "messageable_id"
+    t.string "messageable_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable_type_and_messageable_id"
   end
 
   create_table "new_admissions", force: :cascade do |t|
@@ -272,6 +286,22 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.index ["topic_id"], name: "index_practice_questions_on_topic_id"
   end
 
+  create_table "progress_reports", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "exam_id"
+    t.boolean "is_imported", default: false
+    t.integer "exam_type", default: 0
+    t.date "exam_date"
+    t.string "exam_name"
+    t.decimal "percentage"
+    t.integer "rank"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["exam_id"], name: "index_progress_reports_on_exam_id"
+    t.index ["student_id"], name: "index_progress_reports_on_student_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.text "title"
     t.text "explanation"
@@ -329,6 +359,8 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.boolean "input_questions_present", default: false
     t.integer "correct_input_questions", default: 0
     t.integer "incorrect_input_questions", default: 0
+    t.integer "total_score", default: 0
+    t.jsonb "extra_data", default: {}
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
   end
@@ -462,6 +494,17 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.index ["name_map"], name: "index_topics_on_name_map"
   end
 
+  create_table "trackers", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "resource_type"
+    t.integer "resource_id"
+    t.string "event"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_trackers_on_student_id"
+  end
+
   create_table "video_lectures", force: :cascade do |t|
     t.string "title"
     t.string "url"
@@ -481,6 +524,7 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.integer "genre_id", default: 0
     t.integer "subject_id"
     t.datetime "publish_at"
+    t.integer "view_limit", default: 3
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 
@@ -495,6 +539,8 @@ ActiveRecord::Schema.define(version: 2020_10_01_074418) do
     t.datetime "updated_at", null: false
     t.integer "live_type", default: 0
     t.string "vimeo_live_url"
+    t.string "vimeo_live_show_url"
+    t.string "zoom_meeting_url"
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 

@@ -14,6 +14,7 @@
 #  uploaded_thumbnail :string
 #  url                :string
 #  video_type         :integer          default("vimeo")
+#  view_limit         :integer          default(3)
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  genre_id           :integer          default(0)
