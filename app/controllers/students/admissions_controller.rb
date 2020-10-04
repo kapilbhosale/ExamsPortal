@@ -32,6 +32,32 @@ class Students::AdmissionsController < ApplicationController
     end
   end
 
+  def pay_due_fees
+    errors = []
+    student = Student.find_by(id: params[:student_id])
+    if student.blank?
+      flash[:error] = "Invalid student id, please contact admin."
+      redirect_back(fallback_location: '/')
+    end
+
+    new_admission = NewAdmission.new
+    new_admission.name = student.name
+    new_admission.email = student.email
+    new_admission.parent_mobile = student.parent_mobile
+    new_admission.student_mobile = student.student_mobile
+    new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
+    new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
+    new_admission.student_id = student.id
+
+    if new_admission.save
+      new_admission.in_progress!
+      redirect_to get_eazy_pay_due_amount_url(new_admission, student)
+    else
+      flash[:error] = new_admission.errors.full_messages
+      redirect_back(fallback_location: '/')
+    end
+  end
+
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
     @fees = get_fees(@new_admission.batch, @new_admission.course, @new_admission.student_id.present?, @new_admission.rcc_branch)
@@ -94,6 +120,15 @@ class Students::AdmissionsController < ApplicationController
       end
       redirect_back(fallback_location: '/new-admission')
     end
+  end
+
+  def get_eazy_pay_due_amount_url(new_admission, student)
+    eazy_pay_url(
+          new_admission.payment_id,
+          student.pending_amount.to_s.to_i,
+          "#{new_admission.parent_mobile}#{new_admission.id}",
+          !new_admission.student_id.present?
+        )
   end
 
   def get_eazy_pay_url(new_admission, course)
@@ -166,6 +201,15 @@ class Students::AdmissionsController < ApplicationController
               reference_number: @new_admission.payment_id,
               new_admission_id: @new_admission.id
             )
+
+            # remove due information on successful payment.
+            pending_fees = PendingFee.where(student_id: student.id, paid: false, amount: @new_admission.payment_callback_data['Total Amount'].to_f)
+            if pending_fees.present?
+              pending_fees.paid = true
+              pending_fees.reference_no = @new_admission.id
+              pending_fees.save
+            end
+
             batches = get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
             if batches.present?
               # student.batches.destroy_all

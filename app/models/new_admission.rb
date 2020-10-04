@@ -33,7 +33,7 @@
 
 class NewAdmission < ApplicationRecord
 
-  belongs_to :course
+  belongs_to :course, optional: true
 
   enum payment_status: {
     initial: 0,

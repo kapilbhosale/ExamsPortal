@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get 'print-receipt/:reference_id', to: 'students/admissions#print_receipt'
 
   get 'pay-installment', to: 'students/admissions#pay_installment'
+  get 'pay-due-fees', to: 'students/admissions#pay_due_fees'
 
   namespace :students do
     get 'videos' => 'videos#lectures'

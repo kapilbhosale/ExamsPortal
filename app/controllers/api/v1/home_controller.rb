@@ -22,13 +22,22 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def top_banners_data
-    if current_org.subdomain == 'exams' && (current_student&.batches&.ids & [1, 4, 10, 16, 17]).present?
-      banners_data = [
-        {
-          "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/neet_rcc_form.png",
-          "on_click"=>"https://docs.google.com/forms/d/e/1FAIpQLSdzFoYGm4elzKrXIWr3Og19a69sacsoZDDikMkfCcrxIdblAg/viewform"
-        }
-      ]
+    banners_data = []
+    if current_org.subdomain == 'exams'
+      if current_student.pending_amount.present?
+        banners_data <<
+          {
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.png",
+            "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
+          }
+      end
+      if (current_student&.batches&.ids & [1, 4, 10, 16, 17]).present?
+        banners_data <<
+          {
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/neet_rcc_form.png",
+            "on_click"=>"https://docs.google.com/forms/d/e/1FAIpQLSdzFoYGm4elzKrXIWr3Og19a69sacsoZDDikMkfCcrxIdblAg/viewform"
+          }
+      end
       banners_data + current_org.data['top_banners']
     else
       current_org.data['top_banners']
