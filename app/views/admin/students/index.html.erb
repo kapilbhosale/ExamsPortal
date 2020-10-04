@@ -32,9 +32,11 @@
                     <th><%= sort_link(@search, :roll_number) %></th>
                     <th>Batch(s)</th>
                     <th><%= sort_link(@search, :name) %></th>
-                    <th>Email</th>
                     <th>Password</th>
                     <th>Parent Mobile</th>
+                    <% if request.subdomain == 'exams' %>
+                      <th> Pending amount <th>
+                    <% end %>
                     <th>App Login</th>
                     <th>laptop Login</th>
                     <th><button class="btn btn-danger clearfix btn-sm">
@@ -50,14 +52,16 @@
                 </thead>
                 <tbody>
                   <% @students.each do |student| %>
-                    <tr>
+                    <tr class="<%= student.pending_amount.present? ? 'table-danger' : '' %>">
                       <td><%= student.roll_number %></td>
                       <td><%= student&.batches&.each&.map(&:name).join(', ') %>
                       </td>
                       <td><%= link_to student.name, admin_student_path(student) %></td>
-                      <td><%= student.email %></td>
                       <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
+                      <% if request.subdomain == 'exams' %>
+                        <td><%= student.pending_amount || '-' %><td>
+                      <% end %>
                       <td><%= student.app_login? ? 'YES' : '-' %></td>
                       <td><%= student.is_laptop_login? ? 'YES' : '-' %></td>
                       <td>

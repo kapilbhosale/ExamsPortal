@@ -60,6 +60,7 @@ class Student < ApplicationRecord
   has_many   :student_batches, dependent: :destroy
   has_many   :batches, through: :student_batches
   belongs_to :org
+  has_many   :pending_fees
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}
@@ -110,6 +111,11 @@ class Student < ApplicationRecord
         ]
       end
     end
+  end
+
+  def pending_amount
+    amount = pending_fees.where(paid: false).last&.amount
+    amount > 0 ? amount : nil
   end
 
   def set_api_key

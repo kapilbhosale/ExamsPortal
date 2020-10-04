@@ -4,7 +4,7 @@ class Admin::StudentsController < Admin::BaseController
   def index
     @search = Student
       .where(org: current_org)
-      .includes(:student_batches, :batches)
+      .includes(:student_batches, :batches, :pending_fees)
       .where(batches: {id: current_admin.batches&.ids})
 
     if params[:q].present? && params[:q][:batch_id].present?
@@ -30,6 +30,7 @@ class Admin::StudentsController < Admin::BaseController
           raw_password: student.raw_password,
           parent_mobile: student.parent_mobile,
           student_mobile: student.student_mobile,
+          pending_amount: student&.pending_fees.where(paid: false).last&.amount
       }
     end
 
@@ -160,6 +161,33 @@ class Admin::StudentsController < Admin::BaseController
     import_service = Students::ImportService.new(csv_file_path, batch_id, current_org)
     @response = import_service.import
     flash[:notice] = "Student imported - #{@response}"
+    render 'import'
+  end
+
+  def process_import_fees_due
+    csv_file_path = params[:pending_fees_csv_file].tempfile.path 
+
+    CSV.open(csv_file_path, :row_sep => :auto, :encoding => 'ISO-8859-1', :col_sep => ",") do |csv|
+      csv.each do |row|
+        roll_number = row[0]&.strip
+        parent_mobile = row[2]&.strip
+        amount = row[3]&.strip&.to_s.to_i
+  
+        student = Student.find_by(org_id: current_org.id, roll_number: roll_number, parent_mobile: parent_mobile)
+        next if student.blank?
+
+        
+        pending_fees_record = PendingFee.find_by(student_id: student.id, paid: false)
+        if pending_fees_record.present?
+          pending_fees_record.amount = amount
+          pending_fees_record.save
+        else
+          PendingFee.create(student_id: student.id, amount: amount)
+        end
+      end
+    end
+    @student_data = {batches: Batch.where(org: current_org).all_batches}
+    flash[:notice] = "Student Fees Data imported"
     render 'import'
   end
 

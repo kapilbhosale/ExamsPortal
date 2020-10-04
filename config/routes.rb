@@ -88,6 +88,7 @@ Rails.application.routes.draw do
       root to: 'students#index'
       get :import, on: :collection
       post :process_import, on: :collection
+      post :process_import_fees_due, on: :collection
       get :reset_login
       get :disable
       get :enable

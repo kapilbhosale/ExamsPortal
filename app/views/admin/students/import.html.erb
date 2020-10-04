@@ -1,7 +1,7 @@
 <% if @response.present? %>
   <%= @response %>
 <% else %>
-  <div class="row">
+  <div>
     <div class="col-lg-8">
       <%= form_tag(process_import_admin_students_path, method: :post, multipart: true, class: 'card') do %>
         <div class="card-body">
@@ -48,9 +48,39 @@
         </div>
         <div class="card-footer text-right">
           <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-          <button type="submit" class="btn btn-success">Add New Student</button>
+          <button type="submit" class="btn btn-success">Import Students</button>
         </div>
       <% end %>
     </div>
   </div>
+
+  <% if request.subdomain == 'exams' %>
+    <div class="col-lg-4">
+        <%= form_tag(process_import_fees_due_admin_students_path, method: :post, multipart: true, class: 'card') do %>
+          <div class="card-body">
+            <h3 class="card-title">Import Pending Fees Data</h3>
+            <hr>
+            <div class="col-sm-12 col-md-8">
+              <div class="form-group">
+                <div class="form-label">CSV File</div>
+                <div class="custom-file">
+                  <input type="file" name="pending_fees_csv_file" accept=".csv" required>
+                </div>
+                <p>
+                  Note: CSV file with only 4 columns is accepted.
+                </p>
+                <p>
+                  [Roll Number, name, parent mobile number, <b>Remaining Fees</b>]
+                </p>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-footer text-right">
+            <button type="submit" class="btn btn-warning">Import fees Data</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>  
 <% end %>

@@ -16,4 +16,5 @@
 #
 
 class PendingFee < ApplicationRecord
+  belongs_to :student
 end
