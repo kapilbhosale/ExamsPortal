@@ -346,7 +346,7 @@ class Students::AdmissionsController < ApplicationController
       Your Installment is processed, successfully.
 
       Name: #{student.name}
-      New Batch: #{student.batches.pluck(:name).join(",")}
+      Batch: #{student.batches.pluck(:name).join(",")}
 
       your Login details are
       Roll Number: #{student.roll_number}
@@ -375,6 +375,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def get_batches(rcc_branch, course, batch)
+      return nil if course.blank?
       if batch == '11th'
         if rcc_branch == "latur"
           return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'
