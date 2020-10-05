@@ -114,7 +114,7 @@ class Student < ApplicationRecord
   end
 
   def pending_amount
-    amount = pending_fees.where(paid: false).last&.amount
+    amount = pending_fees.where(paid: false).last&.amount || 0
     amount > 0 ? amount : nil
   end
 
