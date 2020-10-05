@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
   get 'pay-installment', to: 'students/admissions#pay_installment'
   get 'pay-due-fees', to: 'students/admissions#pay_due_fees'
+  get 'pay_due_fees', to: 'students/admissions#pay_due_fees'
 
   namespace :students do
     get 'videos' => 'videos#lectures'
