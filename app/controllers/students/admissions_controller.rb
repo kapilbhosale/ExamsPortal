@@ -201,7 +201,7 @@ class Students::AdmissionsController < ApplicationController
             )
 
             # remove due information on successful payment.
-            pending_fees = PendingFee.where(student_id: student.id, paid: false, amount: @new_admission.payment_callback_data['Total Amount'].to_f)
+            pending_fees = PendingFee.find_by(student_id: student.id, paid: false, amount: @new_admission.payment_callback_data['Total Amount'].to_f)
             if pending_fees.present?
               pending_fees.paid = true
               pending_fees.reference_no = @new_admission.id
