@@ -132,7 +132,7 @@ class Question extends React.Component {
       <div>
         <div className="row">
           <div className="col-md-12">
-            <span class="badge badge-secondary">
+            <span className="badge badge-secondary">
               Question No: &nbsp; <b>{ currentQuestionIndex + 1 }</b>
             </span>
           </div>

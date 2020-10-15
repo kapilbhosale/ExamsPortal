@@ -28,7 +28,7 @@ class Summary extends React.Component {
                 <h5>{`${data.total_score} / ${out_of}`}</h5>
               </td>
               <td>
-                Topper: <span class="badge badge-warning">{data.topper_total}</span>
+                Topper: <span className="badge badge-warning">{data.topper_total}</span>
               </td>
             </tr>
             <tr>

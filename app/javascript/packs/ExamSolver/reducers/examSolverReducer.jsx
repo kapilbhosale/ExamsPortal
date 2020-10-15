@@ -43,6 +43,11 @@ export default function examSolverReducer($$state = $$initialState, action) {
       let currentSection = $$state.get('currentSection');
       let questionsBySections = $$state.get('questionsBySections').toJS();
       questionsBySections[currentSection][val.questionIndex].answerProps.answer = Immutable.fromJS(val.answerIndex);
+      if(val.answerIndex && val.answerIndex.length > 0) {
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = true;
+      }else{
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = false;
+      }
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.CLEAR_ANSWER: {
@@ -103,14 +108,15 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('examSummary', val)
                     .set('examFinished', true);
     case actionTypes.UPDATE_TIME_SPENT_ON_QUESTION:
-      let currentSection = $$state.get('currentSection');
+      // let currentSection = $$state.get('currentSection');
+      let section = val.section;
       let questionsBySections = $$state.get('questionsBySections').toJS();
-      if (questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent) {
-        questionsBySections[currentSection][val.questionIndex].answerProps.timeSpent += val.timeSpent;
-        questionsBySections[currentSection][val.questionIndex].answerProps['visits'] += 1;
+      if (questionsBySections[section][val.questionIndex].answerProps.timeSpent) {
+        questionsBySections[section][val.questionIndex].answerProps.timeSpent += val.timeSpent;
+        questionsBySections[section][val.questionIndex].answerProps['visits'] += 1;
       } else {
-        questionsBySections[currentSection][val.questionIndex].answerProps['timeSpent'] = val.timeSpent;
-        questionsBySections[currentSection][val.questionIndex].answerProps['visits'] = 1;
+        questionsBySections[section][val.questionIndex].answerProps['timeSpent'] = val.timeSpent;
+        questionsBySections[section][val.questionIndex].answerProps['visits'] = 1;
       }
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     default:

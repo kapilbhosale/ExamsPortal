@@ -209,6 +209,7 @@ class ExamSolverContainer extends Component {
             sectionWiseSummary={ sectionWiseSummary }
             submitTest={ actions.submitTest }
             isTestSubmitModalOpen={ isTestSubmitModalOpen }
+            questionsBySections= { questionsBySections }
           />
 	</div>
       );

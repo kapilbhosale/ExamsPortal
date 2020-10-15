@@ -25,7 +25,7 @@ class CountDownTimer extends React.Component {
 
     componentDidUpdate(prevProps) {
       if (this.props.currentQuestionIndex !== prevProps.currentQuestionIndex) {
-        this.props.updateTimeSpentOnQuestion(prevProps.currentQuestionIndex, this.state.timeSpent);
+        this.props.updateTimeSpentOnQuestion(prevProps.currentQuestionIndex, this.state.timeSpent, prevProps.currentSection);
         this.setState({currentQuestionIndex: this.props.currentQuestionIndex, timeSpent: 0});
       }
     }
@@ -40,7 +40,6 @@ class CountDownTimer extends React.Component {
         const currentDateTime = new Date(currentTime).getTime();
         const startedSince = currentDateTime - new Date(startedAt);
         const endTime = currentDateTime + (timeInMinutes * 60 * 1000);
-        console.log("**************> " + new Date((endTime - startedSince)));
         return ((endTime - startedSince) - currentDateTime)/(1000);
     }
 

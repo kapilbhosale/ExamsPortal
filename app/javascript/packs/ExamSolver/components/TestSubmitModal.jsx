@@ -62,22 +62,32 @@ export default class TestSubmitModal extends React.Component {
     }
 
     const renderTableBody = () => {
-      const summary = this.props.sectionWiseSummary;
+      const questionsBySections = this.props.questionsBySections;
       let tableDataRows = [];
       let totalAnswered = 0;
       let totalNotAnswered = 0;
-      this.props.sectionWiseSummary.map((answerProps, section_name) => {
-        totalAnswered = totalAnswered + answerProps.get('answered');
-        const notAnswered = answerProps.get('notAnswered') + answerProps.get('marked') + answerProps.get('notVisited')
-        totalNotAnswered = totalNotAnswered + notAnswered;
+      debugger;
+
+      Object.keys(questionsBySections).forEach(sectionName => {
+        let answered = 0;
+        let notAnswered = 0;
+        questionsBySections[sectionName].forEach(ansData => {
+          ansData.answerProps.isAnswered ? answered += 1 : notAnswered += 1;
+        });
+        console.log("section_name", sectionName);
+        console.log("answered", answered);
+        console.log("not ans", notAnswered);
+        totalAnswered += answered;
+        totalNotAnswered += notAnswered;
         tableDataRows.push(
-          <tr key={ `data_row_${ section_name }` }>
-            <td> { section_name } </td>
-            <td className='text-center'> { answerProps.get('answered') } </td>
+          <tr key={ `data_row_${ sectionName }` }>
+            <td> { sectionName } </td>
+            <td className='text-center'> { answered } </td>
             <td className='text-center'> <b>{ notAnswered } </b></td>
           </tr>
         );
       });
+
       tableDataRows.push(
         <tr>
           <td className='text-right'> { 'Total' } </td>
@@ -106,7 +116,7 @@ export default class TestSubmitModal extends React.Component {
               <p style={{padding: '10% 0%'}}>
                 Please connect to Internet, Submit Exam needs Internet
               </p>
-              <div class="text-danger" style={{marginTop: '50px'}}>
+              <div className="text-danger" style={{marginTop: '50px'}}>
                 <h5>
                   NOTE:: Your Result will not Generate
                 </h5>

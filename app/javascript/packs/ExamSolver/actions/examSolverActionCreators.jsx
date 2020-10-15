@@ -252,7 +252,7 @@ export function timeIsUp() {
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
   }
 }
-export function updateTimeSpentOnQuestion(questionIndex, timeSpent) {
+export function updateTimeSpentOnQuestion(questionIndex, timeSpent, section) {
   return (dispatch, getState) => {
     // const store = getState().$$examSolverStore;
     // const currentSection = store.get('currentSection');
@@ -260,7 +260,7 @@ export function updateTimeSpentOnQuestion(questionIndex, timeSpent) {
     // const questionIndex = currentQuestionIndex[currentSection];
     dispatch({
       type: actionTypes.UPDATE_TIME_SPENT_ON_QUESTION,
-      val: { questionIndex: questionIndex, timeSpent: timeSpent},
+      val: { questionIndex: questionIndex, timeSpent: timeSpent, section: section},
     });
   }
 }
