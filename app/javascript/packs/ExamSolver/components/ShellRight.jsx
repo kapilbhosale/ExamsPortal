@@ -91,6 +91,11 @@ class ShellRight extends React.Component {
                   >
                 </span>
               </div>
+              <div onClick={ () => { changeNavigationMapStatus() }} className='col-md-2 cursor-pointer' style={{borderRadius: '10px'}}>
+                <span className="label label-danger">
+                  { 'X' }
+                </span>
+              </div>
               <div className='row text-right'>
                 <div className='col-md-6'>
                   <span className="label label-default label-sm margin-5">

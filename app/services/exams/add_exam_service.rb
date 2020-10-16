@@ -45,7 +45,7 @@ module Exams
     private
 
     def upload_exam_json_to_s3
-      file_name = "json-data/#{current_org.subdomain}-#{@exam.id}.json"
+      file_name = "json-data/#{Rails.env}-#{current_org.subdomain}-#{@exam.id}.json"
       s3 = Aws::S3::Resource.new(
         access_key_id: ENV.fetch('AWS_KEY_ID'),
         secret_access_key: ENV.fetch('AWS_SECRET'),
