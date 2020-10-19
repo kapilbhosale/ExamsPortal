@@ -66,7 +66,10 @@ class Admin::VideoLecturesController < Admin::BaseController
 
       batches = Batch.where(id: params[:batch_ids])
       vl.batches << batches
-      vl.send_push_notifications
+
+      if vl.publish_at <= Time.current
+        vl.send_push_notifications
+      end
 
       flash[:success] = "Video Lecture addes successfully.."
     else

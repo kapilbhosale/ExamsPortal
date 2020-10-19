@@ -1,3 +1,12 @@
+<div class="container">
+  <% if request.subdomain == 'exams' && current_student.pending_amount.present? %>
+    <a href="<%= "https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}" %>">
+      <img
+        src="https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.png"
+        width="100%" height="20%" style="padding:20px">
+    </a>
+  <% end %>
+</div>
 <div class="tabbable-panel">
   <div class="tabbable-line">
     <ul class="nav nav-tabs ">
@@ -181,6 +190,6 @@
 		25%		{ background-color: #1056c0;}
 		50%		{ background-color: #ef0a1a;}
 		75%		{ background-color: #254878;}
-		100%	        { background-color: #04a1d5;}
+		100%	{ background-color: #04a1d5;}
 	}
 </style>
