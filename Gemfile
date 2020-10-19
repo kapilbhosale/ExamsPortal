@@ -40,6 +40,7 @@ gem 'jbuilder', '~> 2.5'
 
 # gem 'sucker_punch', '~> 2.0'
 gem 'sidekiq'
+gem "sidekiq-cron", "~> 1.1"
 
 gem 'rollbar'
 

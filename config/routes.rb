@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
   require 'sidekiq/web'
+  require 'sidekiq/cron/web'
   Sidekiq::Web.use Rack::Auth::Basic do |username, password|
     username == 'kapil' && password == 'kapil@7588584810'
   end
