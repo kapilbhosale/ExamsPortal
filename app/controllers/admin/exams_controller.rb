@@ -28,14 +28,30 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def show
-    exam = Exam.where(org: current_org).includes(questions: :options).find_by(id: params[:id])
-    if exam.present?
-      @questions_by_section = exam.questions.order(:id).group_by(&:section_id)
+    @exam = Exam.where(org: current_org).includes(questions: :options).find_by(id: params[:id])
+    if @exam.present?
+      @questions_by_section = @exam.questions.order(:id).group_by(&:section_id)
       @sections_by_id = Section.all.index_by(&:id)
-      @all_styles = exam.questions.collect {|x| x.css_style}.join(' ')
+      @all_styles = @exam.questions.collect {|x| x.css_style}.join(' ')
     else
       flash[:error] = "Invalid exam id passed"
       render :index
+    end
+  end
+
+  def re_evaluate_exam
+    exam = Exam.find_by(id: params[:exam_id])
+    if exam.present?
+      StudentExam.where(exam_id: exam.id).each do |student_exam|
+        # Students::SyncService.new(student_exam.student_id, exam.id, ses_sync.sync_data).call
+        StudentExamSummary.where(student_exam_id: student_exam.id).destroy_all
+        StudentExamScoreCalculator.new(student_exam.id).calculate
+      end
+      flash[:success] = 'Exam Scores updated successfully..!'
+      redirect_back(fallback_location: admin_exams_path)
+    else
+      flash[:error] = 'No Exam Found, please try again.'
+      redirect_back(fallback_location: admin_exams_path)
     end
   end
 
@@ -49,7 +65,7 @@ class Admin::ExamsController < Admin::BaseController
       question.options.pluck(:id, :is_answer)
       question.options.update_all(is_answer: false)
       question.options.where(id: params[:option_ids]).update_all(is_answer: true)
-      flash[:notice] = 'Options updated successfully..!'
+      flash[:success] = 'Options updated successfully..!'
       redirect_back(fallback_location: admin_exams_path)
     else
       flash[:error] = 'Cannot update this question, invalid org'

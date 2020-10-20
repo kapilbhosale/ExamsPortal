@@ -1,9 +1,7 @@
 class NotificationWorker
   include Sidekiq::Worker
   def perform
-    VideoLecture
-      .where('publish_at > ?', Time.current - 10.minutes)
-      .where('publish_at <= ?', Time.current).each do |vl|
+    VideoLecture.where('publish_at > ?', Time.current - 10.minutes).where('publish_at <= ?', Time.current).each do |vl|
       puts "Video Notification CRON ===========> #{vl.id}"
       vl.send_push_notifications
     end

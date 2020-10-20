@@ -1,4 +1,9 @@
 <div>
+  <div class="pull-right">
+    <div class="col-sm-offset-2 col-sm-2">
+      <a href="<%= admin_exam_re_evaluate_exam_path(@exam) %>" class="btn btn-danger" role="button">Re-Evaluate Exam</a>
+    </div>
+  </div>
   <ul class="nav nav-tabs" style="padding-left: 12px">
     <% active_section_id = 0 %>
     <% @questions_by_section.keys.each_with_index do |section_id, index| %>
@@ -6,7 +11,6 @@
       <li class="<%= index == 0 ? 'active' : ''%>"><a data-toggle="tab" href="#<%= section_id %>"><%= "#{@sections_by_id[section_id].name.humanize} (#{@questions_by_section[section_id].count})" %></a></li>
     <% end %>
   </ul>
-
   <div class="tab-content">
     <% @questions_by_section.each do |section_id, questions| %>
       <div id="<%= section_id %>" class="tab-pane fade in <%= section_id == active_section_id ? 'active' : '' %>">

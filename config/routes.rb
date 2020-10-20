@@ -85,6 +85,7 @@ Rails.application.routes.draw do
         get 'new_jee', to: 'exams#new_jee'
         post 'change_question_answer'
       end
+      get :re_evaluate_exam
     end
     resources :practice_questions
     resources :students do
