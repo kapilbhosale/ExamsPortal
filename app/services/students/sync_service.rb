@@ -41,13 +41,13 @@ module Students
           else
             student_ans = input_question[:answerProps][:answer]
           end
-          input_question[:answerProps].delete(:answer)
+          input_question[:answerProps].delete(:answer)  
           # next if student_ans.blank?
           # commenting so as to store the ans/question props
 
           # add next if saved ans and given ans is same
           student_exam_answer = student_exam_answer_by_qid[question_id]
-          next if question.input? && student_exam_answer&.ans.to_f.round(2) == student_ans.to_f.round(2)
+          # next if question.input? && student_exam_answer&.ans.to_f.round(2) == student_ans.to_f.round(2)
           next if question.single_select? && student_exam_answer&.option_id == student_ans.to_i
           next if question.multi_select? && student_exam_answer&.ans == student_ans
 
