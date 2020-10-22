@@ -114,16 +114,16 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'jpuerdtg-dest:397agm6x94s1@45.72.30.159:80',
-      'jpuerdtg-dest:397agm6x94s1@209.127.191.180:80',
-      'jpuerdtg-dest:397agm6x94s1@45.130.255.147:80',
-      'jpuerdtg-dest:397agm6x94s1@193.8.127.117:80',
-      'jpuerdtg-dest:397agm6x94s1@193.8.215.243:80',
-      'jpuerdtg-dest:397agm6x94s1@45.130.125.157:80',
-      'jpuerdtg-dest:397agm6x94s1@45.130.255.140:80',
-      'jpuerdtg-dest:397agm6x94s1@45.130.255.198:80',
-      'jpuerdtg-dest:397agm6x94s1@185.164.56.221:80',
-      'jpuerdtg-dest:397agm6x94s1@45.136.231.226:80',
+      'raqcahhx-dest:85s6bwerv1xg@209.127.191.180:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.130.255.243:80',
+      'raqcahhx-dest:85s6bwerv1xg@185.164.56.20:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.130.255.198:80',
+      'raqcahhx-dest:85s6bwerv1xg@185.30.232.123:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.95.96.132:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.95.96.237:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.95.96.187:80',
+      'raqcahhx-dest:85s6bwerv1xg@45.94.47.66:80',
+      'raqcahhx-dest:85s6bwerv1xg@193.8.56.119:80',
     ]
   end
 
