@@ -1,26 +1,48 @@
 class Students::HomeController < Students::BaseController
-  before_action :authenticate_student!, except: [:tests]
+  before_action :authenticate_student!, except: [:index, :auto_auth]
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 
   def index
-    @styles = ''
+    @subdomain = request.subdomain
+    @org = Org.find_by(subdomain: @subdomain)
+    student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
+    sign_in_and_redirect(student) if student.present?
   end
 
-  def tests
-    if current_student
-      batch_ids = current_student.batches.map(&:id)
-      exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
-      @exams = Exam.where(id: exam_ids).order(created_at: :desc)
-      @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
+  def auto_auth
+    student = Student.find_by(roll_number: params[:r], parent_mobile: params[:m])
+    if student.present?
+      sign_in_and_redirect(student)
     else
-      @exams = Exam.order(created_at: :desc).all
+      redirect_to "/student/sign_in"
     end
   end
 
+  def tests
+    batch_ids = current_student.batches.map(&:id)
+    exam_ids = ExamBatch.where(batch_id: batch_ids).joins(:exam).map(&:exam_id)
+    @new_exams = Exam
+      .where(id: exam_ids)
+      .where('show_exam_at > ?', Time.current - 1.days)
+      .where('show_exam_at <= ?', Time.current)
+      .order(created_at: :desc)
+    @previous_exams = Exam
+      .where(id: exam_ids)
+      .where('show_exam_at <= ?', Time.current - 1.days )
+      .order(created_at: :desc)
+    @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
+
+    @progress_report_data = ProgressReport.where(student_id: current_student.id).order(id: :desc)
+  end
+
   def exam
-    exam = Exam.find_by(id: params[:id])
-    redirect_to root_path unless exam
+    exam = Exam.find_by(org_id: current_org.id, id: params[:id])
+    @student_id = current_student.id
+    if exam.blank? || exam.show_exam_at > Time.current
+      flash[:error] = "invalid exam"
+      redirect_to root_path
+    end
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: exam.id)
     if student_exam&.ended_at
       redirect_to "/students/summary/#{exam.id}"
@@ -33,106 +55,141 @@ class Students::HomeController < Students::BaseController
 
   def confirmation
     @exam = Exam.find_by(id: params[:exam_id])
+    if @exam.blank? || @exam.show_exam_at > Time.current
+      flash[:error] = "invalid exam"
+      redirect_to root_path
+    end
+    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: @exam.id)
+    redirect_to "/students/exam/#{@exam.id}" if student_exam&.started_at.present?
   end
 
   def subscription
   end
 
-  def summary
-    # @response = Exams::ExamSummaryService.new(params, current_student).process_summary
-    @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
-    @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
-    @exam_id = params[:exam_id]
-    unless @student_exam
-      flash[:success] = @response[:message]
-    end
-  end
+  # def summary
+  #   # @response = Exams::ExamSummaryService.new(params, current_student).process_summary
+  #   @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
+  #   @student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+  #   @exam_id = params[:exam_id]
+  #   unless @student_exam
+  #     flash[:success] = @response[:message]
+  #   end
+  # end
 
   def sync
-    student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+    # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+    SyncWorker.perform_async(current_student.id, exam_params[:exam_id], exam_params[:questions].to_h)
+    return {}, status: :ok
+  end
 
-    # student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id)
-    # if student_exam_answer.present? && student_exam_answer.updated_at <= Time.current - 20.minues
-    #   head :ok and return
-    # end
+  # def submit
+  #   # SyncJob.perform_async(current_student.id, params[:exam_id], params[:questions])
+  #   Students::SyncService.new(current_student.id, params[:exam_id], params[:questions]).call
+  #   student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+  #   head :ok unless student_exam
+  #   redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
+  #   student_exam.update!(ended_at: Time.current)
+  #   StudentExamScoreCalculator.new(student_exam.id).calculate
+  # end
 
-    values = []
-    params[:questions].each do |section, questions|
-      questions.each do  |index, input_question|
-        if input_question[:answerProps][:answer].to_i > 0
-          student_exam_answer = StudentExamAnswer.find_by(student_exam_id: student_exam.id, question_id: input_question[:id])
-          if student_exam_answer
-            student_exam_answer.update!(option_id: input_question[:answerProps][:answer])
-          else
-            values.push("#{input_question[:id]}, #{input_question[:answerProps][:answer]}")
-          end
+  def summary
+    @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
+    student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
+
+    ses_sync = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+
+    if student_exam_summaries.blank?
+      if ses_sync
+        if ses_sync.end_exam_sync
+          Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
+          StudentExamScoreCalculator.new(@student_exam.id).calculate
+          # ses.destroy
         end
       end
-  	end
-    StudentExamAnswer.bulk_create(student_exam_answer_columns, values, student_exam.id)
-  rescue StandardError => e
-    Rails.logger.error("#{e.message} Student_id: #{current_student.id} params: #{params}")
+      student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+    else
+      if ses_sync && student_exam_summaries.first.updated_at < ses_sync.updated_at
+        student_exam_summaries.destroy_all
+        if ses_sync
+          if ses_sync.end_exam_sync
+            Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
+            StudentExamScoreCalculator.new(@student_exam.id).calculate
+            # ses.destroy
+          end
+        end
+        student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+      end
+    end
+    @exam_id = params[:exam_id]
+
+    exam = Exam.find_by(id: @exam_id)
+    es_by_section_id = exam.exam_sections.index_by(&:section_id)
+
+    se_ids = StudentExam.where(exam_id: @exam_id).ids
+    ses = StudentExamSummary.where(student_exam_id: se_ids)
+
+    total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
+    time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at, @student_exam.started_at) rescue "Not available"
+    section_data = student_exam_summaries.map do |student_exam_summary|
+      #TODO::Kapil store topper in cache & remove it when anyone submit the same exam.
+      topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
+      total_score += student_exam_summary.score
+      total_question += student_exam_summary.no_of_questions
+      topper_total += topper_score
+      section_out_of_marks = es_by_section_id[student_exam_summary.section.id].total_marks
+      total_marks += section_out_of_marks
+
+      {
+        exam_type: exam.exam_type,
+        section_name: student_exam_summary.section.name,
+        total_question: student_exam_summary.no_of_questions,
+        correct: student_exam_summary.correct,
+        incorrect: student_exam_summary.incorrect,
+        input_questions_present: student_exam_summary.input_questions_present,
+        correct_input_questions: student_exam_summary.correct_input_questions,
+        incorrect_input_questions: student_exam_summary.incorrect_input_questions,
+        not_answered: student_exam_summary.not_answered,
+        score: student_exam_summary.score,
+        topper_score: topper_score,
+        section_out_of_marks: section_out_of_marks,
+        extra_data: student_exam_summary.extra_data
+      }
+    end
+
+    @summary_data = {
+      is_result_processed: student_exam_summaries.present? || ses_sync&.end_exam_sync,
+      total_question: total_question,
+      total_score: total_score,
+      time_spent: time_spent,
+      section_data: section_data,
+      topper_total: topper_total,
+      total_marks: total_marks
+    }
   end
 
   def submit
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
-    head :ok unless student_exam
-    redirect_to "/students/summary/#{student_exam.exam_id}" if student_exam.ended_at
-    student_exam.update!(ended_at: Time.current)
-    StudentExamScoreCalculator.new(student_exam.id).calculate
+    if student_exam && student_exam.ended_at.blank?
+      SyncWorker.perform_async(current_student.id, exam_params[:exam_id], exam_params[:questions].to_h, true)
+      # sync_data_now(current_student.id, params[:exam_id], params[:questions])
+      student_exam.update!(ended_at: Time.current)
+      return {}, status: :ok
+    end
+    return {error: "Exam Already submitted"}, status: 422
   end
 
-  def exam_data
-    exam_id =  params[:id]
-    exam = Exam.find params[:id]
-    student_id = current_student.id
-
-    student_exam = StudentExam.find_by(student_id: student_id, exam_id: exam_id)
-    unless student_exam
-      student_exam = StudentExam.create!(student_id: student_id, exam_id: exam_id, started_at: Time.current)
+  def sync_data_now(student_id, exam_id, questions_data)
+    ses = StudentExamSync.find_by(student_id: student_id, exam_id: exam_id)
+    if ses.present?
+      ses.sync_data = questions_data
+      ses.save
+    else
+      StudentExamSync.create(
+        student_id: student_id,
+        exam_id: exam_id,
+        sync_data: questions_data
+      )
     end
-
-    indexed_questions = exam.questions.includes(:options, :section).index_by(&:id)
-    styles_by_question_id = ComponentStyle.where(
-      component_type: 'Question', 
-      component_id: exam.questions.ids).index_by(&:component_id)
-
-    student_answers_by_question_id = StudentExamAnswer
-      .where(student_exam_id: student_exam.id)
-      .where(question_id: exam.questions.ids).index_by(&:question_id)
-
-    questions = exam.questions.includes(:options).map do |question|
-      {
-    	  id: question.id,
-    		title: question.title,
-    		options: question.options.map { |o| { id: o.id, data: o.data } }.sort_by{ |o| o[:id] },
-        cssStyle: styles_by_question_id[question.id].style || '',
-    		answerProps: {
-          isAnswered: false,
-          visited: false,
-          needReview: false,
-          answer: student_answers_by_question_id[question.id]&.option_id
-        }
-    	}
-    end
-
-    questions_by_sections = {}
-    questions.shuffle.each do |question|
-      db_question = indexed_questions[question[:id]]
-      questions_by_sections[db_question.section.name] ||= []
-      questions_by_sections[db_question.section.name] << question
-    end
-
-    render json: {
-      currentQuestionIndex: questions_by_sections.keys.inject({}) { |h, k| h[k] = 0; h },
-      totalQuestions: questions_by_sections.inject({}) { |h, k| h[k[0]] = k[1].size; h },
-      questionsBySections: questions_by_sections,
-      sections: questions_by_sections.keys,
-      startedAt: student_exam.started_at,
-      currentTime: DateTime.current.iso8601,
-      timeInMinutes: exam.time_in_minutes,
-      studentId: current_student.id,
-    }
   end
 
   def profile
@@ -146,6 +203,11 @@ class Students::HomeController < Students::BaseController
   end
 
   private
+
+  def exam_params
+    params.permit!
+    params.permit(:exam_id, questions: {})
+  end
 
   def set_flash
     key = @response[:status] ? :success : :warning
@@ -168,7 +230,4 @@ class Students::HomeController < Students::BaseController
       :photo)
   end
 
-  def student_exam_answer_columns
-    ["question_id", "option_id", "student_exam_id"]
-  end
 end

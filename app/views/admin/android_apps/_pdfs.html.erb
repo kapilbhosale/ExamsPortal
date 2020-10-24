@@ -1,0 +1,57 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-8">
+          <h5 class="pt-3">PDFs</h5>
+        </div>
+        <div class="col-md-3 text-right">
+          <%= link_to '+ Add New PDF Type', admin_study_pdf_types_path, method: :get, class: "btn btn-warning btn-sm" %>
+        </div>
+        <div class="col-md-1 text-right">
+          <%= link_to 'Add New PDF', new_admin_study_pdf_path, method: :get, class: "btn btn-info btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @study_pdfs.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Pdf Name</th>
+                  <th>Desc.</th>
+                  <th>Batch(s)</th>
+                  <th>Q's Paper</th>
+                  <th>A's Paper</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @study_pdfs.each do |study_pdf| %>
+                  <tr>
+                    <td><%= study_pdf.id %></td>
+                    <td><%= study_pdf.name %></td>
+                    <td><%= study_pdf.description %></td>
+                    <td><%= study_pdf.batches.pluck(:name).join(', ') %></td>
+                    <td><%= link_to 'link', study_pdf.question_paper&.url, target: "_blank" %></td>
+                    <td><%= link_to 'link', study_pdf.solution_paper&.url, target: "_blank" %></td>
+                    <td><%= study_pdf.study_pdf_type&.name %></td>
+                    <td>
+                      <%= link_to 'Edit', edit_admin_study_pdf_path(study_pdf), method: :get, class: "btn btn-warning btn-sm" %>
+                      <%= link_to 'Del', admin_study_pdf_path(study_pdf), method: :delete, class: "btn btn-danger btn-sm" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="alert alert-info">No PDF's were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,54 @@
+<style>
+  td {
+    word-break: break-all;
+  }
+</style>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5>PDF Types for Application</h5>
+        </div>
+        <div class="col-md-6 text-right">
+          <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New PDF Type'.html_safe, new_admin_study_pdf_type_path %>
+        </div>
+      </div>
+      <% if @study_pdf_types.present? %>
+        <div class="table table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr class="d-flex">
+                <th class="col-md-1">Id.</th>
+                <th class="col-md-4">Name of PDF type</th>
+                <th class="col-md-4">Category</th>
+                <th class="col-md-3"> Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @study_pdf_types.each do |study_pdf_type| %>
+                <tr class="d-flex">
+                  <td class="col-md-1">
+                    <span class="text-muted"><%= study_pdf_type.id %></span>
+                  </td>
+                  <td class="col-md-4">
+                    <%= study_pdf_type.name %>
+                  </td>
+                  <td class="col-md-4">
+                    <%= study_pdf_type.pdf_type == 'qna' ? 'Question Paper and Solution' : 'Single Study Material' %>
+                  </td>
+                  <td class="col-md-3">
+                    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_study_pdf_type_path(study_pdf_type), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                    <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_study_pdf_type_path(study_pdf_type), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No study pdf types were found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

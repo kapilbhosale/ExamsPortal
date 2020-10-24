@@ -1,0 +1,131 @@
+<div class="tabbable-panel foler-view">
+  <div class="tabbable-line">
+    <ul class="nav nav-tabs ">
+      <% @categories_data.keys.each_with_index do |key, index| %>
+        <li class="<%= index == 0 ? 'active': '' %>">
+          <a href="#<%=key.parameterize %>" data-toggle="tab">
+            <%= key.humanize %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <% active_class = true %>
+      <% @categories_data.each do |key, folders| %>
+        <div class="tab-pane <%= active_class ? 'active' : '' %>" id="<%= key.parameterize %>">
+          <div class="container-fluid">
+            <% folders.each do |_, folder| %>
+              <a href="<%= "/students/category_videos/#{folder[:id]}" %>" style="color: #495057; text-decoration: none;" id="folder-container" data-id=<%= folder[:id] %>>
+                <div class="col-lg-3" style="padding: 10px; text-align: center">
+                  <div>
+                    <svg width="4em" height="4em" viewBox="0 0 16 16" class="bi bi-folder" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z"/>
+                      <path fill-rule="evenodd" d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z"/>
+                      <text x="3" y="12" fill="blue" style="font-size: 6px;">
+                        <%= folder[:count] %>
+                      </text>
+                    </svg>
+                    <% if folder[:new].to_i > 0 %>
+                      <span class="label label-danger" style="border-radius: 8px; margin-left: 2px; position: absolute"><%= folder[:new] %></span>
+                    <% end %>
+                  </div>
+                  <div class='col-lg-12' style="height: 40px">
+                    <%= folder[:name] %>
+                  </div>
+                </div>
+              </a>
+            <% end %>
+          </div>
+        </div>
+        <% active_class = false %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-horizontal {
+    display: flex;
+    flex-shrink: 0;
+    flex: 2 1 auto;
+  }
+
+    /* Tabs panel */
+  .tabbable-panel {
+    border:1px solid #eee;
+    padding: 0px;
+    margin: -10px;
+  }
+
+  /* Default mode */
+  .tabbable-line > .nav-tabs {
+    border: none;
+    margin: 0px;
+  }
+  .tabbable-line > .nav-tabs > li {
+    margin-right: 2px;
+  }
+  .tabbable-line > .nav-tabs > li > a {
+    border: 0;
+    margin-right: 0;
+    color: #737373;
+  }
+  .tabbable-line > .nav-tabs > li > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
+    border-bottom: 4px solid #fbcdcf;
+  }
+  .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
+    border: 0;
+    background: none !important;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.open > a > i, .tabbable-line > .nav-tabs > li:hover > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open .dropdown-menu, .tabbable-line > .nav-tabs > li:hover .dropdown-menu {
+    margin-top: 0px;
+  }
+  .tabbable-line > .nav-tabs > li.active {
+    border-bottom: 4px solid #f3565d;
+    position: relative;
+  }
+  .tabbable-line > .nav-tabs > li.active > a {
+    border: 0;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.active > a > i {
+    color: #404040;
+  }
+  .tabbable-line > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 5px 0;
+  }
+  .portlet .tabbable-line > .tab-content {
+    padding-bottom: 0;
+  }
+
+  .warning {
+    margin-top: -10px;
+    text-align: center;
+  }
+  .blink-bg{
+		color: #fff;
+		padding: 2px 10px;
+		display: inline-block;
+		border-radius: 5px;
+		animation: blinkingBackground 5s infinite;
+	}
+	@keyframes blinkingBackground{
+		0%		{ background-color: #10c018;}
+		25%		{ background-color: #1056c0;}
+		50%		{ background-color: #ef0a1a;}
+		75%		{ background-color: #254878;}
+		100%	        { background-color: #04a1d5;}
+	}
+</style>

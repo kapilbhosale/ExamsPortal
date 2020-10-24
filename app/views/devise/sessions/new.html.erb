@@ -1,30 +1,42 @@
 <div class="row">
   <div class="col col-login mx-auto">
-    <div class="text-center mb-6">
-      Smart Exams
+    <div class="text-center mb-4 mt-6">
+      Smart <%= request.subdomain.humanize || 'Exams' %>
     </div>
-    <%= form_for(resource, as: resource_name,html:{class:'card'}, url: session_path(resource_name)) do |f| %>
+    <% auth_url = resource.is_a?(Admin) ? session_path(resource_name) : '/students/authorise' %>
+    <%= form_for(resource, as: resource_name,html:{class:'card'}, url: auth_url) do |f| %>
     <div class="card-body p-6">
-      <div class="card-title">Login to your account</div>
+      <div class="card-title text-center">Login to your account</div>
       <div class="form-group">
-        <label class="form-label">Email</label>
+        <label class="form-label">
+          <% if resource.is_a? Admin %>
+            Email
+          <% else %>
+            Roll Number
+          <% end %> 
+        </label>
         <div class="input-icon">
           <span class="input-icon-addon">
             <i class="fe fe-user"></i>
           </span>
-          <%= f.email_field :email, placeholder:'Email or Username...', class:'form-control', autofocus: true, autocomplete:'email' %>
+          <% if resource.is_a? Admin %>
+            <%= f.email_field :login, placeholder:'Enter email ...', class:'form-control', autofocus: true %>
+          <% else %>
+            <%= f.text_field :login, placeholder:'Enter roll number...', class:'form-control', autofocus: true %>
+          <% end %>
         </div>
       </div>
       <div class="form-group">
         <label class="form-label">
-          Password
+          <%= (resource.is_a? Admin) ? 'Password' : 'Parent mobile no' %>
           <a href="password/new" class="float-right small">I forgot password</a>
         </label>
         <div class="input-icon">
           <span class="input-icon-addon">
             <i class="fe fe-lock"></i>
           </span>
-          <%= f.password_field :password, autocomplete:'off', placeholder:'Password...', class:'form-control' %>
+          <% placeholder = (resource.is_a? Admin) ? 'Password' : 'Enter 10 digit Parent mobile' %>
+          <%= f.password_field :password, autocomplete:'off', placeholder: placeholder, class:'form-control' %>
         </div>
       </div>
       <% if devise_mapping.rememberable? -%>

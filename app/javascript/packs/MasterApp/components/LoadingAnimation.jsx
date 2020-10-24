@@ -5,9 +5,10 @@ export default class LoadingAnimation extends React.Component {
     static propTypes = {
         minimal: PropTypes.bool,
         height: PropTypes.string,
+        msg: PropTypes.string,
     };
     render() {
-        const { minimal, height } = this.props;
+        const { minimal, height, msg } = this.props;
         let loadingClass = '';
         let style = {};
         if (height) {
@@ -23,6 +24,9 @@ export default class LoadingAnimation extends React.Component {
                         <li />
                         <li />
                     </ul>
+                </div>
+                <div className="text-center">
+                    <h5>We are loading the Exam Details, Please wait....</h5>
                 </div>
             </div>
         );

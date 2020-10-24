@@ -16,6 +16,11 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'mini_racer', platforms: :ruby
 
+
+gem 'activeadmin'
+gem 'activeadmin_json_editor', '~> 0.0.7'
+gem 'pundit'
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
@@ -33,6 +38,12 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# gem 'sucker_punch', '~> 2.0'
+gem 'sidekiq'
+gem "sidekiq-cron", "~> 1.1"
+
+gem 'rollbar'
+
 gem 'webpacker'
 gem 'foreman'
 
@@ -46,6 +57,8 @@ gem 'devise'
 gem 'kaminari'
 gem 'ransack'
 gem 'carrierwave'
+# gem 'carrierwave-aws'
+gem 'fog-aws'
 gem 'mini_magick'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary', '= 0.12.3'
@@ -55,8 +68,22 @@ gem 'zip-zip' # will load compatibility for old rubyzip API.
 gem 'aws-sdk-s3'
 gem 'file_validators'
 
-gem 'newrelic_rpm'
 gem 'jquery-rails'
+
+# redis added for caching
+gem 'redis'
+gem 'redis-rails'
+gem 'hiredis'
+
+gem 'rmagick'
+
+gem 'figaro'
+gem 'fcm'
+gem 'faraday'
+# gem 'youtube_it'
+
+gem "paranoia", "~> 2.2"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -71,7 +98,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'hirb'
-  gem 'figaro'
   gem 'awesome_print'
   gem 'pry-nav'
   gem 'rails-erd'
@@ -79,6 +105,18 @@ group :development do
   gem 'bullet'
   gem 'rb-readline'
   # gem 'rollbar'
+
+  gem 'capistrano',         require: false
+  gem 'capistrano-rvm',     require: false
+  gem 'capistrano-rails',   require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano3-puma',   require: false
+  # gem 'capistrano-sidekiq', require: false, git: 'https://github.com/seuros/capistrano-sidekiq', branch: 'master'
+
+  # deployment gems
+  # gem 'mina'
+  # gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
+  # gem 'mina-nginx', :require => false
 end
 
 group :test do

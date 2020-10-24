@@ -1,0 +1,62 @@
+<% status = @new_admission.error_code == 'E000' %>
+<div class="col-12">
+  <div class="card border-0">
+    <div class="card-header text-center border-0">
+      <h4>Online Payment Receipt</h4>
+    </div>
+      <table class="table table-vcenter text-nowrap">
+        <tbody>
+          <tr>
+            <td>status: </td>
+            <td><%= status ? 'Sucessfully, Paid.' : 'Transaction Failed' %></td>
+          </tr>
+          <tr>
+            <td>reference no: </td>
+            <td><%= @new_admission&.id %></td>
+          </tr>
+          <tr>
+            <td>error code: </td>
+            <td><%= @new_admission.error_code %></td>
+          </tr>
+          <tr>
+            <td>error info: </td>
+            <td><%= @new_admission.error_info %></td>
+          </tr>
+          <tr>
+            <td>Name of Student: </td>
+            <td><%= @new_admission.name %></td>
+          </tr>
+          <tr>
+            <td>RCC Branch: </td>
+            <td><%= @new_admission.rcc_branch %></td>
+          </tr>
+          <tr>
+            <td>Course Selected: </td>
+            <td><%= @new_admission.course&.name %></td>
+          </tr>
+          <tr>
+            <td>Installment of Fees paid</td>
+            <td><b><%= status ? @fees : '-' %></b></td>
+          </tr>
+          <tr>
+            <td>Online processing fees</td>
+            <td><% status ? @processing_fees : '-' %></td>
+          </tr>
+          <tr>
+            <td>Total Fees Paid</td>
+            <td><b><%= status ?  @fees + @processing_fees : '-' %></b></td>
+          </tr>
+          <tr>
+            <td>Date of Payment: </td>
+            <td><%= status ? @new_admission.created_at.strftime("%F, %T") : '-' %></td>
+          </tr>
+        </tbody>
+      </table>
+      <b>Please Keep this receipt for further reference.</b>
+      <% if status %>
+        <p>Thank you, for your admission.</p>
+      <% else %>
+        <p>Please retry your admission.</p>
+      <% end %>
+  </div>
+</div>

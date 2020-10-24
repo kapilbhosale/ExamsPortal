@@ -1,0 +1,106 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3"> Add New JEE Advance Exam</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <%= form_tag admin_exams_path, method: :post, class: 'form-horizontal', multipart: true do %>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name:</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" id="name" placeholder="Exam Name" name="name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Description:</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="description" placeholder="Enter description"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="questions">Number of Questions:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="no_of_questions" placeholder="Total Number of Questions in exam" name="no_of_questions"  required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="time_in_minutes">Time in Mins:</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" id="time_in_minutes" placeholder="Time for exam in Minutes" name="time_in_minutes"  required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="available_from_time">Available from:</label>
+            <div class="col-sm-3">
+              <input type="datetime-local" class="form-control" id="available_from_time" name="available_from_time">
+            </div>
+          </div>
+          
+
+          <table class="table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th>Section Name</th>
+                <th>Description</th>
+                <th>Input File</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @sections.each do |section| %>
+                <tr>
+                  <td>
+                    <label class="control-label col-sm-2" for="questions_zip"><%= section.name%>:</label>
+                  </td>
+                  <td>
+                    <input type="file" class="form-control-file" id="questions_zip" name="questions_zip[<%= section.name%>]">
+                  </td>
+                  <td style="width: 100px;">
+                    <span><%= section.description %></span>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <hr>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2">Batch</label>
+            <% if @batches.present? %>
+              <div class="selectgroup selectgroup-pills">
+                <% @batches.each do |batch|%>
+                  <label class="selectgroup-item">
+                    <input type="checkbox" name="exam[batches][]" value="<%= batch.id %>" class="selectgroup-input" >
+                    <span class="selectgroup-button"><%= batch.name %></span>
+                  </label>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="alert alert-info alert">No Batches are created yet. Create a batch first
+              </div>
+            <% end %>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="publish_result">Publish Result:</label>
+            <div class="custom-controls-stacked">
+              <label class="custom-control custom-radio custom-control-inline">
+                <input checked="checked" id="publish_result_yes" name="publish_result" type="radio" value="Yes" /> &nbsp; Yes
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="publish_result_no" name="publish_result" type="radio" value="No" /> &nbsp; No
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

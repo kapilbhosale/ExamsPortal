@@ -3,128 +3,139 @@
     <%= form_for :student, url:admin_students_path, html: {multipart: true, class: 'card'} do  |form| %>
       <div class="card-body">
         <h3 class="card-title">Add Student</h3>
-        <div class="row">
-          <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">Roll Number*</label>
-              <%= form.text_field :roll_number, class: 'form-control', value: @student_data[:roll_number]%>
-            </div>
+        <% if @student_data[:batches].blank? %>
+          <div class="text-center">
+            <span>
+              Please add
+              <span style="color: red;">'Batches'</span>
+              first.
+            </span>
           </div>
-          <div class="col-sm-6 col-md-5">
-            <div class="form-group">
-              <label class="form-label">Name*</label>
-              <%= form.text_field :name, class: 'form-control', placeholder: 'Name' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">Mother's Name</label>
-              <%= form.text_field :mother_name, class: 'form-control', placeholder: 'Mother\'s Name' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">Date of Birth</label>
-              <%= form.text_field :date_of_birth, class: 'form-control', type: 'date' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <div class="form-label">Gender</div>
-              <div class="custom-controls-stacked">
-                <label class="custom-control custom-radio custom-control-inline">
-                  <%= form.radio_button :gender, '0', class: 'custom-control-input' %>
-                  <span class="custom-control-label">Male</span>
-                </label>
-                <label class="custom-control custom-radio custom-control-inline">
-                  <%= form.radio_button :gender, '1', class: 'custom-control-input' %>
-                  <span class="custom-control-label">Female</span>
-                </label>
+        <% else %>
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+                <label class="form-label">Roll Number*</label>
+                <%= form.text_field :roll_number, class: 'form-control', value: @student_data[:roll_number]%>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">SSC Marks</label>
-              <%= form.text_field :ssc_marks, class: 'form-control', placeholder: 'SSC Marks' %>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group">
-              <label class="form-label">Address</label>
-              <%= form.text_field :address, class: 'form-control', placeholder: 'Address' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">Student Mobile</label>
-              <%= form.text_field :student_mobile, class:'form-control', placeholder:'Student Mobile' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">Parent Mobile*</label>
-              <%= form.text_field :parent_mobile, class: 'form-control', placeholder: 'Parent Mobile' %>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-4">
-            <div class="form-group">
-              <label class="form-label">Category</label>
-              <%= form.collection_select(:category_id, @student_data[:categories], :id, :name, {include_blank: 'Select Category'}, {class: 'form-control'} )%>
-            </div>
-          </div>
-          <div class="col-sm-6 col-md-5">
-            <div class="form-group">
-              <div class="form-label">Photo</div>
-              <div class="custom-file">
-                <%= form.file_field :photo, class:  'custom-file-input'%>
-                <label class="custom-file-label">Upload photo</label>
+            <div class="col-sm-6 col-md-5">
+              <div class="form-group">
+                <label class="form-label">Name*</label>
+                <%= form.text_field :name, class: 'form-control', placeholder: 'Name' %>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-md-7">
-            <div class="form-group">
-              <label class="form-label">College</label>
-              <%= form.text_field :college, class: 'form-control', placeholder: 'College' %>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">Mother's Name</label>
+                <%= form.text_field :mother_name, class: 'form-control', placeholder: 'Mother\'s Name' %>
+              </div>
             </div>
-          </div>
-          <div class="col-sm-6 col-md-12">
-            <div class="form-group">
-              <label class="form-label">Batch</label>
-              <% if @student_data[:batches].present? %>
-              <div class="selectgroup selectgroup-pills">
-                <% @student_data[:batches].each do |batch|%>
-                <label class="selectgroup-item">
-                  <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" class="selectgroup-input" >
-                  <span class="selectgroup-button"><%= batch.name %></span>
-                </label>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <%= form.text_field :date_of_birth, class: 'form-control', type: 'date' %>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <div class="form-label">Gender</div>
+                <div class="custom-controls-stacked">
+                  <label class="custom-control custom-radio custom-control-inline">
+                    <%= form.radio_button :gender, '0', class: 'custom-control-input' %>
+                    <span class="custom-control-label">Male</span>
+                  </label>
+                  <label class="custom-control custom-radio custom-control-inline">
+                    <%= form.radio_button :gender, '1', class: 'custom-control-input' %>
+                    <span class="custom-control-label">Female</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">SSC Marks</label>
+                <%= form.text_field :ssc_marks, class: 'form-control', placeholder: 'SSC Marks' %>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label class="form-label">Address</label>
+                <%= form.text_field :address, class: 'form-control', placeholder: 'Address' %>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">Student Mobile</label>
+                <%= form.text_field :student_mobile, class:'form-control', placeholder:'Student Mobile' %>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">Parent Mobile*</label>
+                <%= form.text_field :parent_mobile, class: 'form-control', placeholder: 'Parent Mobile', :maxlength => 10, :minlength => 10 %>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <%= form.collection_select(:category_id, @student_data[:categories], :id, :name, {include_blank: 'Select Category'}, {class: 'form-control'} )%>
+              </div>
+            </div>
+            <!-- <div class="col-sm-6 col-md-5">
+              <div class="form-group">
+                <div class="form-label">Photo</div>
+                <div class="custom-file">
+                  <%= form.file_field :photo, class:  'custom-file-input'%>
+                  <label class="custom-file-label">Upload photo</label>
+                </div>
+              </div>
+            </div> -->
+            <div class="col-sm-6 col-md-7">
+              <div class="form-group">
+                <label class="form-label">College</label>
+                <%= form.text_field :college, class: 'form-control', placeholder: 'College' %>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-12">
+              <div class="form-group">
+                <label class="form-label">Batch</label>
+                <% if @student_data[:batches].present? %>
+                <div class="selectgroup selectgroup-pills">
+                  <% @student_data[:batches].each do |batch|%>
+                  <label class="selectgroup-item">
+                    <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" class="selectgroup-input" >
+                    <span class="selectgroup-button"><%= batch.name %></span>
+                  </label>
+                  <% end %>
+                </div>
+                <% else %>
+                <div class="alert alert-info alert">No Batches are created yet. Create a batch first
+                </div>
                 <% end %>
               </div>
-              <% else %>
-              <div class="alert alert-info alert">No Batches are created yet. Create a batch first
-               </div>
-              <% end %>
+            </div>
+            <div class="col-sm-6 col-md-7">
+              <div class="form-group">
+                <% if @student.errors.any? %>
+                  <div class="error-msg">
+                    <h6><%= pluralize(@student.errors.count, "error")%> prevented from student being saved!</h6>
+                    <ul>
+                      <% @student.errors.full_messages.each do |msg| %>
+                        <li><%= msg %> </li>
+                      <% end %>
+                    </ul>
+                  </div>
+                <% end %>
+              </div>
             </div>
           </div>
-          <div class="col-sm-6 col-md-7">
-            <div class="form-group">
-              <% if @student.errors.any? %>
-                <div class="error-msg">
-                  <h6><%= pluralize(@student.errors.count, "error")%> prevented from student being saved!</h6>
-                  <ul>
-                    <% @student.errors.full_messages.each do |msg| %>
-                      <li><%= msg %> </li>
-                    <% end %>
-                  </ul>
-                </div>
-              <% end %>
-            </div>
+
+          <div class="card-footer text-right">
+            <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+            <button type="submit" class="btn btn-success">Add New Student</button>
           </div>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <%= link_to "Cancel", admin_students_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-        <button type="submit" class="btn btn-success">Add New Student</button>
+        <% end %>
       </div>
     <% end %>
   </div>

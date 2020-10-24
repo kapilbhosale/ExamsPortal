@@ -1,0 +1,51 @@
+
+<div class="tabbable-panel">
+  <div class="tabbable-line">
+    <ul class="nav nav-tabs" id="myTab">
+      <% @tabs.each_with_index do |tab, index| %>
+        <li class="<%= index == 0 ? 'active' : '' %>">
+          <a href=<%="##{tab}"%> data-toggle="tab">
+            <%= tab.humanize %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+    <div class="tab-content">
+
+      <% @tabs.each_with_index do |tab, index| %>
+        <div class="<%=index == 0 ? 'tab-pane active' : 'tab-pane' %>" id="<%= tab %>">
+          <%= render tab %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(() => {
+    let url = location.href.replace(/\/$/, "");
+
+    if (location.hash) {
+      const hash = url.split("#");
+      $('#myTab a[href="#'+hash[1]+'"]').tab("show");
+      url = location.href.replace(/\/#/, "#");
+      history.replaceState(null, null, url);
+      setTimeout(() => {
+        $(window).scrollTop(0);
+      }, 400);
+    }
+
+    $('a[data-toggle="tab"]').on("click", function() {
+      let newUrl;
+      const hash = $(this).attr("href");
+      if(hash == "#home") {
+        newUrl = url.split("#")[0];
+      } else {
+        newUrl = url.split("#")[0] + hash;
+      }
+      newUrl += "/";
+      history.replaceState(null, null, newUrl);
+    });
+  });
+</script>

@@ -8,4 +8,8 @@ class Students::ModelAnswersController < Students::BaseController
       @errors = model_ans_response[:message]
     end
   end
+
+  def model_ans
+    render json: Students::ModelAnswersService.new(current_student.id, params[:id]).call
+  end
 end

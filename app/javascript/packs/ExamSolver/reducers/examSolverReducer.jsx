@@ -16,6 +16,8 @@ export const $$initialState = Immutable.fromJS({
   navigationMapOpen: true,
   currentTime: null,
   isTestSubmitModalOpen: false,
+  examFinished: false,
+  examSummary: {},
 });
 
 export default function examSolverReducer($$state = $$initialState, action) {
@@ -40,13 +42,18 @@ export default function examSolverReducer($$state = $$initialState, action) {
     case actionTypes.ANSWER_QUESTION: {
       let currentSection = $$state.get('currentSection');
       let questionsBySections = $$state.get('questionsBySections').toJS();
-      questionsBySections[currentSection][val.questionIndex].answerProps.answer = val.answerIndex;
+      questionsBySections[currentSection][val.questionIndex].answerProps.answer = Immutable.fromJS(val.answerIndex);
+      if(val.answerIndex && val.answerIndex.length > 0) {
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = true;
+      }else{
+        questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = false;
+      }
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
     case actionTypes.CLEAR_ANSWER: {
       let currentSection = $$state.get('currentSection');
       let questionsBySections = $$state.get('questionsBySections').toJS();
-      questionsBySections[currentSection][val.questionIndex].answerProps.answer = 1;
+      questionsBySections[currentSection][val.questionIndex].answerProps.answer = null;
       questionsBySections[currentSection][val.questionIndex].answerProps.isAnswered = false;
       return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     }
@@ -97,6 +104,21 @@ export default function examSolverReducer($$state = $$initialState, action) {
       return $$state.set('timeLeftMessage', val);
     case actionTypes.SET_CURRENT_TIME:
       return $$state.set('currentTime', val);
+    case actionTypes.SET_EXAM_SUMMARY:
+      return $$state.set('examSummary', val)
+                    .set('examFinished', true);
+    case actionTypes.UPDATE_TIME_SPENT_ON_QUESTION:
+      // let currentSection = $$state.get('currentSection');
+      let section = val.section;
+      let questionsBySections = $$state.get('questionsBySections').toJS();
+      if (questionsBySections[section][val.questionIndex].answerProps.timeSpent) {
+        questionsBySections[section][val.questionIndex].answerProps.timeSpent += val.timeSpent;
+        questionsBySections[section][val.questionIndex].answerProps['visits'] += 1;
+      } else {
+        questionsBySections[section][val.questionIndex].answerProps['timeSpent'] = val.timeSpent;
+        questionsBySections[section][val.questionIndex].answerProps['visits'] = 1;
+      }
+      return $$state.set('questionsBySections', Immutable.fromJS(questionsBySections));
     default:
       return $$state;
   }

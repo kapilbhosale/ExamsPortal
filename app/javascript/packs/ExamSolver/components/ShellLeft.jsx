@@ -13,9 +13,9 @@ class ShellLeft extends React.Component {
     const { questions, currentQuestionIndex, answerQuestion, markVisited,
             submitTest, startedAt, examFinished, timeInMinutes, timeIsUp, currentSection,
             sections, changeSection, isNavigationMapOpen, currentTime, remainingTimeAlert,
-            timeLeftMessage, syncWithBackend } = this.props;
+            timeLeftMessage, syncWithBackend, updateTimeSpentOnQuestion } = this.props;
     return (
-      <div className={`${isNavigationMapOpen ? 'col-md-9' : 'full-width'}`}>
+      <div className={`${isNavigationMapOpen ? 'question-div col-md-10' : 'question-div full-width'}`}>
         <div className='row'>
           <div className='col-md-12'>
             <SectionList
@@ -32,6 +32,8 @@ class ShellLeft extends React.Component {
               remainingTimeAlert={ remainingTimeAlert }
               timeLeftMessage={  timeLeftMessage }
               syncWithBackend={ syncWithBackend }
+              updateTimeSpentOnQuestion={updateTimeSpentOnQuestion}
+              currentQuestionIndex={currentQuestionIndex}
             />
           </div>
           <div className="col-md-12">

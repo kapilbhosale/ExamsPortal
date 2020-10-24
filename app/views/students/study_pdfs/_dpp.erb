@@ -1,0 +1,16 @@
+<% @dpp_data.each_slice(2) do |dpp_datas| %>
+  <div class="row">
+    <% dpp_datas.each do |dpp_data| %>
+        <div class="col-sm-6 col-sx-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= dpp_data[:name] %></h5>
+              <p class="card-text"><%= dpp_data[:description] %></p>
+              <p class="card-text"><%= dpp_data[:added_on] %></p>
+              <a href="<%= dpp_data[:solution_paper_link] %>" class="btn btn-primary">View Notes</a>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+<% end %>

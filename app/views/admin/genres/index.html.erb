@@ -1,0 +1,71 @@
+<div class="container" style="background-color: white; padding: 5px">
+  <div class="card-header row">
+    <div class="col-md-2">
+      <h5>Video Folders</h5>
+    </div>
+    <div class="col-md-6 text-right">
+      <%= search_form_for @search, url: admin_genres_path, class:"form-inline my-2 my-lg-0" do |f| %>
+        <span class="p-2">Subject</span>
+        <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2'} )%>
+        <%= f.text_field :name, value: params&.[](:q)&.[](:name), placeholder: 'Folder Name', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
+        <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
+      <% end %>
+    </div>
+    <div class="col-md-4 text-right">
+      <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Video Folder'.html_safe, new_admin_genre_path %>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table card-table">
+      <thead>
+        <tr>
+          <th>Id.</th>
+          <th>Subject</th>
+          <th>Name</th>
+          <th>Videos Count</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @genres.each do |genre| %>
+          <tr>
+            <td>
+              <span class="text-muted"><%= genre.id %></span>
+            </td>
+            <td class="text-center">
+              <%= genre.subject&.name || '-' %>
+            </td>
+            <td>
+              <% if genre.hidden %>
+                <span style="color: red">●</span>
+              <% else %>
+                <span style="color: green">●</span>
+              <% end %>
+              <%= genre.name %>
+            </td>
+            <td class="text-center">
+              <a href="<%= admin_video_lectures_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
+                <%= genre.video_lectures_count %>
+              </a>
+            </td>
+            <td>
+              <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+              |
+              <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+              |
+              <% if genre.hidden %>
+                <%= link_to 'Show'.html_safe, admin_genre_show_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Show folder?'} %>
+              <% else %>
+                <%= link_to 'Hide'.html_safe, admin_genre_hide_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Hide folder?'} %>
+              <% end %>
+              |
+              <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
+                Add Video
+              </a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

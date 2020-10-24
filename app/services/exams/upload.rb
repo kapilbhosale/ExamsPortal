@@ -7,7 +7,7 @@ module Exams
 
     S3_UPLOAD = false
 
-    def initialize(exam, tmp_zip_file, section_id=1, marks={})
+    def initialize(exam, tmp_zip_file, section_id = 1, marks = {})
       @exam = exam
       @tmp_zip_file = tmp_zip_file
       @section_id = section_id
@@ -20,12 +20,13 @@ module Exams
       ActiveRecord::Base.transaction do
         create_exam_section
         extract_zip
+        convert_images_to_grayscale
         upload_images_folder
         parse_html
         create_questions_and_options
         remove_zip_files
       end
-      return {status: true}
+      { status: true }
     rescue UploadExamError, ActiveRecord::RecordInvalid => ex
       raise StandardError ex.message
     end
@@ -62,8 +63,19 @@ module Exams
       FileUtils.rm_rf(Dir.glob(@tmp_dir_path))
     end
 
+    def convert_images_to_grayscale
+      images_folder = "#{@tmp_dir_path}images"
+      Dir.glob("#{images_folder}/*.png") do |img_filename|
+        img = (Magick::Image.read(img_filename).first rescue nil)
+        next if img.nil?
+
+        img.quantize(256, Magick::GRAYColorspace)
+        img.write img_filename
+      end
+    end
+
     def upload_images_folder
-      images_folder = "#{@tmp_dir_path}/images"
+      images_folder = "#{@tmp_dir_path}images"
       if S3_UPLOAD
         uploader = Exams::S3FolderUpload.new(images_folder, "#{@path}/images")
         uploader.upload!
@@ -72,6 +84,8 @@ module Exams
         FileUtils.mkdir_p(File.dirname(local_path))
         FileUtils.mv images_folder, local_path
       end
+    rescue Exception, StandardError => e
+      puts "Error uploading ..."
     end
 
 
@@ -90,44 +104,113 @@ module Exams
       tables.each do |table|
         next if options_table?(table)
         options = []
+        options_val = []
         # copy options table and remove it.
         options_table = table.at('table')
         table.at('table').remove
 
         options_table.search('tr').each do |option|
-          options << option.at('td').children.to_s.strip
+          img_base64 = nil
+          img_name = option.at('td').children.at('img')&.attributes&.dig('src')&.value
+          if img_name
+            img_base64 = Base64.encode64(open("#{Rails.root}/public/uploads/#{@path}/#{img_name}") { |io| io.read })
+          end
+
+          options << {
+            data: (img_base64 || option.at('td').children.to_s.strip),
+            is_image: img_base64.present?
+          }
+          options_val << option.at('td').children.text.strip
         end
 
         rows = table.search('tr')
         # assuming that there will be only 4 rows in question, as per defined structure.
+
         question_val = rows[0].at('td').text.strip
+        if question_val.downcase.strip.start_with?('[input]')
+          question_type = 2
+        elsif question_val.downcase.strip.start_with?('[multi]')
+          question_type = 1
+        else
+          question_type = 0
+        end
+
         question = rows[0].at('td').children.to_s.strip
+        img_base64 = nil
+        img_name = rows[0].at('td').children.at('img')&.attributes&.dig('src')&.value
+        if img_name
+          img_base64 = Base64.encode64(open("#{Rails.root}/public/uploads/#{@path}/#{img_name}") { |io| io.read })
+        end
         answer = rows[2].text.strip
-        explanation = rows[3].at('td').children.to_s.strip
+        explanation = rows[3]&.at('td')&.children&.to_s&.strip
 
         @questions_data << {
-          question: question,
+          question: (img_base64 || question),
+          q_is_image: img_base64.present?,
+          question_type: question_type,
           options: options,
+          optinos_val: options_val,
           answer: answer,
           explanation: explanation
-        } if question_val.present?
+        }
       end
+    end
+
+    def question_type_from_sections
+      {
+        "phy-I" => Question.question_types[:multi_select],
+        "phy-II" => Question.question_types[:input],
+        "phy-III" => Question.question_types[:single_select],
+        "chem-I"=> Question.question_types[:multi_select],
+        "chem-II" => Question.question_types[:input], 
+        "chem-III" =>  Question.question_types[:single_select], 
+        "math-I"=> Question.question_types[:multi_select],
+        "math-II" => Question.question_types[:input], 
+        "math-III" => Question.question_types[:single_select]
+      }
     end
 
     def create_questions_and_options
       @questions_data.each do |question_data|
-
-        title = replace_local_img_path(question_data[:question])
-        explanation = replace_local_img_path(question_data[:explanation])
-        question = Question.create!(title: title, explanation: explanation, section_id: section_id)
+        # title = replace_local_img_path(question_data[:question])
+        # explanation = replace_local_img_path(question_data[:explanation])
+        title = question_data[:question]
+        explanation = question_data[:explanation]
+        question = Question.create!(
+          title: title,
+          is_image: question_data[:q_is_image],
+          explanation: explanation,
+          section_id: section_id,
+          question_type: question_data[:question_type]
+        )
         ExamQuestion.create(exam: exam, question: question)
 
         create_option_params = []
-        question_data[:options].each_with_index do |option, index|
+        if question_data[:question_type] == 0
+          question_data[:options].each_with_index do |option, index|
+            create_option_params << {
+              question_id: question.id,
+              # data: replace_local_img_path(option),
+              data: option[:data],
+              is_image: option[:is_image],
+              is_answer: answer_input(question_data[:answer]) == index + 1
+            }
+          end
+        elsif question_data[:question_type] == 1
+          question_data[:options].each_with_index do |option, index|
+            create_option_params << {
+              question_id: question.id,
+              # data: replace_local_img_path(option),
+              data: option[:data],
+              is_image: option[:is_image],
+              is_answer: multi_answer_input(question_data[:answer]).include?(index + 1)
+            }
+          end
+        else
           create_option_params << {
-            question: question,
-            data: replace_local_img_path(option),
-            is_answer: answer_input(question_data[:answer]) == index + 1
+            question_id: question.id,
+            data: question_data[:answer],
+            is_answer: true
           }
         end
         Option.create!(create_option_params)
@@ -135,8 +218,8 @@ module Exams
       end
     end
 
-    def answer_input(input)
-      input.downcase!
+    def answer_input(_input)
+      input = _input.squish.downcase
       return 1 if input == 'a'
       return 2 if input == 'b'
       return 3 if input == 'c'
@@ -146,7 +229,15 @@ module Exams
       input.to_i
     end
 
+    def multi_answer_input(_input)
+      input = _input.squish.downcase.split(',')
+      input.map do |i|
+        i.squish.downcase.to_i
+      end
+    end
+
     def replace_local_img_path(html_code)
+      return if html_code.blank?
       if S3_UPLOAD
         path_to_replace = "#{Exams::S3FolderUpload.get_base_path}/#{@path}/images/"
       else

@@ -2,16 +2,17 @@ class AddBatchError < StandardError; end
 
 module Batches
   class AddBatchService
-    attr_reader :name
+    attr_reader :name, :org
 
-    def initialize(name)
+    def initialize(name, org)
       @name = name
+      @org = org
     end
 
     def call
       validate_request
-      batch = Batch.create!(name: name)
-      return {status: true, message: 'Batch added successfully'}
+      batch = Batch.create!(name: name, org: org)
+      return {status: true, message: 'Batch added successfully', batch: batch}
     rescue AddBatchError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}
     end
@@ -24,7 +25,7 @@ module Batches
     end
 
     def already_exists?
-      Batch.find_by(name: name).present?
+      Batch.find_by(org: org, name: name).present?
     end
   end
 end

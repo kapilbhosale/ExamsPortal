@@ -1,0 +1,24 @@
+<% @live_classes.each_slice(2) do |live_classes_slice| %>
+  <div class="row">
+    <% live_classes_slice.each do |live_class| %>
+      <div class="col-sm-6 col-sx-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= live_class[:subject] %></h5>
+            <p class="card-text"><%= live_class[:teacher_name] %></p>
+            <p class="card-text"><%= live_class[:datetime_of_meeting].strftime("%d-%B-%Y %I:%M%p") %></p>
+              <% if live_class.vimeo? %>
+                <a href="<%= students_live_class_path(live_class) %>" class="btn btn-primary">
+                  Join Live Class
+                </a>
+              <% else %>
+                <a href="<%= live_class.zoom_meeting_url %>" class="btn btn-primary">
+                  Join Live Class
+                </a>
+              <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

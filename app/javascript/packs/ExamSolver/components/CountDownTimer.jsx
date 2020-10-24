@@ -3,16 +3,36 @@ import Countdown from 'react-countdown-now';
 import ReactCountdownClock from 'react-countdown-clock';
 
 class CountDownTimer extends React.Component {
+    constructor(props) {
+      super(props);
+
+      this.state = {
+          currentQuestionIndex: null,
+          timeSpent: 0,
+      }
+    }
 
     componentDidMount() {
-        // Syncing answers with backend every 20 Seconds
+        // Syncing answers with backend every 10 minutes
         this.syncInterval = setInterval(() => {
             this.props.syncWithBackend();
-        }, 20000);
+        }, (10*60*1000));
+
+      this.timeSpentInterval = setInterval( () => {
+        this.setState({ timeSpent: this.state.timeSpent + 1 });
+      }, 1000);
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.props.currentQuestionIndex !== prevProps.currentQuestionIndex) {
+        this.props.updateTimeSpentOnQuestion(prevProps.currentQuestionIndex, this.state.timeSpent, prevProps.currentSection);
+        this.setState({currentQuestionIndex: this.props.currentQuestionIndex, timeSpent: 0});
+      }
     }
 
     componentWillUnmount() {
         clearInterval(this.syncInterval);
+        clearInterval(this.timeSpentInterval);
     }
 
     dateForCountdown() {
@@ -20,7 +40,6 @@ class CountDownTimer extends React.Component {
         const currentDateTime = new Date(currentTime).getTime();
         const startedSince = currentDateTime - new Date(startedAt);
         const endTime = currentDateTime + (timeInMinutes * 60 * 1000);
-        console.log("**************> " + new Date((endTime - startedSince)));
         return ((endTime - startedSince) - currentDateTime)/(1000);
     }
 
@@ -50,8 +69,9 @@ class CountDownTimer extends React.Component {
               </span>
               <span style={{marginTop: '-45px', marginBottom: '-80px', float: 'right', paddingRight: '80px'}}>
                 <ReactCountdownClock seconds={this.dateForCountdown()}
-                                     color="#428bca"
+                                     color="#054379"
                                      alpha={0.7}
+                                     hideArc
                                      size={150}
                                      weight={4}
                                      fontSize={'30px'}

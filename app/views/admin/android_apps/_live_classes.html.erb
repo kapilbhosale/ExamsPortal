@@ -1,0 +1,54 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3">Live Classes</h5>
+        </div>
+        <div class="offset-md-8 col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
+          <%= link_to 'Add New Meeting', new_admin_zoom_meeting_path, method: :get, class: "btn btn-warning btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @meetings.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Meeting Id</th>
+                  <th>Password.</th>
+                  <th>Subject.</th>
+                  <th>Teacher.</th>
+                  <th>Date & Time</th>
+                  <th>Batch(s)</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @meetings.each do |meeting| %>
+                  <tr>
+                    <td><%= meeting.id %></td>
+                    <td><%= meeting.zoom_meeting_id %></td>
+                    <td><%= meeting.password %></td>
+                    <td><%= meeting.subject %></td>
+                    <td><%= meeting.teacher_name %></td>
+                    <td><%= meeting.datetime_of_meeting&.strftime("%d-%b-%y %r") %></td>
+                    <td><%= meeting.batches.pluck(:name).join(', ') %></td>
+                    <td>
+                      <%= link_to '<i class="glyphicon glyphicon-envelope"></i>'.html_safe, admin_zoom_meeting_chats_path(meeting), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                      <%= link_to 'Edit', edit_admin_zoom_meeting_path(meeting), method: :get, class: "btn btn-warning btn-sm" %>
+                      <%= link_to 'Del', admin_zoom_meeting_path(meeting), method: :delete, class: "btn btn-danger btn-sm" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="alert alert-info">No Meetings's were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

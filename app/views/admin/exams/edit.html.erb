@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-2">
+          <h5 class="pt-3"> Edit Exam</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <%= form_for(@exam, url: admin_exam_path(@exam.id), html: {class: 'form-horizontal'}, method: 'patch' ) do |form| %>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="name">Name*:</label>
+            <div class="col-sm-6">
+              <input type="text" value="<%= @exam.name %>" class="form-control" id="name" placeholder="Exam Name" name="name" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="description">Description:</label>
+            <div class="col-sm-6">
+              <textarea class="form-control" name="description" placeholder="Enter description"><%= @exam.description %></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="questions">Number of Questions*:</label>
+            <div class="col-sm-6">
+              <input type="number" value="<%= @exam.no_of_questions %>" class="form-control" id="no_of_questions" placeholder="Total Number of Questions in exam" name="no_of_questions"  required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="time_in_minutes">Time in Mins*:</label>
+            <div class="col-sm-6">
+              <input type="number" value="<%= @exam.time_in_minutes %>" class="form-control" id="time_in_minutes" placeholder="Time for exam in Minutes" name="time_in_minutes"  required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="show_exam_at">Available from*:</label>
+            <div class="col-sm-3">
+              <input type="datetime-local" value="<%= @exam&.show_exam_at&.strftime('%Y-%m-%dT%R') %>" class="form-control" id="available_from_time" name="show_exam_at">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="show_exam_at">Available till:</label>
+            <div class="col-sm-3">
+              <input type="datetime-local" value="<%= @exam&.exam_available_till&.strftime('%Y-%m-%dT%R') %>" class="form-control" id="exam_available_till" name="exam_available_till">
+            </div>
+          </div>
+
+          <div class="hidden form-group">
+            <label class="control-label col-sm-2" for="exam_type">Exam Type:</label>
+            <div class="custom-controls-stacked" style="padding-top: 8px;">
+              <label class="custom-control custom-radio custom-control-inline">
+                <input checked="checked" id="exam_type_yes" name="exam_type" type="radio" value="jee" /> &nbsp; JEE
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="exam_type_no" name="exam_type" type="radio" value="cet" /> &nbsp; CET
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="exam_type_no" name="exam_type" type="radio" value="other" /> &nbsp; Other
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-sm-2">Batch*</label>
+            <% selected_batch_ids = @exam.batches.ids %>
+            <% if @batches.present? %>
+              <div class="selectgroup selectgroup-pills">
+                <% @batches.each do |batch|%>
+                  <label class="selectgroup-item">
+                    <input type="checkbox" name="exam[batches][]" value="<%= batch.id %>" class="selectgroup-input" <%= selected_batch_ids.include?(batch.id) ? 'checked' : '' %>>
+                    <span class="selectgroup-button"><%= batch.name %></span>
+                  </label>
+                <% end %>
+              </div>
+            <% else %>
+              <div class="alert alert-info alert">No Batches are created yet. Create a batch first
+              </div>
+            <% end %>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="publish_result">Publish Result:</label>
+            <div class="custom-controls-stacked" style="padding-top: 8px;">
+              <label class="custom-control custom-radio custom-control-inline">
+                <input <%= @exam.publish_result ? 'checked': '' %> id="publish_result_yes" name="publish_result" type="radio" value="Yes" /> &nbsp; Yes
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input <%= !@exam.publish_result ? 'checked' : '' %> id="publish_result_no" name="publish_result" type="radio" value="No" /> &nbsp; No
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-success">Update</button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+

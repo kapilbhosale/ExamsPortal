@@ -1,0 +1,45 @@
+<div class="container-fluid">
+  <% if @phy_videos.present? %>
+    <% @phy_videos.each do |video| %>
+      <% video_url = "/students/lectures/#{video[:laptop_vimeo_id]}" %>
+      <a href="<%= video_url %>">
+        <div class="row" style="padding: 8px 0px; margin-bottom: -25px;">
+          <div class="col-sm-12 col-md-6">
+                <div class="card" >
+                    <div class="card-horizontal" style="background-color:white;">
+                        <div class="col-4" style="margin-left: -10px;">
+                          <%= (image_tag video.thumbnail.to_s, size: "100x80") rescue "Image" %>
+                        </div>
+                          <div class="col-8 card-body" style="padding:0">
+                              <p class="card-text" style="padding-left: 10px;">
+                                <%= video[:title] %>
+                              </p>
+                              <div class="text-right">
+                                <span class="label label-warning"><%= video[:tag] %></span>
+                              </div>
+                          </div>
+                    </div>
+                    <div class="card-footer text-right" style="height: 50px; padding: 12px;">
+                        <p class="text-muted">
+                          <%= image_tag 'user-solid', size: "15", style: "margin-bottom: 3px;"%>
+                          <span style="padding-top: 2px;"><%= video[:by] %></span>
+                          &nbsp;&nbsp;&nbsp;&nbsp;
+                          <small class="text-muted">
+                            <%= image_tag 'clock-solid', size: "15", style: "margin-bottom: 3px;"%>
+                            <%= time_ago_in_words(video.created_at) %>
+                          </small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </a>
+    <% end %>
+  <% else %>
+  <div class="text-center">
+    <h5>Physics</h5>
+    <p>We will upload physic videos soon..</p>
+    <p>please stay tuned.</p>
+  </div>
+  <% end %>
+</div>

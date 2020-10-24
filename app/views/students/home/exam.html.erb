@@ -6,4 +6,4 @@
   <%= @styles %>
 </style>
 
-<%= react_component("MasterApp", props: { root_path: "/students/exam/#{params[:id]}", id: params[:id] }, prerender: false, trace: nil) %>
+<%= react_component("MasterApp", props: { root_path: "/students/exam/#{params[:id]}", id: params[:id], student_id: @student_id }, prerender: false, trace: nil) %>

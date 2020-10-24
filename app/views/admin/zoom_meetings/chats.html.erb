@@ -1,0 +1,103 @@
+  <div class="col-md-10">
+    <h4>live Chat Messages</h4>
+    <div class="msg-container">
+      <% @messages.each do |message| %>
+        <div class="<%= message.sender_type == 'Student' ? 'student-msg' : 'admin-msg' %>">
+          <p>
+            <b>[<%= message.sender_id%>] <%= message.sender_name%>:</b>
+            <%= message.message %>
+          </p>
+          <span class="time-right">
+            <%= message.created_at.strftime("%I:%M %p") %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="input-group">
+        <input id="chatMessage" type="text" class="form-control border-0" placeholder="Enter your message..." data-name="<%= @admin.name %>" ">
+        <span id="sendMessage" class="input-group-addon btn btn-primary" style="width: 75px;">
+            Send
+        </span>
+    </div>
+  </div>
+
+
+<script>
+  function setupActionCable() {
+    App.video_chat = App.cable.subscriptions.create({channel: 'VideoChatChannel', id: "<%= @live_class.id %>"}, {
+      connected: function () {
+        console.log("AC:: ACTION CABLE ==> Connected");
+      },
+      disconnected: function () {
+        console.log("AC:: ACTION CABLE dis-connected");
+      },
+      received: function (data) {
+        console.log("AC:: DATA => ", data);
+        $(".msg-container").append(data.message);
+        $(".msg-container").animate({ scrollTop: $('.msg-container').prop("scrollHeight")}, 1000);
+      }
+    });
+  };
+
+  $(document).ready(function(){
+    setupActionCable();
+
+    $("#sendMessage").click(function(){
+      var msg = $("#chatMessage").val();
+      var name = $("#chatMessage").data("name");
+      $("#chatMessage").val('');
+
+      var formData = {
+        message: msg,
+        sender_name: "<%= @admin.name %>",
+        sender_type: 'Admin',
+        sender_id: "<%= @admin.id %>",
+        messageable_type: "<%= @live_class&.class&.name %>",
+        messageable_id: "<%= @live_class&.id %>",
+      };
+
+      $.ajax({
+        url : "/admin/messages",
+        type: "POST",
+        data : formData,
+        success: function(data, textStatus, jqXHR) {
+          console.log("SUCCESS", data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("ERROR", errorThrown);
+        }
+      });
+
+    });
+  });
+</script>
+
+
+<style>
+.msg-container {
+  height: 488px;
+  overflow-y: auto;
+}
+.student-msg {
+  background-color: #bfbfbf;
+  padding: 10px 5px 25px 5px;
+  border-radius: 5px;
+  margin: 10px 0px;
+}
+.admin-msg {
+  background-color: #99cdf9;
+  padding: 10px 5px 25px 5px;
+  border-radius: 5px;
+  margin: 10px 0px;
+}
+.time-right {
+  float: right;
+  color: #000;
+}
+
+.time-left {
+  float: left;
+  color: #000;
+}
+</style>;

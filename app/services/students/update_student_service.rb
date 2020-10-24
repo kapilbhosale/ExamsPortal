@@ -13,7 +13,16 @@ module Students
     def update
       validate_request
       build_batches
+
+      if student.parent_mobile != @student_params[:parent_mobile]
+        student.password = @student_params[:parent_mobile]
+        student.raw_password = @student_params[:parent_mobile]
+      end
+
       student.update!(@student_params)
+
+      # SyncStudentWithAppService.new(student).sync
+
       return {status: true, message: 'Student updated successfully'}
     rescue UpdateStudentService, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}

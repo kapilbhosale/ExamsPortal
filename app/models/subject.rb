@@ -7,16 +7,22 @@
 #  name_map   :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  org_id     :integer
 #
 # Indexes
 #
 #  index_subjects_on_name_map  (name_map)
+#  index_subjects_on_org_id    (org_id)
 #
 
 class Subject < ApplicationRecord
   before_create :add_name_map
+  belongs_to :org
+  has_many :video_lectures
 
-  has_many :concepts, dependent: :destroy
+  NAME_REGEX = /\A[a-zA-Z0-9 \.\(\)]+\z/
+  validates :name, uniqueness: { scope: :org_id }
+  validates :name, format: { with: NAME_REGEX, message: 'No special Characters allowed in name.'}
 
   private
   def add_name_map

@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-lg-8">
+    <%= form_for :subject, url: admin_subjects_path, html: {class: 'card'} do  |form| %>
+      <div class="card-body">
+        <h3 class="card-title">Add Subject</h3>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Subject Name</label>
+              <%= form.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <%= link_to "Cancel", admin_subjects_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+        <button type="submit" class="btn btn-success">Add New subject</button>
+      </div>
+    <% end %>
+  </div>
+</div>

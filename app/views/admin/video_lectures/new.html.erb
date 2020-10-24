@@ -1,0 +1,152 @@
+
+<%= form_tag admin_video_lectures_path,  multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
+  <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
+    <div class="col-lg-8">
+        <div class="card-body">
+          <h3 class="card-title">
+            <b>Add Video Lecture <span style="color: #45aaf2"><%= @genre.present? ? " Folder : #{@genre.name} " : ''%></span></b>
+          </h3>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Image *</label>
+
+            <div class="col-sm-8 custom-file form-group">
+              <input type="file" id="banner_url" name="thumbnail" required>
+              <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
+            </div>
+          </div>
+
+          <% if @is_vimeo_configured %>
+            <div style="border-color: coral; border-style: solid; margin-top: 10px;">
+              <div class="row form-group">
+                <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
+                </div>
+              </div>
+                &nbsp; &nbsp; &nbsp; OR
+                <div class="row form-group">
+                  <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
+                  <div class="col-sm-8">
+                    <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id">
+                  </div>
+                </div>
+            </div>
+          <% else %>
+            <div class="row form-group">
+              <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" placeholder="Enter youtube video url" name="url">
+              </div>
+            </div>
+          <% end %>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Video Title" name="title" required>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
+            <div class="col-sm-8">
+              <div class="form-group">
+                <select class="form-control" name="subject_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? && @genre&.subject_id.present? %>">
+                  <% @subjects.each do |subject| %>
+                    <option value="<%= subject.id %>" <%= subject.id == @genre&.subject&.id ? 'selected' : '' %>>
+                      <%= subject.name.humanize %>
+                    </option>
+                  <% end %>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
+            <div class="col-sm-8">
+              <select class="form-control" name="genre_id" id="video_lecture_genre_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? %>">
+                <% @genres.each do |genre| %>
+                  <option value="<%= genre.id %>" <%= genre.id == @genre&.id ? 'selected' : '' %>>
+                    <%= genre.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">TAG</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag">
+            </div>
+          </div>
+
+          <% if @is_vimeo_configured %>
+            <div class="row form-group">
+              <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
+              <div class="col-sm-8">
+                <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id">
+              </div>
+            </div>
+          <% end %>
+
+          <div class="row form-group">
+            <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
+            <div class="col-sm-8">
+              <input type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <p>Select Batches: </p>
+            <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
+              <% @batches.each do |batch| %>
+                <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %>><%= batch.name %></label>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-right">
+          <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">Add New Video Lecture</button>
+        </div>
+    </div>
+    <div class=col-lg-4>
+      <a href="#" id="btn-more-actions" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
+      <br>
+      <hr>
+      <div class="more-container hidden">
+        <div class="row form-group">
+          <label class="control-label col-sm-4 text-right" for="email">View Limits</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value="3">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" name="is_redirect_needed" value="<%= @genre.present? %>">
+<% end %>
+
+
+<script>
+  $(document).ready(function(){
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        var label = e.target.parentElement.lastElementChild;
+        label.innerText = fileName;
+    });
+    $('#btn-more-actions').on("click", function(){
+      $('.more-container').toggleClass("hidden");
+    });
+  });
+</script>

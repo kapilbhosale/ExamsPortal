@@ -1,28 +1,21 @@
 class Admin::ReportsController < Admin::BaseController
 
   def index
-    @exams = Exam.all
-    # @test = {name: "Mock Test 2018", marks: 180, date: '15 July 2018'}
-    # @students = [
-    #   {id: 1, name: 'Kapil Bhosale', batch: '12th Neet', marks: 160, rank: 1, correct: 80, wrong: 0},
-    #   {id: 2, name: 'Deepak Jadhav', batch: '12th Neet', marks: 157, rank: 2, correct: 78, wrong: 0},
-    #   {id: 3, name: 'kalpak Bhosale', batch: '12th Neet', marks: 151, rank: 3, correct: 90, wrong: 0},
-    #   {id: 4, name: 'Akshay Mohite', batch: '12th Neet', marks: 139, rank: 4, correct: 90, wrong: 0},
-    #   {id: 5, name: 'Deepak potdar', batch: '12th Neet', marks: 139, rank: 5, correct: 90, wrong: 0},
-    #   {id: 6, name: 'Sachin chole', batch: '12th Neet', marks: 120, rank: 6, correct: 90, wrong: 0},
-    #   {id: 7, name: 'sumit Joshi', batch: '12th Neet', marks: 119, rank: 7, correct: 90, wrong: 0},
-    #   {id: 8, name: 'Amol Patil', batch: '12th Neet', marks: 119, rank: 8, correct: 90, wrong: 0},
-    #   {id: 9, name: 'Somnath kada', batch: '12th Neet', marks: 111, rank: 9, correct: 90, wrong: 0},
-    #   {id: 10, name: 'Kiran Kale', batch: '12th Neet', marks: 110, rank: 10, correct: 90, wrong: 0},
-    #   {id: 11, name: 'Nilesh Rothe', batch: '12th Neet', marks: 110, rank: 11, correct: 90, wrong: 0},
-    #   {id: 12, name: 'Arutwar krisha', batch: '12th Neet', marks: 100, rank: 12, correct: 90, wrong: 0},
-    #   {id: 13, name: 'samadhan jadhav', batch: '12th Neet', marks: 99, rank: 13, correct: 90, wrong: 0},
-    #   {id: 14, name: 'patil vishal', batch: '12th Neet', marks: 10, rank: 14, correct: 90, wrong: 0},
-    #   {id: 15, name: 'more vittha', batch: '12th Neet', marks: 0, rank: 15, correct: 90, wrong: 0},
-    # ]
+    @exams = Exam.where(org: current_org).includes(:batches).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
+    @students_count_by_exam_id = StudentExam.where(exam: @exams).group(:exam_id).count
+  end
+
+  def generate_progress_report
+    exam = Exam.find_by(id: params[:report_id], org: current_org)
+
+    prepare_report(exam)
+
+    flash[:success] = "Report Card generated, Do not Regenrate it."
+    redirect_to admin_reports_path
   end
 
   def show
+    exam = Exam.find_by(id: params[:id], org: current_org)
     @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
 
     respond_to do |format|
@@ -36,27 +29,24 @@ class Admin::ReportsController < Admin::BaseController
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
       format.csv do
+        send_data @response, filename: "#{exam.name}_result.csv"
+      end
+    end
+  end
 
-        # students_csv = CSV.generate(headers: true) do |csv|
-        #   csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
-        #
-        #   @students_data.each do |student|
-        #     csv << [
-        #         student[:roll_number],
-        #         student[:name],
-        #         student[:email],
-        #         student[:raw_password],
-        #         student[:batches]
-        #     ]
-        #   end
-        # end
-        send_data @response, filename: 'Exam_result.csv'
+  def exam_detailed_report
+    exam = Exam.find_by(id: params[:report_id], org: current_org)
+    @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
+
+    respond_to do |format|
+      format.csv do
+        send_data @response, filename: "#{exam.name}_detailed_student_analysis_report.csv"
       end
     end
   end
 
   def student_progress
-    student = Student.find_by(id: params[:id])
+    student = Student.find_by(id: params[:id], org: current_org)
   end
 
   private
@@ -65,5 +55,45 @@ class Admin::ReportsController < Admin::BaseController
     unless @response[:status]
       flash[:error] = @response[:message]
     end
+  end
+
+  def prepare_report(exam)
+    student_exam_syncs = StudentExamSync.where(exam_id: exam.id)
+    student_exam_summaries = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id})
+
+    if student_exam_syncs.present? && student_exam_summaries.present?
+      student_exam_summaries.destroy_all
+    end
+
+    Reports::ExamCsvReportService.new(exam.id).prepare_report
+    progress_report_data = {}
+
+    # prepate report by deleting existing reports first.
+    ProgressReport.where(exam_id: exam.id).delete_all
+    StudentExamSummary.includes(:student_exam, :section).where({student_exams: {exam_id: exam.id}}).find_each do |ses|
+      student_exam_key = "sid:#{ses.student_exam.student_id}-exam_id:#{exam.id}"
+      progress_report_data[student_exam_key] ||= {
+        exam_date: exam.show_exam_at,
+        exam_name: exam.name,
+        exam_id: exam.id,
+        student_id: ses.student_exam.student_id,
+        percentage: 0,
+        data: {
+          ses.section.name => {},
+          total: { score: 0, total: 0 }
+        }
+      }
+
+      # total_score = ses.total_score
+      # if total_score.zero?
+      exam_section = ExamSection.find_by(exam: exam, section: ses.section)
+      total_score = exam_section.total_marks
+      # end
+      progress_report_data[student_exam_key][:data][ses.section.name] = { score: ses.score, total: total_score }
+      progress_report_data[student_exam_key][:data][:total][:score] += ses.score
+      progress_report_data[student_exam_key][:data][:total][:total] += total_score
+      progress_report_data[student_exam_key][:percentage] += 100 * ses.score.to_f / total_score.to_f
+    end
+    ProgressReport.create(progress_report_data.values)
   end
 end

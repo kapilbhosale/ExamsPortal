@@ -10,6 +10,7 @@ import ShellRight from "../components/ShellRight";
 import LoadingAnimation from "../components/LoadingAnimation";
 import TestSubmitModal from "../components/TestSubmitModal";
 import Modal from 'react-modal';
+import ExamSummary from "../components/ExamSummary";
 
 function select(state) {
   // $$ just indicates that it's Immutable.
@@ -29,19 +30,36 @@ class ExamSolverContainer extends Component {
         document.getElementById("mySidenav").style.width = "0";
       }
       else {
-        document.getElementById("mySidenav").style.width = "350px";
+        document.getElementById("mySidenav").style.width = "320px";
       }
     }
+    this.actions().isExamValid();
     this.actions().initialize();
   }
 
-  componentWillReceiveProps(nextProps){
-    const prevStore = this.props.$$examSolverStore;
-    const nextStore = nextProps.$$examSolverStore;
-    // if(prevStore.get('questionsBy') !== nextStore.get('questions')){
+  componentDidUpdate(prevProps) {
+    this.actions().syncAnswers();
+    const { $$curExamSolverStore } = this.props;
+    const { $$prevExamSolverStore } = prevProps;
+    if (!$$curExamSolverStore || !$$prevExamSolverStore) {
       this.actions().syncAnswers();
-    // }
+      return;
+    }
+    const curNotVisitedQuestions = $$curExamSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
+    const prevNotVisitedQuestions = $$prevExamSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
+
+    if (curNotVisitedQuestions !== prevNotVisitedQuestions) {
+      this.actions().syncAnswers();
+    }
   }
+
+  // componentWillReceiveProps(nextProps){
+  //   const prevStore = this.props.$$examSolverStore;
+  //   const nextStore = nextProps.$$examSolverStore;
+  //   // if(prevStore.get('questionsBy') !== nextStore.get('questions')){
+  //     this.actions().syncAnswers();
+  //   // }
+  // }
 
   componentWillMount() {
     const $win = $(window);
@@ -81,6 +99,8 @@ class ExamSolverContainer extends Component {
     const isTestSubmitModalOpen = $$examSolverStore.get('isTestSubmitModalOpen');
     const sectionWiseSummary = $$examSolverStore.get('questionsCountByStatus');
     const timeLeftMessage = $$examSolverStore.get('timeLeftMessage');
+    const examFinished = $$examSolverStore.get('examFinished');
+    const examSummary = $$examSolverStore.get('examSummary');
 
     const customStyles = {
     content : {
@@ -97,9 +117,15 @@ class ExamSolverContainer extends Component {
       return currentQuestionIndex[currentSection] === 0;
     }
 
+    if(examFinished) {
+      return(
+        <ExamSummary examSummary={examSummary}/>
+      )
+    }
+
     const actions = this.actions();
     if (loading) {
-      return <LoadingAnimation height="700px" />;
+      return <LoadingAnimation height="100px" msg="Loading All Exam data, Please wait, This May take some time."/>;
     } else {
       return (
         <div className="">
@@ -183,6 +209,7 @@ class ExamSolverContainer extends Component {
             sectionWiseSummary={ sectionWiseSummary }
             submitTest={ actions.submitTest }
             isTestSubmitModalOpen={ isTestSubmitModalOpen }
+            questionsBySections= { questionsBySections }
           />
 	</div>
       );

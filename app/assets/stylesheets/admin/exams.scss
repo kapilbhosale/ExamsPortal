@@ -9,8 +9,18 @@
   font-weight: bold;
 }
 
+.display-inline {
+  display: inline-block;
+}
+
 .blinking {
   animation:blinkingText 1.2s infinite;
+}
+
+.react-countdown-clock {
+  canvas {
+    margin-top: -30px;
+  }
 }
 @keyframes blinkingText{
   0%{ color:transparent; }

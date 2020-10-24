@@ -15,14 +15,14 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  sign_in_count          :integer          default(0), not null
+#  type                   :string           default("Teacher")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  institute_id           :bigint(8)
+#  org_id                 :integer          default(0)
 #
 # Indexes
 #
 #  index_admins_on_email                 (email) UNIQUE
-#  index_admins_on_institute_id          (institute_id)
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #
 

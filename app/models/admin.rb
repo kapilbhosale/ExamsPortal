@@ -15,14 +15,14 @@
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  sign_in_count          :integer          default(0), not null
+#  type                   :string           default("Teacher")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  institute_id           :bigint(8)
+#  org_id                 :integer          default(0)
 #
 # Indexes
 #
 #  index_admins_on_email                 (email) UNIQUE
-#  index_admins_on_institute_id          (institute_id)
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #
 
@@ -52,4 +52,33 @@ class Admin < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  belongs_to :org
+
+  validates :org_id, presence: true
+
+  has_many :admin_batches
+  has_many :batches, through: :admin_batches
+
+  # Admin accounts are
+  # 1. Admin
+  # 1. Head of Class
+  # 1. teacher
+  # 1. operator
+
+
+  attr_writer :login
+
+  def login
+    @login || self.email
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions.to_h).where(["lower(email) = :value", { :value => login.downcase }]).first
+    elsif conditions.has_key?(:email)
+      where(conditions.to_h).first
+    end
+  end
 end

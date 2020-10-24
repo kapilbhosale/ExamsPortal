@@ -1,0 +1,15 @@
+<% @notifications.each_slice(2) do |slice_notifications| %>
+  <div class="row">
+    <% slice_notifications.each do |notification| %>
+        <div class="col-sm-6 col-sx-12">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title"><b><h3><%= notification.title %></h3></b></h3>
+              <p class="card-text"><%= notification.description %></p>
+              <p class="card-text"><b>Added on:</b> <%= notification.created_at&.strftime("%d-%b-%y %r") %></p>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+<% end %>

@@ -19,4 +19,26 @@
 class ExamSection < ApplicationRecord
   belongs_to :exam
   belongs_to :section
+
+  def total_marks
+    exam.jee_advance? ? jee_advance_total_marks : regular_total_marks
+  end
+
+  def jee_advance_total_marks
+    without_multi_count = exam.questions.where(section_id: section_id).where.not(question_type: Question.question_types[:multi_select]).count
+    total = (positive_marks || 1) * without_multi_count
+    total + (exam.questions.where(section_id: section_id).multi_select.count * 4)
+  end
+
+  def regular_total_marks
+    ( positive_marks || 1 ) * exam.questions.where(section_id: section_id).count
+  end
+
+  def multi_count
+    exam.questions.where(section_id: section_id).multi_select.count
+  end
+
+  def input_count
+    exam.questions.where(section_id: section_id).input.count
+  end
 end

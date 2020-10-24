@@ -6,7 +6,7 @@ import LoadingAnimation from './LoadingAnimation';
 const PageLoading = ({ isLoading, pastDelay, error }) => {
     if (isLoading && pastDelay) {
         return (
-            <LoadingAnimation />
+            <LoadingAnimation msg="Loading All Exam data, Please wait, This May take some time."/>
         );
     } else if (error && !isLoading) {
         return <p>Error!</p>;

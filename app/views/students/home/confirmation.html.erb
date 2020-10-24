@@ -1,90 +1,47 @@
+
 <% if @exam.present? %>
   <div class="container">
-    <div class="row text-center">
-      <h4><%= @exam.name %></h4>
+    <div class="text-center" style="width: 100%; padding: 10px 4px; background-color: antiquewhite;">
+      <span class=" text-center">
+        <h4><%= @exam.name %></h4>
+        <b><%= @exam.total_marks %> Marks </b> &nbsp; &nbsp; Exam in <%= @exam.time_in_minutes %> mins
+      </span>
     </div>
-    <div class="row text-center">
-      <h3><%= @exam.description %></h3>
-    </div>
-    <div class="row">
-      <div class="col-md-2 pull-left pl-0">
-        <h5>Duration: <%= @exam.time_in_minutes %> MINS</h5>
-      </div>
-      <div class="col-md-2 pull-right">
-        <h5> Maximum Marks: <%= @exam.no_of_questions * 4 %> </h5>
-      </div>
-    </div>
+
     <div class="row">
       <div class="shadow-div">
-        <b>Read the following instructions carefully.</b>
+        <p>Read the following instructions carefully.</p>
         <ol>
-          <li class="margin-left">
-            This test comprises multiple­choice questions (MCQs).
-          </li>
           <li class="margin-left">
             Each question will have only 1 of the available options as the correct answer.
           </li>
           <li class="margin-left">
-            One fourth of the marks assigned to a question will be deducted for each wrong answer
-          </li>
-          <li class="margin-left">
-            No marks will be deducted for un­attempted questions.
-          </li>
-          <li class="margin-left">
             You are advised not to close the browser window before submitting the test.
-          </li>
-          <li class="margin-left">
-            In case the test does not load completely or becomes un­responsive, click on browser's refresh button to reload.
-          </li>
-          <li class="margin-left">
-            You can write this test only once, so for best results do not try to guess answers.
           </li>
         </ol>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12 pl-0" >
-        <div class="shadow-div">
-          <b>Choose your default language: English</b>
-          <select class="select-picker">
-            <option>English</option>
-            <option>Hindi</option>
-            <option>Marathi</option>
-          </select>
-          <div>
-            <span class="text-danger">
-              Please note all questions will appear in your default language. This language can be changed for a particular question later on
-            </span>
-          </div>
-        </div>
+      <div class="col-md-4 text-center">
+        <% if @exam.exam_available_till.present? && Time.current > @exam.exam_available_till %>
+          <p class="text-danger">
+            Exam Expired, <%= @exam.exam_available_till.strftime("%d-%b-%y %r") %>
+          </p>
+        <% else %>
+          <a href="/students/exam/<%= @exam.id %>" onclick="localStorage.clear()">
+            <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
+          </a>
+        <% end %>
       </div>
-    </div>
-    <div class="row">
-      <div class="shadow-div">
-        <div class="mb-10"><b>Declaration:</b></div>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" id="checkboxAgree" value="" class="text-center" required>
-            I have read all the instructions carefully and have understood them. I agree not to cheat or use unfair means in this examination. I understand that using unfair means of any sort for my own or someone else’s advantage will lead to my immediate disqualification. The decision of Testbook.com will be final in these matters and cannot be appealed.
-          </label>
-        </div>
+      <div class="text-center" style="width: 100%; padding-top: 20px;">
+        <span class="text-danger text-center">
+          <h4>
+            Next step will load all paper at once.
+            <br>
+            This will take some time, please wait.
+          </h4>
+        </span>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-2 pull-right">
-        <a href="/students/exam/<%= @exam.id %>"></a>
-        <form action="/students/exam/<%= @exam.id %>" id="myForm">
-          <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
-        </form>
-      </div>
-      <span class="text-danger">
-        <h4>
-          Be Carefull..
-          Submit Exams if any pending.
-          <br>
-          This action will clear all unsumitted data.
-        </h4>
-      </span>
     </div>
   </div>
 <% else %>
@@ -92,17 +49,3 @@
    Mock exam not available yet. Please contact to administrator.
   </div>
 <% end %>
-<script type="text/javascript">
-  $(document).ready(function(){
-    $(document).on('click', '#btnConfirm', function(){
-      if(!$('#checkboxAgree').is(':checked')){
-        alert("Accept the declaration.");
-      }
-      else
-      {
-        window.localStorage.clear();
-        $('#myForm').submit();
-      }
-    });
-  });
-</script>

@@ -2,7 +2,10 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="/">
-      Smart Exams
+        <% if @current_org.data.dig('name_and_logo', 'logo').present? %>
+          <%= image_tag @current_org.data.dig('name_and_logo', 'logo') %>
+        <% end %>
+        <%= @current_org&.name %>
       </a>
       <% if admin_signed_in? %>
         <div class="d-flex order-lg-2 ml-auto">
@@ -48,13 +51,22 @@
             <%= link_to '<i class="fe fe-list"></i> Batches'.html_safe, admin_batches_path, class: current_page?(admin_batches_path) ? "nav-link active" : "nav-link" %>
           </li>
           <li class="nav-item">
+            <%= link_to '<i class="fe fe-list"></i> Subjects'.html_safe, admin_subjects_path, class: current_page?(admin_subjects_path) ? "nav-link active" : "nav-link" %>
+          </li>
+          <li class="nav-item">
             <%= link_to '<i class="fe fe-bar-chart-2"></i> Reports'.html_safe, admin_reports_path, class: current_page?(admin_reports_path) ? "nav-link active" : "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to '<i class="fe fe-monitor"></i> Exams'.html_safe, admin_exams_path, class: current_page?(admin_exams_path) ? "nav-link active" : "nav-link" %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-folder"></i> Question Bank'.html_safe, question_bank_admin_exams_path, class: current_page?(question_bank_admin_exams_path) ? "nav-link active" : "nav-link" %>
+            <%= link_to '<i class="fe fe-folder"></i> Videos Portal'.html_safe, admin_video_lectures_path, class: current_page?(admin_video_lectures_path) ? "nav-link active" : "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to '<i class="fe fe-folder"></i> Android APP'.html_safe, admin_android_apps_path, class: current_page?(admin_android_apps_path) ? "nav-link active" : "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to '<i class="fe fe-users"></i> Admin Users'.html_safe, admin_users_path, class: current_page?(admin_users_path) ? "nav-link active" : "nav-link" %>
           </li>
         </ul>
       </div>

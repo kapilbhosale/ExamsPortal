@@ -1,0 +1,21 @@
+<% @exam_paper_data.each_slice(2) do |exam_papers| %>
+  <div class="row">
+    <% exam_papers.each do |exam_paper| %>
+        <div class="col-sm-6 col-sx-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= exam_paper[:name] %></h5>
+              <p class="card-text"><%= exam_paper[:description] %></p>
+              <p class="card-text"><%= exam_paper[:added_on] %></p>
+              <% if exam_paper[:question_paper_link].present? %>
+                <a href="<%= exam_paper[:question_paper_link] %>" class="btn btn-danger">Question Paper</a>
+              <% end %>
+              <% if exam_paper[:solution_paper_link].present? %>
+                <a href="<%= exam_paper[:solution_paper_link] %>" class="btn btn-primary">Solutions</a>
+              <% end %>
+            </div>
+          </div>
+        </div>
+    <% end %>
+  </div>
+<% end %>

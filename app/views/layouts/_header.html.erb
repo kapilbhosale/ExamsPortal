@@ -2,7 +2,13 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="/">
-        Smart Exams
+        <div>
+          <span style="margin-top: -13px;">
+            <% logo_props = get_logo(request.subdomain) %>
+            <%= image_tag logo_props[:logo], width: logo_props[:width], height: logo_props[:height] %>
+            <%= get_header_name(request.subdomain) %>
+          </span>
+        </div>
       </a>
       <div class="d-flex order-lg-2 ml-auto">
         <% if student_signed_in? %>
@@ -38,25 +44,35 @@
     </div>
   </div>
 </div>
-<div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
-  <div class="container">
-    <div class="row align-items-center">
-      <div class="col-lg order-lg-first">
-        <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-monitor'></i> My Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-airplay'></i> Mock Tests".html_safe, students_mock_tests_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-book'></i> Question Bank".html_safe, students_question_bank_path, class: current_page?(students_question_bank_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "<i class='fe fe-users'></i> External Students".html_safe, students_exam_subscription_path, class: current_page?(students_exam_subscription_path) ? "nav-link active" : "nav-link" %>
-          </li>
-        </ul>
+  <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg order-lg-first">
+          <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-monitor'></i>Online Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-airplay'></i> Video Lectures".html_safe, students_videos_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-airplay'></i> Live Classes".html_safe, students_live_classes_path, class: current_page?(students_live_classes_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-book'></i> Study Pdfs".html_safe, students_study_pdfs_path, class: current_page?(students_study_pdfs_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "<i class='fe fe-users'></i> Notifications".html_safe, students_notifications_path, class: current_page?(students_notifications_path) ? "nav-link active" : "nav-link" %>
+            </li>
+            <% if request.subdomain == 'exams' && current_student.present? %>
+            <li class="nav-item">
+              <a class="" href="https://docs.google.com/forms/d/e/1FAIpQLScV2YhtsejvBk1C6nrgqQB0eezVbSK_keuy2ucHIxZI4zh4Qg/viewform" role="button" target="_blank">
+                <Button class="btn btn-sm btn-danger">Study Material Dispatch Form</Button>
+              </a>
+            </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>

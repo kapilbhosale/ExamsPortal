@@ -1,0 +1,145 @@
+<div class="tabbable-panel">
+  <div class="tabbable-line">
+    <ul class="nav nav-tabs ">
+      <% @lectures_data.keys.each_with_index do |key, index| %>
+        <li class="<%= index == 0 ? 'active': '' %>">
+          <a href="#<%=key.parameterize %>" data-toggle="tab">
+            <%= key.humanize %>
+          </a>
+        </li>
+      <% end %>
+    </ul>
+
+    <div class="tab-content">
+      <% active_class = true %>
+      <% @lectures_data.each do |key, videos| %>
+        <div class="tab-pane <%= active_class ? 'active' : '' %>" id="<%= key.parameterize %>">
+          <div class="container-fluid">
+            <% videos.each do |video| %>
+              <% video_url = "/students/lectures/#{video[:laptop_vimeo_id]}" %>
+              <a href="<%= video_url %>">
+                <div class="row" style="padding: 8px 0px; margin-bottom: -25px;">
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card" >
+                            <div class="card-horizontal" style="background-color:white;">
+                                <div class="col-4" style="margin-left: -10px;">
+                                  <%= (image_tag video.thumbnail.to_s, size: "100x80") rescue nil %>
+                                </div>
+                                  <div class="col-8 card-body" style="padding:0">
+                                      <p class="card-text" style="padding-left: 10px;">
+                                        <%= video[:title] %>
+                                      </p>
+                                      <div class="text-right">
+                                        <span class="label label-warning"><%= video[:tag] %></span>
+                                      </div>
+                                  </div>
+                            </div>
+                            <div class="card-footer text-right" style="height: 50px; padding: 12px;">
+                                <p class="text-muted">
+                                  <%= image_tag 'user-solid', size: "15", style: "margin-bottom: 3px;"%>
+                                  <span style="padding-top: 2px;"><%= video[:by] %></span>
+                                  &nbsp;&nbsp;&nbsp;&nbsp;
+                                  <small class="text-muted">
+                                    <%= image_tag 'clock-solid', size: "15", style: "margin-bottom: 3px;"%>
+                                    <%= time_ago_in_words(video.created_at) %>
+                                  </small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </a>
+            <% end %>
+          </div>
+        </div>
+        <% active_class = false %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<style>
+  .card-horizontal {
+    display: flex;
+    flex-shrink: 0;
+    flex: 2 1 auto;
+  }
+
+    /* Tabs panel */
+  .tabbable-panel {
+    border:1px solid #eee;
+    padding: 0px;
+    margin: -10px;
+  }
+
+  /* Default mode */
+  .tabbable-line > .nav-tabs {
+    border: none;
+    margin: 0px;
+  }
+  .tabbable-line > .nav-tabs > li {
+    margin-right: 2px;
+  }
+  .tabbable-line > .nav-tabs > li > a {
+    border: 0;
+    margin-right: 0;
+    color: #737373;
+  }
+  .tabbable-line > .nav-tabs > li > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
+    border-bottom: 4px solid #fbcdcf;
+  }
+  .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
+    border: 0;
+    background: none !important;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.open > a > i, .tabbable-line > .nav-tabs > li:hover > a > i {
+    color: #a6a6a6;
+  }
+  .tabbable-line > .nav-tabs > li.open .dropdown-menu, .tabbable-line > .nav-tabs > li:hover .dropdown-menu {
+    margin-top: 0px;
+  }
+  .tabbable-line > .nav-tabs > li.active {
+    border-bottom: 4px solid #f3565d;
+    position: relative;
+  }
+  .tabbable-line > .nav-tabs > li.active > a {
+    border: 0;
+    color: #333333;
+  }
+  .tabbable-line > .nav-tabs > li.active > a > i {
+    color: #404040;
+  }
+  .tabbable-line > .tab-content {
+    margin-top: -3px;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #eee;
+    padding: 5px 0;
+  }
+  .portlet .tabbable-line > .tab-content {
+    padding-bottom: 0;
+  }
+
+  .warning {
+    margin-top: -10px;
+    text-align: center;
+  }
+  .blink-bg{
+		color: #fff;
+		padding: 2px 10px;
+		display: inline-block;
+		border-radius: 5px;
+		animation: blinkingBackground 5s infinite;
+	}
+	@keyframes blinkingBackground{
+		0%		{ background-color: #10c018;}
+		25%		{ background-color: #1056c0;}
+		50%		{ background-color: #ef0a1a;}
+		75%		{ background-color: #254878;}
+		100%	        { background-color: #04a1d5;}
+	}
+</style>
