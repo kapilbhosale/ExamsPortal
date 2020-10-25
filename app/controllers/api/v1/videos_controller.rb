@@ -33,35 +33,37 @@ class Api::V1::VideosController < Api::V1::ApiController
     render json: lectures_data, status: :ok
   end
 
-  def set_yt_url
-    lecture = VideoLecture.find_by(id: params[:video_id])
-    render json: {} and return if lecture.blank?
+  # def set_yt_url
+  #   lecture = VideoLecture.find_by(id: params[:video_id])
+  #   render json: {} and return if lecture.blank?
     
-    urls = params[:urls]
-    expiry_time = params[:expiry_time]
+  #   urls = params[:urls]
+  #   expiry_time = params[:expiry_time]
 
-    cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
-    if cached_url.blank?
-      cached_url = yt_url(lecture)
-      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
-      # expiry_time.
-    end
+  #   cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
+  #   if cached_url.blank?
+  #     cached_url = yt_url(lecture)
+  #     REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+  #     # expiry_time.
+  #   end
 
-    render json: { url_hd: cached_url, url_sd: cached_url }
-  end
+  #   render json: { url_hd: cached_url, url_sd: cached_url }
+  # end
 
   def get_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
-    cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
-    if cached_url.blank?
+    cached_url_sd = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd")
+    cached_url_hd = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd")
+  
+    if cached_url_sd.blank?
       cached_url = yt_url(lecture)
       REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
-      # expiry_time.
+      render json: { url_hd: cached_url, url_sd: cached_url }
+    else
+      render json: { url_hd: cached_url_hd, url_sd: cached_url_sd }
     end
-
-    render json: { url_hd: cached_url, url_sd: cached_url }
   end
 
   def set_yt_url
