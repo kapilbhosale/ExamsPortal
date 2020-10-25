@@ -36,8 +36,11 @@ class Api::V1::VideosController < Api::V1::ApiController
   def set_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: {} and return if lecture.blank?
+    
+    urls = params[:urls]
+    expiry_time = params[:expiry_time]
 
-    cached_url = REDIS_CACHE.set("lecture-#{lecture.id}")
+    cached_url = REDIS_CACHE.get("lecture-#{lecture.id}")
     if cached_url.blank?
       cached_url = yt_url(lecture)
       REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
@@ -114,16 +117,16 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'raqcahhx-dest:85s6bwerv1xg@209.127.191.180:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.130.255.243:80',
-      'raqcahhx-dest:85s6bwerv1xg@185.164.56.20:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.130.255.198:80',
-      'raqcahhx-dest:85s6bwerv1xg@185.30.232.123:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.95.96.132:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.95.96.237:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.95.96.187:80',
-      'raqcahhx-dest:85s6bwerv1xg@45.94.47.66:80',
-      'raqcahhx-dest:85s6bwerv1xg@193.8.56.119:80',
+      'iuinhdtn-dest:k6wdos2bb48k@209.127.191.180:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.130.255.243:80',
+      'iuinhdtn-dest:k6wdos2bb48k@185.164.56.20:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.130.255.198:80',
+      'iuinhdtn-dest:k6wdos2bb48k@185.30.232.123:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.132:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.237:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.187:80',
+      'iuinhdtn-dest:k6wdos2bb48k@45.94.47.66:80',
+      'iuinhdtn-dest:k6wdos2bb48k@193.8.56.119:80',
     ]
   end
 
