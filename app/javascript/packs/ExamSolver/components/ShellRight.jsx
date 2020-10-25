@@ -4,27 +4,12 @@ class ShellRight extends React.Component {
 
   componentDidMount() {
     const $win = $(window);
-    const MEDIAQUERY = {
-      desktopXL: 1200,
-      desktop: 992,
-      tablet: 768,
-      mobile: 575,
-    };
-    const mobileDevice = $win.width() < MEDIAQUERY.mobile
+    const desktopDevice = $win.width() > 992;
 
-    if (this.props.isNavigationMapOpen && mobileDevice) {
-      setNavigationMap(false);
-      document.getElementById("mySidenav").style.width = "0";
-      document.getElementById("mySidenav").style.paddingLeft = 0;
-      document.getElementById("mySidenav").style.paddingRight = 0;
-    } else {
-      if( mobileDevice ) {
-        document.getElementById("mySidenav").style.width = "90%";
-        document.getElementById("mySidenav").style.paddingLeft = "13px";
-      } else {
-        document.getElementById("mySidenav").style.width = "320px";
-        document.getElementById("mySidenav").style.paddingLeft = "13px";
-      }
+    if (desktopDevice) {
+      this.props.setNavigationMap(true);
+      document.getElementById("mySidenav").style.width = "320px";
+      document.getElementById("mySidenav").style.paddingLeft = "13px"
     }
   }
   render() {

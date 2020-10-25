@@ -83,7 +83,7 @@ class ExamSolverContainer extends Component {
     const { $$examSolverStore } = this.props;
     const questionsBySections = $$examSolverStore.get('questionsBySections').toJS();
     const currentQuestionIndex = $$examSolverStore.get('currentQuestionIndex').toJS();
-    const totalQuestions = $$examSolverStore.get('totalQuestions');
+    const totalQuestions = $$examSolverStore.get('totalQuestions').toJS();
     const startedAt = $$examSolverStore.get('startedAt');
     const currentSection = $$examSolverStore.get('currentSection');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
@@ -115,7 +115,18 @@ class ExamSolverContainer extends Component {
 
     const onFirstQuestion = () => {
       return currentQuestionIndex[currentSection] === 0;
-    }
+    };
+
+    const isSectionLastQuestion = () => {
+      return currentQuestionIndex[currentSection] === totalQuestions[currentSection] - 1;
+    };
+
+    const handleSaveAndNext = () => {
+      if (isSectionLastQuestion()) {
+        alert(`You reached at the end of ${currentSection} section. You can submit the test or continue to next section`);
+      }
+      actions.saveAndNext(currentQuestionIndex[currentSection]);
+    };
 
     if(examFinished) {
       return(
@@ -198,7 +209,7 @@ class ExamSolverContainer extends Component {
                 <button
                   type="button"
                   className="btn btn-success save-next-btn margin-left-5 pull-right"
-                  onClick={ () => { actions.saveAndNext(currentQuestionIndex[currentSection]) } }
+                  onClick={ () => handleSaveAndNext()  }
                   >
                 </button>
               </div>

@@ -13,7 +13,7 @@ export const $$initialState = Immutable.fromJS({
   questionsCountByStatus: Immutable.fromJS({}),
   currentSection: null,
   loading: true,
-  navigationMapOpen: true,
+  navigationMapOpen: false,
   currentTime: null,
   isTestSubmitModalOpen: false,
   examFinished: false,
