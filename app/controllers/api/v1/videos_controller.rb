@@ -55,23 +55,40 @@ class Api::V1::VideosController < Api::V1::ApiController
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
     cached_url_sd = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd")
+    cached_url_sd_contentLength = REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength")
     cached_url_hd = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd")
+    cached_url_hd_contentLength = REDIS_CACHE.set("lecture-#{lecture.id}-url_hd_contentLength")
   
     if cached_url_sd.blank?
-      cached_url = yt_url(lecture)
-      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", cached_url, { ex: 1.hour })
-      render json: { url_hd: cached_url, url_sd: cached_url }
+      yt_json = yt_json_info(lecture)
+      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", yt_json['url'], { ex: 1.hour })
+      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength", yt_json['filesize'])
+      json_data = {
+        url_sd: yt_json['url'],
+        url_sd_contentLength: yt_json['filesize'],
+        url_hd: yt_json['url'],
+        url_hd_contentLength: yt_json['filesize'],
+      }
+      render json: json_data
     else
-      render json: { url_hd: cached_url_hd, url_sd: cached_url_sd }
+      json_data = {
+        url_sd: cached_url_sd,
+        url_sd_contentLength: cached_url_sd_contentLength,
+        url_hd: cached_url_hd,
+        url_hd_contentLength: cached_url_hd_contentLength
+      }
+      render json: json_data
     end
   end
 
   def set_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: {} and return if lecture.blank?
-
+  
     REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", params[:urls][:url_sd], { ex: 1.hour })
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength", params[:urls][:url_sd_contentLength])
     REDIS_CACHE.set("lecture-#{lecture.id}-url_hd", params[:urls][:url_hd], { ex: 1.hour })
+    REDIS_CACHE.set("lecture-#{lecture.id}-url_hd_contentLength", params[:urls][:url_hd_contentLength])
 
     render json: { status: 'ok' }
   end
@@ -132,12 +149,12 @@ class Api::V1::VideosController < Api::V1::ApiController
     ]
   end
 
-  def yt_url(lecture)
-    str_url = `youtube-dl --get-url --format 18/22 '#{lecture.url}'`
-    return str_url if str_url.present?
+  def yt_json_info(lecture)
+    video_data = `youtube-dl -j --format 18/22 '#{lecture.url}'`
+    return JSON.parse(video_data) if video_data.present?
 
-    url_from_proxy = `youtube-dl --get-url --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
-    url_from_proxy.squish
+    video_data_from_proxy = `youtube-dl -j --format 18/22 '#{lecture.url}' --proxy #{proxy_list[Random.rand(9)]}`
+    JSON.parse(video_data_from_proxy)
   end
 
   def lectures_json(lectures)
