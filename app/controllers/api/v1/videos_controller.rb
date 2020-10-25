@@ -59,7 +59,7 @@ class Api::V1::VideosController < Api::V1::ApiController
   
     if cached_url_sd.blank?
       cached_url = yt_url(lecture)
-      REDIS_CACHE.set("lecture-#{lecture.id}", cached_url, { ex: (10 * 60) })
+      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", cached_url, { ex: (10 * 60) })
       render json: { url_hd: cached_url, url_sd: cached_url }
     else
       render json: { url_hd: cached_url_hd, url_sd: cached_url_sd }
