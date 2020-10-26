@@ -136,16 +136,16 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def proxy_list
     [
-      'iuinhdtn-dest:k6wdos2bb48k@209.127.191.180:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.130.255.243:80',
-      'iuinhdtn-dest:k6wdos2bb48k@185.164.56.20:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.130.255.198:80',
-      'iuinhdtn-dest:k6wdos2bb48k@185.30.232.123:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.132:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.237:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.95.96.187:80',
-      'iuinhdtn-dest:k6wdos2bb48k@45.94.47.66:80',
-      'iuinhdtn-dest:k6wdos2bb48k@193.8.56.119:80',
+      'mvjxvmzc-dest:l15yq4x69d27@209.127.191.180:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.130.255.243:80',
+      'mvjxvmzc-dest:l15yq4x69d27@185.164.56.20:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.130.255.198:80',
+      'mvjxvmzc-dest:l15yq4x69d27@185.30.232.123:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.95.96.132:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.95.96.237:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.95.96.187:80',
+      'mvjxvmzc-dest:l15yq4x69d27@45.94.47.66:80',
+      'mvjxvmzc-dest:l15yq4x69d27@193.8.56.119:80',
     ]
   end
 
