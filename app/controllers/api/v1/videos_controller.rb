@@ -51,43 +51,43 @@ class Api::V1::VideosController < Api::V1::ApiController
   # end
 
   def get_yt_url
-    json_data = {
-      url_sd: "",
-      url_sd_contentLength: "",
-      url_hd: "",
-      url_hd_contentLength: ""
-    }
+    # json_data = {
+    #   url_sd: "",
+    #   url_sd_contentLength: "",
+    #   url_hd: "",
+    #   url_hd_contentLength: ""
+    # }
 
-    render json: json_data and return
+    # render json: json_data and return
 
-    # lecture = VideoLecture.find_by(id: params[:video_id])
-    # render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
+    lecture = VideoLecture.find_by(id: params[:video_id])
+    render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
 
-    # cached_url_sd = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd")
-    # cached_url_sd_contentLength = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd_contentLength")
-    # cached_url_hd = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd")
-    # cached_url_hd_contentLength = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd_contentLength")
+    cached_url_sd = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd")
+    cached_url_sd_contentLength = REDIS_CACHE.get("lecture-#{lecture.id}-url_sd_contentLength")
+    cached_url_hd = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd")
+    cached_url_hd_contentLength = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd_contentLength")
   
-    # if cached_url_sd.blank?
-    #   yt_json = yt_json_info(lecture)
-    #   REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", yt_json['url'], { ex: 1.hour })
-    #   REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength", yt_json['filesize'])
-    #   json_data = {
-    #     url_sd: yt_json['url'],
-    #     url_sd_contentLength: yt_json['filesize'],
-    #     url_hd: yt_json['url'],
-    #     url_hd_contentLength: yt_json['filesize'],
-    #   }
-    #   render json: json_data
-    # else
-    #   json_data = {
-    #     url_sd: cached_url_sd,
-    #     url_sd_contentLength: cached_url_sd_contentLength,
-    #     url_hd: cached_url_hd,
-    #     url_hd_contentLength: cached_url_hd_contentLength
-    #   }
-    #   render json: json_data
-    # end
+    if cached_url_sd.blank?
+      yt_json = yt_json_info(lecture)
+      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", yt_json['url'], { ex: 1.hour })
+      REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength", yt_json['filesize'])
+      json_data = {
+        url_sd: yt_json['url'],
+        url_sd_contentLength: yt_json['filesize'],
+        url_hd: yt_json['url'],
+        url_hd_contentLength: yt_json['filesize'],
+      }
+      render json: json_data
+    else
+      json_data = {
+        url_sd: cached_url_sd,
+        url_sd_contentLength: cached_url_sd_contentLength,
+        url_hd: cached_url_hd,
+        url_hd_contentLength: cached_url_hd_contentLength
+      }
+      render json: json_data
+    end
   end
 
   def set_yt_url
