@@ -58,7 +58,6 @@ class Api::V1::VideosController < Api::V1::ApiController
         url_hd: "",
         url_hd_contentLength: ""
       }
-
       render json: json_data and return
     else
       lecture = VideoLecture.find_by(id: params[:video_id])

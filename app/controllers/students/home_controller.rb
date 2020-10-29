@@ -30,6 +30,7 @@ class Students::HomeController < Students::BaseController
     @previous_exams = Exam
       .where(id: exam_ids)
       .where('show_exam_at <= ?', Time.current - 1.days )
+      .where('show_exam_at > ?', Time.current - 7.days )
       .order(created_at: :desc)
     @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
 
