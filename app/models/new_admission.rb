@@ -10,6 +10,7 @@
 #  email                 :string
 #  error_code            :string
 #  error_info            :string
+#  fees                  :decimal(, )      default(0.0)
 #  first_name            :string
 #  gender                :integer          default(NULL)
 #  last_exam_percentage  :string
@@ -28,6 +29,7 @@
 #  course_id             :integer
 #  payment_id            :string
 #  reference_id          :string
+#  rz_order_id           :string
 #  student_id            :integer
 #
 

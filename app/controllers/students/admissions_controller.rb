@@ -1,10 +1,14 @@
 require 'openssl'
 require 'base64'
+require 'razorpay'
 
 class Students::AdmissionsController < ApplicationController
   layout false, only: [:show, :pay_installment, :create_installment]
   MERCHANT_ID = "3300260987"
   skip_before_action :verify_authenticity_token, only: [:admission_done, :create]
+
+  # PAYMENT_MODE = "icici-bank"
+  PAYMENT_MODE = "razor-pay"
 
   def show
     redirect_to '/' unless request.subdomain == 'exams'
@@ -104,10 +108,17 @@ class Students::AdmissionsController < ApplicationController
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
       new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
+      new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?)
 
       if new_admission.save
         new_admission.in_progress!
-        redirect_to get_eazy_pay_url(new_admission, course)
+        if PAYMENT_MODE == 'razor-pay'
+          # when we use razorpay
+          redirect_to initiate_pay_path({id: new_admission.id}) and return
+        else
+          # when we use regular payments from ICICI
+          redirect_to get_eazy_pay_url(new_admission, course)
+        end
       else
         flash[:error] = new_admission.errors.full_messages
         redirect_back(fallback_location: '/new-admission')
@@ -208,7 +219,8 @@ class Students::AdmissionsController < ApplicationController
               pending_fees.save
             end
 
-            batches = get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
+            batches = Batch.get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
+
             if batches.present?
               # student.batches.destroy_all
               student.new_admission_id = @new_admission.id
@@ -216,17 +228,17 @@ class Students::AdmissionsController < ApplicationController
               student.batches << batches
               # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               if @new_admission.batch == 'repeater'
-                student.roll_number = suggest_rep_online_roll_number
-                student.suggested_roll_number = suggest_rep_online_roll_number
+                student.roll_number = Student.suggest_rep_online_roll_number
+                student.suggested_roll_number =  Student.suggest_rep_online_roll_number
               else
-                student.roll_number = suggest_tw_online_roll_number
-                student.suggested_roll_number = suggest_tw_online_roll_number
+                student.roll_number =  Student.suggest_tw_online_roll_number
+                student.suggested_roll_number =  Student.suggest_tw_online_roll_number
               end
               student.api_key = student.api_key + '+1'
               student.app_login = false
               student.save
             end
-            send_sms(student, true)
+            student.send_sms(true)
           end
         else
           pay_transaction = PaymentTransaction.find_by(
@@ -235,7 +247,7 @@ class Students::AdmissionsController < ApplicationController
           ) rescue nil
 
           if pay_transaction.blank?
-            std = add_student(@new_admission)
+            std = Student.add_student(@new_admission)
             @new_admission.student_id = std.id
             @new_admission.save
             PaymentTransaction.create(
@@ -255,173 +267,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   private
-
-    INITIAL_TW_ROLL_NUMBER = 51200
-    def suggest_tw_online_roll_number
-      online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
-      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
-      return rn + 1 if rn
-
-      INITIAL_TW_ROLL_NUMBER
-    end
-
-    INITIAL_RP_ROLL_NUMBER = 6001
-    def suggest_rep_online_roll_number
-      online_s_ids = NewAdmission.where(error_code: ['E000', 'E006']).where(batch: NewAdmission.batches['repeater']).where.not(student_id: nil).pluck(:student_id)
-      rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
-      return rn + 1 if rn
-
-      INITIAL_RP_ROLL_NUMBER
-    end
-
-    INITIAL_ONLINE_ROLL_NUMBER = 1100
-    def suggest_online_roll_number(org, batch, is_12th=false)
-      new_11_batch_ids = [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
-      s_ids = StudentBatch.where(batch_id: new_11_batch_ids).pluck(:student_id)
-      rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
-      return rn + 1 if rn
-
-      INITIAL_ONLINE_ROLL_NUMBER
-    end
-
-    def add_student(na)
-      org = Org.first
-      batches = get_batches(na.rcc_branch, na.course, na.batch)
-
-      if @new_admission.batch == 'repeater'
-        roll_number = suggest_rep_online_roll_number
-      else
-        roll_number = suggest_online_roll_number(org, batches.first)
-      end
-
-      email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
-      student = Student.find_or_initialize_by(email: email)
-      student.roll_number = roll_number
-      student.suggested_roll_number = roll_number
-      student.name = na.name
-      student.mother_name = "-"
-      student.gender = na.gender == 'male' ? 0 : 1
-      student.student_mobile = na.student_mobile
-      student.parent_mobile = na.parent_mobile
-      student.category_id = 1
-      student.password = na.parent_mobile
-      student.raw_password = na.parent_mobile
-      student.org_id = org.id
-      student.new_admission_id = na.id
-      student.save
-
-      student.batches << batches
-
-      send_sms(student)
-      return student
-    end
-
-    SMS_USER_NAME = "divyesh92@yahoo.com"
-    SMS_PASSWORD = "myadmin"
-
-    def send_sms(student, is_installment=false)
-      require 'net/http'
-      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-      if is_installment
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+installment_sms_text(student)+"";
-      else
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+sms_text(student)+"";
-      end
-      uri = URI(strUrl)
-      puts Net::HTTP.get(uri)
-
-      strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-      if is_installment
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile.to_s+"&Text="+installment_sms_text(student)+"";
-      else
-        strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student.student_mobile.to_s+"&Text="+sms_text(student)+"";
-      end
-      uri = URI(strUrl)
-      puts Net::HTTP.get(uri)
-    end
-
-    def installment_sms_text(student)
-      "Dear Students, Welcome in the world of  RCC.
-
-      Your Installment is processed, successfully.
-
-      Name: #{student.name}
-      Batch: #{student.batches.pluck(:name).join(",")}
-
-      your Login details are
-      Roll Number: #{student.roll_number}
-      Parent Mobile: #{student.parent_mobile}
-
-      Remove your app and Reinstall it from
-      https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new
-
-      Thank you, Team RCC"
-    end
-
-    def sms_text(student)
-      "Dear Students, Welcome in the world of  RCC.
-
-      Your admission is confirmed.
-
-      Name: #{student.name}
-      Course: #{student.batches.pluck(:name).join(",")}
-
-      your Login details are
-      Roll Number: #{student.roll_number}
-      Parent Mobile: #{student.parent_mobile}
-
-      Download App from given link
-      https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
-    end
-
-    def get_batches(rcc_branch, course, batch)
-      return nil if course.blank?
-      if batch == '11th'
-        if rcc_branch == "latur"
-          return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'B-2_Latur_11th_Phy_2020') if course.name == 'phy'
-          return Batch.where(name: 'B-2_Latur_11th_Chem_2020') if course.name == 'chem'
-          return Batch.where(name: 'B-2_Latur_11th_Bio_2020') if course.name == 'bio'
-          return Batch.where(name: 'B-2_Latur_11th_PC_2020') if course.name == 'pc'
-          return Batch.where(name: 'B-2_Latur_11th_PB_2020') if course.name == 'pb'
-          return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
-        else
-          return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
-          return Batch.where(name: 'Nanded 11th Phy (VIP) 2020') if course.name == 'phy'
-          return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
-          return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
-          return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'
-          return Batch.where(name: 'B-2_Nanded_11th_PB_2020') if course.name == 'pb'
-          return Batch.where(name: 'B-2_Nanded_11th_CB_2020') if course.name == 'cb'
-        end
-      elsif batch == 'repeater'
-        org = Org.first
-        batch_name = rcc_branch == "latur" ?
-          "Ltr-REP-2-#{course.name.upcase}-2020" :
-          "Ned-REP-2-#{course.name.upcase}-2020"
-
-        Batch.find_or_create_by(org_id: org.id, name: batch_name)
-        Batch.where(org_id: org.id, name: batch_name)
-      else
-        if rcc_branch == "latur"
-          return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
-          return Batch.where(name: 'Ltr_12th-Physics_2020-21') if course.name == 'phy'
-          return Batch.where(name: 'Ltr_12th-Chemistry_2020-21') if course.name == 'chem'
-          return Batch.where(name: 'Ltr_12th-Biology_2020-21') if course.name == 'bio'
-          return Batch.where(name: 'Ltr_12th-PC_2020-21') if course.name == 'pc'
-          return Batch.where(name: 'Latur-12th Phy + Bio 2021') if course.name == 'pb'
-          return Batch.where(name: 'Latur-12th Chem + Bio 2021') if course.name == 'cb'
-        else
-          return Batch.where(name: 'Ned_12th-PCB_2020-21') if course.name == 'pcb'
-          return Batch.where(name: 'Ned_12th-Physics_2020-21') if course.name == 'phy'
-          return Batch.where(name: 'Ned_12th-Chemistry_2020-21') if course.name == 'chem'
-          return Batch.where(name: 'Ned_12th-Biology_2020-21') if course.name == 'bio'
-          return Batch.where(name: 'Ned_12th-PC_2020-21') if course.name == 'pc'
-          return Batch.where(name: 'Ned-12th Phy + Bio 2021') if course.name == 'pb'
-          return Batch.where(name: 'Ned-12th Chem + Bio 2021') if course.name == 'cb'
-        end
-      end
-    end
 
     def is_number? string
       true if Float(string) rescue false

@@ -25,6 +25,14 @@ Rails.application.routes.draw do
   post 'admission-done', to: 'students/admissions#admission_done'
   post 'ADMISSION-DONE', to: 'students/admissions#admission_done'
   get 'ADMISSION-DONE', to: 'students/admissions#admission_done'
+
+  # added for razorpay
+  get 'initiate_pay', to: 'students/payments#initiate_pay', as: :initiate_pay
+  post 'process-admission', to: 'students/payments#process_payment'
+  post 'authorize_payment', to: 'students/payments#authorize_payment'
+  get  'process-admission', to: 'students/payments#process_payment'
+  get  'confirm_payment', to: 'students/payments#confirm_payment'
+
   get 'print-receipt/:reference_id', to: 'students/admissions#print_receipt'
 
   get 'pay-installment', to: 'students/admissions#pay_installment'

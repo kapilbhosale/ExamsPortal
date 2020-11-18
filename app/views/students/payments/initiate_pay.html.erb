@@ -1,0 +1,89 @@
+<div class="container">
+  <h5 class="text-center"> Please check details and pay</h5>
+
+  <div style="text-align: center;">
+    <div>
+      <table class="table" style="text-align: left;">
+        <tr>
+          <td>Name: </td><td><%= @new_admission.name %></td>
+        </tr>
+        <tr>
+          <td>Student mobile: </td><td><%= @new_admission&.student_mobile %></td>
+        </tr>
+        <tr>
+          <td>Parent mobile: </td><td><%= @new_admission&.parent_mobile %></td>
+        </tr>
+        <tr>
+          <td>Email: </td><td><%= @new_admission&.email %></td>
+        </tr>
+        <tr>
+          <td>Course ID: </td><td><%= @new_admission&.course_id %></td>
+        </tr>
+        <tr>
+          <td>Batch: </td><td><%= @new_admission&.batch %></td>
+        </tr>
+        <tr>
+          <td>RCC Branch: </td><td><%= @new_admission&.rcc_branch %></td>
+        </tr>
+      </table>
+      <div id="loading-container" style="text-align: center;" class="hidden">
+        <i class="fa fa-4x fa-refresh fa-spin"></i>
+        <h3>Wait... Processing Payment.</h3>
+        <p>It may take some time, please do not refresh or go back.</p>
+      </div>
+
+      <div style="text-align: center;">
+        <p>I acknowledge, all the details are correct. I want to pay further.</p>
+          <button class="btn btn-info" id="rzp-button1"><i class="fa fa-inr"></i> Proceed to Pay </button>
+      </div>
+    </div>
+    <hr>
+    <button id="btn-goback" onclick="goBack()" class="btn"><i class="fa fa-info"></i> Go Back </button>
+    <p style="color: red; padding-top: 10px;">
+      Warning: Do not press back button or go back to payment page.
+      Close browser or app after you download pdf receipt.
+    </p>
+  </div>
+</div>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = {
+      "key": "<%= ENV.fetch('RZ_KEY_ID') %>", // Enter the Key ID generated from the Dashboard
+      "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "RCC",
+      "description": "<%= "#{@new_admission.batch} - #{@new_admission.course.name}"%>",
+      "image": "https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-logo.jpg",
+      "order_id": "<%= @order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "callback_url": "https://cb4f3104e235.ngrok.io/authorize_payment",
+      "prefill": {
+          "name": "<%= @new_admission.name %>",
+          "email": "<%= @new_admission.email %>",
+          "contact": "<%= @new_admission.parent_mobile %>",
+          "remember_card": false,
+      },
+      "notes": {
+          "address": "Renukai Chemistry Classes, Udyog Bhavan, Signal Camp, Latur-413512"
+      },
+      "theme": {
+          "color": "#C8061B"
+      }
+  };
+  var rzp1 = new Razorpay(options);
+  document.getElementById('rzp-button1').onclick = function(e){
+
+    this.classList.add("hidden");
+    document.getElementById('btn-goback').classList.add("hidden");
+    document.getElementById('loading-container').classList.remove("hidden")
+
+    rzp1.open();
+    e.preventDefault();
+  }
+</script>

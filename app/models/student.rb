@@ -113,6 +113,38 @@ class Student < ApplicationRecord
     end
   end
 
+  def self.add_student(na)
+    org = Org.first
+    batches = Batch.get_batches(na.rcc_branch, na.course, na.batch)
+
+    if na.batch == 'repeater'
+      roll_number = suggest_rep_online_roll_number
+    else
+      roll_number = suggest_online_roll_number(org, batches.first)
+    end
+
+    email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
+    student = Student.find_or_initialize_by(email: email)
+    student.roll_number = roll_number
+    student.suggested_roll_number = roll_number
+    student.name = na.name
+    student.mother_name = "-"
+    student.gender = na.gender == 'male' ? 0 : 1
+    student.student_mobile = na.student_mobile
+    student.parent_mobile = na.parent_mobile
+    student.category_id = 1
+    student.password = na.parent_mobile
+    student.raw_password = na.parent_mobile
+    student.org_id = org.id
+    student.new_admission_id = na.id
+    student.save
+
+    student.batches << batches
+
+    student.send_sms
+    return student
+  end
+
   def pending_amount
     amount = pending_fees.where(paid: false).last&.amount || 0
     amount > 0 ? amount : nil
@@ -126,5 +158,90 @@ class Student < ApplicationRecord
     key = Digest::MD5.hexdigest "#{org_id}-#{roll_number}-#{parent_mobile}"
     # SecureRandom.uuid.gsub(/\-/,'')
     "#{key}-#{app_reset_count}"
+  end
+
+
+  INITIAL_TW_ROLL_NUMBER = 51200
+  def self.suggest_tw_online_roll_number
+    online_s_ids = NewAdmission.where(error_code: ['E000', 'E006', nil]).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
+    rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
+    return rn + 1 if rn
+    INITIAL_TW_ROLL_NUMBER
+  end
+
+  INITIAL_RP_ROLL_NUMBER = 6001
+  def self.suggest_rep_online_roll_number
+    online_s_ids = NewAdmission.where(error_code: ['E000', 'E006', nil]).where(batch: NewAdmission.batches['repeater']).where.not(student_id: nil).pluck(:student_id)
+    rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
+    return rn + 1 if rn
+    INITIAL_RP_ROLL_NUMBER
+  end
+
+  INITIAL_ONLINE_ROLL_NUMBER = 1100
+  def self.suggest_online_roll_number(org, batch, is_12th=false)
+    new_11_batch_ids = [46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]
+    s_ids = StudentBatch.where(batch_id: new_11_batch_ids).pluck(:student_id)
+    rn = Student.where(id: s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
+    return rn + 1 if rn
+
+    INITIAL_ONLINE_ROLL_NUMBER
+  end
+
+  SMS_USER_NAME = "divyesh92@yahoo.com"
+  SMS_PASSWORD = "myadmin"
+
+  def send_sms(is_installment=false)
+    require 'net/http'
+    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+    if is_installment
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+parent_mobile+"&Text="+installment_sms_text+"";
+    else
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+parent_mobile+"&Text="+sms_text+"";
+    end
+    uri = URI(strUrl)
+    puts Net::HTTP.get(uri)
+
+    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+    if is_installment
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student_mobile.to_s+"&Text="+installment_sms_text+"";
+    else
+      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student_mobile.to_s+"&Text="+sms_text+"";
+    end
+    uri = URI(strUrl)
+    puts Net::HTTP.get(uri)
+  end
+
+  def installment_sms_text
+    "Dear Students, Welcome in the world of  RCC.
+
+    Your Installment is processed, successfully.
+
+    Name: #{name}
+    New Batch: #{batches.pluck(:name).join(",")}
+
+    your Login details are
+    Roll Number: #{roll_number}
+    Parent Mobile: #{parent_mobile}
+
+    Remove your app and Reinstall it from
+    https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new
+
+    Thank you, Team RCC"
+  end
+
+  def sms_text
+    "Dear Students, Welcome in the world of  RCC.
+
+    Your admission is confirmed.
+
+    Name: #{name}
+    Course: #{batches.pluck(:name).join(",")}
+
+    your Login details are
+    Roll Number: #{roll_number}
+    Parent Mobile: #{parent_mobile}
+
+    Download App from given link
+    https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
   end
 end

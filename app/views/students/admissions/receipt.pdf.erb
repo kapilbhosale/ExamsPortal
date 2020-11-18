@@ -1,4 +1,4 @@
-<% status = @new_admission.error_code == 'E000' %>
+<% status = @new_admission.success? || @new_admission.error_code == 'E000' %>
 <div class="col-12">
   <div class="card border-0">
     <div class="card-header text-center border-0">

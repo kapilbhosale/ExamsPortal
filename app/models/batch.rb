@@ -34,4 +34,52 @@ class Batch < ApplicationRecord
   def self.all_batches
     Batch.all { |batch| [batch.id, batch.name] }
   end
+
+  def self.get_batches(rcc_branch, course, batch)
+    if batch == '11th'
+      if rcc_branch == "latur"
+        return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'B-2_Latur_11th_Phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'B-2_Latur_11th_Chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'B-2_Latur_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: 'B-2_Latur_11th_PC_2020') if course.name == 'pc'
+        return Batch.where(name: 'B-2_Latur_11th_PB_2020') if course.name == 'pb'
+        return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
+      else
+        return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
+        return Batch.where(name: 'B-2_Nanded_11th_Phy_2020') if course.name == 'phy'
+        return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
+        return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
+        return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'
+        return Batch.where(name: 'B-2_Nanded_11th_PB_2020') if course.name == 'pb'
+        return Batch.where(name: 'B-2_Nanded_11th_CB_2020') if course.name == 'cb'
+      end
+    elsif batch == 'repeater'
+      org = Org.first
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-REP-#{course.name.upcase}-2020" :
+        "Ned-REP-#{course.name.upcase}-2020"
+
+      Batch.find_or_create_by(org_id: org.id, name: batch_name)
+      Batch.where(org_id: org.id, name: batch_name)
+    else
+      if rcc_branch == "latur"
+        return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
+        return Batch.where(name: 'Ltr_12th-Physics_2020-21') if course.name == 'phy'
+        return Batch.where(name: 'Ltr_12th-Chemistry_2020-21') if course.name == 'chem'
+        return Batch.where(name: 'Ltr_12th-Biology_2020-21') if course.name == 'bio'
+        return Batch.where(name: 'Ltr_12th-PC_2020-21') if course.name == 'pc'
+        return Batch.where(name: 'Latur-12th Phy + Bio 2021') if course.name == 'pb'
+        return Batch.where(name: 'Latur-12th Chem + Bio 2021') if course.name == 'cb'
+      else
+        return Batch.where(name: 'Ned_12th-PCB_2020-21') if course.name == 'pcb'
+        return Batch.where(name: 'Ned_12th-Physics_2020-21') if course.name == 'phy'
+        return Batch.where(name: 'Ned_12th-Chemistry_2020-21') if course.name == 'chem'
+        return Batch.where(name: 'Ned_12th-Biology_2020-21') if course.name == 'bio'
+        return Batch.where(name: 'Ned_12th-PC_2020-21') if course.name == 'pc'
+        return Batch.where(name: 'Ned-12th Phy + Bio 2021') if course.name == 'pb'
+        return Batch.where(name: 'Ned-12th Chem + Bio 2021') if course.name == 'cb'
+      end
+    end
+  end
 end

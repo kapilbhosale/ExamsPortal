@@ -1,0 +1,39 @@
+<div style="text-align: center;">
+  <div>
+    <h3 style="color: green;">
+      Congratulations, Payment Sucessfull.
+    </h3>
+    <p>
+      RCC team will Activate Your account.
+      Please write down the Reference Number for futher communication.
+    </p>
+    <p style="color: green;">
+      Also, take printout of the receipt.
+    </p>
+    <table class="table" style="text-align: left;">
+      <tr>
+        <td>status: </td>
+        <td>Success</td>
+      </tr>
+      <tr>
+        <td>reference no: </td>
+        <td><%= @new_admission&.id %></td>
+      </tr>
+    </table>
+    <div style="text-align: center;">
+      <a href= <%= "/print-receipt/#{@new_admission.reference_id}"%> target="_blank">
+        <button class="btn"><i class="fa fa-print"></i> Print Receipt </button>
+      </a>
+    </div>
+  </div>
+  <p style="color: peru; padding-top: 20px;">
+    Note: Do not Panic, in case of failure. We will figure it out.
+    Contact numbers: 9075402222, 9075392222.
+  </p>
+
+  <p style="color: red; padding-top: 10px;">
+    Warning: Do not press back button or go back to payment page.
+    Close browser or app after you download pdf receipt.
+  </p>
+</div>
+
