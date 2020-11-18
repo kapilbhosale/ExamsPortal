@@ -8,8 +8,9 @@ class Students::PaymentsController < ApplicationController
     # Razorpay::Payment.fetch("123").capture({amount:5})
     @new_admission = NewAdmission.find_by(id: params[:id])
     if @new_admission.present?
-      fees = (@new_admission.fees.to_f.to_i * 100)
+      fees = @new_admission.fees.to_f.to_i
       fees += 120 if @new_admission.student_id.blank?
+      fees = (fees * 100)
 
       @order = Razorpay::Order.create(
         {
