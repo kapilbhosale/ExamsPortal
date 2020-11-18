@@ -52,10 +52,22 @@ class Students::AdmissionsController < ApplicationController
     new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
     new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
     new_admission.student_id = student.id
+    new_admission.fees = student.pending_amount.to_s.to_i
+
+    if new_admission.fees <= 0
+      flash[:error] = "No pending fees for the student."
+      redirect_back(fallback_location: '/') and return
+    end
 
     if new_admission.save
       new_admission.in_progress!
-      redirect_to get_eazy_pay_due_amount_url(new_admission, student)
+      if PAYMENT_MODE == 'razor-pay'
+        # when we use razorpay
+        redirect_to initiate_pay_path({id: new_admission.id}) and return
+      else
+        # when we use regular payments from ICICI
+        redirect_to get_eazy_pay_due_amount_url(new_admission, student)
+      end
     else
       flash[:error] = new_admission.errors.full_messages
       redirect_back(fallback_location: '/')

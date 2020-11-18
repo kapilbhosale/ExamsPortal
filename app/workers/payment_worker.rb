@@ -13,6 +13,15 @@ class PaymentWorker
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
         )
+
+        # remove due information on successful payment.
+        pending_fees = PendingFee.find_by(student_id: student.id, paid: false, amount: new_admission.fees)
+        if pending_fees.present?
+          pending_fees.paid = true
+          pending_fees.reference_no = @new_admission.id
+          pending_fees.save
+        end
+
         batches = Batch.get_batches(new_admission.rcc_branch, new_admission.course, new_admission.batch)
         if batches.present?
           # student.batches.destroy_all

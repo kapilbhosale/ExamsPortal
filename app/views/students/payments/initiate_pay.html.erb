@@ -25,6 +25,9 @@
         <tr>
           <td>RCC Branch: </td><td><%= @new_admission&.rcc_branch %></td>
         </tr>
+        <tr>
+          <td>Payable Amount: </td><td><h4>₹<%= @new_admission&.fees %></h4></td>
+        </tr>
       </table>
       <div id="loading-container" style="text-align: center;" class="hidden">
         <i class="fa fa-4x fa-refresh fa-spin"></i>
@@ -59,7 +62,7 @@
       "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
       "currency": "INR",
       "name": "RCC",
-      "description": "<%= "#{@new_admission.batch} - #{@new_admission.course.name}"%>",
+      "description": "<%= "#{@new_admission.batch} - #{@new_admission.course&.name}"%>",
       "image": "https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-logo.jpg",
       "order_id": "<%= @order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       "callback_url": "https://cb4f3104e235.ngrok.io/authorize_payment",
