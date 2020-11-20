@@ -18,7 +18,7 @@ class PaymentWorker
         pending_fees = PendingFee.find_by(student_id: student.id, paid: false, amount: new_admission.fees)
         if pending_fees.present?
           pending_fees.paid = true
-          pending_fees.reference_no = @new_admission.id
+          pending_fees.reference_no = new_admission.id
           pending_fees.save
         end
 

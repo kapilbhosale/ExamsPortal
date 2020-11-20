@@ -48,7 +48,7 @@ class Students::PaymentsController < ApplicationController
   end
 
   def process_payment
-    order_id = params.dig(:payload, :payment, :entity, :order_id)
+    order_id = params.dig(:payload, :payment, :entity, :order_id) || params.dig('payload', 'payment', 'entity', 'order_id')
     new_admission = NewAdmission.find_by(rz_order_id: order_id)
     if new_admission
       new_admission.payment_callback_data = params[:payment]
