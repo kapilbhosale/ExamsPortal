@@ -187,7 +187,7 @@ class Student < ApplicationRecord
     INITIAL_ONLINE_ROLL_NUMBER
   end
 
-  SMS_USER_NAME = "divyesh92@yahoo.com"
+  SMS_USER_NAME = "maheshrccnanded@gmail.com"
   SMS_PASSWORD = "myadmin"
 
   def send_sms(is_installment=false)
