@@ -9,7 +9,7 @@ class PaymentWorker
       if student.present?
         PaymentTransaction.create(
           student_id: student.id,
-          amount: new_admission.payment_callback_data['Total Amount'].to_f,
+          amount: new_admission.fees.to_f,
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
         )
@@ -54,7 +54,7 @@ class PaymentWorker
         new_admission.save
         PaymentTransaction.create(
           student_id: std.id,
-          amount: new_admission.payment_callback_data['Total Amount'].to_f,
+          amount: new_admission.fees.to_f,
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
         ) rescue nil

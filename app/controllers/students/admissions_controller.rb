@@ -76,7 +76,7 @@ class Students::AdmissionsController < ApplicationController
 
   def print_receipt
     @new_admission = NewAdmission.find_by(reference_id: params[:reference_id])
-    @fees = @new_admission.payment_callback_data['Total Amount'].to_f
+    @fees = @new_admission.fees.to_f
     @processing_fees = @new_admission.student_id.present? ? 0 : 120
     render pdf: "Payment Receipt",
             template: "/students/admissions/receipt.pdf.erb",
