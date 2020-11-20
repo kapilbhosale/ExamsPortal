@@ -65,7 +65,7 @@
       "description": "<%= "#{@new_admission.batch} - #{@new_admission.course&.name}"%>",
       "image": "https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-logo.jpg",
       "order_id": "<%= @order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-      "callback_url": "https://cb4f3104e235.ngrok.io/authorize_payment",
+      "callback_url": "https://exams.smartclassapp.in/authorize_payment",
       "prefill": {
           "name": "<%= @new_admission.name %>",
           "email": "<%= @new_admission.email %>",
