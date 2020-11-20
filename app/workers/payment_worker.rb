@@ -23,10 +23,10 @@ class PaymentWorker
         end
 
         batches = Batch.get_batches(new_admission.rcc_branch, new_admission.course, new_admission.batch)
+        student.new_admission_id = new_admission.id
+        student.save
         if batches.present?
           # student.batches.destroy_all
-          student.new_admission_id = new_admission.id
-          student.save
           student.batches << batches
           # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
           if new_admission.batch == 'repeater'

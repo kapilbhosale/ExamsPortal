@@ -49,8 +49,6 @@ class Students::AdmissionsController < ApplicationController
     new_admission.email = student.email
     new_admission.parent_mobile = student.parent_mobile
     new_admission.student_mobile = student.student_mobile
-    new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
-    new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
     new_admission.student_id = student.id
     new_admission.fees = student.pending_amount.to_s.to_i
 
@@ -232,11 +230,11 @@ class Students::AdmissionsController < ApplicationController
             end
 
             batches = Batch.get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
+            student.new_admission_id = @new_admission.id
+            student.save
 
             if batches.present?
               # student.batches.destroy_all
-              student.new_admission_id = @new_admission.id
-              student.save
               student.batches << batches
               # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               if @new_admission.batch == 'repeater'
