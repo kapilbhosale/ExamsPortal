@@ -26,19 +26,22 @@ class PaymentWorker
         student.new_admission_id = new_admission.id
         student.save
         if batches.present?
-          # student.batches.destroy_all
-          student.batches << batches
-          # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
-          if new_admission.batch == 'repeater'
-            student.roll_number = Student.suggest_rep_online_roll_number
-            student.suggested_roll_number = Student.suggest_rep_online_roll_number
-          else
-            student.roll_number = Student.suggest_tw_online_roll_number
-            student.suggested_roll_number = Student.suggest_tw_online_roll_number
+          batches_to_add = batches - student.batches
+          if batches_to_add.present?
+            # student.batches.destroy_all
+            student.batches << batches_to_add
+            # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
+            if new_admission.batch == 'repeater'
+              student.roll_number = Student.suggest_rep_online_roll_number
+              student.suggested_roll_number = Student.suggest_rep_online_roll_number
+            else
+              student.roll_number = Student.suggest_tw_online_roll_number
+              student.suggested_roll_number = Student.suggest_tw_online_roll_number
+            end
+            student.api_key = student.api_key + '+1'
+            student.app_login = false
+            student.save
           end
-          student.api_key = student.api_key + '+1'
-          student.app_login = false
-          student.save
         end
         student.send_sms(true)
       end
