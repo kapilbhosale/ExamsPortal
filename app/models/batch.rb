@@ -59,9 +59,8 @@ class Batch < ApplicationRecord
     elsif batch == 'repeater'
       org = Org.first
       batch_name = rcc_branch == "latur" ?
-        "Ltr-REP-#{course.name.upcase}-2020" :
-        "Ned-REP-#{course.name.upcase}-2020"
-
+        "Ltr-REP-2-#{course.name.upcase}-2020" :
+        "Ned-REP-2-#{course.name.upcase}-2020"
       Batch.find_or_create_by(org_id: org.id, name: batch_name)
       Batch.where(org_id: org.id, name: batch_name)
     else
