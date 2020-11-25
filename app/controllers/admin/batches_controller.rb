@@ -1,7 +1,7 @@
 class Admin::BatchesController < Admin::BaseController
 
   def index
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all.order(:id)
   end
 
   def new
