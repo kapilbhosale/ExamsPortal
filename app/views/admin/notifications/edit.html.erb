@@ -13,14 +13,7 @@
         </div>
 
         <% selected_batch_ids = @notification.batches.ids %>
-        <div class="form-group">
-          <% @batches.each do |batch| %>
-            <label class="checkbox-inline">
-              <input name="batches[]" type="checkbox" value='<%= batch.id %>' <%= selected_batch_ids.include?(batch.id) ? ' checked' : '' %>>
-              <%= batch.name %>
-            </label>
-          <% end %>
-        </div>
+        <%= render partial: 'admin/select_batches', locals: {var_name: 'batches[]', selected_batches: selected_batch_ids} %>
 
         <input type="submit" class="btn btn-primary pull-right" />
       </div>

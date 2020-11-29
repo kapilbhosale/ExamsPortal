@@ -35,14 +35,7 @@
             <label class="custom-file-label spl1" for="customFileS1">Choose PDF File</label>
           </div>
 
-          <div class="form-group">
-            <% @batches.each do |batch| %>
-              <label class="checkbox-inline">
-                <input name="batches[]" type="checkbox" value=<%= batch.id %>>
-                <%= batch.name %>
-              </label>
-            <% end %>
-          </div>
+          <%= render partial: 'admin/select_batches', locals: {var_name: 'batches[]', selected_batches: []} %>
 
           <input type="submit" class="btn btn-primary pull-right" />
         </div>

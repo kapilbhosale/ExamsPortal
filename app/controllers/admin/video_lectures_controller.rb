@@ -32,6 +32,8 @@ class Admin::VideoLecturesController < Admin::BaseController
     @genre = Genre.find_by(org_id: current_org.id, id: params[:genre_id])
     @video_lecture = VideoLecture.new
     @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
     @genres = Genre.where(org_id: current_org.id)
     @subjects = Subject.where(org_id: current_org.id)
     @is_vimeo_configured = current_org.vimeo_access_token.present?
@@ -39,7 +41,8 @@ class Admin::VideoLecturesController < Admin::BaseController
 
   def edit
     @video_lecture = VideoLecture.find_by(org: current_org, id: params[:id])
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
     @genres = Genre.where(org_id: current_org.id)
     @subjects = Subject.where(org_id: current_org.id)
     @is_vimeo_configured = current_org.vimeo_access_token.present?

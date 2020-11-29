@@ -1,13 +1,15 @@
 class Admin::ZoomMeetingsController < Admin::BaseController
 
   def new
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
   end
 
   def edit
     @zoom_meeting = ZoomMeeting.find_by(org: current_org, id: params[:id])
     @selected_batch_ids = @zoom_meeting.batches.ids
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
   end
 
   def chats

@@ -11,7 +11,8 @@ class Admin::ExamsController < Admin::BaseController
   end
 
   def new
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
     @sections = Section.jee.all.select(:id, :name, :description)
   end
 
@@ -21,7 +22,8 @@ class Admin::ExamsController < Admin::BaseController
     if @response[:status]
       redirect_to admin_exams_path
     else
-      @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+      @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+      @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
       @sections = Section.jee.all.select(:id, :name, :description)
       render 'new'
     end
@@ -81,7 +83,8 @@ class Admin::ExamsController < Admin::BaseController
 
   def edit
     @exam = Exam.find_by(id: params[:id], org: current_org)
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
     respond_to do |format|
       format.html do
       end

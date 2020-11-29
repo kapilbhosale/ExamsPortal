@@ -109,14 +109,8 @@
             </div>
           </div>
 
-          <div class="row form-group">
-            <p>Select Batches: </p>
-            <div class="col-sm-12" style="background-color: rgb(242, 237, 230);">
-              <% @batches.each do |batch| %>
-                <label class="checkbox-inline"><input type="checkbox" name="batch_ids[]" value=<%= batch.id %> <%= @video_lecture.batches.ids.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
-              <% end %>
-            </div>
-          </div>
+          <%= render partial: 'admin/select_batches', locals: {var_name: 'batch_ids[]', selected_batches: @video_lecture.batches.ids} %>
+
         </div>
         <div class="card-footer text-right">
           <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;

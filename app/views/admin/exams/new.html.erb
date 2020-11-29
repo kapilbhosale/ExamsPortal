@@ -96,15 +96,10 @@
           <hr>
 
           <div class="form-group">
-            <label class="control-label col-sm-2">Batch*</label>
-            <% if @batches.present? %>
-              <div class="selectgroup selectgroup-pills">
-                <% @batches.each do |batch|%>
-                  <label class="selectgroup-item">
-                    <input type="checkbox" name="exam[batches][]" value="<%= batch.id %>" class="selectgroup-input" >
-                    <span class="selectgroup-button"><%= batch.name %></span>
-                  </label>
-                <% end %>
+            <% if @batches_with_group.present? %>
+              <label class="control-label col-sm-2" for="show_exam_at">Batch*</label>
+              <div class="container">
+                <%= render partial: 'admin/select_batches', locals: {var_name: 'exam[batches][]', selected_batches: [] } %>
               </div>
             <% else %>
               <div class="alert alert-info alert">No Batches are created yet. Create a batch first
