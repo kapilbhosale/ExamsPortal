@@ -18,6 +18,18 @@
           </div>
           <div class="col-sm-6 col-md-8">
             <div class="form-group">
+              <label class="form-label">Group</label>
+              <select class="form-control" name="batch_group_id" id="batch_group_id" >
+                <% @batch_groups.each do |batch_group| %>
+                  <option value="<%= batch_group.id %>" <%= @batch.batch_group_id == batch_group.id ? 'selected' : '' %>>
+                    <%= batch_group.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-8">
+            <div class="form-group">
               <% if @batch.errors.any? %>
                 <div class="error-msg">
                   <h6>

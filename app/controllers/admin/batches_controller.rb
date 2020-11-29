@@ -1,15 +1,16 @@
 class Admin::BatchesController < Admin::BaseController
 
   def index
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all.order(:id)
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group).all.order(:id)
   end
 
   def new
     @batch = Batch.new
+    @batch_groups = BatchGroup.where(org: current_org).all
   end
 
   def create
-    @response = Batches::AddBatchService.new(params[:batch][:name], current_org).call
+    @response = Batches::AddBatchService.new(params[:batch][:name], current_org, params[:batch_group_id]).call
     current_admin.batches << @response[:batch] if @response[:status]
     set_flash
     redirect_to admin_batches_path
@@ -21,10 +22,11 @@ class Admin::BatchesController < Admin::BaseController
 
   def edit
     @batch = Batch.find_by(org: current_org, id: params[:id])
+    @batch_groups = BatchGroup.where(org: current_org).all
   end
 
   def update
-    @response = Batches::UpdateBatchService.new(params[:id], params[:batch][:name]).call
+    @response = Batches::UpdateBatchService.new(params[:id], params[:batch][:name], params[:batch_group_id]).call
     set_flash
     redirect_to admin_batches_path
   end

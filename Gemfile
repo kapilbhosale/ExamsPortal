@@ -75,7 +75,9 @@ gem 'redis'
 gem 'redis-rails'
 gem 'hiredis'
 
-gem 'rmagick'
+group :production do
+  gem 'rmagick'
+end
 
 gem 'figaro'
 gem 'fcm'

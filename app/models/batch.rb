@@ -2,11 +2,12 @@
 #
 # Table name: batches
 #
-#  id         :bigint(8)        not null, primary key
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  org_id     :integer          default(0)
+#  id             :bigint(8)        not null, primary key
+#  name           :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  batch_group_id :integer
+#  org_id         :integer          default(0)
 #
 
 class Batch < ApplicationRecord
@@ -29,6 +30,7 @@ class Batch < ApplicationRecord
   has_many :admin_batches
   has_many :admins, through: :admin_batches
 
+  belongs_to :batch_group, optional: true
   belongs_to :org
 
   def self.all_batches

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_18_074502) do
+ActiveRecord::Schema.define(version: 2020_11_29_070448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,14 @@ ActiveRecord::Schema.define(version: 2020_11_18_074502) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "batch_groups", force: :cascade do |t|
+    t.string "name"
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_batch_groups_on_org_id"
+  end
+
   create_table "batch_notifications", force: :cascade do |t|
     t.bigint "notification_id"
     t.bigint "batch_id"
@@ -101,6 +109,7 @@ ActiveRecord::Schema.define(version: 2020_11_18_074502) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "org_id", default: 0
+    t.integer "batch_group_id"
   end
 
   create_table "categories", force: :cascade do |t|

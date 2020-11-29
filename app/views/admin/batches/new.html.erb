@@ -10,6 +10,18 @@
               <%= form.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
             </div>
           </div>
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Group</label>
+              <select class="form-control" name="batch_group_id" id="batch_group_id" >
+                <% @batch_groups.each do |batch_group| %>
+                  <option value="<%= batch_group.id %>">
+                    <%= batch_group.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
           <div class="col-md-12">
             <div class="form-group">
               <% if @batch.errors.any? %>
