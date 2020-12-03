@@ -31,11 +31,11 @@ class Api::V1::HomeController < Api::V1::ApiController
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
           }
       end
-      if (current_student&.batches&.ids & [1, 4, 10, 16, 17]).present?
+      if (current_student&.batches&.ids & [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133]).present?
         banners_data <<
           {
-            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/neet_rcc_form.png",
-            "on_click"=>"https://docs.google.com/forms/d/e/1FAIpQLSdzFoYGm4elzKrXIWr3Og19a69sacsoZDDikMkfCcrxIdblAg/viewform"
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/study_form.png",
+            "on_click"=>"https://docs.google.com/forms/d/e/1FAIpQLSeRV6coW9uEUEcFJInGCtqHhlNTmMrz6Qe8CpKeVl2krNRYxg/viewform"
           }
       end
       banners_data + current_org.data['top_banners']
