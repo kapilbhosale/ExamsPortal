@@ -181,16 +181,16 @@ class Students::AdmissionsController < ApplicationController
       return 33_000 if course.name == "pcb"
     end
     if batch == 'repeater'
-      return 24_000 if course.name == "phy"
-      return 24_000 if course.name == "chem"
-      return 24_000 if course.name == "bio"
-      return 55_000 if course.name == "pcb"
+      return 12_000 if course.name == "phy"
+      return 12_000 if course.name == "chem"
+      return 12_000 if course.name == "bio"
+      return 25_000 if course.name == "pcb"
 
       return 24_000 if course.name == "pc"
       return 24_000 if course.name == "pb"
       return 24_000 if course.name == "cb"
     end
-    if batch == '11th' && rcc_branch == 'nanded'
+    if batch == '11th'
       return 15_000 if course.name == "phy"
       return 15_000 if course.name == "chem"
       return 10_000 if course.name == "bio"
