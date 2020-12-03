@@ -170,16 +170,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil)
-    if batch == "12th"
-      return 12_000 if course.name == "phy"
-      return 12_000 if course.name == "chem"
-      return 6_000 if is_installment && course.name == "bio"
-      return 9_000 if course.name == "bio"
-      return 24_000 if course.name == "pc"
-      return 21_000 if course.name == "pb"
-      return 21_000 if course.name == "cb"
-      return 33_000 if course.name == "pcb"
-    end
     if batch == 'repeater'
       return 12_000 if course.name == "phy"
       return 12_000 if course.name == "chem"
@@ -195,6 +185,30 @@ class Students::AdmissionsController < ApplicationController
       return 15_000 if course.name == "chem"
       return 10_000 if course.name == "bio"
       return 40_000 if course.name == "pcb"
+
+      return 30_000 if course.name == "pc"
+      return 25_000 if course.name == "pb"
+      return 25_000 if course.name == "cb"
+    end
+    if batch == '12th'
+      return 15_000 if course.name == "phy"
+      return 15_000 if course.name == "chem"
+      return 10_000 if course.name == "bio"
+      return 40_000 if course.name == "pcb"
+
+      return 30_000 if course.name == "pc"
+      return 25_000 if course.name == "pb"
+      return 25_000 if course.name == "cb"
+    end
+    if batch == "12th"
+      return 12_000 if course.name == "phy"
+      return 12_000 if course.name == "chem"
+      return 6_000 if is_installment && course.name == "bio"
+      return 9_000 if course.name == "bio"
+      return 24_000 if course.name == "pc"
+      return 21_000 if course.name == "pb"
+      return 21_000 if course.name == "cb"
+      return 33_000 if course.name == "pcb"
     end
     course.fees
   end
