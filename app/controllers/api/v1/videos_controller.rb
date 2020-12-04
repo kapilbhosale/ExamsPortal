@@ -183,7 +183,7 @@ class Api::V1::VideosController < Api::V1::ApiController
 
       lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
-      lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
+      lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
       if lect.vimeo?
         lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"
       else
