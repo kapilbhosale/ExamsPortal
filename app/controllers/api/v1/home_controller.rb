@@ -27,7 +27,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       if current_student.pending_amount.present?
         banners_data <<
           {
-            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.png",
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.jpg",
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
           }
       end

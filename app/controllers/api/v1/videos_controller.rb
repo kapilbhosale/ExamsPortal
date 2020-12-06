@@ -109,6 +109,10 @@ class Api::V1::VideosController < Api::V1::ApiController
       .where(batches: { id: current_student.batches.ids })
       .where(enabled: true)
     categories_data = {}
+    if current_org.subdomain == 'exams' && current_student.pending_amount.present?
+      render json: {}, status: :ok and return
+    end
+
     video_lectures.all.each do |vl|
       next if vl.publish_at.present? && vl.publish_at > Time.current
 
