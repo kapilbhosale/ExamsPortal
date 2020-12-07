@@ -1,4 +1,5 @@
 class Admin::VideoLecturesController < Admin::BaseController
+  ITEMS_PER_PAGE = 20
   require 'ostruct'
   def index
     @search = VideoLecture.includes(:subject, :genre, :batches).where(org: current_org).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
@@ -19,6 +20,11 @@ class Admin::VideoLecturesController < Admin::BaseController
 
     @search = @search.search(search_params)
     @video_lectures = @search.result.order(created_at: :desc)
+
+    if request.format.html?
+      @video_lectures = @video_lectures.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    end
+
     @subjects = Subject.where(org: current_org).all
     @teachers = VideoLecture.where(org: current_org).pluck(:by).uniq.map do |teacher|
       OpenStruct.new({id: teacher, name: teacher})
