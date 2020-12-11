@@ -150,6 +150,10 @@ class Student < ApplicationRecord
     amount > 0 ? amount : nil
   end
 
+  def block_videos?
+    pending_fees.where(paid: false).last&.block_videos == true
+  end
+
   def set_api_key
     self.api_key = generated_api_key
   end

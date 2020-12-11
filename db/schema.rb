@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_29_070448) do
+ActiveRecord::Schema.define(version: 2020_12_11_061246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(version: 2020_11_29_070448) do
     t.integer "reference_no"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "block_videos", default: false
     t.index ["student_id"], name: "index_pending_fees_on_student_id"
   end
 

@@ -172,17 +172,17 @@ class Admin::StudentsController < Admin::BaseController
         roll_number = row[0]&.strip
         parent_mobile = row[2]&.strip
         amount = row[3]&.strip&.to_s.to_i
-  
+        block_videos = (row[4]&.strip&.to_s&.downcase == 'yes')
+
         student = Student.find_by(org_id: current_org.id, roll_number: roll_number, parent_mobile: parent_mobile)
         next if student.blank?
 
-        
         pending_fees_record = PendingFee.find_by(student_id: student.id, paid: false)
         if pending_fees_record.present?
           pending_fees_record.amount = amount
           pending_fees_record.save
         else
-          PendingFee.create(student_id: student.id, amount: amount)
+          PendingFee.create(student_id: student.id, amount: amount, block_videos: block_videos)
         end
       end
     end

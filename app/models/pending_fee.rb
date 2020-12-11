@@ -4,6 +4,7 @@
 #
 #  id           :bigint(8)        not null, primary key
 #  amount       :decimal(, )
+#  block_videos :boolean          default(FALSE)
 #  paid         :boolean          default(FALSE)
 #  reference_no :integer
 #  created_at   :datetime         not null
