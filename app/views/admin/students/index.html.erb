@@ -36,6 +36,7 @@
                     <th>Parent Mobile</th>
                     <% if request.subdomain == 'exams' %>
                       <th> Pending amount <th>
+                      <th> Blocked <th>
                     <% end %>
                     <th>App Login</th>
                     <th>laptop Login</th>
@@ -61,6 +62,7 @@
                       <td><%= student.parent_mobile %></td>
                       <% if request.subdomain == 'exams' %>
                         <td><%= student.pending_amount || '-' %><td>
+                        <td><%= student.block_videos? ? 'YES' : '-' %><td>
                       <% end %>
                       <td><%= student.app_login? ? 'YES' : '-' %></td>
                       <td><%= student.is_laptop_login? ? 'YES' : '-' %></td>
