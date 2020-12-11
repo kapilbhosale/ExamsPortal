@@ -165,7 +165,7 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def process_import_fees_due
-    csv_file_path = params[:pending_fees_csv_file].tempfile.path 
+    csv_file_path = params[:pending_fees_csv_file].tempfile.path
 
     CSV.open(csv_file_path, :row_sep => :auto, :encoding => 'ISO-8859-1', :col_sep => ",") do |csv|
       csv.each do |row|
@@ -180,6 +180,7 @@ class Admin::StudentsController < Admin::BaseController
         pending_fees_record = PendingFee.find_by(student_id: student.id, paid: false)
         if pending_fees_record.present?
           pending_fees_record.amount = amount
+          pending_fees_record.block_videos = block_videos
           pending_fees_record.save
         else
           PendingFee.create(student_id: student.id, amount: amount, block_videos: block_videos)
