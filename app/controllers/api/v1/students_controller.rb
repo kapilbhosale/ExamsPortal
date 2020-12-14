@@ -67,7 +67,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
   # return true if allowed to login, false if not allowed to login
   def login_allowed?(student)
     return true if demo_account?(student)
-    
+
     return false if student.is_laptop_login
 
     return true if !student.app_login?
@@ -84,7 +84,11 @@ class Api::V1::StudentsController < Api::V1::ApiController
   end
 
   def demo_account?(student)
-    student.roll_number == 101 && student.parent_mobile == '999999'
+    return true if student.roll_number == 101 && student.parent_mobile == '999999'
+
+    return true if student.roll_number == 1001 && student.parent_mobile == '999999'
+
+    false
   end
 
   def device_params 
