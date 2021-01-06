@@ -68,7 +68,8 @@ class Api::V1::StudentsController < Api::V1::ApiController
   def login_allowed?(student)
     return true if demo_account?(student)
 
-    return false if student.is_laptop_login
+    # return false if student.is_laptop_login
+    return true if student.is_laptop_login
 
     return true if !student.app_login?
 
