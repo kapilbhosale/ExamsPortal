@@ -463,7 +463,7 @@ function getQuestionsCount(state) {
 }
 
 function questionsCountByCategory(questions) {
-  let notVisited = 0, answered = 0, marked = 0, notAnswered = 0;
+  let notVisited = 0, answered = 0, marked = 0, notAnswered = 0, inputAnswered = 0;
   questions.forEach((question) => {
     const answer_props = question.answerProps;
     if (answer_props.visited && !answer_props.isAnswered && !answer_props.needReview) {
@@ -474,6 +474,9 @@ function questionsCountByCategory(questions) {
     }
     if (answer_props.isAnswered) {
       answered = answered + 1;
+      if (question.question_type === 'input') {
+        inputAnswered = inputAnswered + 1;
+      }
     }
     if (question.answerProps.needReview) {
       marked = marked + 1;
@@ -484,7 +487,8 @@ function questionsCountByCategory(questions) {
       answered: answered,
       notAnswered: notAnswered,
       marked: marked,
-      notVisited: notVisited
+      notVisited: notVisited,
+      inputAnswered: inputAnswered,
     }
   )
 }

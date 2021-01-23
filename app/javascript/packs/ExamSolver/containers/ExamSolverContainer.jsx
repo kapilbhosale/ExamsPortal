@@ -88,6 +88,7 @@ class ExamSolverContainer extends Component {
     const currentSection = $$examSolverStore.get('currentSection');
     const timeInMinutes = $$examSolverStore.get('timeInMinutes');
     const answeredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', currentSection, 'answered']);
+    const inputAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus', currentSection, 'inputAnswered']);
     const notAnsweredQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notAnswered']);
     const markedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'marked']);
     const notVisitedQuestions = $$examSolverStore.getIn(['questionsCountByStatus',  currentSection,'notVisited']);
@@ -170,6 +171,7 @@ class ExamSolverContainer extends Component {
               isNavigationMapOpen={ isNavigationMapOpen }
               currentTime={ currentTime }
               timeLeftMessage={ timeLeftMessage }
+              inputAnsweredQuestions={ inputAnsweredQuestions }
               { ...this.actions() }
               />
             <ShellRight
@@ -177,6 +179,7 @@ class ExamSolverContainer extends Component {
               totalQuestions={ totalQuestions }
               currentQuestionIndex={currentQuestionIndex[currentSection]}
               answeredQuestions={ answeredQuestions }
+              inputAnsweredQuestions={ inputAnsweredQuestions }
               notAnsweredQuestions ={ notAnsweredQuestions }
               markedQuestions={ markedQuestions }
               notVisitedQuestions={ notVisitedQuestions }

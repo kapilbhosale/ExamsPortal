@@ -55,28 +55,9 @@ class Exam < ApplicationRecord
   end
 
   def total_marks
-    jee_advance? ? jee_advance_total_marks : regular_total_marks
-  end
-
-  def jee_advance_total_marks
-    total_marks = 0
-    es_by_section_id = exam_sections.index_by(&:section_id)
-    questions_without_multi = questions.where.not(question_type: Question.question_types[:multi_select])
-    q_count_by_section = questions_without_multi.group(:section_id).count
-    q_count_by_section.each do |key, val|
-      total_marks += (val * es_by_section_id[key].positive_marks)
+    exam_sections.inject(0) do |sum, exam_section|
+      sum + exam_section.total_marks
     end
-    total_marks + (questions.multi_select.count * 4)
-  end
-
-  def regular_total_marks
-    total_marks = 0
-    es_by_section_id = exam_sections.index_by(&:section_id)
-    q_count_by_section = questions.group(:section_id).count
-    q_count_by_section.each do |key, val|
-      total_marks += (val * es_by_section_id[key].positive_marks)
-    end
-    total_marks
   end
 
   def display_image

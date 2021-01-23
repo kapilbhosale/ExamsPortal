@@ -28,7 +28,7 @@
             Exam Expired, <%= @exam.exam_available_till.strftime("%d-%b-%y %r") %>
           </p>
         <% else %>
-          <a href="/students/exam/<%= @exam.id %>" onclick="localStorage.clear()">
+          <a href="/students/exam/<%= @exam.id %>" onclick="handleLocalStorage()">
             <button type="button" id="btnConfirm" class="btn btn-success">I am ready to begin</button>
           </a>
         <% end %>
@@ -49,3 +49,16 @@
    Mock exam not available yet. Please contact to administrator.
   </div>
 <% end %>
+
+<script>
+  function handleLocalStorage() {
+    const key = `${<%= @current_student.id %>}-${<%= @exam.id %>}-store`;
+    let localData = localStorage.getItem(key);
+    if (localData) {
+      localStorage.clear();
+      localStorage.setItem(key, localData);
+    } else {
+      localStorage.clear();
+    }
+  }
+</script>

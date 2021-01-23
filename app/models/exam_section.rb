@@ -27,11 +27,17 @@ class ExamSection < ApplicationRecord
   def jee_advance_total_marks
     without_multi_count = exam.questions.where(section_id: section_id).where.not(question_type: Question.question_types[:multi_select]).count
     total = (positive_marks || 1) * without_multi_count
-    total + (exam.questions.where(section_id: section_id).multi_select.count * 4)
+    total += (exam.questions.where(section_id: section_id).multi_select.count * 4)
+    # if there are 10 input questions, considering 5 of them are optional.
+    total -= 5 * 4 if input_count == 10
+    total
   end
 
   def regular_total_marks
-    ( positive_marks || 1 ) * exam.questions.where(section_id: section_id).count
+    total = (positive_marks || 1) * exam.questions.where(section_id: section_id).count
+    # if there are 10 input questions, considering 5 of them are optional.
+    total -= 5 * 4 if input_count == 10
+    total
   end
 
   def multi_count

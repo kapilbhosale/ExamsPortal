@@ -13,7 +13,7 @@ class ShellLeft extends React.Component {
     const { questions, currentQuestionIndex, answerQuestion, markVisited,
             submitTest, startedAt, examFinished, timeInMinutes, timeIsUp, currentSection,
             sections, changeSection, isNavigationMapOpen, currentTime, remainingTimeAlert,
-            timeLeftMessage, syncWithBackend, updateTimeSpentOnQuestion } = this.props;
+            timeLeftMessage, syncWithBackend, updateTimeSpentOnQuestion, inputAnsweredQuestions } = this.props;
     return (
       <div className={`${isNavigationMapOpen ? 'question-div col-md-10' : 'question-div full-width'}`}>
         <div className='row'>
@@ -43,6 +43,7 @@ class ShellLeft extends React.Component {
                 currentQuestionIndex={currentQuestionIndex}
                 answerQuestion={ answerQuestion }
                 markVisited={ markVisited }
+                inputAnsweredQuestions={ inputAnsweredQuestions }
               />
             }
           </div>

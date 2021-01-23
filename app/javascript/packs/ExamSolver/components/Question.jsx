@@ -6,7 +6,7 @@ class Question extends React.Component {
     const $win = $(window);
     const {
       title, options, currentQuestionIndex, answerQuestion,
-      answerProps, question_type, is_image,
+      answerProps, question_type, is_image, inputAnsweredQuestions,
     } = this.props;
 
     const onMultiSelectAnswerChanged = (value) => {
@@ -89,14 +89,21 @@ class Question extends React.Component {
     }
 
     const renderInputOption = () => {
+      console.log("inputAnsweredQuestions ---> ", inputAnsweredQuestions);
+      const inputAnsCount = parseInt(inputAnsweredQuestions);
       return(
         <div className='text-indent-0 padding-top-20'>
           <input
             type="text"
             value={ inputTypeValue() }
+            disabled= { inputAnsCount >= 5 && !inputTypeValue()}
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
-          <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
+          { inputAnsCount < 5 ? (
+            <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
+          ) : (
+            <span className='text-danger text-small'> Maximum 5 Input can be answered, please clear if you want to solve this.</span>
+          )}
         </div>
       );
     }

@@ -20,6 +20,7 @@ class ShellRight extends React.Component {
       currentQuestionIndex,
       submitTest,
       answeredQuestions,
+      inputAnsweredQuestions,
       notAnsweredQuestions,
       markedQuestions,
       notVisitedQuestions,
@@ -101,6 +102,13 @@ class ShellRight extends React.Component {
                     { `Answered (${answeredQuestions})` }
                   </span>
                 </div>
+                {inputAnsweredQuestions && (
+                  <div className='col-md-6'>
+                    <span className="label label-success label-sm margin-5">
+                      { `Input Answered (${inputAnsweredQuestions})` }
+                    </span>
+                  </div>
+                )}
                 <div className='col-md-6'>
                   <span className="label label-danger label-sm margin-5">
                     { `Not answered (${notAnsweredQuestions})` }
