@@ -30,7 +30,6 @@ class Ytplayer extends React.Component {
   }
 
   render() {
-    console.log("*****************", this.props);
     return(
       <div className="container">
         <div id="player" data-plyr-provider="youtube" data-plyr-embed-id={this.state.id}></div>

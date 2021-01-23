@@ -89,7 +89,6 @@ class Question extends React.Component {
     }
 
     const renderInputOption = () => {
-      console.log("inputAnsweredQuestions ---> ", inputAnsweredQuestions);
       const inputAnsCount = parseInt(inputAnsweredQuestions);
       return(
         <div className='text-indent-0 padding-top-20'>
@@ -99,10 +98,10 @@ class Question extends React.Component {
             disabled= { inputAnsCount >= 5 && !inputTypeValue()}
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
-          { inputAnsCount < 5 ? (
-            <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
-          ) : (
+          { inputAnsweredQuestions && inputAnsCount >= 5 ? (
             <span className='text-danger text-small'> Maximum 5 Input can be answered, please clear if you want to solve this.</span>
+          ) : (
+            <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
           )}
         </div>
       );
