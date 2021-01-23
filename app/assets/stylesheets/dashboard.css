@@ -17429,12 +17429,12 @@ svg {
 
 @font-face {
   font-family: "feather";
-  src: font-url("fonts/feather-webfont.eot");
+  src: url("fonts/feather-webfont.eot");
   /* IE9*/
-  src: font-url("fonts/feather-webfont.eot") format("embedded-opentype"),
-  font-url("fonts/feather-webfont.woff") format("woff"),
-  font-url("fonts/feather-webfont.ttf") format("truetype"),
-  font-url("fonts/feather-webfont.svg") format("svg");
+  src: url("fonts/feather-webfont.eot") format("embedded-opentype"),
+  url("fonts/feather-webfont.woff") format("woff"),
+  url("fonts/feather-webfont.ttf") format("truetype"),
+  url("fonts/feather-webfont.svg") format("svg");
   /* iOS 4.1- */
 }
 
