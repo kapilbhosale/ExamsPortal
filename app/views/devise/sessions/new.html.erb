@@ -17,7 +17,7 @@
         </label>
         <div class="input-icon">
           <span class="input-icon-addon">
-            <i class="fe fe-user"></i>
+            <i class="fa fa-user"></i>
           </span>
           <% if resource.is_a? Admin %>
             <%= f.email_field :login, placeholder:'Enter email ...', class:'form-control', autofocus: true %>
@@ -33,7 +33,7 @@
         </label>
         <div class="input-icon">
           <span class="input-icon-addon">
-            <i class="fe fe-lock"></i>
+            <i class="fa fa-lock"></i>
           </span>
           <% placeholder = (resource.is_a? Admin) ? 'Password' : 'Enter 10 digit Parent mobile' %>
           <%= f.password_field :password, autocomplete:'off', placeholder: placeholder, class:'form-control' %>

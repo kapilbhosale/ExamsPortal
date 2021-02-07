@@ -21,7 +21,7 @@
           <% end %>
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-2 text-right">
-          <%= link_to '<i class="fe fe-user-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
+          <%= link_to '<i class="fa fa-user-plus"> </i> Add Student'.html_safe, new_admin_student_path%>
         </div>
         <div class="table-responsive">
           <% if @students.present? %>
@@ -67,7 +67,7 @@
                       <td><%= student.app_login? ? 'YES' : '-' %></td>
                       <td><%= student.is_laptop_login? ? 'YES' : '-' %></td>
                       <td>
-                        <%= link_to '', admin_student_progress_report_path(student), class: "fa fa-bar-chart" %>&nbsp; &nbsp;
+                        <%= link_to '', admin_student_progress_report_path(student), class: "fa fa-chart-bar" %>&nbsp; &nbsp;
                         <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp; &nbsp;
                         <%= link_to '', admin_student_path(student), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "glyphicon glyphicon-trash" %>&nbsp; &nbsp;
                       </td>

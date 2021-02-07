@@ -21,15 +21,15 @@
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <%= link_to '<i class="dropdown-icon fe fe-user"></i> Profile'.html_safe, students_home_profile_path, class: 'dropdown-item' %>
+              <%= link_to '<i class="dropdown-icon fa fa-user"></i> Profile'.html_safe, students_home_profile_path, class: 'dropdown-item' %>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-settings"></i> Settings
+                <i class="dropdown-icon fa fa-settings"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+                <i class="dropdown-icon fa fa-help-circle"></i> Need help?
               </a>
-              <%= link_to '<i class="dropdown-icon fe fe-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
+              <%= link_to '<i class="dropdown-icon fa fa-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
             </div>
           </div>
         <% else %>
@@ -50,19 +50,19 @@
         <div class="col-lg order-lg-first">
           <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-monitor'></i>Online Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fa fa-monitor'></i>Online Exams".html_safe, students_tests_path, class: current_page?(students_tests_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-airplay'></i> Video Lectures".html_safe, students_videos_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fa fa-airplay'></i> Video Lectures".html_safe, students_videos_path, class: current_page?(students_mock_tests_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-airplay'></i> Live Classes".html_safe, students_live_classes_path, class: current_page?(students_live_classes_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fa fa-airplay'></i> Live Classes".html_safe, students_live_classes_path, class: current_page?(students_live_classes_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-book'></i> Study Pdfs".html_safe, students_study_pdfs_path, class: current_page?(students_study_pdfs_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fa fa-book'></i> Study Pdfs".html_safe, students_study_pdfs_path, class: current_page?(students_study_pdfs_path) ? "nav-link active" : "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "<i class='fe fe-users'></i> Notifications".html_safe, students_notifications_path, class: current_page?(students_notifications_path) ? "nav-link active" : "nav-link" %>
+              <%= link_to "<i class='fa fa-users'></i> Notifications".html_safe, students_notifications_path, class: current_page?(students_notifications_path) ? "nav-link active" : "nav-link" %>
             </li>
             <% if request.subdomain == 'exams' && (current_student&.batches&.ids & [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133]).present? %>
             <li class="nav-item">

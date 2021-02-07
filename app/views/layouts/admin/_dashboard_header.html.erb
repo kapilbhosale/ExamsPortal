@@ -15,15 +15,15 @@
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <%= link_to '<i class="dropdown-icon fe fe-user"></i> Profile'.html_safe, admin_dashboard_profile_path, class: 'dropdown-item' %>
+              <%= link_to '<i class="dropdown-icon fa fa-user"></i> Profile'.html_safe, admin_dashboard_profile_path, class: 'dropdown-item' %>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-settings"></i> Settings
+                <i class="dropdown-icon fa fa-settings"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+                <i class="dropdown-icon fa fa-help-circle"></i> Need help?
               </a>
-              <%= link_to '<i class="dropdown-icon fe fe-log-out"></i> Sign Out'.html_safe, destroy_admin_session_path, method: :delete, class:"dropdown-item"%>
+              <%= link_to '<i class="dropdown-icon fa fa-log-out"></i> Sign Out'.html_safe, destroy_admin_session_path, method: :delete, class:"dropdown-item"%>
             </div>
           </div>
         </div>
@@ -40,17 +40,17 @@
       <div class="col-lg order-lg-first">
         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
           <li class="nav-item">
-            <a href="#" class="nav-link" data-toggle="dropdown"><i class="fe fe-box"></i> Data</a>
+            <a href="#" class="nav-link" data-toggle="dropdown"><i class="fa fa-box"></i> Data</a>
              <div class="dropdown-menu dropdown-menu-arrow">
               <%= link_to ' Manage Students', admin_students_path, class: 'dropdown-item' %>
               <%= link_to ' Manage Batches', admin_batches_path, class: 'dropdown-item' %>
             </div>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-bar-chart-2"></i> Reports'.html_safe, admin_reports_path, class: 'nav-link' %>
+            <%= link_to '<i class="fa fa-chart-bar"></i> Reports'.html_safe, admin_reports_path, class: 'nav-link' %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fe fe-monitor"></i> Exams'.html_safe, admin_exams_path, class: 'nav-link' %>
+            <%= link_to '<i class="fa fa-monitor"></i> Exams'.html_safe, admin_exams_path, class: 'nav-link' %>
           </li>
         </ul>
       </div>

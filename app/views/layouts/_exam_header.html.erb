@@ -15,15 +15,15 @@
               </span>
             </a>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-              <%= link_to '<i class="dropdown-icon fe fe-user"></i> Profile'.html_safe, students_home_profile_path, class: 'dropdown-item' %>
+              <%= link_to '<i class="dropdown-icon fa fa-user"></i> Profile'.html_safe, students_home_profile_path, class: 'dropdown-item' %>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-settings"></i> Settings
+                <i class="dropdown-icon fa fa-settings"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">
-                <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+                <i class="dropdown-icon fa fa-help-circle"></i> Need help?
               </a>
-              <%= link_to '<i class="dropdown-icon fe fe-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
+              <%= link_to '<i class="dropdown-icon fa fa-log-out"></i> Sign Out'.html_safe, destroy_student_session_path, method: :delete, class:"dropdown-item"%>
             </div>
           </div>
         <% else %>
