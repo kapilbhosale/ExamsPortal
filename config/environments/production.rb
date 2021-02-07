@@ -48,7 +48,14 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://bhargav.eduaakar.com/cable'
   # config.action_cable.url = 'wss://bhargav.eduaakar.com/cable'
-  config.action_cable.allowed_request_origins = ['https://bhargav.eduaakar.com', /https:\/\/bhargav.eduaakar.*/, 'https://app.eduaakar.com', /https:\/\/app.eduaakar.*/ ]
+  config.action_cable.allowed_request_origins = [
+    'https://bhargav.eduaakar.com',
+    /https:\/\/bhargav.eduaakar.*/,
+    'https://app.eduaakar.com',
+    /https:\/\/app.eduaakar.*/,
+    'https://exams.smartclassapp.in',
+    /https:\/\/exams.smartclassapp.*/
+  ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
