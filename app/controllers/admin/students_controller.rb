@@ -101,7 +101,8 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def progress_report
-    
+    student = Student.find_by(id: params[:student_id])
+    @progress_report_data = ProgressReport.where(student_id: student.id).order(id: :desc)
   end
 
   def reset_login
