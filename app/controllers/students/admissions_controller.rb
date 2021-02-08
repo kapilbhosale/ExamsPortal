@@ -181,14 +181,14 @@ class Students::AdmissionsController < ApplicationController
       return 24_000 if course.name == "cb"
     end
     if batch == '11th'
-      return 15_000 if course.name == "phy"
-      return 15_000 if course.name == "chem"
+      return 10_000 if course.name == "phy"
+      return 10_000 if course.name == "chem"
       return 10_000 if course.name == "bio"
-      return 40_000 if course.name == "pcb"
+      return 20_000 if course.name == "pcb"
 
-      return 30_000 if course.name == "pc"
-      return 25_000 if course.name == "pb"
-      return 25_000 if course.name == "cb"
+      return 20_000 if course.name == "pc"
+      return 20_000 if course.name == "pb"
+      return 20_000 if course.name == "cb"
     end
     if batch == '12th'
       return 15_000 if course.name == "phy"
