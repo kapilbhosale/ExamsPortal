@@ -165,11 +165,19 @@ class Student < ApplicationRecord
   end
 
 
-  INITIAL_TW_ROLL_NUMBER = 51200
+  INITIAL_TW_ROLL_NUMBER = 1001
   def self.suggest_tw_online_roll_number
     online_s_ids = NewAdmission.where(error_code: ['E000', 'E006', nil]).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
-    rn = Student.where(id: online_s_ids).where.not(new_admission_id: nil).pluck(:suggested_roll_number).reject(&:blank?).max rescue nil
+    rn = Student
+      .where('created_at >= ?', Date.parse('16-Feb-2021'))
+      .where(id: online_s_ids)
+      .where.not(new_admission_id: nil)
+      .pluck(:suggested_roll_number)
+      .reject(&:blank?)
+      .max rescue nil
+
     return rn + 1 if rn
+
     INITIAL_TW_ROLL_NUMBER
   end
 

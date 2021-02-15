@@ -66,23 +66,48 @@ class Batch < ApplicationRecord
       Batch.find_or_create_by(org_id: org.id, name: batch_name)
       Batch.where(org_id: org.id, name: batch_name)
     else
-      if rcc_branch == "latur"
-        return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
-        return Batch.where(name: 'Ltr_12th-Physics_2020-21') if course.name == 'phy'
-        return Batch.where(name: 'Ltr_12th-Chemistry_2020-21') if course.name == 'chem'
-        return Batch.where(name: 'Ltr_12th-Biology_2020-21') if course.name == 'bio'
-        return Batch.where(name: 'Ltr_12th-PC_2020-21') if course.name == 'pc'
-        return Batch.where(name: 'Latur-12th Phy + Bio 2021') if course.name == 'pb'
-        return Batch.where(name: 'Latur-12th Chem + Bio 2021') if course.name == 'cb'
-      else
-        return Batch.where(name: 'Ned_12th-PCB_2020-21') if course.name == 'pcb'
-        return Batch.where(name: 'Ned_12th-Physics_2020-21') if course.name == 'phy'
-        return Batch.where(name: 'Ned_12th-Chemistry_2020-21') if course.name == 'chem'
-        return Batch.where(name: 'Ned_12th-Biology_2020-21') if course.name == 'bio'
-        return Batch.where(name: 'Ned_12th-PC_2020-21') if course.name == 'pc'
-        return Batch.where(name: 'Ned-12th Phy + Bio 2021') if course.name == 'pb'
-        return Batch.where(name: 'Ned-12th Chem + Bio 2021') if course.name == 'cb'
-      end
+      org = Org.first
+      batch_name = rcc_branch == "latur" ?
+        "New12-Ltr-#{course.name.upcase}-2021-2022" :
+        "New12-Ned-#{course.name.upcase}-2021-2022"
+      Batch.find_or_create_by(org_id: org.id, name: batch_name)
+      Batch.where(org_id: org.id, name: batch_name)
+      # if rcc_branch == "latur"
+      #   return Batch.where(name: 'Ltr_12th-PCB_2020-21') if course.name == 'pcb'
+      #   return Batch.where(name: 'Ltr_12th-Physics_2020-21') if course.name == 'phy'
+      #   return Batch.where(name: 'Ltr_12th-Chemistry_2020-21') if course.name == 'chem'
+      #   return Batch.where(name: 'Ltr_12th-Biology_2020-21') if course.name == 'bio'
+      #   return Batch.where(name: 'Ltr_12th-PC_2020-21') if course.name == 'pc'
+      #   return Batch.where(name: 'Latur-12th Phy + Bio 2021') if course.name == 'pb'
+      #   return Batch.where(name: 'Latur-12th Chem + Bio 2021') if course.name == 'cb'
+      # else
+      #   return Batch.where(name: 'Ned_12th-PCB_2020-21') if course.name == 'pcb'
+      #   return Batch.where(name: 'Ned_12th-Physics_2020-21') if course.name == 'phy'
+      #   return Batch.where(name: 'Ned_12th-Chemistry_2020-21') if course.name == 'chem'
+      #   return Batch.where(name: 'Ned_12th-Biology_2020-21') if course.name == 'bio'
+      #   return Batch.where(name: 'Ned_12th-PC_2020-21') if course.name == 'pc'
+      #   return Batch.where(name: 'Ned-12th Phy + Bio 2021') if course.name == 'pb'
+      #   return Batch.where(name: 'Ned-12th Chem + Bio 2021') if course.name == 'cb'
+      # end
     end
   end
 end
+
+## Sample code to create batches and groups and admins
+#
+# courses = ["phy", "chem", "bio", "pcb", "pc", "pb", "cb"]
+# org = Org.first
+# admin = Admin.where(org_id: org.id).first
+
+# batch_group_ltr = BatchGroup.find_or_create_by(name: 'New12-Ltr-2021-2022', org_id: org.id)
+# batch_group_ned = BatchGroup.find_or_create_by(name: 'New12-Ned-2021-2022', org_id: org.id)
+
+# courses.each do |course|
+#     batch_name = "New12-Ltr-#{course.upcase}-2021-2022"
+#     batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group_ltr.id)
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+
+#     batch_name = "New12-Ltr-#{course.upcase}-2021-2022"
+#     batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group_ned.id)
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+# end
