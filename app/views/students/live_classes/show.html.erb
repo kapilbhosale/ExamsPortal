@@ -65,7 +65,9 @@
   };
 
   $(document).ready(function(){
-    setupActionCable();
+    <% if request.subdomain == 'bhargav' %>
+      setupActionCable();
+    <% end %>
 
     $("#sendMessage").click(function(){
       var msg = $("#chatMessage").val();
