@@ -173,13 +173,44 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def category_videos
-    video_lectures = VideoLecture.includes(:batches)
-                                 .where(org_id: current_org.id)
-                                 .where(batches: {id: current_student.batches.ids}, genre_id: params[:id].to_i)
-                                 .where(enabled: true)
-                                 .order(id: :desc)
+    all_vls = VideoLecture.includes(:batches)
+              .where(org_id: current_org.id)
+              .where(batches: {id: current_student.batches.ids}, genre_id: params[:id].to_i)
+    video_lectures = all_vls.where(enabled: true).order(id: :desc)
+
     lectures_json = lectures_json(video_lectures)
     lectures_json = lectures_json.delete_if { |_, value| value.blank? }
+
+    disabled_vls = all_vls.where(enabled: false).order(id: :desc)
+
+    disabled_vls.each do |vl|
+      next if vl.publish_at.present? && vl.publish_at > Time.current
+
+      svfs = StudentVideoFolder.where(student_id: current_student.id).index_by(&:genre_id)
+      svf = svfs[vl&.genre&.id]
+
+      include_flag = false
+      if svf.present? && svf.show_till_date.to_date >= Date.today
+        include_flag = true
+      else
+        genre_date = vl&.publish_at || vl&.created_at.to_date
+        student_active_date = current_student.created_at
+        include_flag = true if student_active_date > genre_date && student_active_date.to_date + 30.days >= Date.today
+      end
+
+      next unless include_flag
+      lect = vl
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
+      lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
+      lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
+      if lect.vimeo?
+        lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"
+      else
+        lect_data['play_url'] = lect.url
+      end
+      lectures_json[lect.subject&.name] ||= []
+      lectures_json[lect.subject&.name] << lect_data
+    end
 
     render json: lectures_json, status: :ok
   end
