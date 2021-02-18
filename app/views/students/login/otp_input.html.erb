@@ -1,0 +1,23 @@
+<div class="row" >
+  <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
+    <%= form_tag('/students/process_otp', method: :post) do %>
+      <div class="card-body">
+        <h3 class="card-title">Enter OTP received via SMS</h3>
+
+        <div class="form-group">
+          <input type="number" class="form-control" name="otp" id="otpField" placeholder="Enter OTP" minlength="6" maxlength="6"required >
+          <input type="hidden" class="form-control" name="user_id" value="<%= @student_id %>">
+        </div>
+
+        <input type="submit" class="btn btn-primary pull-right" />
+      </div>
+
+    <% end %>
+  </div>
+</div>
+<style>
+  #otpField {
+    font-size: 30px;
+    letter-spacing: 20px;
+  }
+</style>

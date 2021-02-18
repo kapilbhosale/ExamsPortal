@@ -34,6 +34,7 @@ require 'csv'
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  rfid_card_number       :string
 #  roll_number            :integer          not null
 #  sign_in_count          :integer          default(0), not null
 #  ssc_marks              :float
@@ -111,6 +112,18 @@ class Student < ApplicationRecord
         ]
       end
     end
+  end
+
+  def reset_apps
+    self.update!(
+      app_login: false,
+      is_laptop_login: false,
+      deviceUniqueId: nil,
+      deviceName: nil,
+      manufacturer: nil,
+      brand: nil,
+      app_reset_count: self.app_reset_count + 1
+    )
   end
 
   def self.add_student(na)

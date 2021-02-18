@@ -1,0 +1,48 @@
+<div class="card" style="padding: 10px">
+  <div style="background-color: #e0e0e0; padding: 5px">
+    <%= search_form_for @search, url: admin_attendance_index_path, class:"form-inline" do |f| %>
+      <span class="p-2">From</span>
+      <input type="date" class="from-date" name="from_date" value="<%= @from_date.strftime("%Y-%m-%d")%>" max="<%= @today.strftime("%Y-%m-%d")%>" >
+      <span class="p-2">To</span>
+      <input type="date" class="to-date" name="to_date" value="<%= @to_date.strftime("%Y-%m-%d")%>" max="<%= @today.strftime("%Y-%m-%d")%>" >
+      <span class="p-2">Batch</span>
+      <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
+      <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
+    <% end %>
+  </div>
+  <% days = @from_date.upto(@to_date) %>
+  <div class="table-responsive">
+    <table class="table table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th colspan="2">month</th>
+          <% days.each do |day| %>
+            <th style="max-width: 40px; width: 40px; font-size: 10px"><%= day.strftime("%b") %></th>
+          <% end %>
+        </tr>
+        <tr>
+          <th>RNo.</th>
+          <th>Name</th>
+          <% days.each do |day| %>
+            <th style="max-width: 40px; width: 40px"><%= "#{day.strftime("%d")}" %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @students.each do |student| %>
+          <tr>
+            <td style="font-size: 12px"><%= student.roll_number %></td>
+            <td style="font-size: 10px"><%= student.name %></td>
+            <% days.each do |day| %>
+              <% if @attendance["#{student.id}-#{day.strftime('%d%m%y')}"]%>
+                <th style="background-color: green"><%= 'P' %></th>
+              <% else %>
+                <th style="background-color: red"><%= 'A' %></th>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

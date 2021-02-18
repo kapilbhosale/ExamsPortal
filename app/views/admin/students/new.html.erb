@@ -97,6 +97,12 @@
                 <%= form.text_field :college, class: 'form-control', placeholder: 'College' %>
               </div>
             </div>
+            <div class="col-sm-6 col-md-5">
+              <div class="form-group">
+                <label class="form-label">RFID Card Number</label>
+                <%= form.text_field :rfid_card_number, class: 'rfid-card-field form-control', placeholder: 'Rfid Card Number' %>
+              </div>
+            </div>
             <div class="col-sm-6 col-md-12">
               <div class="form-group">
                 <label class="form-label">Batch</label>
@@ -140,3 +146,14 @@
     <% end %>
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+  $('.rfid-card-field').keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+</script>

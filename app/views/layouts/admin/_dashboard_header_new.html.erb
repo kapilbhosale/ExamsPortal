@@ -66,6 +66,12 @@
             <%= link_to '<i class="fa fa-mobile-alt"></i> Android APP'.html_safe, admin_android_apps_path, class: current_page?(admin_android_apps_path) ? "nav-link active" : "nav-link" %>
           </li>
           <li class="nav-item">
+            <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to '<i class="fa fa-address-card"></i> Attendance'.html_safe, admin_attendance_index_path, class: current_page?(admin_attendance_index_path) ? "nav-link active" : "nav-link" %>
+          </li>
+          <li class="nav-item">
             <%= link_to '<i class="fa fa-users"></i> Admin Users'.html_safe, admin_users_path, class: current_page?(admin_users_path) ? "nav-link active" : "nav-link" %>
           </li>
         </ul>

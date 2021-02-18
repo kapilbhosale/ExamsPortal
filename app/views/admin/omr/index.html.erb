@@ -1,0 +1,21 @@
+<div class="row" >
+  <div class="col-lg-8" style="background-color: white; border-radius: 10px; padding-bottom: 20px">
+    <%= form_tag(admin_omr_index_path, method: "post", multipart: true, role: 'form') do %>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <tr>
+              <td><label class="form-label">OMR CSV ZIP:</label></td>
+              <td>
+                <input required id="omr_zip" name="omr_zip" class="input-file" type="file" accept=".zip">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class=" text-right"><button type="submit" class="btn btn-success">Submit</button></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

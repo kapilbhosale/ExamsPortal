@@ -57,6 +57,8 @@ module ApplicationHelper
 
     return 'PIS, Jalna' if ['pis'].include? subdomain
 
+    return 'Bhargav Career Academy' if ['bhargav'].include? subdomain
+
     request.subdomain.humanize || "Exams"
   end
 

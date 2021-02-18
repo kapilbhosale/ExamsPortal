@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_11_061246) do
-
+ActiveRecord::Schema.define(version: 2021_02_11_131024) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,6 +56,18 @@ ActiveRecord::Schema.define(version: 2020_12_11_061246) do
     t.string "type", default: "Teacher"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "attendances", force: :cascade do |t|
+    t.bigint "org_id"
+    t.bigint "student_id"
+    t.datetime "time_entry"
+    t.integer "time_stamp"
+    t.integer "att_type", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_attendances_on_org_id"
+    t.index ["student_id"], name: "index_attendances_on_student_id"
   end
 
   create_table "batch_groups", force: :cascade do |t|
@@ -335,6 +346,14 @@ ActiveRecord::Schema.define(version: 2020_12_11_061246) do
     t.boolean "is_image", default: false
   end
 
+  create_table "raw_attendances", force: :cascade do |t|
+    t.jsonb "data", default: {}
+    t.boolean "processed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "org_id"
+  end
+
   create_table "sections", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -450,6 +469,7 @@ ActiveRecord::Schema.define(version: 2020_12_11_061246) do
     t.integer "app_reset_count", default: 0
     t.datetime "deleted_at"
     t.boolean "disable", default: false
+    t.string "rfid_card_number"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"
     t.index ["name"], name: "index_students_on_name"

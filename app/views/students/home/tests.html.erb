@@ -83,9 +83,16 @@
                       <% end %>
                     </td>
                     <td>
-                      <span class="badge badge-info">
-                        Percentage: <%= report_data.percentage.round(2) %>
-                      </span>
+                      <% if report_data.data['total']['score'].to_s.downcase == 'absent' %>
+                        <span class="badge badge-danger">
+                          Absent
+                        </span>
+                      <% else %>
+                        <span class="badge badge-info">
+                          Percentage: <%= report_data.percentage.round(2) %>
+                        </span>
+                      <% end %>
+
                       <% report_data.data.each do |key, val| %>
                       <br>
                         <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>

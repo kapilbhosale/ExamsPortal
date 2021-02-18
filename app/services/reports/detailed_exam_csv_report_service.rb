@@ -47,7 +47,7 @@ module Reports
         ses.sync_data.each do |_, data|
           data.each do |_, val|
             answerProps = val["answerProps"]
-            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] = "#{answerProps['isAnswered'] ? answerProps['answer'] : '-'}|#{answerProps['visits']}|#{answerProps['timeSpent']}"
+            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] = "#{answerProps['isAnswered'] ? answerProps['answer'].first : '-'}|#{answerProps['visits']}|#{answerProps['timeSpent']}"
           end
         end
       end

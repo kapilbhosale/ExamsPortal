@@ -33,6 +33,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  rfid_card_number       :string
 #  roll_number            :integer          not null
 #  sign_in_count          :integer          default(0), not null
 #  ssc_marks              :float

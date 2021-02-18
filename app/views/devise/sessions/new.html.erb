@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col col-login mx-auto">
     <div class="text-center mb-4 mt-6">
-      Smart <%= request.subdomain.humanize || 'Exams' %>
+      Smart Exams Portal
     </div>
     <% auth_url = resource.is_a?(Admin) ? session_path(resource_name) : '/students/authorise' %>
     <%= form_for(resource, as: resource_name,html:{class:'card'}, url: auth_url) do |f| %>
@@ -56,11 +56,6 @@
       </div>
     </div>
     <% end %>
-    <div class="text-center text-muted">
-      <% if resource_name == "admin" %>
-        Don't have account yet? <a href="./sign_up">Sign up</a>
-      <% end %>
-    </div>
   </div>
 </div>
 

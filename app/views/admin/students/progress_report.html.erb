@@ -1,5 +1,37 @@
-<div>
-  <div class="table-responsive" style="background-color: white;">
+<div style="background-color: white; border-radius: 10px; padding: 10px">
+  <div style="border: 1px solid rgb(128,128,128);">
+    <table class="table" style="border: none;">
+      <tr>
+        <td>
+          Student Name:
+        </td>
+        <td>
+          <b><%= @student.name %></b>
+        </td>
+        <td>
+          Roll Number:
+        </td>
+        <td>
+          <b><%= @student.roll_number %></b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Batch:
+        </td>
+        <td>
+          <b><%= @student.batches.pluck(:name).join(', ') %></b>
+        </td>
+        <td>
+          Parent Mobile:
+        </td>
+        <td>
+          <b><%= @student.parent_mobile %></b>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="table-responsive">
     <table class="table table-sm table-condensed table-striped table-bordered ">
       <thead>
         <tr>

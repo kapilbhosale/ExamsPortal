@@ -5,6 +5,8 @@ class Api::V1::StudentsController < Api::V1::ApiController
   skip_before_action :set_current_org, only: [:login]
   skip_before_action :verify_authenticity_token
 
+  require "base32"
+
   def login
     if request.subdomain == 'app' || request.subdomain == 'demo'
       student = Student.find_by(
@@ -42,6 +44,10 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: { message: message }, status: :unauthorized and return
     end
 
+    if request.subdomain == 'bhargav'
+      student.reset_apps
+      generate_and_send_otp(student)
+    end
     sign_in(student)
     student.update(
       app_login: true,
@@ -52,6 +58,21 @@ class Api::V1::StudentsController < Api::V1::ApiController
     )
 
     render json: student_json(student), status: :ok
+  end
+
+  def generate_and_send_otp(student)
+    _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
+    _SMS_PASSWORD = "k@lpak@2020"
+    @otp = ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
+    require 'net/http'
+    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+    strUrl = strUrl+"?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+otp_sms_text(@otp)+"";
+    uri = URI(strUrl)
+    puts Net::HTTP.get(uri)
+  end
+
+  def otp_sms_text(otp)
+    "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp}"
   end
 
   def update_fcm_token
@@ -66,10 +87,12 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
   # return true if allowed to login, false if not allowed to login
   def login_allowed?(student)
+    # add OPT config based condition for org.
+    return true if request.subdomain == 'bhargav'
+
     return true if demo_account?(student)
 
-    # return false if student.is_laptop_login
-    return true if student.is_laptop_login
+    return false if student.is_laptop_login
 
     return true if !student.app_login?
 
@@ -112,7 +135,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
         api_key: student.api_key,
         fcm_token: student.fcm_token,
         vimeo_access_token: student.org&.vimeo_access_token
-      }, otp: '111111'
+      }, otp: (@otp || '111111')
     }
   end
 end

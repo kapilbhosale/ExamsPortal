@@ -46,6 +46,8 @@ Rails.application.routes.draw do
     get 'category_videos/:id' => 'videos#category_videos'
     get 'yt-player' => 'videos#play_yt'
     get 'play-yt-video' => 'videos#play_yt_video'
+    get 'otp_input', to: 'login#otp_input'
+    post 'process_otp', to: 'login#process_otp'
 
     post 'authorise', to: 'login#authorise'
     get "auto-auth", to: 'home#auto_auth'
@@ -131,6 +133,13 @@ Rails.application.routes.draw do
       get :chats
     end
     resources :subjects
+    resources :omr
+    resources :attendance
+
+    namespace :api do
+      resources :students
+      resources :attendance
+    end
   end
 
   get 'current-server-time', to: 'home#current_server_time'
