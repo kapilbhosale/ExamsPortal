@@ -110,10 +110,15 @@ class Admin::GenresController < Admin::BaseController
   end
 
   def student_folder_access
-    svf = StudentVideoFolder.create(folder_access_params)
+    svf = StudentVideoFolder.find_by(genre_id: folder_access_params[:genre_id], student_id: folder_access_params[:student_id])
+    if svf.present?
+      svf.update(show_till_date: folder_access_params[:show_till_date])
+    else
+      svf = StudentVideoFolder.create(folder_access_params)
+    end
     render json: {} and return if svf.errors.blank?
 
-    render json: { error: svf.errors.join(', ') }, status: :unprocessable_entity
+    render json: { error: svf.errors.full_messages.join(', ') }, status: :unprocessable_entity
   end
 
   private
