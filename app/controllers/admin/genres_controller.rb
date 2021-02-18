@@ -1,7 +1,6 @@
 class Admin::GenresController < Admin::BaseController
   def index
     @genres = Genre.where(org_id: current_org.id)
-
     @search = Genre.where(org_id: current_org.id).all.order(id: :desc)
 
     if params[:q].present?
@@ -17,6 +16,41 @@ class Admin::GenresController < Admin::BaseController
     @search = @search.search(search_params)
     @genres = @search.result.order(created_at: :desc)
     @subjects = Subject.where(org: current_org).all
+
+    if params[:student_id].present?
+      @student = Student.find_by(id: params[:student_id])
+
+      @student_folder_access_data = {}
+      svfs = StudentVideoFolder.where(student_id: @student.id).index_by(&:genre_id)
+
+      student_active_date = @student.created_at
+      @genres.each do |genre|
+        next unless genre.hidden
+
+        svf = svfs[genre.id]
+        if svf.present?
+          @student_folder_access_data[genre.id] = {
+            days: (svf.show_till_date.to_date - Date.today).to_i,
+            date: svf.show_till_date.strftime('%Y-%m-%d')
+          }
+        else
+          vl_to_consider = genre&.video_lectures&.order(:id)&.last
+          genre_date = vl_to_consider&.publish_at || vl_to_consider&.created_at.to_date || genre.created_at.to_date
+
+          if student_active_date <= genre_date
+            @student_folder_access_data[genre.id] =  {
+              days: 0,
+              date: genre.updated_at.strftime('%Y-%m-%d')
+            }
+          else
+            @student_folder_access_data[genre.id] =  {
+              days: (student_active_date.to_date + 30.days - Date.today).to_i,
+              date: (student_active_date.to_date + 30.days).strftime('%Y-%m-%d')
+            }
+          end
+        end
+      end
+    end
   end
 
   def new
@@ -75,6 +109,13 @@ class Admin::GenresController < Admin::BaseController
     redirect_to admin_genres_path
   end
 
+  def student_folder_access
+    svf = StudentVideoFolder.create(folder_access_params)
+    render json: {} and return if svf.errors.blank?
+
+    render json: { error: svf.errors.join(', ') }, status: :unprocessable_entity
+  end
+
   private
 
   def search_params
@@ -82,5 +123,9 @@ class Admin::GenresController < Admin::BaseController
 
     search_term = params[:q][:name]&.strip
     { name_cont: search_term }
+  end
+
+  def folder_access_params
+    params.permit(:show_till_date, :genre_id, :student_id)
   end
 end

@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< Updated upstream
 ActiveRecord::Schema.define(version: 2021_02_11_131024) do
+=======
+ActiveRecord::Schema.define(version: 2021_02_18_122334) do
+>>>>>>> Stashed changes
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -427,6 +431,16 @@ ActiveRecord::Schema.define(version: 2021_02_11_131024) do
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_student_exams_on_exam_id"
     t.index ["student_id"], name: "index_student_exams_on_student_id"
+  end
+
+  create_table "student_video_folders", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "genre_id", null: false
+    t.datetime "show_till_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["genre_id"], name: "index_student_video_folders_on_genre_id"
+    t.index ["student_id"], name: "index_student_video_folders_on_student_id"
   end
 
   create_table "students", force: :cascade do |t|

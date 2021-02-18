@@ -1,4 +1,9 @@
 <div class="container" style="background-color: white; padding: 5px">
+  <% if @student.present? %>
+    <div class="row" style="background-color: peru; padding: 10px; margin: 0px 10px; color: white">
+      <%= @student&.name %>
+    </div>
+  <% end %>
   <div class="card-header row">
     <div class="col-md-2">
       <h5>Video Folders</h5>
@@ -48,24 +53,73 @@
                 <%= genre.video_lectures_count %>
               </a>
             </td>
-            <td>
-              <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
-              |
-              <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
-              |
+            <% if @student.present? %>
+              <td>
               <% if genre.hidden %>
-                <%= link_to 'Show'.html_safe, admin_genre_show_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Show folder?'} %>
+                <% folder_access_data = @student_folder_access_data[genre.id] %>
+                Days:
+                <a href="#" class="btn btn-sm btn-danger" role="button" aria-pressed="true">
+                  <%= folder_access_data ? folder_access_data[:days] : '-' %>
+                </a>
+                <input type="date" data-<%= genre.id %> value="<%= folder_access_data ? folder_access_data[:date] : '' %>">
+                <button type="button" data-id="<%= genre.id %>" id="btn-change-video-access-date" class="btn btn-sm btn-outline-info">Change</button>
+                <span data-success-<%= genre.id %> style="color: green" class="hidden">Success</span>
+                <span data-error-<%= genre.id %> style="color: red" class="hidden">Error, please try again</span>
               <% else %>
-                <%= link_to 'Hide'.html_safe, admin_genre_hide_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Hide folder?'} %>
+                <p style="color: green"> Video is visible to all </p>
               <% end %>
-              |
-              <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
-                Add Video
-              </a>
-            </td>
+              </td>
+            <% else %>
+              <td>
+                <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                |
+                <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_genre_path(genre), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+                |
+                <% if genre.hidden %>
+                  <%= link_to 'Show'.html_safe, admin_genre_show_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Show folder?'} %>
+                <% else %>
+                  <%= link_to 'Hide'.html_safe, admin_genre_hide_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Hide folder?'} %>
+                <% end %>
+                |
+                <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
+                  Add Video
+                </a>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
     </table>
   </div>
 </div>
+
+<%# admin_genre_student_folder_access_path(12) %>
+
+<script>
+  $(document).ready(function(){
+    $("#btn-change-video-access-date").click(function(){
+      var genreId = $(this).data("id");
+      var showTillDate = $("input[data-"+genreId+"]").val();
+
+      var formData = {
+        show_till_date: showTillDate,
+        student_id: <%= @student&.id %>
+      };
+
+      $.ajax({
+        url : "/admin/genres/"+genreId+"/student_folder_access",
+        type: "PUT",
+        data : formData,
+        success: function(data, textStatus, jqXHR) {
+          console.log("SUCCESS", data);
+          $("span[data-success-"+genreId+"]").removeClass("hidden");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("ERROR", errorThrown);
+          $("span[data-error-"+genreId+"]").removeClass("hidden");
+        }
+      });
+
+    });
+  });
+</script>

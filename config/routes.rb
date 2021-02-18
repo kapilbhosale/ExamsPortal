@@ -126,6 +126,7 @@ Rails.application.routes.draw do
     resources :genres do
       get :hide
       get :show
+      put :student_folder_access
     end
     resources :study_pdf_types
     resources :messages

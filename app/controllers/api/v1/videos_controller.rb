@@ -103,18 +103,19 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def categories
-    video_lectures = VideoLecture
+    all_vls = VideoLecture
       .includes(:genre, :subject, :batches)
       .where(org_id: current_org.id)
       .where(batches: { id: current_student.batches.ids })
-      .where(enabled: true)
+
+    video_lectures = all_vls.where(enabled: true)
     categories_data = {}
 
     if current_org.subdomain == 'exams' && current_student.pending_amount.present? && current_student.block_videos?
       render json: {}, status: :ok and return
     end
 
-    video_lectures.all.each do |vl|
+    video_lectures.each do |vl|
       next if vl.publish_at.present? && vl.publish_at > Time.current
 
       subject_name = vl.subject&.name
@@ -130,6 +131,43 @@ class Api::V1::VideosController < Api::V1::ApiController
         categories_data[subject_name][vl.genre_id][:new] += 1
       end
     end
+
+    # considering enalbed false videos for students admitted late.
+    # starts here
+    video_lectures = all_vls.where(enabled: false)
+    video_lectures.each do |vl|
+      next if vl.publish_at.present? && vl.publish_at > Time.current
+
+      svfs = StudentVideoFolder.where(student_id: current_student.id).index_by(&:genre_id)
+      svf = svfs[vl&.genre&.id]
+
+      include_flag = false
+      if svf.present? && svf.show_till_date.to_date >= Date.today
+        include_flag = true
+      else
+        genre_date = vl&.publish_at || vl&.created_at.to_date
+        student_active_date = current_student.created_at
+        include_flag = true if student_active_date > genre_date && student_active_date.to_date + 30.days >= Date.today
+      end
+
+      next unless include_flag
+
+      subject_name = vl.subject&.name
+      categories_data[subject_name] ||= {}
+      categories_data[subject_name][vl.genre_id] ||= {
+        id: vl.genre_id,
+        name: vl&.genre&.name || 'Default',
+        count: 0,
+        new: 0
+      }
+      categories_data[subject_name][vl.genre_id][:count] += 1
+      if vl.created_at >= Time.zone.now.beginning_of_day
+        categories_data[subject_name][vl.genre_id][:new] += 1
+      end
+    end
+    # considering enalbed false videos for students admitted late.
+    # ends here
+
     json_data = categories_data
     render json: json_data, status: :ok
   end
