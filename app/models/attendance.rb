@@ -3,7 +3,7 @@
 # Table name: attendances
 #
 #  id         :bigint(8)        not null, primary key
-#  att_type   :integer          default(0)
+#  att_type   :integer          default("rfid")
 #  time_entry :datetime
 #  time_stamp :integer
 #  created_at :datetime         not null
