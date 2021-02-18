@@ -24,6 +24,9 @@ class Admin::GenresController < Admin::BaseController
       svfs = StudentVideoFolder.where(student_id: @student.id).index_by(&:genre_id)
 
       student_active_date = @student.created_at
+
+      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: @student.batches}).pluck(:genre_id).uniq
+      @genres = @genres.where(id: genre_ids)
       @genres.each do |genre|
         next unless genre.hidden
 
