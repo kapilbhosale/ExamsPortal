@@ -10,6 +10,7 @@ class Students::VideosController < Students::BaseController
     all_vls = VideoLecture.includes(:batches)
     .where(org_id: current_org.id)
     .where(batches: {id: current_student.batches.ids})
+    .where(genre_id: params[:id].to_i)
     .where.not(laptop_vimeo_id: nil)
 
     lectures = all_vls.where(enabled: true).order(id: :desc)
