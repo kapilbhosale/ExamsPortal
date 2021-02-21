@@ -160,7 +160,7 @@ class Students::AdmissionsController < ApplicationController
     #   !new_admission.student_id.present?,
     #   new_admission
     # )
-    
+
     eazy_pay_url(
       new_admission.payment_id,
       get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch),
@@ -200,6 +200,16 @@ class Students::AdmissionsController < ApplicationController
       return 15_000 if course.name == "pc"
       return 15_000 if course.name == "pb"
       return 15_000 if course.name == "cb"
+    end
+    if batch == 'test_series'
+      return 5_000 if course.name == "phy"
+      return 5_000 if course.name == "chem"
+      return 5_000 if course.name == "bio"
+      return 6_000 if course.name == "pcb"
+
+      return 5_000 if course.name == "pc"
+      return 5_000 if course.name == "pb"
+      return 5_000 if course.name == "cb"
     end
     course.fees
   end

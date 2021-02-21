@@ -65,6 +65,13 @@ class Batch < ApplicationRecord
         "Ned-REP-3-#{course.name.upcase}-2020"
       Batch.find_or_create_by(org_id: org.id, name: batch_name)
       Batch.where(org_id: org.id, name: batch_name)
+    elsif batch == 'test_series'
+      org = Org.first
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-TS-#{course.name.upcase}-2020" :
+        "Ned-TS-#{course.name.upcase}-2020"
+      Batch.find_or_create_by(org_id: org.id, name: batch_name)
+      Batch.where(org_id: org.id, name: batch_name)
     else
       org = Org.first
       batch_name = rcc_branch == "latur" ?
