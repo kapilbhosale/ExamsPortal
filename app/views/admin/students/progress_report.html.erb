@@ -1,5 +1,5 @@
 <%
-  @data = [["Element", "Density", { role: "style" } ]]
+  @data = [["Exam Name", "Percentage", { role: "style" } ]]
   @progress_report_data.each do |report_data|
     @data << ["#{report_data.exam_name} (#{report_data.exam_date})", report_data.percentage.round(2).to_f, "#ffa600"]
   end
