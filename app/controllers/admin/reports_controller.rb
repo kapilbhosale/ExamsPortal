@@ -92,8 +92,18 @@ class Admin::ReportsController < Admin::BaseController
       progress_report_data[student_exam_key][:data][ses.section.name] = { score: ses.score, total: total_score }
       progress_report_data[student_exam_key][:data][:total][:score] += ses.score
       progress_report_data[student_exam_key][:data][:total][:total] += total_score
-      progress_report_data[student_exam_key][:percentage] += 100 * ses.score.to_f / total_score.to_f
+      if progress_report_data[student_exam_key][:data][:total][:total].to_f != 0
+        val = 100 * progress_report_data[student_exam_key][:data][:total][:score].to_f / progress_report_data[student_exam_key][:data][:total][:total].to_f
+        progress_report_data[student_exam_key][:percentage] = val
+      end
+
     end
     ProgressReport.create(progress_report_data.values)
+    rank = 1
+    pr_data = ProgressReport.where(exam_id: exam.id).group_by(&:percentage)
+    pr_data.sort_by { |k, v| -k }.to_h.each do |_, prs|
+      ProgressReport.where(id: prs.collect(&:id)).update_all(rank: rank)
+      rank += 1
+    end
   end
 end
