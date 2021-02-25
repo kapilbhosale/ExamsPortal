@@ -28,7 +28,6 @@
                     <td><%= @students_count_by_exam_id[exam.id] %></td>
                     <td><%= exam.show_exam_at.strftime("%d-%b-%y %r") %> </td>
                     <td>
-                      <%= #link_to 'Generate', admin_report_generate_progress_report_path(exam) %>
                       Wait..
                     </td>
                     <td class="text-center">
