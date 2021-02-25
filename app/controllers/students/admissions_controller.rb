@@ -257,10 +257,10 @@ class Students::AdmissionsController < ApplicationController
               # student.roll_number = suggest_online_roll_number(Org.first, batches, true)
               if @new_admission.batch == 'repeater'
                 student.roll_number = Student.suggest_rep_online_roll_number
-                student.suggested_roll_number =  Student.suggest_rep_online_roll_number
+                student.suggested_roll_number = Student.suggest_rep_online_roll_number
               else
                 student.roll_number =  Student.suggest_tw_online_roll_number
-                student.suggested_roll_number =  Student.suggest_tw_online_roll_number
+                student.suggested_roll_number = Student.suggest_tw_online_roll_number
               end
               student.api_key = student.api_key + '+1'
               student.app_login = false
