@@ -11,7 +11,7 @@ class Admin::MessagesController < Admin::BaseController
       roll_number = message.sender_type == 'Student' ? message.sender.roll_number : message.sender_id
       msg_class = message.sender_type == 'Student' ? 'student-msg' : 'admin-msg'
       chat_message = "<div class='#{msg_class}'><p><b>[#{roll_number}] #{message.sender_name}:</b> #{message.message}</p><span class='time-left'>#{message.created_at.strftime("%I:%M %p")}</span></div>"
-      VideoChatChannel.broadcast_to message.messageable, message: chat_message
+      # VideoChatChannel.broadcast_to message.messageable, message: chat_message
       render json: {}, status: :ok and return
     else
       render json: {error: message.errors.full_messages.join(',')}, status: 422 and return
