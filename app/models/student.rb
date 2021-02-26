@@ -182,7 +182,6 @@ class Student < ApplicationRecord
   def self.suggest_tw_online_roll_number
     online_s_ids = NewAdmission.where(error_code: ['E000', 'E006', nil]).where(batch: NewAdmission.batches['12th']).where.not(student_id: nil).pluck(:student_id)
     rn = Student
-      .where('created_at >= ?', Date.parse('16-Feb-2021'))
       .where(id: online_s_ids)
       .where.not(new_admission_id: nil)
       .pluck(:suggested_roll_number)
