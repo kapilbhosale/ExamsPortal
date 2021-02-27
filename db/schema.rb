@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
-ActiveRecord::Schema.define(version: 2021_02_11_131024) do
-=======
-ActiveRecord::Schema.define(version: 2021_02_18_122334) do
->>>>>>> Stashed changes
+ActiveRecord::Schema.define(version: 2021_02_27_055017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -357,6 +353,15 @@ ActiveRecord::Schema.define(version: 2021_02_18_122334) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "org_id"
+  end
+
+  create_table "roll_number_suggestors", force: :cascade do |t|
+    t.string "batch_name"
+    t.string "criteria"
+    t.integer "initial_suggested"
+    t.integer "last_suggested"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "sections", force: :cascade do |t|
