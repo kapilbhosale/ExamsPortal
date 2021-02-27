@@ -130,11 +130,8 @@ class Student < ApplicationRecord
     org = Org.first
     batches = Batch.get_batches(na.rcc_branch, na.course, na.batch)
 
-    if na.batch == 'repeater'
-      roll_number = suggest_rep_online_roll_number
-    else
-      roll_number = suggest_online_roll_number(org, batches.first)
-    end
+    suggested_rn = RollNumberSuggestor.suggest_roll_number(na.batch)
+    roll_number = suggest_rn
 
     email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
     student = Student.find_or_initialize_by(email: email)
