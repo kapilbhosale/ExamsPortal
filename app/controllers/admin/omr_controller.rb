@@ -1,4 +1,6 @@
 class Admin::OmrController < Admin::BaseController
+  BATCH_IDS_11_12th = [41,42,43,44,46,47,60,89]
+
   def create
     temp_file = params["omr_zip"].tempfile rescue nil
     extract_zip(temp_file)
@@ -89,7 +91,7 @@ class Admin::OmrController < Admin::BaseController
       @student_tests[student_id] ||= []
       @student_tests[student_id] << test_id
       roll_number = csv_row['Student_Roll_No'].to_s.strip
-      student = Student.find_by(roll_number: roll_number)
+      student = Student.includes(:batches).where(batches: {id: BATCH_IDS_11_12th}).find_by(roll_number: roll_number)
       next if student.blank?
 
       @student_roll_numbers[student_id] = roll_number
@@ -128,7 +130,7 @@ class Admin::OmrController < Admin::BaseController
     student_not_appeared_tests.each do |student_id, test_ids|
       next if test_ids.blank?
 
-      student = Student.find_by(roll_number: @student_roll_numbers[student_id])
+      student = Student.includes(:batches).where(batches: {id: BATCH_IDS_11_12th}).find_by(roll_number: tudent_roll_numbers[student_id])
       next if student.blank?
 
       test_ids.each do |test_id|
