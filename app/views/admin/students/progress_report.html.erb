@@ -114,7 +114,7 @@
             </td>
             <td>
               <span style="color: green; font-size: 1.5rem;">
-                <% if report_data.dig(:data, 'total', 'score') == '-' %>
+                <% if report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent'%>
                   -
                 <% else %>
                   <%= report_data[:rank] || "-" %>
