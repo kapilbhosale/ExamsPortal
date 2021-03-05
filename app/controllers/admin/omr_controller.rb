@@ -2,6 +2,7 @@ class Admin::OmrController < Admin::BaseController
   BATCH_IDS_11_12th = [41,42,43,44,46,47,60,89]
 
   def create
+    @test_names_for_ranks = {}
     temp_file = params["omr_zip"].tempfile rescue nil
     extract_zip(temp_file)
     process_test_master
@@ -10,6 +11,8 @@ class Admin::OmrController < Admin::BaseController
     process_batch_test_detail
     process_batch_students
     make_absent_entries
+
+    assign_ranks
 
     flash[:success] = "Imported data successfully"
     redirect_to admin_omr_index_path
@@ -98,6 +101,10 @@ class Admin::OmrController < Admin::BaseController
 
       score = csv_row['Student_Marks'].to_i
       test = @test_master_data[test_id]
+      @test_names_for_ranks["#{test[:test_date]}-#{test[:test_name]}"] ||= {
+        exam_date: test[:test_date],
+        exam_name: "#{test[:test_name]} (OMR)"
+      }
       ProgressReport.find_or_create_by({
         data: {
           total: {
@@ -136,6 +143,10 @@ class Admin::OmrController < Admin::BaseController
 
       test_ids.each do |test_id|
         test = @test_master_data[test_id]
+        @test_names_for_ranks["#{test[:test_date]}-#{test[:test_name]}"] ||= {
+          exam_date: test[:test_date],
+          exam_name: "#{test[:test_name]} (OMR)"
+        }
         ProgressReport.find_or_create_by({
           data: {
             total: {
@@ -149,6 +160,17 @@ class Admin::OmrController < Admin::BaseController
           is_imported: true,
           student_id: student.id
         })
+      end
+    end
+  end
+
+  def assign_ranks
+    @test_names_for_ranks.values.each do |vals|
+      rank = 1
+      pr_data = ProgressReport.where(exam_date: vals[:exam_date]).where(exam_name: vals[:exam_name]).group_by(&:percentage)
+      pr_data.sort_by { |k, v| -k }.to_h.each do |_, prs|
+        ProgressReport.where(id: prs.collect(&:id)).update_all(rank: rank)
+        rank += 1
       end
     end
   end
