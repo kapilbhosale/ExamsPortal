@@ -3,7 +3,7 @@ class Admin::OmrController < Admin::BaseController
     temp_file = params["omr_zip"].tempfile rescue nil
     extract_zip(temp_file)
     process_test_master
-    prcess_student_test_data
+    process_student_test_data
 
     process_batch_test_detail
     process_batch_students
@@ -78,7 +78,7 @@ class Admin::OmrController < Admin::BaseController
     end
   end
 
-  def prcess_student_test_data
+  def process_student_test_data
     file_path = "#{get_base_file_path}/Test_Detail.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     @student_tests = {}

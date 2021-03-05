@@ -113,7 +113,7 @@
               <%= report_data[:exam_name] %>
             </td>
             <td>
-              <% unless prd[:present] || report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
+              <% if !prd[:present] || report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
                 <span class="badge badge-danger">
                   Absent
                 </span>
