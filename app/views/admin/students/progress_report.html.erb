@@ -119,7 +119,7 @@
                 </span>
               <% else %>
                 <span class="badge badge-info">
-                  Percentage: <%= report_data[:percentage].round(2) %>
+                  Percentage: <%= report_data[:percentage]&.round(2) || 0 %>
                 </span>
               <% end %>
               <% json_data = Hash[report_data[:data].sort_by{|k, v| k }] %>
