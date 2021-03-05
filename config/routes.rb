@@ -135,7 +135,9 @@ Rails.application.routes.draw do
     end
     resources :subjects
     resources :omr
-    resources :attendance
+    resources :attendance do
+      get :overview_report, on: :collection
+    end
 
     namespace :api do
       resources :students

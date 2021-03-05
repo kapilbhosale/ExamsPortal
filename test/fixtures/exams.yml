@@ -6,6 +6,7 @@
 #  description         :text
 #  exam_available_till :datetime
 #  exam_type           :integer          default("jee")
+#  is_pr_generated     :boolean          default(FALSE)
 #  name                :string           not null
 #  negative_marks      :integer          default(-1), not null
 #  no_of_questions     :integer
