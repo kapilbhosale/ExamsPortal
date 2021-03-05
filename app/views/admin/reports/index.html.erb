@@ -28,7 +28,11 @@
                     <td><%= @students_count_by_exam_id[exam.id] %></td>
                     <td><%= exam.show_exam_at.strftime("%d-%b-%y %r") %> </td>
                     <td>
-                      <%= exam.is_pr_generated ? 'Report Auto Generated' : 'Will generate tonight' %>
+                      <% if exam.is_pr_generated %>
+                       <span style="color: green">Report Auto Generated</span>
+                       <% else %>
+                       <span style="color: red">Will generate tonight</span>
+                       <% else %>
                     </td>
                     <td class="text-center">
                       &nbsp;
