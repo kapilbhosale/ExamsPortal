@@ -1,8 +1,18 @@
-<div class="row">
-  <div class="col col-login mx-auto">
-    <div class="text-center mb-4 mt-6">
-      Smart Exams Portal
-    </div>
+<style>
+  .bg {
+    /* The image used */
+    background-image: url(<%= asset_path 'login-bg.jpg' %>);
+    /* Full height */
+    height: 100%; 
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+</style>
+
+<div class="bg">
+  <div class="offset-md-6 offset-sm-1 col-md-5 col-sm-10" style="padding-top: 12%">
     <% auth_url = resource.is_a?(Admin) ? session_path(resource_name) : '/students/authorise' %>
     <%= form_for(resource, as: resource_name,html:{class:'card'}, url: auth_url) do |f| %>
     <div class="card-body p-6">

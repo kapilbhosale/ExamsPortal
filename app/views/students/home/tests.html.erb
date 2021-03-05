@@ -34,7 +34,7 @@
             Check Previous exams.
           </div>
         <% else %>
-          <div class="row">
+          <div class="row" style="padding: 0px 10px">
             <% @new_exams.each do |exam| %>
               <%= render partial: "exam_card", locals: {exam: exam} %>
             <% end %>
@@ -45,7 +45,7 @@
         <% if @previous_exams.size == 0 %>
           <div class="well"> No exams available for your batch right now. Please try after some time. </div>
         <% else %>
-          <div class="row">
+          <div class="row" style="padding: 0px 10px">
             <% @previous_exams.each do |exam| %>
               <%= render partial: "exam_card", locals: {exam: exam} %>
             <% end %>

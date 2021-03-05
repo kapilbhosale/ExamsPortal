@@ -25,7 +25,7 @@ class Students::HomeController < Students::BaseController
     @new_exams = Exam
       .where(id: exam_ids)
       .where('show_exam_at > ?', Time.current - 1.days)
-      .where('show_exam_at <= ?', Time.current)
+      .where('show_exam_at <= ?', Time.current + 2.days)
       .order(created_at: :desc)
     @previous_exams = Exam
       .where(id: exam_ids)
