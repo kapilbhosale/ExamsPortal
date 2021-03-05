@@ -2,7 +2,7 @@
   @g_data = [['Exam IDs', 'Prcnt %']]
   @data.each_with_index do |prd, index|
     if prd[:present]
-      @g_data << ["#{index+1}", prd[:data][:percentage].round(2).to_f]
+      @g_data << ["#{index+1}", prd[:data][:percentage]&.round(2)&.to_f || 0]
     else
     @g_data << ["#{index+1}", 0]
     end

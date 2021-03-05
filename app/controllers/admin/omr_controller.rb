@@ -116,20 +116,18 @@ class Admin::OmrController < Admin::BaseController
     # make absent tests entires here.
     student_not_appeared_tests = {}
     @student_tests.each do |student_id, test_ids|
-      next if  @student_batches[student_id].blank?
+      next if @student_batches[student_id].blank?
 
       batch_tests = []
-      @student_batches[student_id].each do |_, batch_ids|
-        next if batch_ids.blank?
-
-        batch_ids.each do |batch_id|
-          batch_tests += @batch_test_details[batch_id]
-        end
+      @student_batches[student_id].each do |batch_id|
+        batch_tests += @batch_test_details[batch_id]
       end
       student_not_appeared_tests[student_id] = batch_tests - test_ids
     end
 
     student_not_appeared_tests.each do |student_id, test_ids|
+      next if test_ids.blank?
+
       student = Student.find_by(roll_number: @student_roll_numbers[student_id])
       next if student.blank?
 
