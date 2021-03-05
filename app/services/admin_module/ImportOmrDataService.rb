@@ -16,7 +16,7 @@ module AdminModule
       file_path = "#{get_base_file_path}/Test_Master.csv"
       csv_file = File.open(file_path, "r:ISO-8859-1")
       CSV.foreach(csv_file, :headers => true).each do |csv_row|
-        binding.pry
+        # binding.pry
       end
     end
 
