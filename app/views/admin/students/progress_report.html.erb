@@ -113,7 +113,7 @@
               <%= report_data[:exam_name] %>
             </td>
             <td>
-              <% unless prd[:present] %>
+              <% unless prd[:present] || report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
                 <span class="badge badge-danger">
                   Absent
                 </span>
@@ -121,20 +121,20 @@
                 <span class="badge badge-info">
                   Percentage: <%= report_data[:percentage]&.round(2) || 0 %>
                 </span>
-              <% end %>
-              <% json_data = Hash[report_data[:data].sort_by{|k, v| k }] %>
-              <% json_data.each do |key, val| %>
-              <br>
-                <% if key.downcase == 'total' %>
-                  <b><%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %></b>
-                <% else %>
-                  <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>
+                <% json_data = Hash[report_data[:data].sort_by{|k, v| k }] %>
+                <% json_data.each do |key, val| %>
+                <br>
+                  <% if key.downcase == 'total' %>
+                    <b><%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %></b>
+                  <% else %>
+                    <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>
+                  <% end %>
                 <% end %>
               <% end %>
             </td>
             <td>
               <span style="color: green; font-size: 1.5rem;">
-                <% if report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent'%>
+                <% if report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
                   -
                 <% else %>
                   <%= report_data[:rank] || "-" %>
