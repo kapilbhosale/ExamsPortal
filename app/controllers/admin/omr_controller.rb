@@ -167,7 +167,7 @@ class Admin::OmrController < Admin::BaseController
   def assign_ranks
     @test_names_for_ranks.values.each do |vals|
       rank = 1
-      pr_data = ProgressReport.where(exam_date: vals[:exam_date]).where(exam_name: vals[:exam_name]).group_by(&:percentage)
+      pr_data = ProgressReport.where.not(percentage: nil).where(exam_date: vals[:exam_date]).where(exam_name: vals[:exam_name]).group_by(&:percentage)
       pr_data.sort_by { |k, v| -k }.to_h.each do |_, prs|
         ProgressReport.where(id: prs.collect(&:id)).update_all(rank: rank)
         rank += 1
