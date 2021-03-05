@@ -4,7 +4,7 @@
     if prd[:present]
       @g_data << ["#{index+1}", prd[:data][:percentage].round(2).to_f]
     else
-    @g_data << ["#{index+1}", 0.2]
+    @g_data << ["#{index+1}", 0]
     end
   end
 %>
@@ -21,6 +21,12 @@
         chart: {
           title: 'Student Progress Report',
           subtitle: 'Percntage Report Analysis',
+        },
+        vAxis: {
+          viewWindow: {
+            max:100,
+            min:00
+          }
         }
       };
       var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
@@ -107,8 +113,12 @@
               <% end %>
             </td>
             <td>
-              <span class="badge badge-warning">
-                <%= report_data[:rank] %>
+              <span style="color: green; font-size: 1.5rem;">
+                <% if report_data.dig(:data, 'total', 'score') == '-' %>
+                  -
+                <% else %>
+                  <%= report_data[:rank] || "-" %>
+                <% end %>
               </span>
             </td>
           </tr>
