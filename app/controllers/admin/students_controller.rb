@@ -106,7 +106,7 @@ class Admin::StudentsController < Admin::BaseController
     progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
     data = {}
     progress_report_data.each do |prd|
-      key = "#{prd.exam_id || 0}-#{prd.exam_name.parameterize}"
+      key = "#{prd.exam_id || 0}-#{prd&.exam_name&.parameterize || 'default-exam'}"
       data[key] = {
         exam_date: prd.exam_date,
         present: true,
@@ -135,7 +135,7 @@ class Admin::StudentsController < Admin::BaseController
         }
       }
     end
-    @data = Hash[data.sort_by{|k, v| v[:exam_date]}.reverse].values
+    @data = Hash[data.sort_by{|k, v| v[:exam_date] || Date.today }.reverse].values
   end
 
   def reset_login
