@@ -4,6 +4,11 @@ class Admin::OmrController < Admin::BaseController
     extract_zip(temp_file)
     process_test_master
     prcess_student_test_data
+
+    process_batch_test_detail
+    process_batch_students
+    make_absent_entries
+
     flash[:success] = "Imported data successfully"
     redirect_to admin_omr_index_path
   end
@@ -22,6 +27,32 @@ class Admin::OmrController < Admin::BaseController
         FileUtils.mkdir_p(File.dirname(f_path))
         zip_file.extract(f, f_path) {true}
       end
+    end
+  end
+
+  def process_batch_test_detail
+    @batch_test_details = {}
+    file_path = "#{get_base_file_path}/Batch_Test_Detail.csv"
+    csv_file = File.open(file_path, "r:ISO-8859-1")
+    CSV.foreach(csv_file, :headers => true).each do |csv_row|
+      batch_id = csv_row['Batch_ID'].to_i
+      test_id = csv_row['Test_ID'].to_i
+
+      @batch_test_details[batch_id] ||= []
+      @batch_test_details[batch_id] << test_id
+    end
+  end
+
+  def process_batch_students
+    @student_batches = {}
+    file_path = "#{get_base_file_path}/Batch_Student.csv"
+    csv_file = File.open(file_path, "r:ISO-8859-1")
+    CSV.foreach(csv_file, :headers => true).each do |csv_row|
+      batch_id = csv_row['Batch_ID'].to_i
+      student_id = csv_row['Student_ID'].to_i
+
+      @student_batches[student_id] ||= []
+      @student_batches[student_id] << batch_id
     end
   end
 
@@ -50,11 +81,18 @@ class Admin::OmrController < Admin::BaseController
   def prcess_student_test_data
     file_path = "#{get_base_file_path}/Test_Detail.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
+    @student_tests = {}
+    @student_roll_numbers = {}
     CSV.foreach(csv_file, headers: true).each do |csv_row|
+      student_id = csv_row['Student_ID'].to_i
       test_id = csv_row['Test_ID'].to_i
+      @student_tests[student_id] ||= []
+      @student_tests[student_id] << test_id
       roll_number = csv_row['Student_Roll_No'].to_s.strip
       student = Student.find_by(roll_number: roll_number)
       next if student.blank?
+
+      @student_roll_numbers[student_id] = roll_number
 
       score = csv_row['Student_Marks'].to_i
       test = @test_master_data[test_id]
@@ -71,6 +109,46 @@ class Admin::OmrController < Admin::BaseController
         is_imported: true,
         student_id: student.id
       })
+    end
+  end
+
+  def make_absent_entries
+    # make absent tests entires here.
+    student_not_appeared_tests = {}
+    @student_tests.each do |student_id, test_ids|
+      next if  @student_batches[student_id].blank?
+
+      batch_tests = []
+      @student_batches[student_id].each do |_, batch_ids|
+        next if batch_ids.blank?
+
+        batch_ids.each do |batch_id|
+          batch_tests += @batch_test_details[batch_id]
+        end
+      end
+      student_not_appeared_tests[student_id] = batch_tests - test_ids
+    end
+
+    student_not_appeared_tests.each do |student_id, test_ids|
+      student = Student.find_by(roll_number: @student_roll_numbers[student_id])
+      next if student.blank?
+
+      test_ids.each do |test_id|
+        test = @test_master_data[test_id]
+        ProgressReport.find_or_create_by({
+          data: {
+            total: {
+              score: '-',
+              total: test[:total_marks]
+            }
+          },
+          percentage: nil,
+          exam_date: test[:test_date],
+          exam_name: "#{test[:test_name]} (OMR)",
+          is_imported: true,
+          student_id: student.id
+        })
+      end
     end
   end
 
