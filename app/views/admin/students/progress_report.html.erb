@@ -89,9 +89,16 @@
             <td style="color: #467fcf">
               <%= report_data[:exam_date].strftime("%d-%B") %>
               <br/>
-              <span class="badge badge-secondary pull-right">
-                <%= report_data[:is_imported] ? 'Theory' : 'Objective' %>
+              <% if report_data[:is_imported] %>
+                <% if report_data[:exam_name].downcase.include?('(omr)') %>
+                  <span class="badge badge-info pull-right"> OMR </span>
+                <% else %>
+                  <span class="badge badge-secondary pull-right"> Imported </span>
+                <% end %>
               </span>
+              <% else %>
+                <span class="badge badge-primary pull-right"> Online Exam </span>
+              <% end %>
             </td>
             <td>
               <%= report_data[:exam_name] %>
