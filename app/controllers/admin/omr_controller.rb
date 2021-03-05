@@ -130,7 +130,8 @@ class Admin::OmrController < Admin::BaseController
     student_not_appeared_tests.each do |student_id, test_ids|
       next if test_ids.blank?
 
-      student = Student.includes(:batches).where(batches: {id: BATCH_IDS_11_12th}).find_by(roll_number: tudent_roll_numbers[student_id])
+      roll_number = @student_roll_numbers[student_id]
+      student = Student.includes(:batches).where(batches: {id: BATCH_IDS_11_12th}).find_by(roll_number: roll_number)
       next if student.blank?
 
       test_ids.each do |test_id|
