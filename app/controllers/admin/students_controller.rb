@@ -102,7 +102,40 @@ class Admin::StudentsController < Admin::BaseController
 
   def progress_report
     @student = Student.find_by(id: params[:student_id])
-    @progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
+    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids })
+    progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
+    data = {}
+    progress_report_data.each do |prd|
+      key = "#{prd.exam_id || 0}-#{prd.exam_name.parameterize}"
+      data[key] = {
+        exam_date: prd.exam_date,
+        present: true,
+        data: {
+          exam_date: prd.exam_date,
+          is_imported: prd.is_imported,
+          exam_name: prd.exam_name,
+          data: prd.data,
+          percentage: prd.percentage,
+          rank: prd.rank
+        }
+      }
+    end
+    exams.each do |exam|
+      key = "#{exam.id || 0}-#{exam.name.parameterize}"
+      data[key] ||= {
+        exam_date: exam.show_exam_at,
+        present: false,
+        data: {
+          exam_date: exam.show_exam_at,
+          is_imported: false,
+          exam_name: exam.name,
+          data: {},
+          percentage: 0,
+          rank: nil
+        }
+      }
+    end
+    @data = Hash[data.sort_by{|k, v| v[:exam_date]}.reverse].values
   end
 
   def reset_login
