@@ -1,10 +1,8 @@
 class ProgressReportWorker
   include Sidekiq::Worker
   def perform
-    Exam.where(is_pr_generated: false).each do |exam|
+    Exam.where('creadte_at > ?', Time.now - 30.days).where(is_pr_generated: false).each do |exam|
       exam.prepare_report
-      exam.is_pr_generated = true
-      exam.save
     end
   end
 end

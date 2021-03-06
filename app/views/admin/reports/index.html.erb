@@ -29,7 +29,7 @@
                     <td><%= exam.show_exam_at.strftime("%d-%b-%y %r") %> </td>
                     <td>
                       <% if exam.is_pr_generated %>
-                       <span style="color: green">Report Auto Generated</span>
+                       <span style="color: green">DONE</span>
                        <% else %>
                        <span style="color: red">Will generate tonight</span>
                        <% end %>

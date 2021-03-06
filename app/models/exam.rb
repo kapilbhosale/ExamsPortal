@@ -177,5 +177,7 @@ class Exam < ApplicationRecord
       ProgressReport.where(id: prs.collect(&:id)).update_all(rank: rank)
       rank += 1
     end
+    exam.is_pr_generated = true
+    exam.save
   end
 end
