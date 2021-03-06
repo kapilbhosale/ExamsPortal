@@ -12,8 +12,7 @@
             <thead>
             <tr>
               <th>Name</th>
-              <th>Question</th>
-              <th>Stds Appeared</th>
+              <th>Info (Q|Marks|Stds)</th>
               <th>Exam Date</th>
               <th>Progress Report</th>
               <th>Download Reports</th>
@@ -23,17 +22,33 @@
               <% if @exams.present? %>
                 <% @exams.each do |exam| %>
                   <tr>
-                    <td><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                    <td><%= exam.no_of_questions %></td>
-                    <td><%= @students_count_by_exam_id[exam.id] %></td>
-                    <td><%= exam.show_exam_at.strftime("%d-%b-%y %I:%M %p") %> </td>
                     <td>
-                      <% if exam.is_pr_generated %>
-                       <span style="color: green">DONE</span>
-                       <% else %>
-                       <button type="button" class="btn btn-sm btn-outline-primary">Generate</button> | 
-                       <span style="color: red">Auto tonight</span>
-                       <% end %>
+                      <%= link_to "#{exam.name.slice(0..50)} ... ", admin_exam_path(exam.id) %>
+                      <br />
+                      <span style="font-size: 10px"><%= exam.batches.pluck(:name).join(', ').slice(0..90) %></span>
+                    </td>
+                    <td>
+                      <span>
+                        <%= "#{exam.no_of_questions} | #{exam.total_marks} | " %>
+                        <b style="color: green"><%= @students_count_by_exam_id[exam.id]%></b>
+                      </span>
+                    </td>
+                    <td style="font-size: 12px"><%= exam.show_exam_at.strftime("%d-%b-%y %I:%M %p") %> </td>
+                    <td class="text-center">
+                      <% if REDIS_CACHE.get("pr-report-exam-id-#{exam.id}") == 'true' %>
+                        <span style="color: peru">
+                          <i class="fas fa-sync fa-spin fa-2x"></i>
+                        </span>
+                      <% else %>
+                        <% if exam.is_pr_generated %>
+                          <span style="color: green">
+                            <i class="far fa-check-circle fa-2x"></i>
+                          </span>
+                        <% else %>
+                          <%= link_to 'Generate', admin_report_generate_progress_report_path(exam), class: "btn btn-sm btn-outline-primary", 'data-toggle': 'tooltip', title: 'GENERATE REPORT', data: {confirm: 'Are you sure, You want to Generate Progress report, Once generated it cannot be updated.'} %> <br />
+                          <span style="color: red">Auto tonight</span>
+                        <% end %>
+                      <% end %>
                     </td>
                     <td class="text-center">
                       <%= link_to 'Summary', admin_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report', class: 'btn btn-sm btn-outline-secondary' %>
@@ -48,6 +63,7 @@
               <% end %>
             </tbody>
           </table>
+          <%= paginate @exams %>
         </div>
       </div>
     </div>

@@ -72,8 +72,6 @@ class Exam < ApplicationRecord
     'general'
   end
 
-  private
-
   def check_exam(section)
     sections.pluck(:name) == [section]
   end
@@ -130,12 +128,12 @@ class Exam < ApplicationRecord
 
   def prepare_report
     exam = self
-    student_exam_syncs = StudentExamSync.where(exam_id: exam.id)
-    student_exam_summaries = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id})
+    # student_exam_syncs = StudentExamSync.where(exam_id: exam.id)
+    # student_exam_summaries = StudentExamSummary.includes(:student_exam).where(student_exams: {exam_id: exam.id})
 
-    if student_exam_syncs.present? && student_exam_summaries.present?
-      student_exam_summaries.destroy_all
-    end
+    # if student_exam_syncs.present? && student_exam_summaries.present?
+    #   student_exam_summaries.destroy_all
+    # end
 
     Reports::ExamCsvReportService.new(exam.id).prepare_report
     progress_report_data = {}
@@ -179,5 +177,7 @@ class Exam < ApplicationRecord
     end
     exam.is_pr_generated = true
     exam.save
+    # delete preparing report id
+    REDIS_CACHE.del("pr-report-exam-id-#{exam.id}")
   end
 end
