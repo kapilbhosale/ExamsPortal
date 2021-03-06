@@ -126,6 +126,7 @@ group :development do
   # gem 'mina'
   # gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
   # gem 'mina-nginx', :require => false
+  gem 'rack-mini-profiler'
 end
 
 group :test do

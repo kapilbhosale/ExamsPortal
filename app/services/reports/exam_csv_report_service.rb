@@ -50,7 +50,7 @@ module Reports
         end
       end
 
-      student_exams_by_id = StudentExam.includes(student: [:batches]).all.index_by(&:id)
+      student_exams_by_id = StudentExam.where(exam_id: exam.id).includes(student: [:batches]).all.index_by(&:id)
 
       data = {}
       results.each do |student_exam_id, result|

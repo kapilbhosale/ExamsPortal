@@ -285,6 +285,8 @@ GEM
       activesupport (>= 3.0.0)
     raabro (1.4.0)
     rack (2.0.5)
+    rack-mini-profiler (2.3.1)
+      rack (>= 1.2.0)
     rack-protection (2.0.8.1)
       rack
     rack-proxy (0.6.4)
@@ -484,6 +486,7 @@ DEPENDENCIES
   pry-nav
   puma (~> 3.11)
   pundit
+  rack-mini-profiler
   rails (~> 5.2.0)
   rails-erd
   ransack

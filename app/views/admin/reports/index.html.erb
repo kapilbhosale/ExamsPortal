@@ -35,7 +35,7 @@
                     </td>
                     <td style="font-size: 12px"><%= exam.show_exam_at.strftime("%d-%b-%y %I:%M %p") %> </td>
                     <td class="text-center">
-                      <% if REDIS_CACHE.get("pr-report-exam-id-#{exam.id}") == 'true' %>
+                      <% if REDIS_CACHE&.get("pr-report-exam-id-#{exam.id}") == 'true' %>
                         <span style="color: peru">
                           <i class="fas fa-sync fa-spin fa-2x"></i>
                         </span>
@@ -51,8 +51,8 @@
                       <% end %>
                     </td>
                     <td class="text-center">
-                      <%= link_to 'Summary', admin_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report', class: 'btn btn-sm btn-outline-secondary' %>
-                      <%= link_to 'Detailed', admin_report_exam_detailed_report_path(exam, format: 'csv'), 'data-toggle': 'tooltip', title: 'Show Report', class: 'btn btn-sm btn-outline-secondary' %>
+                      <%= link_to 'Summary', admin_report_path(exam, format: 'csv'), class: 'btn btn-sm btn-outline-secondary' %>
+                      <%= link_to 'Detailed', admin_report_exam_detailed_report_path(exam, format: 'csv'), class: 'btn btn-sm btn-outline-secondary' %>
                     </td>
                   </tr>
                 <% end %>

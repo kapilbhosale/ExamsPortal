@@ -36,18 +36,23 @@ module Reports
       exam.batches.each do |batch|
         all_student_ids << batch.students.ids
       end
+
       all_student_ids = all_student_ids.flatten
       sync_summary_data = {}
       student_exam_ids_index = {}
-      StudentExam.where(exam: exam, student_id: all_student_ids).find_each do |student_exam|
+      StudentExam.where(exam: exam).find_each do |student_exam|
         student_exam_ids_index[student_exam.student_id] = student_exam.id
       end
+
       StudentExamSync.where(student_id: all_student_ids, exam_id: exam.id).find_each do |ses|
         sync_summary_data[student_exam_ids_index[ses.student_id]] ||= {}
         ses.sync_data.each do |_, data|
           data.each do |_, val|
+            question_id = val['id'].to_i
             answerProps = val["answerProps"]
-            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] = "#{answerProps['isAnswered'] ? answerProps['answer'].first : '-'}|#{answerProps['visits']}|#{answerProps['timeSpent']}"
+            std_option_id = answerProps['isAnswered'] == 'true' ? answerProps['answer'].first.to_i : nil
+            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] =
+              "#{@correct_ans_map[question_id][:option_id] == std_option_id ? 'RIGHT' : 'WRONG'}|#{@options_map[std_option_id]}|#{answerProps['visits']}-visit|#{answerProps['timeSpent']}(s)"
           end
         end
       end
@@ -56,6 +61,7 @@ module Reports
 
     def prepare_report
       syn_data_to_se()
+      option_ids_to_model_ans_map()
 
       results = {}
       considerDangligDataInSummary()
@@ -81,10 +87,11 @@ module Reports
         end
       end
 
-      student_exams_by_id = StudentExam.includes(student: [:batches]).all.index_by(&:id)
+      student_exams_by_id = StudentExam.where(exam_id: exam.id).includes(student: [:batches]).all.index_by(&:id)
 
       data = {}
       sync_summary_data = get_sync_data()
+
       results.each do |student_exam_id, result|
         student = student_exams_by_id[student_exam_id].student
         next if student.blank?
@@ -96,10 +103,10 @@ module Reports
         data[student_exam_id][:batch] = student.batches.pluck(:name).first
         data[student_exam_id][:result] = result
       end
+      csv_question_ids = csv_question_ids = exam.questions.order(:id).ids.map(&:to_s)
 
-      CSV.generate(headers: true) do |csv|
+      csv_data = CSV.generate(headers: true) do |csv|
         csv << csv_headers
-        csv <<
         data.each do |key, row|
           csv_row = [
             row[:roll_number],
@@ -108,38 +115,47 @@ module Reports
             row[:batch]
           ]
 
-          exam.sections.order(:id).each do |section|
-            section.questions.each_with_index do |question, index|
-              csv_row << sync_summary_data[key][question.id.to_s]
-            end
+          csv_question_ids.each do |q_id|
+            csv_row << sync_summary_data[key][q_id]
           end
-
           csv_row << row[:result][:no_of_questions]
           csv_row << row[:result][:answered]
           csv_row << row[:result][:not_answered]
           csv_row << row[:result][:correct]
           csv_row << row[:result][:incorrect]
           csv_row << row[:result][:score]
-
           csv << csv_row
         end
-
-        Student.where(id: exam.un_appeared_student_ids).includes(:batches).find_each do |student|
-          csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).join(', ')]
-        end
-
+        # Student.where(id: exam.un_appeared_student_ids).includes(:batches).find_each do |student|
+        #   csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).join(', ')]
+        # end
       end
+      csv_data
     rescue ShowExamReportError, ActiveRecord::RecordInvalid => ex
       nil
     end
 
     private
 
+    def option_ids_to_model_ans_map
+      @options_map = {}
+      @correct_ans_map = {}
+      Option.where(question_id: exam.questions.ids).order(:id).group_by(&:question_id).each do |question_id, options|
+        options.each_with_index do |option, index|
+          @options_map[option.id] = (index + 65).chr
+          if option.is_answer
+            @correct_ans_map[question_id] = { chr: (index + 65).chr, option_id: option.id }
+          end
+        end
+      end
+    end
+
     def csv_headers
       headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Batch']
+
       exam.sections.order(:id).each do |section|
-        section.questions.each_with_index do |question, index|
-          headers << "#{section.name}-#{index+1}[#{question.id}]"
+        exam.questions.where(section_id: section.id).each_with_index do |question, index|
+          headers << "sec[#{section.name}]-Qno[#{index+1}]-Ans[#{@correct_ans_map[question.id][:chr]}]qId[#{question.id}]"
         end
       end
       headers + ['total_no_of_questions', 'total_answered', 'total_not_answered', 'total_correct', 'total_incorrect', 'total_score']

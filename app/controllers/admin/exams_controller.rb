@@ -3,7 +3,7 @@ class Admin::ExamsController < Admin::BaseController
   def index
     @exams = Exam
       .where(org: current_org)
-      .includes(:batches)
+      .includes(:batches, :exam_batches)
       .where(batches: {id: current_admin.batches&.ids})
       .order(id: :desc)
       .page(params[:page])

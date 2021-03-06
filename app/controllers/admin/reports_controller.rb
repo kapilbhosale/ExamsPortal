@@ -23,7 +23,17 @@ class Admin::ReportsController < Admin::BaseController
 
   def show
     exam = Exam.find_by(id: params[:id], org: current_org)
-    @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
+    exam_csv_redis_key = "exam-csv-report-#{exam.id}"
+    @response = REDIS_CACHE.get(exam_csv_redis_key)
+    if @response.blank?
+      @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
+      # store response in cache if exam expired
+      if exam.exam_available_till.present? && exam.exam_available_till + 3.hours < Time.current
+        REDIS_CACHE.set(exam_csv_redis_key, @response, { ex: 1.day })
+      end
+    else
+      puts "\n\n\n\n\n ===========================> exam-csv-report cache suceeded \n\n\n\n"
+    end
 
     respond_to do |format|
       format.html do
@@ -36,24 +46,31 @@ class Admin::ReportsController < Admin::BaseController
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
       format.csv do
-        send_data @response, filename: "#{exam.name}_result.csv"
+        send_data @response, filename: "#{exam.name.parameterize}_result.csv"
       end
     end
   end
 
   def exam_detailed_report
     exam = Exam.find_by(id: params[:report_id], org: current_org)
-    @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
+
+    exam_detailed_redis_key = "exam-detailed-csv-report-#{exam.id}"
+    @response = REDIS_CACHE.get(exam_detailed_redis_key)
+    if @response.blank?
+      @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
+      # store response in cache if exam expired
+      if exam.exam_available_till.present? && exam.exam_available_till + 3.hours < Time.current
+        REDIS_CACHE.set(exam_detailed_redis_key, @response, { ex: 1.day })
+      end
+    else
+      puts "\n\n\n\n\n ===========================> exam-csv-report cache suceeded \n\n\n\n"
+    end
 
     respond_to do |format|
       format.csv do
-        send_data @response, filename: "#{exam.name}_detailed_student_analysis_report.csv"
+        send_data @response, filename: "#{exam.name.parameterize}_detailed_student_analysis_report.csv"
       end
     end
-  end
-
-  def student_progress
-    student = Student.find_by(id: params[:id], org: current_org)
   end
 
   private
