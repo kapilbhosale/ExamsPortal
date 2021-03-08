@@ -211,6 +211,16 @@ class Students::AdmissionsController < ApplicationController
       return 5_000 if course.name == "pb"
       return 5_000 if course.name == "cb"
     end
+    if batch == 'crash_course'
+      return 8_000 if course.name == "phy"
+      return 8_000 if course.name == "chem"
+      return 8_000 if course.name == "bio"
+      return 15_000 if course.name == "pcb"
+
+      return 12_000 if course.name == "pc"
+      return 12_000 if course.name == "pb"
+      return 12_000 if course.name == "cb"
+    end
     course.fees
   end
 

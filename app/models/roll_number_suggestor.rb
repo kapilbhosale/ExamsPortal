@@ -19,6 +19,7 @@ class RollNumberSuggestor < ApplicationRecord
     "crash_course" => 30_000,
     "repeater" => 10_000,
     "test_series" => 1200,
+    "crash_course" => 90_000
   }
   def self.suggest_roll_number(batch_name)
     rns = self.find_by(batch_name: batch_name)
