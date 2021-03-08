@@ -2,12 +2,16 @@ class Admin::AttendanceController < Admin::BaseController
   ITEMS_PER_PAGE = 20
 
   def index
+    redirect_to overview_report_admin_attendance_index_path
+  end
+
+  def overview_report
     @search = Attendance.search(search_params)
     @batches = Batch.where(org: current_org).all_batches
     filtered_batch_ids = params.dig(:q, 'batch_id').present? ? params[:q]['batch_id'] : @batches.ids
-    @students = Student.includes(:student_batches, :batches,).where(batches: { id: filtered_batch_ids })
+    @all_students = Student.includes(:student_batches, :batches,).where(batches: { id: filtered_batch_ids })
 
-    @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    @students = @all_students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
 
     @to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Date.today
     @from_date = params[:from_date].present? ? Date.parse(params[:from_date]) : Date.today - 30.days
@@ -21,27 +25,51 @@ class Admin::AttendanceController < Admin::BaseController
       .each do |att|
       @attendance["#{att.student_id}-#{att.time_entry.strftime('%d%m%y')}"] = true
     end
-  end
+    @summary_data = []
+    Batch.where(id: filtered_batch_ids).each do |batch|
+      student_ids = Student.includes(:student_batches, :batches,).where(batches: { id: batch.id })
+      pr_count = Attendance
+        .where(org: current_org)
+        .where(student_id: student_ids)
+        .where('time_entry >= ?', @from_date)
+        .where('time_entry <= ?', @to_date)
+        .count
+      std_count = student_ids.count
+      @summary_data << {batch: batch, students_count: std_count, pr_count: pr_count, ab_count: (std_count - pr_count) }
+    end
 
-  def overview_report
-    @search = Attendance.search(search_params)
-    @batches = Batch.where(org: current_org).all_batches
-    filtered_batch_ids = params.dig(:q, 'batch_id').present? ? params[:q]['batch_id'] : @batches.ids
-    @students = Student.includes(:student_batches, :batches,).where(batches: { id: filtered_batch_ids })
+    respond_to do |format|
+      format.html do
+      end
+      format.csv do
+        att_csv = CSV.generate(headers: true) do |csv|
+          header_row = ['Roll No', 'Name', 'Mobile', 'Batch']
+          @from_date.upto(@to_date).each do |att_date|
+            header_row << att_date.strftime("%d-%b-%y")
+          end
+          header_row += ['Total days', 'Present', 'Absent']
+          csv << header_row
+          @all_students.each do |student|
+            data_row = [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).join(', ')]
+            total_day = 0
+            pr_count, ab_count = 0, 0
+            @from_date.upto(@to_date).each do |day|
+              total_day += 1
+              if @attendance["#{student.id}-#{day.strftime('%d%m%y')}"]
+                data_row << 'P'
+                pr_count += 1
+              else
+                data_row << 'A'
+                ab_count += 1
+              end
+            end
+            data_row += [total_day, pr_count, ab_count]
+            csv << data_row
+          end
+        end
 
-    @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
-
-    @to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Date.today
-    @from_date = params[:from_date].present? ? Date.parse(params[:from_date]) : Date.today - 30.days
-    @today = Date.today
-    @attendance = {}
-    Attendance
-      .where(org: current_org)
-      .where(student_id: @students.ids)
-      .where('time_entry >= ?', @from_date)
-      .where('time_entry <= ?', @to_date)
-      .each do |att|
-      @attendance["#{att.student_id}-#{att.time_entry.strftime('%d%m%y')}"] = true
+        send_data att_csv, filename: 'AttendanceReport.csv'
+      end
     end
   end
 

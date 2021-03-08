@@ -1,4 +1,27 @@
 <div class="card" style="padding: 10px">
+  <div>
+    <p class="text-center">Attendance Summary Data</p>
+    <table class="table table-condensed .table-bordered">
+    <tr>
+      <th>Batch Name</th>
+      <th>From date</th>
+      <th>To date</th>
+      <th>Total Students</th>
+      <th>Present Students</th>
+      <th>Absent Students</th>
+    <tr>
+    <% @summary_data.each do |sd| %>
+      <tr>
+        <td><%= sd[:batch].name %></td>
+        <td><%= @from_date.strftime("%d-%B-%y") %></td>
+        <td><%= @to_date.strftime("%d-%B-%y") %></td>
+        <td><%= sd[:students_count] %></td>
+        <td style="color: green"><%= sd[:pr_count] %></td>
+        <td style="color: red"><%= sd[:ab_count] %></td>
+      </tr>
+    <% end %>
+    </table>
+  </div>
   <div style="background-color: #e0e0e0; padding: 5px">
     <%= search_form_for @search, url: overview_report_admin_attendance_index_path, class:"form-inline" do |f| %>
       <span class="p-2">From</span>
@@ -8,6 +31,9 @@
       <span class="p-2">Batch</span>
       <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
       <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
+      <div class="offset-md-3 btn btn-success">
+        <%= link_to ' CSV Download'.html_safe, overview_report_admin_attendance_index_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
+      </div>
     <% end %>
   </div>
   <% days = @from_date.upto(@to_date) %>

@@ -71,7 +71,7 @@ class Admin::OmrController < Admin::BaseController
       test_desc = csv_row['Descripation'].to_s.strip
       no_of_questions = csv_row['No_of_Questions'].to_i
       total_marks = csv_row['No_of_Marks'].to_i
-      test_date = DateTime.parse(get_test_date(csv_row['Date_Of_Creation'].to_s.strip))
+      test_date = DateTime.parse(get_test_date(csv_row['Test_Date'].to_s.strip))
       @test_master_data[test_id] = {
         test_id: test_id,
         test_name: test_name,
@@ -180,8 +180,6 @@ class Admin::OmrController < Admin::BaseController
   end
 
   def get_test_date(test_date)
-    dt = test_date.split(' ').first
-    dts = dt.split('/')
-    "#{dts[2]}-#{dts[0]}-#{dts[1]}"
+    "#{test_date[0..3]}-#{test_date[4..5]}-#{test_date[6..7]}"
   end
 end
