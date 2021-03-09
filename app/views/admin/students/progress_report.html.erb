@@ -37,7 +37,7 @@
 
 <div style="background-color: white; border-radius: 10px; padding: 10px">
   <div style="border: 1px solid rgb(128,128,128);">
-    <%= request.subdomain == 'bhargav' %>
+    <% if request.subdomain == 'bhargav' %>
       <div style="padding: 10px">
         <div class="col-md-2" style="padding-bottom: 10px">
           <%= image_tag 'bhargav-logo', width: 100, height: 50 %>
