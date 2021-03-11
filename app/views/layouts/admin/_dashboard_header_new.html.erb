@@ -63,7 +63,17 @@
             <%= link_to '<i class="fa fa-photo-video"></i> Videos Portal'.html_safe, admin_video_lectures_path, class: current_page?(admin_video_lectures_path) ? "nav-link active" : "nav-link" %>
           </li>
           <li class="nav-item">
-            <%= link_to '<i class="fa fa-mobile-alt"></i> Android APP'.html_safe, admin_android_apps_path, class: current_page?(admin_android_apps_path) ? "nav-link active" : "nav-link" %>
+            <a class="<%= current_page?(admin_android_apps_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
+              <i class="fa fa-mobile-alt"></i> Android APP
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="<%= admin_study_pdfs_path %>">PDF</a>
+              <a class="dropdown-item" href="<%= admin_notifications_path %>">Notifications</a>
+              <a class="dropdown-item" href="<%= admin_zoom_meetings_path %>">Live Classes</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Gallery</a>
+              <a class="dropdown-item" href="#">App Settings</a>
+            </div>
           </li>
           <li class="nav-item">
             <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>

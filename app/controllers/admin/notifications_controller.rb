@@ -1,5 +1,16 @@
 class Admin::NotificationsController < Admin::BaseController
-  #  pdf controller section
+  ITEMS_PER_PAGE = 20
+  def index
+    @notifications = Notification
+      .includes(:org)
+      .where(org: current_org)
+      .includes(:batches, :batch_notifications)
+      .where(batches: {id: current_admin.batches&.ids})
+      .all
+      .order(id: :desc)
+      .page(params[:page])
+      .per(params[:limit] || ITEMS_PER_PAGE)
+  end
   def new
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
     @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)

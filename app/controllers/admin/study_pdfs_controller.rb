@@ -1,5 +1,17 @@
 class Admin::StudyPdfsController < Admin::BaseController
+  ITEMS_PER_PAGE = 20
   #  pdf controller section
+  def index
+    @study_pdfs = StudyPdf.includes(:study_pdf_type, :org)
+      .where(org: current_org)
+      .includes(:batches, :batch_study_pdfs)
+      .where(batches: {id: current_admin.batches&.ids})
+      .all
+      .order(id: :desc)
+      .page(params[:page])
+      .per(params[:limit] || ITEMS_PER_PAGE)
+  end
+  
   def new
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
     @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
