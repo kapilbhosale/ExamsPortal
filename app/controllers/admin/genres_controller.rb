@@ -1,6 +1,6 @@
 class Admin::GenresController < Admin::BaseController
   def index
-    @genres = Genre.where(org_id: current_org.id)
+    @genres = Genre.where(org_id: current_org.id).includes(:subject)
     @search = Genre.where(org_id: current_org.id).all.order(id: :desc)
 
     if params[:q].present?
@@ -14,7 +14,7 @@ class Admin::GenresController < Admin::BaseController
     end
 
     @search = @search.search(search_params)
-    @genres = @search.result.order(created_at: :desc)
+    @genres = @search.result.order(created_at: :desc).includes(:subject)
     @subjects = Subject.where(org: current_org).all
 
     if params[:student_id].present?
@@ -26,7 +26,7 @@ class Admin::GenresController < Admin::BaseController
       student_active_date = @student.created_at
 
       genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: @student.batches}).pluck(:genre_id).uniq
-      @genres = @genres.where(id: genre_ids)
+      @genres = @genres.where(id: genre_ids).includes(:subject)
       @genres.each do |genre|
         next unless genre.hidden
 

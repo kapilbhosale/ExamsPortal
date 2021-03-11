@@ -11,7 +11,7 @@
     <div class="col-md-6 text-right">
       <%= search_form_for @search, url: admin_genres_path, class:"form-inline my-2 my-lg-0" do |f| %>
         <span class="p-2">Subject</span>
-        <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2'} )%>
+        <%= f.collection_select(:subject_id, @subjects, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:subject_id)}, { class: 'form-control mr-sm-2 col-md-4'} )%>
         <%= f.text_field :name, value: params&.[](:q)&.[](:name), placeholder: 'Folder Name', class: 'form-control mr-sm-2', style: 'font-size: 1em;' %>
         <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
       <% end %>
