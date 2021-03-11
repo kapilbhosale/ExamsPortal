@@ -89,7 +89,7 @@
                         </span>
                       <% else %>
                         <span class="badge badge-info">
-                          Percentage: <%= report_data.percentage.round(2) %>
+                          Percentage: <%= report_data.percentage.present? ? report_data.percentage.round(2) : '-' %>
                         </span>
                       <% end %>
 
