@@ -142,6 +142,7 @@ Rails.application.routes.draw do
     namespace :api do
       resources :students
       resources :attendance
+      resources :demo_logins
     end
   end
 
