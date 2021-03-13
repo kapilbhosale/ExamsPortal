@@ -21,6 +21,9 @@ module Students
 
       student.update!(@student_params)
 
+      student.batches.each do |batch|
+        batch.re_count_students
+      end
       # SyncStudentWithAppService.new(student).sync
 
       return {status: true, message: 'Student updated successfully'}

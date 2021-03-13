@@ -10,7 +10,11 @@ module Students
 
     def call
       validate_request
+      batches = student.batches
       student.destroy!
+      batches.each do |batch|
+        batch.re_count_students
+      end
       return {status: true, message: 'Student deleted successfully'}
     rescue DeleteStudentError, ActiveRecord::RecordInvalid => ex
       return {status: false, message: ex.message}

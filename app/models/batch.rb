@@ -4,6 +4,7 @@
 #
 #  id             :bigint(8)        not null, primary key
 #  name           :string
+#  students_count :integer          default(0)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  batch_group_id :integer
@@ -35,6 +36,17 @@ class Batch < ApplicationRecord
 
   def self.all_batches
     Batch.all { |batch| [batch.id, batch.name] }
+  end
+
+  def self.re_count_students_all_batches
+    Batch.all.each do |batch|
+      batch.re_count_students
+    end
+  end
+
+  def re_count_students
+    self.students_count = students.count
+    save
   end
 
   def self.get_batches(rcc_branch, course, batch)

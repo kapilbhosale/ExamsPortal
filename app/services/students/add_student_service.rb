@@ -21,6 +21,10 @@ module Students
       @student.save!
 
       build_batches
+
+      Batch.where(id: batch_ids).each do |batch|
+        batch.re_count_students
+      end
       # SyncStudentWithAppService.new(@student).sync
 
       return {status: true, message: "Student created successfully email:#{email_id},password:#{rand_password}"}

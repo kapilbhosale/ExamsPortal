@@ -38,7 +38,7 @@
                     <%= batch.batch_group&.name || '-' %>
                   </td>
                   <td>
-                    <%= batch.students.count %>
+                    <%= batch.students_count %>
                   </td>
                   <td>
                     <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
