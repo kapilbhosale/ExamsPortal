@@ -56,9 +56,14 @@ class Exam < ApplicationRecord
   end
 
   def total_marks
-    exam_sections.inject(0) do |sum, exam_section|
+    _total_marks = REDIS_CACHE.get("exam-total-marks-#{id}")
+    return _total_marks.to_i if _total_marks.present?
+
+    _total_marks = exam_sections.inject(0) do |sum, exam_section|
       sum + exam_section.total_marks
     end
+    REDIS_CACHE.set("exam-total-marks-#{id}", _total_marks)
+    _total_marks.to_i
   end
 
   def display_image
