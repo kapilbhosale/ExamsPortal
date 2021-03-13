@@ -5,7 +5,7 @@ class ProgressReportWorker
     if exam.present?
       exam.prepare_report
     else
-      Exam.where('creadte_at > ?', Time.now - 30.days).where(is_pr_generated: false).each do |exam|
+      Exam.where('created_at > ?', Time.now - 30.days).where(is_pr_generated: false).each do |exam|
         exam.prepare_report
       end
     end
