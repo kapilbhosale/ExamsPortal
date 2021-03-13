@@ -11,7 +11,7 @@ class StudentExamScoreCalculator
       @current_section = section
       @exam_section = ExamSection.find_by(exam: exam, section: @current_section)
       counts = jee_correct_incorrect_counts
-      StudentExamSummary.create!(
+      StudentExamSummary.create(
         student_exam_id: @student_exam.id,
         answered: answered,
         not_answered: not_answered,

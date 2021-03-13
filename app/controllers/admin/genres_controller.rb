@@ -1,7 +1,7 @@
 class Admin::GenresController < Admin::BaseController
   def index
     @genres = Genre.where(org_id: current_org.id).includes(:subject)
-    @search = Genre.where(org_id: current_org.id).all.order(id: :desc)
+    @search = Genre.where(org_id: current_org.id).order(id: :desc)
 
     if params[:q].present?
       if params[:q][:subject_id].present?

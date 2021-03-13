@@ -43,9 +43,10 @@ module Students
         existing_batch_ids = StudentBatch.where(student_id: student.id).map(&:batch_id)
         ids_to_delete = existing_batch_ids - @batch_ids
         ids_to_add = @batch_ids - existing_batch_ids
-        ids_to_delete.each do |id|
-          StudentBatch.find_by(student_id: student.id, batch_id: id).destroy
-        end
+        StudentBatch.where(student_id: student.id, batch_id: ids_to_delete).delete_all
+        # ids_to_delete.each do |id|
+        #   StudentBatch.find_by(student_id: student.id, batch_id: id).destroy
+        # end
         ids_to_add.each do |batch|
           student&.student_batches&.build(student_id: student.id, batch_id: batch)
         end

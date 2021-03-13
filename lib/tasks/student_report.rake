@@ -5,7 +5,7 @@ namespace :student_report do
     CSV.open("Students.csv","w") do |csv|
       csv << ['Roll Number', 'Student Name', 'Email', 'password', 'Batch']
 
-      Student.all.each do |student|
+      Student.find_each do |student|
         csv << [
           student.roll_number,
           student.name,

@@ -100,9 +100,10 @@
             <div class="form-group">
               <label class="form-label">Batch</label>
               <div class="selectgroup selectgroup-pills">
+                <% student_batch_ids = @student.batches.ids %>
                 <% @student_data[:batches].each do |batch|%>
                   <label class="selectgroup-item">
-                    <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" <% if @student.student_batches.find_by(batch_id: batch.id).present? %>checked="" <% end %>class="selectgroup-input" >
+                    <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" <% if student_batch_ids.include?(batch.id) %>checked="" <% end %>class="selectgroup-input" >
                     <span class="selectgroup-button"><%= batch.name.upcase %></span>
                   </label>
                 <% end %>
