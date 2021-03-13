@@ -80,6 +80,10 @@ gem 'redis'
 gem 'redis-rails'
 gem 'hiredis'
 
+
+#monitoring gems
+gem 'scout_apm'
+
 group :production do
   gem 'rmagick'
 end
