@@ -2,7 +2,7 @@ class ProgressReportWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'default', retry: 1
 
-  def perform(exam_id)
+  def perform(exam_id=nil)
     exam = Exam.find_by(id: exam_id)
     if exam.present?
       exam.prepare_report
