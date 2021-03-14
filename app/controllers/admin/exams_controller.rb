@@ -1,5 +1,6 @@
 class Admin::ExamsController < Admin::BaseController
   before_action :sections, only: [:new, :create]
+  ITEMS_PER_PAGE = 20
   def index
     @exams = Exam
       .where(org: current_org)

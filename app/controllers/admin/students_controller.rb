@@ -21,7 +21,7 @@ class Admin::StudentsController < Admin::BaseController
 
     @batches = Batch.where(org: current_org).all_batches
 
-    @students_data = @students.includes(:batches).order(created_at: :desc).map do |student|
+    @students_data = @students.includes(:batches, :pending_fees).order(created_at: :desc).map do |student|
       {
           roll_number: student.roll_number,
           batches: student&.batches&.each&.map(&:name).join(', '),
