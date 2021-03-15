@@ -141,7 +141,7 @@ module Exams
         if img_name
           img_base64 = Base64.encode64(open("#{Rails.root}/public/uploads/#{@path}/#{img_name}") { |io| io.read })
         end
-        answer = rows[2].text.strip
+        answer = rows[2].text.strip rescue nil
         explanation = rows[3]&.at('td')&.children&.to_s&.strip
 
         @questions_data << {
