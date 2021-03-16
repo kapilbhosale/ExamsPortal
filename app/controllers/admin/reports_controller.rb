@@ -28,7 +28,7 @@ class Admin::ReportsController < Admin::BaseController
     if @response.blank?
       @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
       # store response in cache if exam expired
-      if exam.exam_available_till.present? && exam.exam_available_till + 3.hours < Time.current
+      if exam.exam_available_till.present? && exam.exam_available_till + 5.hours < Time.current
         REDIS_CACHE.set(exam_csv_redis_key, @response, { ex: 1.day })
       end
     else
@@ -59,7 +59,7 @@ class Admin::ReportsController < Admin::BaseController
     if @response.blank?
       @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
       # store response in cache if exam expired
-      if exam.exam_available_till.present? && exam.exam_available_till + 3.hours < Time.current
+      if exam.exam_available_till.present? && exam.exam_available_till + 5.hours < Time.current
         REDIS_CACHE.set(exam_detailed_redis_key, @response, { ex: 1.day })
       end
     else
