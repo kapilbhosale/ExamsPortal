@@ -79,7 +79,7 @@ gem 'jquery-rails'
 gem 'redis'
 gem 'redis-rails'
 gem 'hiredis'
-
+gem 'activerecord-import'
 
 #monitoring gems
 gem 'scout_apm'

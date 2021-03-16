@@ -1,3 +1,4 @@
+
 <div class="row" >
   <div class="col-lg-8" style="background-color: white; border-radius: 10px; padding-bottom: 20px">
     <%= form_tag(admin_omr_index_path, method: "post", multipart: true, role: 'form') do %>
@@ -12,6 +13,48 @@
             </tr>
             <tr>
               <td colspan="2" class=" text-right"><button type="submit" class="btn btn-success">Submit</button></td>
+            </tr>
+          </table>
+          <table class="table">
+            <tr>
+              <td>
+                Last Imported on:
+              </td>
+              <td>
+                <b><%= REDIS_CACHE.get("omr-import-info-time") %></b>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Total Tests Imported:
+              </td>
+              <td>
+                <b><%= REDIS_CACHE.get("omr-import-info-total_tests") %></b>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Last Imported Test Name:
+              </td>
+              <td>
+                <b><%= REDIS_CACHE.get("omr-import-info-last_test_name") %></b>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Last Imported Test Description:
+              </td>
+              <td>
+                <b><%= REDIS_CACHE.get("omr-import-info-last_test_desc") %></b>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Last Imported Test Date:
+              </td>
+              <td>
+                <b><%= REDIS_CACHE.get("omr-import-info-last_test_date") %></b>
+              </td>
             </tr>
           </table>
         </div>

@@ -8,11 +8,13 @@
 #  exam_name   :string
 #  exam_type   :integer          default("objective")
 #  is_imported :boolean          default(FALSE)
+#  omr         :boolean          default(FALSE)
 #  percentage  :decimal(, )
 #  rank        :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  exam_id     :bigint(8)
+#  org_id      :integer
 #  student_id  :bigint(8)
 #
 # Indexes
@@ -25,4 +27,5 @@ class ProgressReport < ApplicationRecord
   enum exam_type: { objective: 0, theory: 1 }
   belongs_to :exam, optional: true
   belongs_to :student
+  include BulkCreator
 end
