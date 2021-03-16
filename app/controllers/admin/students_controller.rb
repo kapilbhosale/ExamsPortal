@@ -107,6 +107,7 @@ class Admin::StudentsController < Admin::BaseController
     data = {}
     progress_report_data.each do |prd|
       key = "#{prd.exam_id || 0}-#{prd&.exam_name&.parameterize || 'default-exam'}"
+
       data[key] = {
         exam_date: prd.exam_date,
         present: true,
@@ -114,7 +115,7 @@ class Admin::StudentsController < Admin::BaseController
           exam_date: prd.exam_date,
           is_imported: prd.is_imported,
           exam_name: prd.exam_name,
-          data: prd.data,
+          data: prd.data.is_a?(Hash) ? prd.data : JSON.parse(prd.data || '{}'),
           percentage: prd.percentage,
           rank: prd.rank
         }
