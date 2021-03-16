@@ -342,7 +342,11 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      if parent_mobile == '7588584810'
+        transaction_amount = amount.to_s
+      else
+        transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      end
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}"
       return_url = "https://exams.smartclassapp.in/admission-done"
