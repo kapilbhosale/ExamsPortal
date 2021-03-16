@@ -131,7 +131,7 @@ class Student < ApplicationRecord
     batches = Batch.get_batches(na.rcc_branch, na.course, na.batch)
 
     suggested_rn = RollNumberSuggestor.suggest_roll_number(na.batch)
-    roll_number = suggest_rn
+    roll_number = suggested_rn
 
     email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
     student = Student.find_or_initialize_by(email: email)
