@@ -1,0 +1,151 @@
+<%
+  @g_data = [['Exam IDs', 'Prcnt %']]
+  @data.each_with_index do |prd, index|
+    if prd[:present]
+      @g_data << ["#{index+1}", prd[:data][:percentage]&.round(2)&.to_f || 0]
+    else
+    @g_data << ["#{index+1}", 0]
+    end
+  end
+%>
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['bar']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var rData = JSON.parse('<%= @g_data.to_json.html_safe -%>');
+      var data = google.visualization.arrayToDataTable(rData);
+      var options = {
+        chart: {
+          title: 'Student Progress Report',
+          subtitle: 'Percntage Report Analysis',
+        },
+        vAxis: {
+          viewWindow: {
+            max:100,
+            min:00
+          }
+        }
+      };
+      var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+    }
+  </script>
+</head>
+
+<div style="background-color: white; border-radius: 10px; padding: 10px">
+  <div style="border: 1px solid rgb(128,128,128);">
+    <% if request.subdomain == 'bhargav' %>
+      <div style="padding: 10px">
+        <div class="col-md-2" style="padding-bottom: 10px">
+          <%= image_tag 'bhargav-logo', width: 100, height: 50 %>
+        </div>
+        <div class="col-md-8 text-center">
+          <h3>Bhargav Career Academy</h3>
+          <p>Nanded, Maharashtra</p>
+        </div>
+      </div>
+    <% end %>
+    <table class="table table-bordered" style="border: none;">
+      <tr>
+        <td>
+          Student Name:
+        </td>
+        <td>
+          <b><%= @student.name %></b>
+        </td>
+        <td>
+          Roll Number:
+        </td>
+        <td>
+          <b><%= @student.roll_number %></b>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Batch:
+        </td>
+        <td>
+          <b><%= @student.batches.pluck(:name).join(', ') %></b>
+        </td>
+        <td>
+          Parent Mobile:
+        </td>
+        <td>
+          <b><%= @student.parent_mobile %></b>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="text-center" id="columnchart_material" style="width: 100%; height: 500px;"></div>
+  <div class="table-responsive">
+    <table class="table table-sm table-condensed table-striped table-bordered ">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Date</th>
+          <th scope="col">Exam Name</th>
+          <th scope="col">Score</th>
+          <th scope="col">Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <% @data.each_with_index do |prd, index| %>
+          <% report_data = prd[:data] %>
+          <tr>
+            <th scope="row"><%= index + 1 %></th>
+            <td style="color: #467fcf">
+              <%= report_data[:exam_date]&.strftime("%d-%B") %>
+              <br/>
+              <% if report_data[:is_imported] %>
+                <% if report_data[:exam_name].downcase.include?('(omr)') %>
+                  <span class="badge badge-info pull-right"> OMR </span>
+                <% else %>
+                  <span class="badge badge-secondary pull-right"> Imported </span>
+                <% end %>
+              </span>
+              <% else %>
+                <span class="badge badge-primary pull-right"> Online Exam </span>
+              <% end %>
+            </td>
+            <td>
+              <%= report_data[:exam_name] %>
+            </td>
+            <td>
+              <% if !prd[:present] || report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
+                <span class="badge badge-danger">
+                  Absent
+                </span>
+              <% else %>
+                <span class="badge badge-info">
+                  Percentage: <%= report_data[:percentage]&.round(2) || 0 %>
+                </span>
+                <% json_data = Hash[report_data[:data].sort_by{|k, v| k }] %>
+                <% json_data.each do |key, val| %>
+                <br>
+                  <% if key.downcase == 'total' %>
+                    <b><%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %></b>
+                  <% else %>
+                    <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </td>
+            <td>
+              <span style="color: green; font-size: 1.5rem;">
+                <% if report_data.dig(:data, 'total', 'score') == '-' || report_data.dig(:data, 'total', 'score') == 'Absent' %>
+                  -
+                <% else %>
+                  <%= report_data[:rank] || "-" %>
+                <% end %>
+              </span>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

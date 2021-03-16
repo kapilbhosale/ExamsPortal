@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     get "auto-auth", to: 'home#auto_auth'
     root to: 'home#index'
     get :tests, to: 'home#tests', as: :tests
+    get :progress_report, to: 'home#progress_report', as: :progress_report
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
     get :question_bank, to: 'home#question_bank', as: :question_bank

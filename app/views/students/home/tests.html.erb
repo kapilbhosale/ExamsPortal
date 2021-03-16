@@ -10,11 +10,6 @@
 <div class="tabbable-panel">
   <div class="tabbable-line">
     <ul class="nav nav-tabs ">
-      <li>
-        <a data-toggle="tab" href="#progress_card">
-          Progress Card
-        </a>
-      </li>
       <li class="active">
         <a data-toggle="tab" href="#new_exams">
           New Exams
@@ -51,64 +46,6 @@
             <% end %>
           </div>
         <% end %>
-      </div>
-      <div id="progress_card" class="tab-pane">
-        <div>
-          <div class="table-responsive" style="background-color: white;">
-            <table class="table table-sm table-condensed table-striped table-bordered ">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Exam Name</th>
-                  <th scope="col">Score</th>
-                  <th scope="col">Rank</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @progress_report_data.each_with_index do |report_data, index| %>
-                  <tr>
-                    <th scope="row"><%= index + 1 %></th>
-                    <td style="color: #467fcf">
-                      <%= report_data.exam_date.strftime("%d-%B") %>
-                      <br/>
-                      <span class="badge badge-secondary pull-right">
-                        <%= report_data.is_imported ? 'Theory' : 'Objective' %>
-                      </span>
-                    </td>
-                    <td>
-                      <% report_data.exam_name.chars.each_slice(25).each do |slice| %>
-                        <%= slice.join('') %>
-                        <br>
-                      <% end %>
-                    </td>
-                    <td>
-                      <% if report_data.data['total']['score'].to_s.downcase == 'absent' %>
-                        <span class="badge badge-danger">
-                          Absent
-                        </span>
-                      <% else %>
-                        <span class="badge badge-info">
-                          Percentage: <%= report_data.percentage.present? ? report_data.percentage.round(2) : '-' %>
-                        </span>
-                      <% end %>
-
-                      <% report_data.data.each do |key, val| %>
-                      <br>
-                        <%= key.humanize %>:&nbsp;&nbsp;&nbsp; <%= "#{val['score']}/#{val['total']}" %>
-                      <% end %>
-                    </td>
-                    <td>
-                      <span class="badge badge-info">
-                        -
-                      </span>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -35,8 +35,45 @@ class Students::HomeController < Students::BaseController
     end
     @previous_exams = @previous_exams.order(created_at: :desc)
     @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
+  end
 
-    @progress_report_data = ProgressReport.where(student_id: current_student.id).order(id: :desc)
+  def progress_report
+    @student = current_student
+    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids })
+    progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
+    data = {}
+    progress_report_data.each do |prd|
+      key = "#{prd.exam_id || 0}-#{prd&.exam_name&.parameterize || 'default-exam'}"
+
+      data[key] = {
+        exam_date: prd.exam_date,
+        present: true,
+        data: {
+          exam_date: prd.exam_date,
+          is_imported: prd.is_imported,
+          exam_name: prd.exam_name,
+          data: prd.data.is_a?(Hash) ? prd.data : JSON.parse(prd.data || '{}'),
+          percentage: prd.percentage,
+          rank: prd.rank
+        }
+      }
+    end
+    exams.each do |exam|
+      key = "#{exam.id || 0}-#{exam.name.parameterize}"
+      data[key] ||= {
+        exam_date: exam.show_exam_at,
+        present: false,
+        data: {
+          exam_date: exam.show_exam_at,
+          is_imported: false,
+          exam_name: exam.name,
+          data: {},
+          percentage: 0,
+          rank: nil
+        }
+      }
+    end
+    @data = Hash[data.sort_by{|k, v| v[:exam_date] || Date.today }.reverse].values
   end
 
   def exam
