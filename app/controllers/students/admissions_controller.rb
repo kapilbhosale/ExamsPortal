@@ -174,7 +174,7 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil, new_admission = nil)
-    if new_admission.present? && new_admission&.parent_mobile == '7588584810' && new_admission&.email == 'kapil@dev.example'
+    if new_admission.present? && new_admission&.parent_mobile == '7588584810' && new_admission&.email == 'k@k.dev'
       return 10
     end
 
@@ -342,7 +342,7 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      if parent_mobile == '7588584810'
+      if parent_mobile[0..9] == '7588584810'
         transaction_amount = amount.to_s
       else
         transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
@@ -362,7 +362,11 @@ class Students::AdmissionsController < ApplicationController
       reference_number = record_id    # db id for the the admission table
       sub_merchant_id = parent_mobile     #student roll _number
 
-      transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      if parent_mobile[0..9] == '7588584810'
+        transaction_amount = amount.to_s
+      else
+        transaction_amount = (add_processing_fees ? amount + 120 : amount).to_s
+      end
 
       mandatory_fields = "#{reference_number}|#{sub_merchant_id}|#{transaction_amount}|Renukai Chemistry Classes|#{new_admission.name}|#{new_admission.email.downcase}|#{new_admission.parent_mobile}|#{new_admission.parent_mobile}|#{new_admission.rcc_branch}|#{new_admission.course&.name}|#{new_admission.batch}|NA|NA"
 
