@@ -96,7 +96,7 @@ namespace :deploy do
     on roles(:app) do
       within release_path do
         # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
-        # execute :rake, "webpacker:compile"
+        execute :rake, "webpacker:compile"
       end
     end
   end
@@ -106,7 +106,6 @@ namespace :deploy do
     on roles(:app) do
       within release_path do
         execute("sudo service sidekiq restart")
-        # execute! :sudo, :service, :sidekiq, :restart
       end
     end
   end
