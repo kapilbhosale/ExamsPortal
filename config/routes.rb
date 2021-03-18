@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   end
   mount Sidekiq::Web => '/sidekiq'
 
+  mount PgHero::Engine, at: "/pg-stats-k"
+
   # authenticate :admin, -> (admin) { admin.present? } do
   #   mount PgHero::Engine, at: "pghero"
   # end

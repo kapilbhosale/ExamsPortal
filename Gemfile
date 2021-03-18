@@ -83,6 +83,8 @@ gem 'activerecord-import'
 
 #monitoring gems
 gem 'scout_apm'
+gem 'pghero'
+gem 'pg_query', '>= 0.9.0'
 
 group :production do
   gem 'rmagick'
