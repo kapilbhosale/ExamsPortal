@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_143800) do
+ActiveRecord::Schema.define(version: 2021_03_18_180620) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -56,6 +57,8 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.integer "org_id", default: 0
     t.string "type", default: "Teacher"
     t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["id", "type"], name: "index_admins_on_id_and_type"
+    t.index ["org_id"], name: "index_admins_on_org_id"
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
@@ -123,6 +126,8 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.integer "org_id", default: 0
     t.integer "batch_group_id"
     t.integer "students_count", default: 0
+    t.index ["batch_group_id"], name: "index_batches_on_batch_group_id"
+    t.index ["org_id"], name: "index_batches_on_org_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -205,6 +210,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.datetime "exam_available_till"
     t.boolean "is_pr_generated", default: false
     t.index ["name"], name: "index_exams_on_name"
+    t.index ["org_id"], name: "index_exams_on_org_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -215,6 +221,8 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.boolean "hidden", default: false
     t.integer "subject_id"
     t.integer "video_lectures_count", default: 0
+    t.index ["org_id"], name: "index_genres_on_org_id"
+    t.index ["subject_id"], name: "index_genres_on_subject_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -258,6 +266,10 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.text "prev_receipt_number"
     t.string "rz_order_id"
     t.decimal "fees", default: "0.0"
+    t.index ["course_id"], name: "index_new_admissions_on_course_id"
+    t.index ["payment_id"], name: "index_new_admissions_on_payment_id"
+    t.index ["reference_id"], name: "index_new_admissions_on_reference_id"
+    t.index ["rz_order_id"], name: "index_new_admissions_on_rz_order_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -288,6 +300,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+    t.index ["subdomain"], name: "index_orgs_on_subdomain"
   end
 
   create_table "payment_transactions", force: :cascade do |t|
@@ -349,6 +362,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.integer "section_id", default: 1
     t.integer "question_type", default: 0
     t.boolean "is_image", default: false
+    t.index ["section_id"], name: "index_questions_on_section_id"
   end
 
   create_table "raw_attendances", force: :cascade do |t|
@@ -357,6 +371,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "org_id"
+    t.index ["org_id"], name: "index_raw_attendances_on_org_id"
   end
 
   create_table "roll_number_suggestors", force: :cascade do |t|
@@ -418,6 +433,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.jsonb "extra_data", default: {}
     t.index ["section_id"], name: "index_student_exam_summaries_on_section_id"
     t.index ["student_exam_id", "section_id"], name: "index_student_exam_summaries_on_student_exam_id_and_section_id", unique: true
+    t.index ["student_exam_id"], name: "index_student_exam_summaries_on_student_exam_id"
   end
 
   create_table "student_exam_syncs", force: :cascade do |t|
@@ -494,10 +510,13 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.datetime "deleted_at"
     t.boolean "disable", default: false
     t.string "rfid_card_number"
+    t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"
     t.index ["name"], name: "index_students_on_name"
+    t.index ["org_id"], name: "index_students_on_org_id"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
+    t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile"
   end
 
   create_table "study_pdf_types", force: :cascade do |t|
@@ -591,6 +610,8 @@ ActiveRecord::Schema.define(version: 2021_03_16_143800) do
     t.integer "subject_id"
     t.datetime "publish_at"
     t.integer "view_limit", default: 3
+    t.index ["genre_id"], name: "index_video_lectures_on_genre_id"
+    t.index ["org_id"], name: "index_video_lectures_on_org_id"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 

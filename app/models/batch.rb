@@ -10,6 +10,11 @@
 #  batch_group_id :integer
 #  org_id         :integer          default(0)
 #
+# Indexes
+#
+#  index_batches_on_batch_group_id  (batch_group_id)
+#  index_batches_on_org_id          (org_id)
+#
 
 class Batch < ApplicationRecord
   has_many  :student_batches, dependent: :destroy

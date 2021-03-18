@@ -23,6 +23,8 @@
 # Indexes
 #
 #  index_admins_on_email                 (email) UNIQUE
+#  index_admins_on_id_and_type           (id,type)
+#  index_admins_on_org_id                (org_id)
 #  index_admins_on_reset_password_token  (reset_password_token) UNIQUE
 #
 

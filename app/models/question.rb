@@ -12,6 +12,10 @@
 #  updated_at       :datetime         not null
 #  section_id       :integer          default(1)
 #
+# Indexes
+#
+#  index_questions_on_section_id  (section_id)
+#
 
 class Question < ApplicationRecord
   has_many :exam_questions

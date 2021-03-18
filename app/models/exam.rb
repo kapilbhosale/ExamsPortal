@@ -21,7 +21,8 @@
 #
 # Indexes
 #
-#  index_exams_on_name  (name)
+#  index_exams_on_name    (name)
+#  index_exams_on_org_id  (org_id)
 #
 
 class Exam < ApplicationRecord

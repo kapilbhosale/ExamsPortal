@@ -48,10 +48,13 @@ require 'csv'
 #
 # Indexes
 #
-#  index_students_on_category_id    (category_id)
-#  index_students_on_deleted_at     (deleted_at)
-#  index_students_on_name           (name)
-#  index_students_on_parent_mobile  (parent_mobile)
+#  index_students_on_api_key                        (api_key)
+#  index_students_on_category_id                    (category_id)
+#  index_students_on_deleted_at                     (deleted_at)
+#  index_students_on_name                           (name)
+#  index_students_on_org_id                         (org_id)
+#  index_students_on_parent_mobile                  (parent_mobile)
+#  index_students_on_roll_number_and_parent_mobile  (roll_number,parent_mobile)
 #
 
 class Student < ApplicationRecord

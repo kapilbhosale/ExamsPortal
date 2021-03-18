@@ -25,6 +25,8 @@
 #
 # Indexes
 #
+#  index_video_lectures_on_genre_id    (genre_id)
+#  index_video_lectures_on_org_id      (org_id)
 #  index_video_lectures_on_subject_id  (subject_id)
 #
 

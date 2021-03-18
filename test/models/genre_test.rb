@@ -11,6 +11,11 @@
 #  org_id               :integer
 #  subject_id           :integer
 #
+# Indexes
+#
+#  index_genres_on_org_id      (org_id)
+#  index_genres_on_subject_id  (subject_id)
+#
 
 require 'test_helper'
 

@@ -12,6 +12,10 @@
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #
+# Indexes
+#
+#  index_orgs_on_subdomain  (subdomain)
+#
 
 class Org < ApplicationRecord
 end

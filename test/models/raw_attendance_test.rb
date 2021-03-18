@@ -9,6 +9,10 @@
 #  updated_at :datetime         not null
 #  org_id     :integer
 #
+# Indexes
+#
+#  index_raw_attendances_on_org_id  (org_id)
+#
 
 require 'test_helper'
 

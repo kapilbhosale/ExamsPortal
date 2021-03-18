@@ -32,6 +32,13 @@
 #  rz_order_id           :string
 #  student_id            :integer
 #
+# Indexes
+#
+#  index_new_admissions_on_course_id     (course_id)
+#  index_new_admissions_on_payment_id    (payment_id)
+#  index_new_admissions_on_reference_id  (reference_id)
+#  index_new_admissions_on_rz_order_id   (rz_order_id)
+#
 
 class NewAdmission < ApplicationRecord
 
