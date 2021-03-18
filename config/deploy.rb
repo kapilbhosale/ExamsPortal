@@ -106,6 +106,7 @@ namespace :deploy do
     on roles(:app) do
       within release_path do
         execute("sudo service sidekiq restart")
+        # execute! :sudo, :service, :sidekiq, :restart
       end
     end
   end
