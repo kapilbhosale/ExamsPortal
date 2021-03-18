@@ -32,6 +32,7 @@ class Admin::NotificationsController < Admin::BaseController
           BatchNotification.where(notification_id: notification.id).destroy_all
           params[:batches].each do |batch_id|
             BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
+            clear_cache(batch_id)
           end
         end
         flash[:success] = "Notification updated, successfully"
@@ -53,6 +54,7 @@ class Admin::NotificationsController < Admin::BaseController
         if params[:batches].present?
           params[:batches].each do |batch_id|
             BatchNotification.create(batch_id: batch_id, notification_id: notification.id)
+            clear_cache(batch_id)
           end
           notification.send_push_notifications
         end
@@ -75,5 +77,10 @@ class Admin::NotificationsController < Admin::BaseController
 
   def validate_notification_params
     params[:title].present? && params[:description].present?
+  end
+
+  def clear_cache(batch_id)
+    cache_key = "BatchNotifications-batch-id-#{batch_id}"
+    REDIS_CACHE.del(cache_key)
   end
 end

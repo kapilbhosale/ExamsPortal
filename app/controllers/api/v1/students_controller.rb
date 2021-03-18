@@ -76,7 +76,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
   end
 
   def update_fcm_token
-    if params[:fcm_token].present?
+    if params[:fcm_token].present? && current_student.fcm_token.blank?
       current_student.update(fcm_token: params[:fcm_token])
       render json: student_json(current_student), status: :ok and return
     end

@@ -39,6 +39,7 @@ class Admin::StudyPdfsController < Admin::BaseController
             BatchStudyPdf.where(study_pdf: study_pdf).delete_all
             params[:batches].each do |batch_id|
               BatchStudyPdf.create(study_pdf: study_pdf, batch_id: batch_id)
+              clear_cache(batch_id)
             end
           end
           flash[:success] = "PDF Edited, successfully"
@@ -67,6 +68,7 @@ class Admin::StudyPdfsController < Admin::BaseController
         if params[:batches].present?
           params[:batches].each do |batch_id|
             BatchStudyPdf.create(study_pdf: study_pdf, batch_id: batch_id)
+            clear_cache(batch_id)
           end
         end
         study_pdf.send_push_notifications
@@ -105,5 +107,10 @@ class Admin::StudyPdfsController < Admin::BaseController
     flash[:success] = "PDF deleted, successfully"
 
     redirect_to "#{admin_android_apps_path}#pdfs"
+  end
+
+  def clear_cache(batch_id)
+    cache_key = "BatchStudyPdf-batch-id-#{batch_id}"
+    REDIS_CACHE.del(cache_key)
   end
 end
