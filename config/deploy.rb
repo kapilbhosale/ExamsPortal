@@ -1,13 +1,10 @@
-# config valid for current version and patch releases of Capistrano
-lock "~> 3.13.0"
-
 set :application, "SmartExams"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
 
 set :rails_env, :production
 # Don't change these unless you know what you're doing
-set :pty,             false
+set :pty,             true
 set :use_sudo,        false
 set :stage,           :production
 set :deploy_via,      :remote_cache
@@ -41,7 +38,6 @@ set :sidekiq_env, fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
 set :sidekiq_log, File.join(shared_path, 'log', 'sidekiq.log')
 set :sidekiq_config, "#{current_path}/config/sidekiq.yml"
 
-set :default_shell, '/bin/bash -l'
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
@@ -91,31 +87,36 @@ namespace :deploy do
     end
   end
 
-  desc 'Webpack Compiling assets'
-  task :webpack_compile do
-    on roles(:app) do
-      within release_path do
-        # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
-        execute :rake, "webpacker:compile"
-      end
-    end
-  end
-
   desc 'Sidekiq Restart'
   task :sidekiq_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service sidekiq restart")
+        execute("bundle exec sidekiq restart")
       end
     end
   end
 
+  # desc 'Webpack Compiling assets'
+  # task :webpack_compile do
+  #   on roles(:app) do
+  #     within release_path do
+  #       # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
+  #       execute :rake, "webpacker:compile"
+  #     end
+  #   end
+  # end
+
   before "deploy:assets:precompile", "deploy:yarn_install"
-  after  :compile_assets, :webpack_compile
+  # after  :compile_assets, :webpack_compile
 
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
   after  :finishing,    :restart
-  after  :restart,    :sidekiq_restart
+  after  :restart,      :sidekiq_restart
+
 end
+
+# ps aux | grep puma    # Get puma pid
+# kill -s SIGUSR2 pid   # Restart puma
+# kill -s SIGTERM pid   # Stop puma
