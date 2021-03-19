@@ -15,7 +15,7 @@ require "capistrano/deploy"
 require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
 
-require 'sshkit/sudo'
+# require 'sshkit/sudo'
 
 # Include tasks from other gems included in your Gemfile
 #

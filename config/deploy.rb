@@ -1,6 +1,7 @@
 set :application, "SmartExams"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
+# set :use_sudo, true
 
 set :rails_env, :production
 # Don't change these unless you know what you're doing
@@ -91,7 +92,7 @@ namespace :deploy do
   task :sidekiq_restart do
     on roles(:app) do
       within release_path do
-        execute("bundle exec sidekiq restart")
+        execute("sudo service sidekiq restart")
       end
     end
   end
