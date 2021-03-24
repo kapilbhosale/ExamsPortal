@@ -23,9 +23,6 @@ gem 'pundit'
 gem 'base32', '~> 0.3.2'
 gem 'rotp'
 
-gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
-gem 'zip-zip' # will load compatibility for old rubyzip API.
-
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks

@@ -1,7 +1,6 @@
 set :application, "SmartExams"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
-# set :use_sudo, true
 
 set :rails_env, :production
 # Don't change these unless you know what you're doing
@@ -39,6 +38,7 @@ set :sidekiq_env, fetch(:rack_env, fetch(:rails_env, fetch(:stage)))
 set :sidekiq_log, File.join(shared_path, 'log', 'sidekiq.log')
 set :sidekiq_config, "#{current_path}/config/sidekiq.yml"
 
+set :default_shell, '/bin/bash -l'
 
 namespace :puma do
   desc 'Create Directories for Puma Pids and Socket'
@@ -97,18 +97,20 @@ namespace :deploy do
     end
   end
 
-  # desc 'Webpack Compiling assets'
-  # task :webpack_compile do
-  #   on roles(:app) do
-  #     within release_path do
-  #       # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
-  #       execute :rake, "webpacker:compile"
-  #     end
-  #   end
-  # end
+  # COMMENTED for HETZNER SERVER
+  desc 'Webpack Compiling assets'
+  task :webpack_compile do
+    on roles(:app) do
+      within release_path do
+        # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
+        execute :rake, "webpacker:compile"
+      end
+    end
+  end
 
   before "deploy:assets:precompile", "deploy:yarn_install"
-  # after  :compile_assets, :webpack_compile
+  # COMMENTED for HETZNER SERVER
+  after  :compile_assets, :webpack_compile
 
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
@@ -117,7 +119,3 @@ namespace :deploy do
   after  :restart,      :sidekiq_restart
 
 end
-
-# ps aux | grep puma    # Get puma pid
-# kill -s SIGUSR2 pid   # Restart puma
-# kill -s SIGTERM pid   # Stop puma
