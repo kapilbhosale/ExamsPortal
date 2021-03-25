@@ -2,15 +2,16 @@ default: &default
   adapter: postgresql
   encoding: utf8
   pool: 5
+  ## DOCKER
+  # host: db
   username: postgres
   password: password
 
 development:
   <<: *default
-  database: smart-exams-1
-  host: localhost
+  database: smart-exams-bhosale
+  # database: smart-exams-1
 
 test:
   <<: *default
   database: smart-exams-test
-  host: localhost

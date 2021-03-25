@@ -1,17 +1,18 @@
 class Admin::OmrController < Admin::BaseController
-  BATCH_IDS_11_12th = [41,42,43,44,46,47,60,89]
 
   def create
     @test_names_for_ranks = {}
     temp_file = params["omr_zip"].tempfile rescue nil
     extract_zip(temp_file)
+
+    destroy_omr_pr_data
+
     process_student_master
     process_test_master
     process_student_test_data
 
     process_batch_test_detail
 
-    destroy_omr_pr_data
     process_batch_students
     make_absent_entries
 
