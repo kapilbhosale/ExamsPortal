@@ -161,7 +161,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       genre_id: params[:genre_id],
       subject_id: params[:subject_id],
       publish_at: params[:publish_at],
-      view_limit: params[:view_limit]
+      view_limit: params[:view_limit],
+      video_type: (params[:url]&.include?('you') ? VideoLecture.video_types['youtube'] : VideoLecture.video_types['vimeo'])
     }
   end
 
