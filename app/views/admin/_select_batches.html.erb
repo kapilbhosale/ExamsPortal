@@ -1,14 +1,24 @@
-<div class="row form-group">
-  <p>Select Batches: </p>
+<div class="accordion" id="batchAccordian">
+  <p class="txt-batches">Select Batches: </p>
   <% @batches_with_group.each do |batch_group_id, batches| %>
-    <div>
-      <a class="btn btn-sm btn-light" data-toggle="collapse" href="#collapseBatch-<%= batch_group_id %>" role="button" aria-expanded="false" aria-controls="collapseExample">
-        <%= @batch_groups[batch_group_id]&.name || 'NO GROUP' %>
-      </a>
-      <div class="collapse" id="collapseBatch-<%= batch_group_id %>">
-        <div class="col-sm-12" style="background-color: rgb(242, 237, 230); padding: 10px">
+    <% batches = batches.sort %>
+    <div class="card" style="margin-bottom: 5px">
+      <div class="card-header" id="heading-<%=batch_group_id%>">
+        <h2 class="mb-0">
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#heading-<%=batch_group_id%>" aria-expanded="true" aria-controls="heading-<%=batch_group_id%>">
+            <%= @batch_groups[batch_group_id]&.name || 'NO GROUP' %>
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse-<%= batch_group_id %>" class="collapse show" aria-labelledby="heading<%= batch_group_id %>" data-parent="#batchAccordian" style="background-color: rgb(242, 237, 230); padding-bottom: 20px">
+        <div class="card-body" style="padding: 10">
           <% batches.each do |batch| %>
-            <label class="checkbox-inline"><input type="checkbox" name="<%= var_name || 'batch_ids[]' %>" value=<%= batch.id %> <%= selected_batches.include?(batch.id) ? 'checked' : '' %> ><%= batch.name %></label>
+            <div class="col-md-4" style="padding: 0">
+              <label class="checkbox-inline"><input type="checkbox" name="<%= var_name || 'batch_ids[]' %>" value=<%= batch.id %> <%= selected_batches.include?(batch.id) ? 'checked' : '' %> >
+                <%= batch.name %>
+              </label>
+            </div>
           <% end %>
         </div>
       </div>

@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-12">
     <%= form_with(model: @student,url: admin_student_path(@student), local: true, html: {class: 'card'} ) do |form |  %>
       <div class="card-header">
         <h3 class="card-title">Student Details</h3>
@@ -101,13 +101,8 @@
               <label class="form-label">Batch</label>
               <div class="selectgroup selectgroup-pills">
                 <% student_batch_ids = @student.batches.ids %>
-                <% @student_data[:batches].each do |batch|%>
-                  <label class="selectgroup-item">
-                    <input type="checkbox" name="student[batches][]" value="<%= batch.id %>" <% if student_batch_ids.include?(batch.id) %>checked="" <% end %>class="selectgroup-input" >
-                    <span class="selectgroup-button"><%= batch.name.upcase %></span>
-                  </label>
-                <% end %>
               </div>
+              <%= render partial: 'admin/select_batches', locals: {var_name: 'student[batches][]', selected_batches: student_batch_ids } %>
             </div>
           </div>
           <div class="col-sm-12 col-md-12">

@@ -13,13 +13,13 @@ class Admin::NotificationsController < Admin::BaseController
 
   def new
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
-    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).index_by(&:id)
   end
 
   def edit
     @notification = Notification.find_by(org: current_org, id: params[:id])
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
-    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).index_by(&:id)
   end
 
   def update

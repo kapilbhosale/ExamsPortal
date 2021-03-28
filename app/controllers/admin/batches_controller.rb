@@ -6,7 +6,7 @@ class Admin::BatchesController < Admin::BaseController
 
   def new
     @batch = Batch.new
-    @batch_groups = BatchGroup.where(org: current_org).all
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).all
   end
 
   def create
@@ -22,7 +22,7 @@ class Admin::BatchesController < Admin::BaseController
 
   def edit
     @batch = Batch.find_by(org: current_org, id: params[:id])
-    @batch_groups = BatchGroup.where(org: current_org).all
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).all
   end
 
   def update

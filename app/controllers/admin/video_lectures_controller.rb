@@ -2,7 +2,7 @@ class Admin::VideoLecturesController < Admin::BaseController
   ITEMS_PER_PAGE = 20
   require 'ostruct'
   def index
-    @search = VideoLecture.includes(:subject, :genre, :batches).where(org: current_org).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
+    @search = VideoLecture.includes(:subject, :genre, :batches, :batches).where(org: current_org).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
 
     if params[:q].present?
       if params[:q][:subject_id].present?
@@ -37,10 +37,10 @@ class Admin::VideoLecturesController < Admin::BaseController
   def new
     @genre = Genre.find_by(org_id: current_org.id, id: params[:genre_id])
     @video_lecture = VideoLecture.new
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.order(:id)
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
-    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
-    @genres = Genre.where(org_id: current_org.id)
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).order(:id).index_by(&:id)
+    @genres = Genre.where(org_id: current_org.id).order('name')
     @subjects = Subject.where(org_id: current_org.id)
     @is_vimeo_configured = current_org.vimeo_access_token.present?
   end
@@ -48,7 +48,7 @@ class Admin::VideoLecturesController < Admin::BaseController
   def edit
     @video_lecture = VideoLecture.find_by(org: current_org, id: params[:id])
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.group_by(&:batch_group_id)
-    @batch_groups = BatchGroup.where(org: current_org).index_by(&:id)
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).index_by(&:id)
     @genres = Genre.where(org_id: current_org.id)
     @subjects = Subject.where(org_id: current_org.id)
     @is_vimeo_configured = current_org.vimeo_access_token.present?
@@ -97,7 +97,7 @@ class Admin::VideoLecturesController < Admin::BaseController
     batches = Batch.where(id: params[:batch_ids])
     @video_lecture.batches << batches
     flash[:success] = "Video Lecture updated successfully.."
-    redirect_to admin_video_lectures_path
+    redirect_to edit_admin_video_lecture_path(@video_lecture)
   end
 
   def destroy

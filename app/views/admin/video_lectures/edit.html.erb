@@ -1,70 +1,103 @@
 
-<%= form_tag admin_video_lecture_path(@video_lecture), method: :patch, multipart: true, html: {class: 'form-horizontal card'} do  |form| %>
+<%= form_tag admin_video_lecture_path(@video_lecture),  method: :patch,  multipart: true, html: {class: 'video-input-form form-horizontal card'} do  |form| %>
   <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
-    <div class="col-lg-8">
+    <div class="alert alert-danger full-width hidden" id="error-div" tabindex='1'>
+      <strong>Invalid Form!</strong> Please address errors below.
+    </div>
+    <div class="col-lg-12">
         <div class="card-body">
-          <h3 class="card-title">
-            Edit Video Lecture
+          <h3 class="card-title text-center">
+            Add Video Lecture <span style="color: #45aaf2"><%= @genre.present? ? " Folder : #{@genre.name} " : ''%></span>
           </h3>
-          <div class="row form-group text-center">
-            <label class="control-label col-sm-4 text-right">Thubmnail</label>
-            <div class="col-sm-8">
-              <%= (image_tag @video_lecture.uploaded_thumbnail.url, size: "150") rescue "Banner Image" %>
+          <div class="plyr__video-embed col-md-6 hidden" id="yt-player-container" style="padding-top: 10px">
+            <iframe
+              id="yt-player"
+              src=""
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+              style="height: 400px; width: 100%"
+            ></iframe>
+          </div>
+          <div class="plyr__video-embed col-md-6 hidden" id="vimeo-player-container" style="padding-top: 10px">
+             <iframe
+                id="vimeo-player"
+                src=""
+                allowfullscreen
+                allowtransparency
+                allow="autoplay"
+                style="height: 400px; width: 100%"
+              ></iframe>
+          </div>
+          <hr>
+          <div class="row form-group text-center" style="margin-top: 10px">
+            <div class="col-sm-12 custom-file form-group">
+              <label class="selectgroup-item" id='btn-yt'>
+                <input type="radio" name="video_type" value="youtube" class="selectgroup-input" checked>
+                <span class="selectgroup-button">Youtube </span>
+              </label>
+              <% if @is_vimeo_configured %>
+                <label class="selectgroup-item" id='btn-vimeo'>
+                  <input type="radio" name="video_type" value="vimeo" class="selectgroup-input" >
+                  <span class="selectgroup-button">Videmo</span>
+                </label>
+              <% end %>
             </div>
           </div>
-
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right">Show Video</label>
-            <div class="col-sm-8">
+            <label class="control-label col-sm-10 text-right">Show Video</label>
+            <div class="col-sm-2">
               <label class="radio-inline"><input type="radio" value="true" name="enabled" <%= @video_lecture.enabled ? "checked" : "" %> >show</label>
               <label class="radio-inline"><input type="radio" value="false" name="enabled" <%= @video_lecture.enabled ? "" : "checked" %> >hide</label>
             </div>
           </div>
-
-          <% if @is_vimeo_configured %>
-            <div style="border-color: coral; border-style: solid; margin-top: 10px;">
-              <div class="row form-group">
-                <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
-                <div class="col-sm-8">
-                  <input type="text" class="form-control" placeholder="Enter youtube video url" name="url" value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
-                </div>
-              </div>
-                &nbsp; &nbsp; &nbsp; OR
-                <div class="row form-group">
-                  <label class="control-label col-sm-4 text-right">Vimeo Video ID</label>
-                  <div class="col-sm-8">
-                    <input type="number" class="form-control" placeholder="Enter Video ID" name="video_id" value= "<%= @video_lecture.video_id %>" />
-                  </div>
-                </div>
-            </div>
-          <% else %>
-            <div class="row form-group">
-              <label class="control-label col-sm-4 text-right" for="email">YouTube Url *</label>
-              <div class="col-sm-8">
-                <input type="text" class="form-control" placeholder="Enter youtube video url" name="url" value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
-              </div>
-            </div>
-          <% end %>
-
+          </div>
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">Video Title *</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter Video Title" name="title" value= "<%= @video_lecture.title %>" required />
+            <div class="col-sm-6 form-group" id="yt-url-container">
+              <input type="text" class="form-control" placeholder="Enter YOUTUBE video url" name="url" id='input-yt-url' value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
+            </div>
+            <div class="col-sm-6 form-group hidden" id="vimeo-url-container">
+              <input type="number" class="form-control" placeholder="Enter VIMEO Video ID" name="video_id" id='input-vimeo-id' value= "<%= @video_lecture.video_id %>" />
+            </div>
+            <div class="col-sm-6 custom-file form-group" id="thumbnail-container">
+              <input type="file" id="banner_url" name="thumbnail">
+              <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-6" style="margin-left: -10px;">
+              <span style="color: gray">Video Title</span>
+            </div>
+
+            <div class="col-sm-6" style="margin-left: 10px;">
+              <span style="color: gray">Teacher Name</span>
             </div>
           </div>
 
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">Teacher</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by" value="<%= @video_lecture.by %>" />
+            <div class="col-sm-6">
+              <input type="text" class="form-control" placeholder="Enter Video Title" value= "<%= @video_lecture.title %>" name="title" required>
+            </div>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" placeholder="Enter Teacher Name" name="by" value="<%= @video_lecture.by %>">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-6" style="margin-left: -10px;">
+              <span style="color: gray">Subject:</span>
+            </div>
+
+            <div class="col-sm-6" style="margin-left: 10px;">
+              <span style="color: gray">Folder:</span>
             </div>
           </div>
 
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">Subject *</label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
               <div class="form-group">
-                <select class="form-control" name="subject_id">
+                <select class="form-control" name="subject_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? && @genre&.subject_id.present? %>">
                   <% @subjects.each do |subject| %>
                     <option value="<%= subject.id %>" <%= @video_lecture.subject_id == subject.id ? 'selected' : '' %>>
                       <%= subject.name.humanize %>
@@ -73,76 +106,178 @@
                 </select>
               </div>
             </div>
-          </div>
 
-          <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">Video Folder</label>
-            <div class="col-sm-8">
-              <select class="form-control" name="genre_id" id="video_lecture_genre_id">
+            <div class="col-sm-6">
+              <select class="form-control" name="genre_id" id="video_lecture_genre_id" style="<%= 'pointer-events:none; background: #d3d3d3' if @genre.present? %>">
                 <% @genres.each do |genre| %>
-                  <option value="<%=genre.id%>" <%= @video_lecture.genre_id == genre.id ? 'selected' : '' %>> <%= genre.name %></option>
+                  <option value="<%=genre.id%>" <%= @video_lecture.genre_id == genre.id ? 'selected' : '' %>>
+                    <%= genre.name %>
+                  </option>
                 <% end %>
               </select>
             </div>
           </div>
 
-          <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">TAG</label>
-            <div class="col-sm-8">
-              <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag" value="<%= @video_lecture.tag %>" />
+          <div class="form-group">
+            <div class="col-sm-6" style="margin-left: -10px;">
+              <span style="color: gray">Video TAG</span>
+            </div>
+
+            <div class="col-sm-6" style="margin-left: 10px;">
+              <span style="color: gray">Video Publish at</span>
             </div>
           </div>
 
-          <% if @is_vimeo_configured %>
-            <div class="row form-group">
-              <label class="control-label col-sm-4 text-right">Vimeo Laptop Video Id</label>
-              <div class="col-sm-8">
-                <input type="number" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id" value="<%= @video_lecture.laptop_vimeo_id %>" />
-              </div>
-            </div>
-          <% end %>
-
           <div class="row form-group">
-            <label class="control-label col-sm-4 text-right" for="email">Publish time:</label>
-            <div class="col-sm-8">
+            <div class="col-sm-6">
+              <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag" value="<%= @video_lecture.tag %>" />
+            </div>
+            <div class="col-sm-6">
               <input value="<%= @video_lecture&.publish_at&.strftime('%Y-%m-%dT%R') %>" type="datetime-local" class="form-control" id="publish_at" name="publish_at">
             </div>
           </div>
 
+          <% if @is_vimeo_configured %>
+            <div class="row form-group" id="laptop-video-id-container">
+              <div style="display: flex; flex-direction: column;">
+                <span style="color: gray; margin-left: 10px">Laptop Vimeo ID</span>
+                <div class="col-sm-6">
+                  <input type="number" id="input-laptop-vimeo-url" class="form-control" placeholder="Enter Laptop Video ID" name="laptop_vimeo_id" value="<%= @video_lecture.laptop_vimeo_id %>" />
+                </div>
+              </div>
+            </div>
+          <% end %>
+
           <%= render partial: 'admin/select_batches', locals: {var_name: 'batch_ids[]', selected_batches: @video_lecture.batches.ids} %>
 
         </div>
-        <div class="card-footer text-right">
+        <div class="card-footer text-right" style="width: 100%">
           <%= link_to "Cancel", admin_video_lectures_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
-          <button type="submit" class="btn btn-success">update Video Lecture</button>
+          <button type="submit" class="btn btn-primary">update Video Lecture</button>
         </div>
     </div>
-    <div class=col-lg-4>
-      <a href="#" id="btn-more-actions" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
+  </div>
+  <div class="col-lg-12 hidden">
+      <a href="#" id="btn-more-actions" class="btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">More Actions</a>
       <br>
       <hr>
       <div class="more-container hidden">
         <div class="row form-group">
           <label class="control-label col-sm-4 text-right" for="email">View Limits</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value= "<%= @video_lecture.view_limit %>" >
+            <input type="text" class="form-control" placeholder="Per Student View limit" name="view_limit" value="3">
           </div>
-        </div>
 
+        </div>
         <a href="<%= admin_video_lecture_student_video_views_path(@video_lecture) %>" id="btn-student-views" class="pull-right btn btn-sm btn-outline-info" style="margin-top: 10px" role="button" aria-pressed="true">Show Student Views</a>
       </div>
     </div>
-  </div>
 <% end %>
+
+
 <script>
   $(document).ready(function(){
-      $('input[type="file"]').change(function(e){
-          var fileName = e.target.files[0].name;
-          var label = e.target.parentElement.lastElementChild;
-          label.innerText = fileName;
-      });
-      $('#btn-more-actions').on("click", function(){
-        $('.more-container').toggleClass("hidden");
-      });
+    function youTubeIdFromLink(url){
+      var youtubeId = url.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)([^\s&]+)/)[1];
+      return youtubeId;
+    }
+
+    $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        var label = e.target.parentElement.lastElementChild;
+        label.innerText = fileName;
+    });
+    $('#btn-more-actions').on("click", function(){
+      $('.more-container').toggleClass("hidden");
+    });
+
+    $('#btn-yt').on("click", function(){
+      $('#thumbnail-container').removeClass('hidden');
+      $('#laptop-video-id-container').removeClass('hidden');
+      $('#yt-url-container').removeClass('hidden');
+      $('#vimeo-url-container').addClass('hidden');
+    });
+    $('#btn-vimeo').on("click", function(){
+      $('#yt-player-container').addClass('hidden');
+      $('#thumbnail-container').addClass('hidden');
+      $('#laptop-video-id-container').addClass('hidden');
+      $('#yt-url-container').addClass('hidden');
+      $('#vimeo-url-container').removeClass('hidden');
+    });
+    $( "#input-yt-url" ).blur(function() {
+      var url = this.value;
+      if (url) {
+        $('#yt-player-container').removeClass('hidden');
+      }
+      var youtubeId = youTubeIdFromLink(url);
+      var src = "https://www.youtube.com/embed/"+youtubeId+"?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
+      $('#yt-player').attr('src', src);
+    }).blur();
+
+    $("#input-vimeo-id").blur(function() {
+      var vimeoId = this.value;
+      if (vimeoId) {
+        $('#vimeo-player-container').removeClass('hidden');
+      }
+      var src = "https://player.vimeo.com/video/"+vimeoId+"?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
+      $('#vimeo-player').attr('src', src);
+    }).blur();
+
+    $("#input-laptop-vimeo-url").blur(function() {
+      var vimeoId = this.value;
+      if (vimeoId) {
+        $('#vimeo-player-container').removeClass('hidden');
+      }
+      var src = "https://player.vimeo.com/video/"+vimeoId+"?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
+      $('#vimeo-player').attr('src', src);
+    }).blur();
+
+    $("#input-yt-url" ).change(function() {
+      $('#input-yt-url').removeClass('is-invalid');
+      $('#input-vimeo-id').removeClass('is-invalid');
+    });
+    $("input[name=title]" ).change(function() {
+      $('input[name=title]').removeClass('is-invalid');
+    });
+    $("input[name=by]" ).change(function() {
+      $('input[name=by]').removeClass('is-invalid');
+    });
+
+    $("form").submit(function(e){
+      var isValid = true;
+      var url = $('#input-yt-url').val();
+      var vimeoID = $('#input-vimeo-id').val();
+      if (!url && !vimeoID) {
+        isValid = false;
+        $('#input-yt-url').addClass('is-invalid');
+        $('#input-vimeo-id').addClass('is-invalid');
+      }
+      var title = $("input[name=title]").val();
+      if (!title) {
+        isValid = false;
+        $('input[name=title]').addClass('is-invalid');
+      }
+      var by = $("input[name=by]").val();
+      if (!by) {
+        isValid = false;
+        $('input[name=by]').addClass('is-invalid');
+      }
+
+      if($("input:checkbox:checked").length <= 0) {
+        isValid = false;
+        $('.txt-batches').addClass('text-danger');
+      } else {
+        $('.txt-batches').removeClass('text-danger');
+      }
+
+      if(!isValid) {
+        $('#error-div').removeClass('hidden');
+        window.scrollTo(10, 10);
+        setTimeout(function() {
+          $('#error-div').addClass('hidden');
+        }, 5000);
+        e.preventDefault();
+      }
+    });
   });
 </script>

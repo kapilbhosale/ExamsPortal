@@ -39,7 +39,6 @@
           <th>Subject</th>
           <th>Title</th>
           <th>Teacher</th>
-          <th>Tag</th>
           <th>Folder</th>
           <th>Tag</th>
           <th>Publish at</th>
@@ -58,12 +57,16 @@
             </td>
             <td>
               <%= link_to "#{vl.title.length > 40 ? vl.title.first(45) + '...' : vl.title }", edit_admin_video_lecture_path(vl) %>
+              <span style="font-size: 10px; color: darkgreen">
+                <ul>
+                  <% vl&.batches.order(:id).pluck(:name).each do |name| %>
+                    <li><%= name %></li>
+                  <% end %>
+                </ul>
+              </span>
             </td>
             <td>
               <%= vl.by %>
-            </td>
-            <td>
-              <%= vl.tag %>
             </td>
             <td>
               <%= vl.genre&.name %>

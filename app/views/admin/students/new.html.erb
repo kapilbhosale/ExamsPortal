@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-12">
     <%= form_for :student, url:admin_students_path, html: {multipart: true, class: 'card'} do  |form| %>
       <div class="card-body">
         <h3 class="card-title">Add Student</h3>
@@ -115,6 +115,11 @@
                   </label>
                   <% end %>
                 </div>
+
+
+                <%= render partial: 'admin/select_batches', locals: {var_name: 'student[batches][]', selected_batches: [] } %>
+
+
                 <% else %>
                 <div class="alert alert-info alert">No Batches are created yet. Create a batch first
                 </div>

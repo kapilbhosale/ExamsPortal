@@ -21,7 +21,6 @@
                   <th>Id</th>
                   <th>Pdf Name</th>
                   <th>Desc.</th>
-                  <th>Batch(s)</th>
                   <th>Q's Paper</th>
                   <th>A's Paper</th>
                   <th>Type</th>
@@ -32,9 +31,17 @@
                 <% @study_pdfs.each do |study_pdf| %>
                   <tr>
                     <td><%= study_pdf.id %></td>
-                    <td><%= study_pdf.name %></td>
+                    <td>
+                      <%= study_pdf.name %>
+                      <span style="font-size: 10px; color: darkgreen">
+                        <ul>
+                          <% study_pdf.batches.order(:id).pluck(:name).each do |name| %>
+                            <li><%= name %></li>
+                          <% end %>
+                        </ul>
+                      </span>
+                    </td>
                     <td><%= study_pdf.description %></td>
-                    <td><%= study_pdf.batches.pluck(:name).join(', ') %></td>
                     <td><%= link_to 'link', study_pdf.question_paper&.url, target: "_blank" %></td>
                     <td><%= link_to 'link', study_pdf.solution_paper&.url, target: "_blank" %></td>
                     <td><%= study_pdf.study_pdf_type&.name %></td>

@@ -15,7 +15,7 @@
               <th>Info (Q|Marks|Stds)</th>
               <th>Exam Date</th>
               <th>Progress Report</th>
-              <th>Download Reports</th>
+              <th style="width: 170px;">Download Reports</th>
             </tr>
             </thead>
             <tbody>
@@ -23,7 +23,7 @@
                 <% @exams.each do |exam| %>
                   <tr>
                     <td>
-                      <%= link_to "#{exam.name.slice(0..50)} ... ", admin_exam_path(exam.id) %>
+                      <%= link_to "#{exam.name}", admin_exam_path(exam.id) %>
                       <br />
                       <span style="font-size: 10px"><%= exam.batches.pluck(:name).join(', ').slice(0..90) %></span>
                     </td>

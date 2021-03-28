@@ -30,7 +30,6 @@
                 <thead>
                   <tr>
                     <th><%= sort_link(@search, :roll_number) %></th>
-                    <th>Batch(s)</th>
                     <th><%= sort_link(@search, :name) %></th>
                     <th>Password</th>
                     <th>Parent Mobile</th>
@@ -55,9 +54,16 @@
                   <% @students.each do |student| %>
                     <tr class="<%= student.pending_amount.present? ? 'table-danger' : '' %>">
                       <td><%= student.roll_number %></td>
-                      <td><%= student&.batches&.each&.map(&:name).join(', ') %>
+                      <td>
+                        <%= link_to student.name, admin_student_path(student) %>
+                        <span style="font-size: 10px; color: darkgreen">
+                          <ul>
+                            <% student&.batches.order(:id).pluck(:name).each do |name| %>
+                              <li><%= name %></li>
+                            <% end %>
+                          </ul>
+                        </span>
                       </td>
-                      <td><%= link_to student.name, admin_student_path(student) %></td>
                       <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
                       <% if request.subdomain == 'exams' %>

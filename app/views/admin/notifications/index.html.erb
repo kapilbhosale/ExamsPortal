@@ -18,7 +18,6 @@
                   <th>Id</th>
                   <th>Title</th>
                   <th>Desc.</th>
-                  <th>Batch(s)</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -26,9 +25,17 @@
                 <% @notifications.each do |notification| %>
                   <tr>
                     <td><%= notification.id %></td>
-                    <td><%= notification.title %></td>
+                    <td>
+                      <%= notification.title %>
+                      <span style="font-size: 10px; color: darkgreen">
+                        <ul>
+                          <% notification.batches.order(:id).pluck(:name).each do |name| %>
+                            <li><%= name %></li>
+                          <% end %>
+                        </ul>
+                      </span>
+                    </td>
                     <td><%= notification.description %></td>
-                    <td><%= notification.batches.pluck(:name).join(', ') %></td>
                     <td>
                       <%= link_to 'Edit', edit_admin_notification_path(notification), method: :get, class: "btn btn-warning btn-sm" %>
                       <%= link_to 'Del', admin_notification_path(notification), method: :delete, class: "btn btn-danger btn-sm" %>

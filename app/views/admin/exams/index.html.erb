@@ -15,31 +15,35 @@
         <div class="table-responsive">
           <% if @exams.present? %>
             <%= form_for :exam, url: admin_exams_path, method: :get, id: 'exam_form' do |form| %>
-              <table class="table table-striped table-hover table-fixed">
+              <table class="table table-striped table-bordered table-hover">
                 <thead>
                   <tr>
-                    <th class="col-md-2">Name</th>
-                    <th class="col-md-1">Batch(es)</th>
-                    <th class="col-md-1">Description</th>
-                    <th class="col-md-1">Question</th>
-                    <th class="col-md-1">Added Ques</th>
-                    <th class="col-md-1">Time</th>
-                    <th class="col-md-1">Added on</th>
-                    <th class="col-md-1">Publish on</th>
-                    <th class="col-md-1">Publish Result</th>
-                    <th class="col-md-1">Actions</th>
+                    <th>Name</th>
+                    <th>Added / Exam Q</th>
+                    <th>Time</th>
+                    <th>Added on</th>
+                    <th>Publish on</th>
+                    <th>Publish Result</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% @exams.each do |exam| %>
                     <tr>
-                      <td class="text-truncate"><%= link_to exam.name, admin_exam_path(exam.id) %></td>
-                      <td class="text-truncate"><%= exam&.batches&.each&.map(&:name).join(', ') %>
-                        </td>
-                      <td class="text-truncate"><%= exam.description %> ...</td>
-                      <td><%= exam.no_of_questions %></td>
-                      <td><%= exam.questions.count %></td>
-                      <td><%= exam.time_in_minutes %> mins</td>
+                      <td>
+                        <%= link_to "#{exam.name}", admin_exam_path(exam.id) %>
+                        <br />
+                        <span style="font-size: 10px; color: darkgreen">
+                          <ul>
+                            <% exam.batches.order(:id).pluck(:name).each do |name| %>
+                              <li><%= name %></li>
+                            <% end %>
+                          </ul>
+                        </span>
+                        <span style="font-size: 10px"><%= exam.description %></span>
+                      </td>
+                      <td><%= "#{exam.questions.count} / #{exam.no_of_questions}" %></td>
+                      <td><%= exam.time_in_minutes %> Mins</td>
                       <td><%= exam.created_at&.strftime("%d-%b-%y") %></td>
                       <td><%= exam.show_exam_at&.strftime("%d-%b-%y %r") %></td>
                       <td class="text-center">
