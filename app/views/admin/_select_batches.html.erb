@@ -1,17 +1,18 @@
 <div class="accordion" id="batchAccordian">
   <p class="txt-batches">Select Batches: </p>
+  <% collapsed = true %>
   <% @batches_with_group.each do |batch_group_id, batches| %>
     <% batches = batches.sort %>
     <div class="card" style="margin-bottom: 5px">
       <div class="card-header" id="heading-<%=batch_group_id%>">
         <h2 class="mb-0">
-          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#heading-<%=batch_group_id%>" aria-expanded="true" aria-controls="heading-<%=batch_group_id%>">
+          <button class="btn btn-link <%= collapsed ? 'collapsed' : '' %>" type="button" data-toggle="collapse" data-target="#collapse-<%=batch_group_id %>" aria-expanded="<%= collapsed %>" aria-controls="collapse-<%=batch_group_id%>">
             <%= @batch_groups[batch_group_id]&.name || 'NO GROUP' %>
           </button>
         </h2>
       </div>
 
-      <div id="collapse-<%= batch_group_id %>" class="collapse show" aria-labelledby="heading<%= batch_group_id %>" data-parent="#batchAccordian" style="background-color: rgb(242, 237, 230); padding-bottom: 20px">
+      <div id="collapse-<%= batch_group_id %>" class="collapse <%= collapsed ? 'show' : '' %> " aria-labelledby="heading-<%= batch_group_id %>" data-parent="#batchAccordian" style="background-color: rgb(242, 237, 230); padding-bottom: 20px">
         <div class="card-body" style="padding: 10">
           <% batches.each do |batch| %>
             <div class="col-md-4" style="padding: 0">
@@ -23,5 +24,6 @@
         </div>
       </div>
     </div>
+    <% collapsed = false %>
   <% end %>
 </div>
