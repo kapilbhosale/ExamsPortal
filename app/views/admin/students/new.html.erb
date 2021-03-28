@@ -3,7 +3,7 @@
     <%= form_for :student, url:admin_students_path, html: {multipart: true, class: 'card'} do  |form| %>
       <div class="card-body">
         <h3 class="card-title">Add Student</h3>
-        <% if @student_data[:batches].blank? %>
+        <% if @batches.blank? %>
           <div class="text-center">
             <span>
               Please add
