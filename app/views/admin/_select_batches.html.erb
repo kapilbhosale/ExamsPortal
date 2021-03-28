@@ -15,7 +15,7 @@
       <div id="collapse-<%= batch_group_id %>" class="collapse <%= collapsed ? 'show' : '' %> " aria-labelledby="heading-<%= batch_group_id %>" data-parent="#batchAccordian" style="background-color: rgb(242, 237, 230); padding-bottom: 20px">
         <div class="card-body" style="padding: 10">
           <% batches.each do |batch| %>
-            <div class="col-md-4" style="padding: 0">
+            <div class="col-md-3" style="padding: 0">
               <label class="checkbox-inline"><input type="checkbox" name="<%= var_name || 'batch_ids[]' %>" value=<%= batch.id %> <%= selected_batches.include?(batch.id) ? 'checked' : '' %> >
                 <%= batch.name %>
               </label>
