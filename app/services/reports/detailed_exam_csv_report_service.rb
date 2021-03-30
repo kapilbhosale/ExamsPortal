@@ -51,8 +51,12 @@ module Reports
             question_id = val['id'].to_i
             answerProps = val["answerProps"]
             std_option_id = answerProps['isAnswered'] == 'true' ? answerProps['answer'].first.to_i : nil
-            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] =
-              "#{@correct_ans_map[question_id][:option_id] == std_option_id ? 'RIGHT' : 'WRONG'}|#{@options_map[std_option_id]}|#{answerProps['visits']}-visit|#{answerProps['timeSpent']}(s)"
+            sync_summary_data[student_exam_ids_index[ses.student_id]][val["id"]] = {
+              status: @correct_ans_map[question_id][:option_id] == std_option_id ? 'R' : 'W',
+              ans: @options_map[std_option_id],
+              visits: answerProps['visits'],
+              time: answerProps['timeSpent']
+            }
           end
         end
       end
@@ -106,7 +110,10 @@ module Reports
       csv_question_ids = csv_question_ids = exam.questions.order(:id).ids.map(&:to_s)
 
       csv_data = CSV.generate(headers: true) do |csv|
-        csv << csv_headers
+        headers, sub_headers = csv_headers
+        csv << headers
+        csv << sub_headers
+
         data.each do |key, row|
           csv_row = [
             row[:roll_number],
@@ -116,8 +123,12 @@ module Reports
           ]
 
           csv_question_ids.each do |q_id|
-            csv_row << sync_summary_data[key][q_id]
+            csv_row << sync_summary_data.dig(key, q_id, :status)
+            csv_row << sync_summary_data.dig(key, q_id, :ans)
+            csv_row << sync_summary_data.dig(key, q_id, :visits)
+            csv_row << sync_summary_data.dig(key, q_id, :time)
           end
+
           csv_row << row[:result][:no_of_questions]
           csv_row << row[:result][:answered]
           csv_row << row[:result][:not_answered]
@@ -152,13 +163,20 @@ module Reports
 
     def csv_headers
       headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Batch']
-
+      sub_headers = ['', '', '' ,'']
       exam.sections.order(:id).each do |section|
         exam.questions.where(section_id: section.id).each_with_index do |question, index|
-          headers << "sec[#{section.name}]-Qno[#{index+1}]-Ans[#{@correct_ans_map[question.id][:chr]}]qId[#{question.id}]"
+          headers << "#{section.name}[#{index+1}]"
+          headers += ['', '', '']
+          sub_headers << 'status'
+          sub_headers << "Ans[#{@correct_ans_map[question.id][:chr]}]"
+          sub_headers << 'visits'
+          sub_headers << 'time in sec'
         end
       end
-      headers + ['total_no_of_questions', 'total_answered', 'total_not_answered', 'total_correct', 'total_incorrect', 'total_score']
+      headers += ['total_no_of_questions', 'total_answered', 'total_not_answered', 'total_correct', 'total_incorrect', 'total_score']
+      sub_headers += ['', '', '', '', '', '']
+      return headers, sub_headers
     end
 
     def validate_request

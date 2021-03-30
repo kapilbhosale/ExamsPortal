@@ -162,7 +162,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       subject_id: params[:subject_id],
       publish_at: params[:publish_at],
       view_limit: params[:view_limit],
-      video_type: (params[:url]&.include?('you') ? VideoLecture.video_types['youtube'] : VideoLecture.video_types['vimeo'])
+      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
     }
   end
 
@@ -180,7 +180,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       laptop_vimeo_id: params[:laptop_vimeo_id],
       genre_id: params[:genre_id],
       publish_at: params[:publish_at],
-      view_limit: params[:view_limit]
+      view_limit: params[:view_limit],
+      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
     }
   end
 

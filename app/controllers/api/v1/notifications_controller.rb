@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::NotificationsController < Api::V1::ApiController
-  USE_CACHE = false
+  USE_CACHE = true
   def index
     if current_student.batches&.ids&.count == 1
       batch_id = current_student.batches&.ids&.first

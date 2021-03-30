@@ -1,5 +1,6 @@
 class Admin::ReportsController < Admin::BaseController
   ITEMS_PER_PAGE = 20
+  USE_CACHE = false
 
   def index
     @exams = Exam.where(org: current_org).includes(:batches, :exam_sections, :exam_batches).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
@@ -24,7 +25,7 @@ class Admin::ReportsController < Admin::BaseController
   def show
     exam = Exam.find_by(id: params[:id], org: current_org)
     exam_csv_redis_key = "exam-csv-report-#{exam.id}"
-    @response = REDIS_CACHE.get(exam_csv_redis_key)
+    @response = USE_CACHE ? REDIS_CACHE.get(exam_csv_redis_key): nil
     if @response.blank?
       @response = Reports::ExamCsvReportService.new(params[:id]).prepare_report
       # store response in cache if exam expired
@@ -55,12 +56,12 @@ class Admin::ReportsController < Admin::BaseController
     exam = Exam.find_by(id: params[:report_id], org: current_org)
 
     exam_detailed_redis_key = "exam-detailed-csv-report-#{exam.id}"
-    @response = REDIS_CACHE.get(exam_detailed_redis_key)
+    @response = USE_CACHE ? REDIS_CACHE.get(exam_detailed_redis_key) : nil
     if @response.blank?
       @response = Reports::DetailedExamCsvReportService.new(exam.id).prepare_report
       # store response in cache if exam expired
       if exam.exam_available_till.present? && exam.exam_available_till + 5.hours < Time.current
-        REDIS_CACHE.set(exam_detailed_redis_key, @response, { ex: 1.day })
+        REDIS_CACHE.set(exam_detailed_redis_key, @response, { ex: 2.minutes })
       end
     else
       puts "\n\n\n\n\n ===========================> exam-csv-report cache suceeded \n\n\n\n"
