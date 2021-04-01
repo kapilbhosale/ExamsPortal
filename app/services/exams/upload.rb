@@ -5,7 +5,7 @@ module Exams
     attr_reader :exam, :section_id, :marks
     attr_accessor :tmp_zip_file
 
-    S3_UPLOAD = false
+    S3_UPLOAD = true
 
     def initialize(exam, tmp_zip_file, section_id = 1, marks = {})
       @exam = exam

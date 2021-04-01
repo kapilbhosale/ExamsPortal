@@ -77,7 +77,8 @@ class Students::LoginController < Students::BaseController
   def process_otp
     student = Student.find_by(id: params[:user_id])
     student.reset_apps if student.present?
-    if params[:otp] == ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
+    # TMP_OTP_REMOVED
+    if true || params[:otp] == ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
       cookies.signed["laptop_login_cookie_#{student.id}"] = { value: student.parent_mobile, expires: 1.year, httponly: true }
       student.is_laptop_login = true
       student.save
