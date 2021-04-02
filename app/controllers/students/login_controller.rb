@@ -58,16 +58,17 @@ class Students::LoginController < Students::BaseController
   def generate_and_send_otp(student)
     _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
     _SMS_PASSWORD = "k@lpak@2020"
+    _TEMPLATE_ID = "1007674069396942106"
     @otp = ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
     require 'net/http'
     strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-    strUrl = strUrl+"?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91"+student.parent_mobile+"&Text="+otp_sms_text(@otp)+"";
+    strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{student.parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
     uri = URI(strUrl)
     puts Net::HTTP.get(uri)
   end
 
   def otp_sms_text(otp)
-    "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp}"
+    "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
 
   def otp_input
@@ -77,8 +78,7 @@ class Students::LoginController < Students::BaseController
   def process_otp
     student = Student.find_by(id: params[:user_id])
     student.reset_apps if student.present?
-    # TMP_OTP_REMOVED
-    if true || params[:otp] == ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
+    if params[:otp] == ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
       cookies.signed["laptop_login_cookie_#{student.id}"] = { value: student.parent_mobile, expires: 1.year, httponly: true }
       student.is_laptop_login = true
       student.save

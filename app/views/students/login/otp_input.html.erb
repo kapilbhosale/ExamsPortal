@@ -2,13 +2,8 @@
   <div class="col-lg-8" style="background-color:rgb(222, 222, 222); ">
     <%= form_tag('/students/process_otp', method: :post) do %>
       <div class="card-body">
-        <%# <h3 class="card-title">Enter OTP received via SMS</h3> %>
-        <h3 class="card-title">Enter OTP</h3>
-        <%# TMP_OTP_REMOVED %>
-        <h3 class="card-title text-success pull-right">OTP for now: 111 111</h3>
-
+        <h3 class="card-title">Enter OTP received via SMS</h3>
         <div class="form-group">
-          <%# TMP_OTP_REMOVED required %>
           <input type="number" class="form-control" value="111111" name="otp" id="otpField" placeholder="Enter OTP" minlength="6" maxlength="6" required >
           <input type="hidden" class="form-control" name="user_id" value="<%= @student_id %>">
         </div>
