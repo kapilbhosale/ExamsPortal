@@ -33,12 +33,12 @@
           <div class="row form-group text-center" style="margin-top: 10px">
             <div class="col-sm-12 custom-file form-group">
               <label class="selectgroup-item" id='btn-yt'>
-                <input type="radio" name="video_type" value="youtube" class="selectgroup-input" checked>
+                <input type="radio" id="btn-youtube" name="video_type" value="youtube" class="selectgroup-input" checked>
                 <span class="selectgroup-button">Youtube </span>
               </label>
               <% if @is_vimeo_configured %>
                 <label class="selectgroup-item" id='btn-vimeo'>
-                  <input type="radio" name="video_type" value="vimeo" class="selectgroup-input" >
+                  <input type="radio" id="btn-vimeo" name="video_type" value="vimeo" class="selectgroup-input" >
                   <span class="selectgroup-button">Videmo</span>
                 </label>
               <% end %>
@@ -238,9 +238,13 @@
       var isValid = true;
       var url = $('#input-yt-url').val();
       var vimeoID = $('#input-vimeo-id').val();
-      if (!url && !vimeoID) {
+
+      if($('#btn-youtube').is(':checked') && !url) {
         isValid = false;
         $('#input-yt-url').addClass('is-invalid');
+      }
+      if($('#btn-vimeo').is(':checked') && !vimeoID) {
+        isValid = false;
         $('#input-vimeo-id').addClass('is-invalid');
       }
       var title = $("input[name=title]").val();

@@ -1,4 +1,7 @@
 
+<% is_yt = @video_lecture.youtube? %>
+<% is_vm = @video_lecture.vimeo? %>
+
 <%= form_tag admin_video_lecture_path(@video_lecture),  method: :patch,  multipart: true, html: {class: 'video-input-form form-horizontal card'} do  |form| %>
   <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
     <div class="alert alert-danger full-width hidden" id="error-div" tabindex='1'>
@@ -33,12 +36,12 @@
           <div class="row form-group text-center" style="margin-top: 10px">
             <div class="col-sm-12 custom-file form-group">
               <label class="selectgroup-item" id='btn-yt'>
-                <input type="radio" name="video_type" value="youtube" class="selectgroup-input">
+                <input type="radio" id="btn-youtube" name="video_type" value="youtube" class="selectgroup-input" <%= is_yt ? 'checked' : '' %>>
                 <span class="selectgroup-button">Youtube </span>
               </label>
               <% if @is_vimeo_configured %>
                 <label class="selectgroup-item" id='btn-vimeo'>
-                  <input type="radio" name="video_type" value="vimeo" class="selectgroup-input" >
+                  <input type="radio" id="btn-vimeo" name="video_type" value="vimeo" class="selectgroup-input" <%= is_vm ? 'checked' : '' %>>
                   <span class="selectgroup-button">Videmo</span>
                 </label>
               <% end %>
@@ -53,13 +56,13 @@
           </div>
           </div>
           <div class="row form-group">
-            <div class="col-sm-6 form-group" id="yt-url-container">
+            <div class="col-sm-6 form-group <%= is_vm ? 'hidden' : '' %>" id="yt-url-container">
               <input type="text" class="form-control" placeholder="Enter YOUTUBE video url" name="url" id='input-yt-url' value= "<%= @video_lecture.video_type == 'youtube' ? @video_lecture.url : '' %>" >
             </div>
-            <div class="col-sm-6 form-group hidden" id="vimeo-url-container">
+            <div class="col-sm-6 form-group <%= is_yt ? 'hidden' : '' %>" id="vimeo-url-container">
               <input type="number" class="form-control" placeholder="Enter VIMEO Video ID" name="video_id" id='input-vimeo-id' value= "<%= @video_lecture.video_id %>" />
             </div>
-            <div class="col-sm-6 custom-file form-group" id="thumbnail-container">
+            <div class="col-sm-6 custom-file form-group <%= is_vm ? 'hidden' : '' %>" id="thumbnail-container">
               <input type="file" id="banner_url" name="thumbnail">
               <label class="custom-file-label" for="banner_url">Choose Thumbnail Image</label>
             </div>
@@ -138,7 +141,7 @@
           </div>
 
           <% if @is_vimeo_configured %>
-            <div class="row form-group" id="laptop-video-id-container">
+            <div class="row form-group <%= is_vm ? 'hidden' : '' %>" id="laptop-video-id-container">
               <div style="display: flex; flex-direction: column;">
                 <span style="color: gray; margin-left: 10px">Laptop Vimeo ID</span>
                 <div class="col-sm-6">
@@ -178,8 +181,10 @@
 <script>
   $(document).ready(function(){
     function youTubeIdFromLink(url){
-      var youtubeId = url.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)([^\s&]+)/)[1];
-      return youtubeId;
+      if (url) {
+        var youtubeId = url.match(/(?:https?:\/\/)?(?:www\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\/?\?v=|\/embed\/|\/)([^\s&]+)/)[1];
+        return youtubeId;
+      }
     }
 
     $('input[type="file"]').change(function(e){
@@ -247,9 +252,13 @@
       var isValid = true;
       var url = $('#input-yt-url').val();
       var vimeoID = $('#input-vimeo-id').val();
-      if (!url && !vimeoID) {
+
+      if($('#btn-youtube').is(':checked') && !url) {
         isValid = false;
         $('#input-yt-url').addClass('is-invalid');
+      }
+      if($('#btn-vimeo').is(':checked') && !vimeoID) {
+        isValid = false;
         $('#input-vimeo-id').addClass('is-invalid');
       }
       var title = $("input[name=title]").val();
