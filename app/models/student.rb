@@ -208,6 +208,7 @@ class Student < ApplicationRecord
 
   SMS_USER_NAME = "maheshrccnanded@gmail.com"
   SMS_PASSWORD = "myadmin"
+  TEMPLATE_ID = '1007340587985160180';
 
   def send_sms(is_installment=false)
     require 'net/http'
@@ -215,7 +216,7 @@ class Student < ApplicationRecord
     if is_installment
       strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+parent_mobile+"&Text="+installment_sms_text+"";
     else
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+parent_mobile+"&Text="+sms_text+"";
+      strUrl += "?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{TEMPLATE_ID}&Text=#{sms_text}";
     end
     uri = URI(strUrl)
     puts Net::HTTP.get(uri)
@@ -224,7 +225,7 @@ class Student < ApplicationRecord
     if is_installment
       strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student_mobile.to_s+"&Text="+installment_sms_text+"";
     else
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student_mobile.to_s+"&Text="+sms_text+"";
+      strUrl += "?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{student_mobile.to_s}&Text=#{sms_text}&TemplateID=#{TEMPLATE_ID}";
     end
     uri = URI(strUrl)
     puts Net::HTTP.get(uri)
@@ -249,18 +250,24 @@ class Student < ApplicationRecord
   end
 
   def sms_text
-    "Dear Students, Welcome in the world of  RCC.
+    roll_number = 10101
+    parent_mobile = '7588584810'
+    "Dear Student, \nFrom RCC \nWelcome in the world of RCC \nYour admission is confirmed \nRoll No - #{roll_number}\nParent Mob No - #{parent_mobile}\nDownload App from below link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+  end
 
-    Your admission is confirmed.
+  def generate_and_send_otp
+    _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
+    _SMS_PASSWORD = "k@lpak@2020"
+    _TEMPLATE_ID = "1007674069396942106"
+    @otp = ROTP::TOTP.new(Base32.encode(parent_mobile), {interval: 1.day}).now
+    require 'net/http'
+    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
+    strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
+    uri = URI(strUrl)
+    puts Net::HTTP.get(uri)
+  end
 
-    Name: #{name}
-    Course: #{batches.pluck(:name).join(",")}
-
-    your Login details are
-    Roll Number: #{roll_number}
-    Parent Mobile: #{parent_mobile}
-
-    Download App from given link
-    https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+  def otp_sms_text(otp)
+    "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
 end

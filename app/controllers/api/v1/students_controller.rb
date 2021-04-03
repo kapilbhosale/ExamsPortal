@@ -46,7 +46,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
     if request.subdomain == 'bhargav'
       student.reset_apps
-      generate_and_send_otp(student)
+      student.generate_and_send_otp
     end
     sign_in(student)
     student.update(
@@ -58,22 +58,6 @@ class Api::V1::StudentsController < Api::V1::ApiController
     )
 
     render json: student_json(student), status: :ok
-  end
-
-  def generate_and_send_otp(student)
-    _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
-    _SMS_PASSWORD = "k@lpak@2020"
-    _TEMPLATE_ID = "1007674069396942106"
-    @otp = ROTP::TOTP.new(Base32.encode(student.parent_mobile), {interval: 1.day}).now
-    require 'net/http'
-    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-    strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{student.parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
-    uri = URI(strUrl)
-    puts Net::HTTP.get(uri)
-  end
-
-  def otp_sms_text(otp)
-    "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
 
   def update_fcm_token
@@ -116,7 +100,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
     false
   end
 
-  def device_params 
+  def device_params
     {
       deviceUniqueId: params[:deviceUniqueId],
       deviceName: params[:deviceName],

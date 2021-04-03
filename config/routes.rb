@@ -170,5 +170,12 @@ Rails.application.routes.draw do
       resources :meetings, only: [:index]
       resources :trackers
     end
+
+    # NEW ROUTES
+    namespace :v2 do
+      resources :students, only: [:index] do
+        post 'login', on: :collection
+      end
+    end
   end
 end

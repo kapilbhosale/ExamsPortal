@@ -2,15 +2,14 @@ default: &default
   adapter: postgresql
   encoding: utf8
   pool: 5
-  ## DOCKER
-  host: localhost
-  username: postgres
-  password: password
+  host: <%= ENV['DB_HOST'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 development:
   <<: *default
-  database: smart-exams-bhosale
-  # database: smart-exams-1
+  # database: smart-exams-bhosale
+  database: smart-exams-1
 
 test:
   <<: *default

@@ -18,4 +18,7 @@
 #
 
 class Org < ApplicationRecord
+  def bhargav?
+    subdomain == 'bhargav'
+  end
 end
