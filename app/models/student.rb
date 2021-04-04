@@ -58,6 +58,7 @@ require 'csv'
 #
 
 class Student < ApplicationRecord
+  require 'net/http'
   acts_as_paranoid
 
   belongs_to :category, optional: true
@@ -208,51 +209,33 @@ class Student < ApplicationRecord
 
   SMS_USER_NAME = "maheshrccnanded@gmail.com"
   SMS_PASSWORD = "myadmin"
-  TEMPLATE_ID = '1007340587985160180';
+  BASE_URL = "https://www.businesssms.co.in/SMS.aspx";
+
+  def rcc_admission_confirm_sms(mobile_number)
+    template_id = '1007270988222216500'
+    # msg = "Dear Students, \nWelcome in the world of RCC. \nYour admission is confirmed. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    msg = "Dear Student, \nFrom RCC \nWelcome in the world of RCC \nYour admission is confirmed \nRoll No - #{roll_number}\nParent Mob No - #{parent_mobile}\nDownload App from below link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{mobile_number}&TemplateID=#{template_id}&Text=#{msg}"
+    encoded_uri = URI(msg_url)
+    puts Net::HTTP.get(encoded_uri)
+  end
+
+  def rcc_installment_sms(mobile_number)
+    template_id = '1007567986910703670'
+    msg = "Dear Students, \nWelcome in the world of RCC. \nYour Installment is processed, successfully. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{mobile_number}&TemplateID=#{template_id}&Text=#{msg}"
+    encoded_uri = URI(msg_url)
+    puts Net::HTTP.get(encoded_uri)
+  end
 
   def send_sms(is_installment=false)
-    require 'net/http'
-    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
     if is_installment
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+parent_mobile+"&Text="+installment_sms_text+"";
+      rcc_installment_sms(parent_mobile.to_s) if parent_mobile.present?
+      rcc_installment_sms(student_mobile.to_s) if student_mobile.present?
     else
-      strUrl += "?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{TEMPLATE_ID}&Text=#{sms_text}";
+      rcc_admission_confirm_sms(parent_mobile.to_s) if parent_mobile.present?
+      rcc_admission_confirm_sms(student_mobile.to_s) if student_mobile.present?
     end
-    uri = URI(strUrl)
-    puts Net::HTTP.get(uri)
-
-    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-    if is_installment
-      strUrl = strUrl+"?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91"+student_mobile.to_s+"&Text="+installment_sms_text+"";
-    else
-      strUrl += "?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{student_mobile.to_s}&Text=#{sms_text}&TemplateID=#{TEMPLATE_ID}";
-    end
-    uri = URI(strUrl)
-    puts Net::HTTP.get(uri)
-  end
-
-  def installment_sms_text
-    "Dear Students, Welcome in the world of  RCC.
-
-    Your Installment is processed, successfully.
-
-    Name: #{name}
-    New Batch: #{batches.pluck(:name).join(",")}
-
-    your Login details are
-    Roll Number: #{roll_number}
-    Parent Mobile: #{parent_mobile}
-
-    Remove your app and Reinstall it from
-    https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new
-
-    Thank you, Team RCC"
-  end
-
-  def sms_text
-    roll_number = 10101
-    parent_mobile = '7588584810'
-    "Dear Student, \nFrom RCC \nWelcome in the world of RCC \nYour admission is confirmed \nRoll No - #{roll_number}\nParent Mob No - #{parent_mobile}\nDownload App from below link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
   end
 
   def generate_and_send_otp
