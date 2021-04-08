@@ -19,11 +19,12 @@ class Admin::BatchesController < Admin::BaseController
   def disable
     batch = Batch.find_by(org: current_org, id: params[:batch_id])
     if batch.present?
-      student_ids = StudentBatch.where(batch_id: batch.id).pluck(:student_id)
-      Student.where(id: student_ids).update_all(disable: true)
-
+      batch.students.find_each do |student|
+        if student.batches.count == 1
+          student.update!(disable: true, app_reset_count: student.app_reset_count + 1)
+        end
+      end
       batch.recount_disable
-
       flash[:success] = 'Students disabled, successfully.'
     else
       flash[:error] = 'Error in disabling Student App Login.'
