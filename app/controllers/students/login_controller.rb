@@ -20,7 +20,8 @@ class Students::LoginController < Students::BaseController
       student.remember_me = login_params[:remember_me]
 
       if student.disable?
-        flash[:error] = "Your Account is Disabled, Please contact admin/office. Contact for help: #{current_org&.data&.dig('admin_contacts').to_s}"
+        flash[:error] = 'Your Account is Disabled, Please contact admin/office. \n Note: 11th batch is over, kindly take new admission in 12th. \n https://exams.smartclassapp.in/new-admission'
+        sign_out student
         redirect_to("/student/sign_in") and return
       end
 
