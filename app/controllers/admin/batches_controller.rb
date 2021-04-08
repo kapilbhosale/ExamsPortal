@@ -22,6 +22,8 @@ class Admin::BatchesController < Admin::BaseController
       batch.students.find_each do |student|
         if student.batches.count == 1
           student.update!(disable: true, app_reset_count: student.app_reset_count + 1)
+        else
+          student.batches.delete(batch)
         end
       end
       batch.recount_disable

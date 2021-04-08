@@ -27,7 +27,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
     end
 
     if student.disable?
-      render json: { message: 'Your Account is Disabled, Please contact admin/office. \n Note: 11th batch is over, kindly take new admission in 12th (if applicable). \n https://exams.smartclassapp.in/new-admission' }, status: :unauthorized and return
+      render json: { message: 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'}, status: :unauthorized and return
     end
 
     unless login_allowed?(student)
