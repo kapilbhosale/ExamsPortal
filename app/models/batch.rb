@@ -3,6 +3,7 @@
 # Table name: batches
 #
 #  id             :bigint(8)        not null, primary key
+#  disable_count  :integer          default(0)
 #  name           :string
 #  students_count :integer          default(0)
 #  created_at     :datetime         not null
@@ -38,6 +39,12 @@ class Batch < ApplicationRecord
 
   belongs_to :batch_group, optional: true
   belongs_to :org
+
+  def recount_disable
+    student_ids = StudentBatch.where(batch_id: id).pluck(:student_id)
+    self.disable_count = Student.where(id: student_ids, disable: true).count
+    save
+  end
 
   def self.all_batches
     Batch.all { |batch| [batch.id, batch.name] }

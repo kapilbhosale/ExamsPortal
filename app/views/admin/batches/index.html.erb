@@ -19,7 +19,8 @@
                 <th>Created</th>
                 <th>Group</th>
                 <th>Total Students</th>
-                <th></th>
+                <th>Disabled Students</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -41,9 +42,13 @@
                     <%= batch.students_count %>
                   </td>
                   <td>
+                    <%= batch.disable_count %>
+                  </td>
+                  <td>
                     <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
                     <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
                     <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure, You want to delete the batch, It will delete all students in the batch. Permanently??'} %>
+                    <%= link_to 'Disable Batch', admin_batch_disable_path(batch), 'data-toggle': 'tooltip', title: 'Disalbe all Students', data: {confirm: 'Are you sure, You want to Disable all students. Permanently??'}, style: 'color: red;' %>
                   </td>
                 </tr>
               <% end %>

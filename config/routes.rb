@@ -113,6 +113,7 @@ Rails.application.routes.draw do
     end
     resources :batches do
       root to: 'batches#index'
+      get :disable
     end
     get 'dashboard/profile', to: 'dashboard#profile'
     patch 'dashboard/update_profile', to: 'dashboard#update_profile'

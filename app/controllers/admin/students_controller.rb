@@ -168,6 +168,7 @@ class Admin::StudentsController < Admin::BaseController
     if @student.present?
       @student.update!(disable: true, app_reset_count: @student.app_reset_count + 1)
       flash[:success] = 'Student disabled, successfully.'
+      @student.batches(&:recount_disable)
     else
       flash[:error] = 'Error in disabling Student App Login.'
     end
@@ -178,6 +179,7 @@ class Admin::StudentsController < Admin::BaseController
     @student = Student.find_by(id: params[:student_id], org: current_org)
     if @student.present?
       @student.update!(disable: false)
+      @student.batches(&:recount_disable)
       flash[:success] = 'Student enabled, successfully.'
     else
       flash[:error] = 'Error in enabling Student App Login.'

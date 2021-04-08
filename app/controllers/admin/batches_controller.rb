@@ -16,6 +16,21 @@ class Admin::BatchesController < Admin::BaseController
     redirect_to admin_batches_path
   end
 
+  def disable
+    batch = Batch.find_by(org: current_org, id: params[:batch_id])
+    if batch.present?
+      student_ids = StudentBatch.where(batch_id: batch.id).pluck(:student_id)
+      Student.where(id: student_ids).update_all(disable: true)
+
+      batch.recount_disable
+
+      flash[:success] = 'Students disabled, successfully.'
+    else
+      flash[:error] = 'Error in disabling Student App Login.'
+    end
+    redirect_to admin_batches_path
+  end
+
   def show
     @batch = Batch.find_by(org: current_org, id: params[:id])
   end
