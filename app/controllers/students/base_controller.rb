@@ -11,7 +11,7 @@ class Students::BaseController < ApplicationController
 
   def check_disabled_student
     if current_student && current_student.disable?
-      flash[:error] = 'Your Account is Disabled, Please contact admin/office. \n Note: 11th batch is over, kindly take new admission in 12th (if applicable). \n https://exams.smartclassapp.in/new-admission'
+      flash[:error] = 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'
       sign_out current_student
       redirect_to("/student/sign_in") and return
     end
