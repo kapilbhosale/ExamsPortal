@@ -16,9 +16,9 @@ class Students::PaymentsController < ApplicationController
         fees = (fees * 100)
       end
 
-      if @new_admission&.course&.name == 'foundation'
-        Razorpay.setup(ENV.fetch('F_RZ_KEY_ID'), ENV.fetch('F_RZ_KEY_SECRET'))
-      end
+      # if @new_admission&.course&.name == 'foundation'
+      #   Razorpay.setup(ENV.fetch('F_RZ_KEY_ID'), ENV.fetch('F_RZ_KEY_SECRET'))
+      # end
 
       @order = Razorpay::Order.create({
         amount: fees,
