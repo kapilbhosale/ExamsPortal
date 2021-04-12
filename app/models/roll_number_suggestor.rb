@@ -16,10 +16,13 @@ class RollNumberSuggestor < ApplicationRecord
   INITIAL_VALS = {
     "11th" => 80_000,
     "12th" => 60_000,
-    "crash_course" => 30_000,
     "repeater" => 10_000,
     "test_series" => 1200,
-    "crash_course" => 90_000
+    "crash_course" => 90_000,
+    "7th" => 1_000,
+    "8th" => 2_000,
+    "9th" => 3_000,
+    "10th" => 4_000
   }
   def self.suggest_roll_number(batch_name)
     rns = self.find_by(batch_name: batch_name)

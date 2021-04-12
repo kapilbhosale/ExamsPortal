@@ -64,6 +64,11 @@ class Batch < ApplicationRecord
   def self.get_batches(rcc_branch, course, batch)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
+    return Batch.where(name: '7th-A') if batch == '7th'
+    return Batch.where(name: '8th-A') if batch == '8th'
+    return Batch.where(name: '9th-A') if batch == '9th'
+    return Batch.where(name: '10th-A') if batch == '10th'
+
     if batch == '11th'
       if rcc_branch == "latur"
         return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'

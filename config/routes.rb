@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   root to: 'students/home#index'
 
   get 'new-admission', to: 'students/admissions#show'
+  get 'foundation-admission', to: 'students/admissions#foundation_show'
   get 'admission-done', to: 'students/admissions#admission_done'
   post 'admission-done', to: 'students/admissions#admission_done'
   post 'ADMISSION-DONE', to: 'students/admissions#admission_done'

@@ -242,6 +242,10 @@ class Student < ApplicationRecord
     _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
     _SMS_PASSWORD = "k@lpak@2020"
     _TEMPLATE_ID = "1007674069396942106"
+
+
+
+    # what to send
     @otp = ROTP::TOTP.new(Base32.encode(parent_mobile), {interval: 1.day}).now
     require 'net/http'
     strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL

@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_180620) do
+ActiveRecord::Schema.define(version: 2021_04_08_055612) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -125,6 +126,7 @@ ActiveRecord::Schema.define(version: 2021_03_18_180620) do
     t.integer "org_id", default: 0
     t.integer "batch_group_id"
     t.integer "students_count", default: 0
+    t.integer "disable_count", default: 0
     t.index ["batch_group_id"], name: "index_batches_on_batch_group_id"
     t.index ["org_id"], name: "index_batches_on_org_id"
   end

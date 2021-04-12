@@ -3,7 +3,7 @@ require 'base64'
 require 'razorpay'
 
 class Students::AdmissionsController < ApplicationController
-  layout false, only: [:show, :pay_installment, :create_installment]
+  layout false, only: [:show, :foundation_show, :pay_installment, :create_installment]
   MERCHANT_ID = "3300260987"
   skip_before_action :verify_authenticity_token, only: [:admission_done, :create]
 
@@ -14,6 +14,11 @@ class Students::AdmissionsController < ApplicationController
     redirect_to '/' unless request.subdomain == 'exams'
     @errors = []
     # @url = eazy_pay_url
+  end
+
+  def foundation_show
+    redirect_to '/' unless request.subdomain == 'exams'
+    @errors = []
   end
 
   def pay_installment
@@ -118,11 +123,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
       new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
-      if new_admission.parent_mobile == '7588584810' && new_admission.email == 'kapil@dev.example'
-        new_admission.fees = 10
-      else
-        new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch)
-      end
+      new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch)
 
       if new_admission.save
         new_admission.in_progress!
@@ -174,9 +175,10 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil, new_admission = nil)
-    if new_admission.present? && new_admission&.parent_mobile == '7588584810' && new_admission&.email == 'k@k.dev'
-      return 10
-    end
+    return 10_000 if batch == '7th'
+    return 10_000 if batch == '8th'
+    return 12_000 if batch == '9th'
+    return 12_000 if batch == '10th'
 
     if batch == 'repeater'
       return 12_000 if course.name == "phy"

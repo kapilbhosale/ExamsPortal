@@ -16,23 +16,26 @@ class Students::PaymentsController < ApplicationController
         fees = (fees * 100)
       end
 
-      @order = Razorpay::Order.create(
-        {
-          amount: fees,
-          currency: 'INR',
-          receipt: 'Payment Receipt',
-          notes: {
-            name: @new_admission.name,
-            student_mobile: @new_admission.student_mobile,
-            parent_mobile: @new_admission.parent_mobile,
-            gender: @new_admission.gender,
-            email: @new_admission.email,
-            course_id: @new_admission.course_id,
-            batch: @new_admission.batch,
-            rcc_branch: @new_admission.rcc_branch
-          }
+      if @new_admission&.course&.name == 'foundation'
+        Razorpay.setup(ENV.fetch('F_RZ_KEY_ID'), ENV.fetch('F_RZ_KEY_SECRET'))
+      end
+
+      @order = Razorpay::Order.create({
+        amount: fees,
+        currency: 'INR',
+        receipt: 'Payment Receipt',
+        notes: {
+          name: @new_admission.name,
+          student_mobile: @new_admission.student_mobile,
+          parent_mobile: @new_admission.parent_mobile,
+          gender: @new_admission.gender,
+          email: @new_admission.email,
+          course_id: @new_admission.course_id,
+          batch: @new_admission.batch,
+          rcc_branch: @new_admission.rcc_branch
         }
-      )
+      })
+
       @new_admission.update(rz_order_id: @order.id)
     else
       flash[:error] = "Error in processing your request, please try agian."
