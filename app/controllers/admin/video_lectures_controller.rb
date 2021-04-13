@@ -76,7 +76,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       batches = Batch.where(id: params[:batch_ids])
       vl.batches << batches
 
-      if vl.publish_at <= Time.current
+      if vl.publish_at.present? && vl.publish_at <= Time.current
         vl.send_push_notifications
       end
 
