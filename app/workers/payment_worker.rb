@@ -22,7 +22,7 @@ class PaymentWorker
           pending_fees.save
         end
 
-        batches = Batch.get_batches(new_admission.rcc_branch, new_admission.course, new_admission.batch)
+        batches = Batch.get_batches(new_admission.rcc_branch, new_admission.course, new_admission.batch, new_admission)
         student.new_admission_id = new_admission.id
         student.save
         if batches.present?

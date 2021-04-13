@@ -61,16 +61,30 @@
           <input type="text" value="<%= @student&.id %>" class="form-control" name="student_id">
         </div>
 
+        <div class="form-group" style="text-align: center; background-color: #ffd452; padding: 10px; border-radius: 10px">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label">Course Type: </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="course_type" id="radio-neet" value="neet" required checked />
+            <label class="form-check-label">NEET</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="course_type" id="radio-jee" value="jee" required />
+            <label class="form-check-label">JEE</label>
+          </div>
+        </div>
+
         <div class="form-group" style="text-align: center; background-color:rgb(201, 201, 201); padding: 10px;">
           <div class="form-check form-check-inline">
             <label class="form-check-label" for="a">RCC Branch: </label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-latur" value="latur" required>
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-latur" value="latur" required checked />
             <label class="form-check-label" for="inlineRadio1">Latur</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-nanded" value="nanded" required>
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-nanded" value="nanded" required />
             <label class="form-check-label" for="inlineRadio2">Nanded</label>
           </div>
         </div>

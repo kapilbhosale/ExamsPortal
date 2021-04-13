@@ -119,6 +119,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.student_mobile = new_admission_params[:student_mobile]
       new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
       new_admission.rcc_branch = NewAdmission.rcc_branches[new_admission_params[:rcc_branch]]
+      new_admission.course_type = NewAdmission.course_types[new_admission_params[:course_type]]
       new_admission.course_id = course.id
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
@@ -267,7 +268,7 @@ class Students::AdmissionsController < ApplicationController
               pending_fees.save
             end
 
-            batches = Batch.get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch)
+            batches = Batch.get_batches(@new_admission.rcc_branch, @new_admission.course, @new_admission.batch, @new_admission)
             student.new_admission_id = @new_admission.id
             student.save
 
@@ -380,7 +381,7 @@ class Students::AdmissionsController < ApplicationController
     end
 
     def new_admission_params
-      params.permit(:name, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, :prev_receipt_number, course: [])
+      params.permit(:name, :course_type, :email, :parent_mobile, :student_mobile, :batch, :gender, :rcc_branch, :student_id, :prev_receipt_number, course: [])
     end
 
     def error_info

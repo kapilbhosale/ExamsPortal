@@ -6,6 +6,7 @@
 #  address               :text
 #  batch                 :integer          default(NULL)
 #  city                  :string
+#  course_type           :integer          default(0)
 #  district              :string
 #  email                 :string
 #  error_code            :string
@@ -67,8 +68,8 @@ class NewAdmission < ApplicationRecord
     '9th': 103,
     '10th': 104
   }
-
-  enum rcc_branch: {latur: 0, nanded: 1}
+  enum course_type: { neet: 0, jee: 1 }
+  enum rcc_branch: { latur: 0, nanded: 1 }
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 

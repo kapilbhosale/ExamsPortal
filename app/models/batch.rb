@@ -61,8 +61,29 @@ class Batch < ApplicationRecord
     save
   end
 
-  def self.get_batches(rcc_branch, course, batch)
+  def self.get_jee_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    batch_name = rcc_branch == "latur" ?
+      "Ltr-JEE-#{course.name.upcase}-2021" :
+      "Ned-JEE-#{course.name.upcase}-2021"
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      admin = Admin.where(org_id: org.id).first
+      batch_group = BatchGroup.find_or_create_by(name: "JEE-#{batch}-#{rcc_branch}-2021-2022", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
+  def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
+
+    if na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
+      return get_jee_batches(rcc_branch, course, batch, na)
+    end
 
     return Batch.where(name: '7th-A') if batch == '7th'
     return Batch.where(name: '8th-A') if batch == '8th'
@@ -115,18 +136,6 @@ class Batch < ApplicationRecord
         "New12-Ned-#{course.name.upcase}-2021-2022"
       Batch.find_or_create_by(org_id: org.id, name: batch_name)
       Batch.where(org_id: org.id, name: batch_name)
-      # # Code to create batches
-      #  courses = ["phy", "chem", "bio", "pcb", "pc", "pb", "cb"]
-      #  admin = Admin.first
-      #  org = Org.first
-      #  ['Ltr', 'Ned'].each do |center|
-      #   courses.each do |course|
-      #     batch_name = "#{center}-CC-#{course.upcase}-2021"
-      #     batch = Batch.find_or_create_by(org_id: org.id, name: batch_name)
-      #     AdminBatch.find_or_create_by(admin_id: admin.id, batch_id: batch.id)
-      #   end
-      #  end
-      # #  code ends here
     end
   end
 end

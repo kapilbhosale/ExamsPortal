@@ -132,7 +132,7 @@ class Student < ApplicationRecord
 
   def self.add_student(na)
     org = Org.first
-    batches = Batch.get_batches(na.rcc_branch, na.course, na.batch)
+    batches = Batch.get_batches(na.rcc_branch, na.course, na.batch, na)
 
     suggested_rn = RollNumberSuggestor.suggest_roll_number(na.batch)
     roll_number = suggested_rn
