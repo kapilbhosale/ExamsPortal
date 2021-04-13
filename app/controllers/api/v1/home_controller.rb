@@ -25,19 +25,20 @@ class Api::V1::HomeController < Api::V1::ApiController
     banners_data = []
     return current_org.data['top_banners'] unless current_org.subdomain == 'exams'
 
+    if current_student.pending_amount.present?
+      banners_data <<
+        {
+          "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.jpg",
+          "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
+        }
+    end
+
     if (current_student.batches&.ids & [192, 196, 197, 198]).present?
       banners_data << {
         "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_foundation.png",
         "on_click"=>"https://rccpattern.com"
       }
     else
-      if current_student.pending_amount.present?
-        banners_data <<
-          {
-            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.jpg",
-            "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
-          }
-      end
       banners_data <<
         {
           "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-banner-29-march.jpg",
