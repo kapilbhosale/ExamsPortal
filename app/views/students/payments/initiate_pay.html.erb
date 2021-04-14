@@ -25,9 +25,28 @@
         <tr>
           <td>RCC Branch: </td><td><%= @new_admission&.rcc_branch %></td>
         </tr>
-        <tr>
-          <td>Payable Amount: </td><td><h4>₹<%= @new_admission&.fees %></h4></td>
-        </tr>
+        <% if @new_admission&.course&.name == 'foundation' %>
+          <% total_fees = {
+            '7th' => 26_000,
+            '8th' => 27_000,
+            '9th' =>  28_000,
+            '10th' => 29_000,
+          } %>
+
+          <tr>
+            <td>Installment: </td><td><h4><%= number_to_currency(@new_admission&.fees, unit: "₹") %></h4></td>
+          </tr>
+          <tr>
+            <td>Total Fees: </td><td><b><%= number_to_currency(total_fees[@new_admission&.batch], unit: "₹") %></b></td>
+          </tr>
+          <tr>
+            <td>Next Payable: </td><td><b><%= number_to_currency(total_fees[@new_admission&.batch] - @new_admission&.fees, unit: "₹") %></b></td>
+          </tr>
+        <% else %>
+          <tr>
+            <td>Payable Amount: </td><td><h4><%= number_to_currency(@new_admission&.fees, unit: "₹")%></h4></td>
+          </tr>
+        <% end %>
       </table>
       <div id="loading-container" style="text-align: center;" class="hidden">
         <i class="fa fa-4x fa-refresh fa-spin"></i>

@@ -60,5 +60,7 @@ class PaymentWorker
         ) rescue nil
       end
     end
+
+    Batch.re_count_students_all_batches
   end
 end
