@@ -38,6 +38,13 @@ class Api::V1::HomeController < Api::V1::ApiController
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
           }
       end
+      if (current_student.batches&.ids & [173,174,175,176,177,178,179,180,181,182,183,184,185,186]).present?
+        banners_data <<
+          {
+            'img_url' => 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_dispatch_2.png',
+            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScDKOfqKtmJdjs8xKTRQ46zD--BywQNFylrt4dynvq63M6kww/viewform'
+          }
+      end
       banners_data <<
         {
           "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-banner-29-march.jpg",
