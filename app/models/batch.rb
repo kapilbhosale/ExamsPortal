@@ -78,6 +78,23 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_11th_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    batch_name = rcc_branch == "latur" ?
+      "Ltr-11-foundation-#{course.name.upcase}-2021" :
+      "Ned-11-foundation-#{course.name.upcase}-2021"
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      admin = Admin.where(org_id: org.id).first
+      batch_group = BatchGroup.find_or_create_by(name: "JEE-#{batch}-#{rcc_branch}-2021-2022", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
@@ -91,23 +108,7 @@ class Batch < ApplicationRecord
     return Batch.where(name: '10th-A') if batch == '10th'
 
     if batch == '11th'
-      if rcc_branch == "latur"
-        return Batch.where(name: 'B-2_Latur_11th_PCB_2020') if course.name == 'pcb'
-        return Batch.where(name: 'B-2_Latur_11th_Phy_2020') if course.name == 'phy'
-        return Batch.where(name: 'B-2_Latur_11th_Chem_2020') if course.name == 'chem'
-        return Batch.where(name: 'B-2_Latur_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: 'B-2_Latur_11th_PC_2020') if course.name == 'pc'
-        return Batch.where(name: 'B-2_Latur_11th_PB_2020') if course.name == 'pb'
-        return Batch.where(name: 'B-2_Latur_11th_CB_2020') if course.name == 'cb'
-      else
-        return Batch.where(name: 'B-2_Nanded_11th_PCB_2020') if course.name == 'pcb'
-        return Batch.where(name: 'B-2_Nanded_11th_Phy_2020') if course.name == 'phy'
-        return Batch.where(name: 'B-2_Nanded_11th_Chem_2020') if course.name == 'chem'
-        return Batch.where(name: 'B-2_Nanded_11th_Bio_2020') if course.name == 'bio'
-        return Batch.where(name: 'B-2_Nanded_11th_PC_2020') if course.name == 'pc'
-        return Batch.where(name: 'B-2_Nanded_11th_PB_2020') if course.name == 'pb'
-        return Batch.where(name: 'B-2_Nanded_11th_CB_2020') if course.name == 'cb'
-      end
+      get_11th_batches(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       org = Org.first
       batch_name = rcc_branch == "latur" ?

@@ -14,7 +14,7 @@
 class RollNumberSuggestor < ApplicationRecord
 
   INITIAL_VALS = {
-    "11th" => 80_000,
+    "11th" => 40_000,
     "12th" => 60_000,
     "repeater" => 10_000,
     "test_series" => 1200,
