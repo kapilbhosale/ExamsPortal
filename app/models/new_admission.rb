@@ -6,13 +6,14 @@
 #  address               :text
 #  batch                 :integer          default(NULL)
 #  city                  :string
-#  course_type           :integer          default(0)
+#  course_type           :integer          default("neet")
 #  district              :string
 #  email                 :string
 #  error_code            :string
 #  error_info            :string
 #  fees                  :decimal(, )      default(0.0)
 #  first_name            :string
+#  free                  :boolean          default(FALSE)
 #  gender                :integer          default(NULL)
 #  last_exam_percentage  :string
 #  last_name             :string

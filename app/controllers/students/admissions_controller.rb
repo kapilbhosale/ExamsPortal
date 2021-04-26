@@ -127,6 +127,13 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch)
 
       if new_admission.save
+        if new_admission.batch == '11th'
+          new_admission.free = true
+          new_admission.in_progress!
+          new_admission.save
+          redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
+        end
+
         new_admission.in_progress!
         if PAYMENT_MODE == 'razor-pay'
           # when we use razorpay
@@ -233,6 +240,26 @@ class Students::AdmissionsController < ApplicationController
       return 12_000 if course.name == "cb"
     end
     course.fees
+  end
+
+  def admission_done_set
+    @new_admission = NewAdmission.in_progress.find_by(reference_id: params[:id])
+    @errors = []
+    if @new_admission.present?
+      @new_admission.success!
+
+      student = Student.add_student(@new_admission) rescue nil
+      if student.blank?
+        flash[:errors] = "Error 101, please try agian later"
+        @errors << "Error 101, please try agian later"
+      else
+        @student = student
+        student.new_admission_id = @new_admission.id
+        student.save
+      end
+    else
+      @errors << "Error 101, please try agian later"
+    end
   end
 
   def admission_done

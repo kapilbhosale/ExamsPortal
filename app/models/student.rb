@@ -134,7 +134,7 @@ class Student < ApplicationRecord
     org = Org.first
     batches = Batch.get_batches(na.rcc_branch, na.course, na.batch, na)
 
-    suggested_rn = RollNumberSuggestor.suggest_roll_number(na.batch)
+    suggested_rn = RollNumberSuggestor.suggest_roll_number(na.batch, na)
     roll_number = suggested_rn
 
     email = "#{roll_number}-#{na.id}-#{na.parent_mobile}@rcc.com"
@@ -243,15 +243,13 @@ class Student < ApplicationRecord
     _SMS_PASSWORD = "k@lpak@2020"
     _TEMPLATE_ID = "1007674069396942106"
 
-
-
     # what to send
     @otp = ROTP::TOTP.new(Base32.encode(parent_mobile), {interval: 1.day}).now
     require 'net/http'
     strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
     strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
     uri = URI(strUrl)
-    puts Net::HTTP.get(uri)
+    # puts Net::HTTP.get(uri)
   end
 
   def otp_sms_text(otp)

@@ -7,7 +7,13 @@
     </a>
   <% end %>
 </div>
-<div class="tabbable-panel">
+<div class="tabbable-panel" style="position: relative;">
+  <a href="<%= students_progress_report_path %>">
+    <div style="position: absolute; right: 0; top:0; padding: 5px 10px; margin-top: 5px; background-color: red; border-radius: 15px">
+      <i class="far fa-chart-bar" style="color: white"></i>
+      <span style="color:white">Progress</span>
+    </div>
+  </a>
   <div class="tabbable-line">
     <ul class="nav nav-tabs ">
       <li class="active">
@@ -24,8 +30,8 @@
     <div class="tab-content">
       <div class="tab-pane active" id="new_exams">
         <% if @new_exams.size == 0 %>
-          <div class="well"> 
-            No New exams available for your batch right now. 
+          <div class="well">
+            No New exams available for your batch right now.
             Check Previous exams.
           </div>
         <% else %>

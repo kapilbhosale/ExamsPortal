@@ -25,6 +25,39 @@
           });
         }
       }
+
+      $(document).ready(function() {
+        function adjustUI() {
+          var courseType = $('input[name=course_type]:checked').val();
+          if($('#batch').find(":selected").val() === '11th') {
+            if(courseType === 'neet') {
+              $('input[value=phy]').prop('checked', true);
+              $('input[value=chem]').prop('checked', true);
+              $('input[value=bio]').prop('checked', true);
+              $('input[value=pcb]').prop('checked', true);
+            } else {
+              $('input[value=phy]').prop('checked', true);
+              $('input[value=chem]').prop('checked', true);
+              $('input[value=bio]').prop('checked', false);
+              $('input[value=pcb]').prop('checked', false);
+            }
+            $('input[name="course[]"]').css("pointer-events","none");
+            $('#foundation-help-text').show();
+          } else {
+            $('input[value=phy]').prop('checked', false);
+            $('input[value=chem]').prop('checked', false);
+            $('input[value=bio]').prop('checked', false);
+            $('input[value=pcb]').prop('checked', false);
+            $('input[name="course[]"]').css("pointer-events","all");
+            $('#foundation-help-text').hide();
+          }
+        }
+
+        $('#batch').on('change', adjustUI);
+        $('input[name=course_type]').on('change', adjustUI);
+        $('#batch').trigger("change");
+      });
+
     </script>
 
   </head>
@@ -140,7 +173,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option value="11th">11th Foundation Course 2021</option>
+                <option value="11th" selected >11th Foundation (RCC-SET-2021)</option>
                 <option value="12th">12th-new-2021-2022</option>
                 <option value="repeater">Repeater</option>
                 <option value="test_series">Test Series</option>
@@ -155,7 +188,7 @@
             <% if @student.present? %>
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
-              <p style="color: gray;">Course Selection: </p>
+              <p style="color: gray;">Course Selection: <span id="foundation-help-text" style="color: green; font-size: 10px">[11 Foundation (RCC-SET-2021) is for all subjects]</span></p>
             <% end %>
           </div>
           <div class="form-group" style="text-align: center;">

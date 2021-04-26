@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   post 'admission-done', to: 'students/admissions#admission_done'
   post 'ADMISSION-DONE', to: 'students/admissions#admission_done'
   get 'ADMISSION-DONE', to: 'students/admissions#admission_done'
+  get 'admission-done-set/:id', to: 'students/admissions#admission_done_set', as: :rcc_set_path
 
   # added for razorpay
   get 'initiate_pay', to: 'students/payments#initiate_pay', as: :initiate_pay
@@ -178,6 +179,10 @@ Rails.application.routes.draw do
       resources :students, only: [:index] do
         post 'login', on: :collection
       end
+      resources :notifications, only: [:index] do
+        get :filter_types, on: :collection
+      end
+      resources :exams
     end
   end
 end

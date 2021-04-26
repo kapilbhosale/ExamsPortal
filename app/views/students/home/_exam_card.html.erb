@@ -8,18 +8,22 @@
 }
 </style>
 <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12" style="padding: 10px">
-  <div class="card" style="border-radius: 10px; height: 210px">
+  <div class="card" style="border-radius: 10px; height: 250px">
     <div style="padding: 4px 0px">
     <%# style="padding-bottom:10px; border-bottom: 1px solid #d8d8d8;" %>
       <div class="col-md-12" style="padding-bottom:10px;">
         <table>
           <tr>
             <td><%= image_tag 'exam-logo.jpg', width: 60%></td>
-            <td style="padding-left: 10px"><span style="color: #134790; font-size: medium;"><%= exam.name %></span></td>
+            <td style="padding-left: 10px">
+              <span style="color: #134790; font-size: medium; height: 48px; text-overflow: ellipsis; overflow: hidden; display: inline-block;"">
+                <%= exam.name %>
+              </span>
+            </td>
           </tr>
         </table>
       </div>
-      <div class="col-md-12" style="padding: 2px 10px; text-align: right">
+      <div class="col-md-12" style="padding: 2px 10px; text-align: right; height: 48px; text-overflow: ellipsis; overflow: hidden; display: inline-block;">
         <%= exam.description %>
       </div>
       <div class="col-md-12" style="padding: 2px 10px;">
