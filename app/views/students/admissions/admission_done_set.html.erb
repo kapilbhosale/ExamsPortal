@@ -1,31 +1,41 @@
 <div style="text-align: center;">
   <div>
     <%= image_tag 'success', height: '120px' %>
-    <h3 style="color: green;">
-      Congratulations, Your Application is processed Successfully.
-    </h3>
-    <p>
-      RCC team will Activate Your account.
-      Please write down the Reference Number for futher communication.
-    </p>
-    <p style="color: green;">
-      Also, take screenshot for reference.
-      Your login details are sent via SMS as well.
-    </p>
-    <table class="table" style="text-align: left;">
-      <tr>
-        <td>status: </td>
-        <td>Success</td>
-      </tr>
-      <tr>
-        <td>Roll Number </td>
-        <td><%= @student&.roll_number %></td>
-      </tr>
-      <tr>
-        <td>Parent Mobile </td>
-        <td><%= @student&.parent_mobile %></td>
-      </tr>
-    </table>
+    <% if @errors.blank? %>
+      <h3 style="color: green;">
+        Congratulations, Your Application is processed Successfully.
+      </h3>
+      <p>
+        RCC team will Activate Your account.
+        Please write down the Reference Number for futher communication.
+      </p>
+      <p style="color: green;">
+        Also, take screenshot for reference.
+        Your login details are sent via SMS as well.
+      </p>
+      <table class="table" style="text-align: left;">
+        <tr>
+          <td>status: </td>
+          <td>Success</td>
+        </tr>
+        <tr>
+          <td>Roll Number </td>
+          <td><%= @student&.roll_number %></td>
+        </tr>
+        <tr>
+          <td>Parent Mobile </td>
+          <td><%= @student&.parent_mobile %></td>
+        </tr>
+        <tr>
+          <td>Batch(es)</td>
+          <td><%= @student&.batches&.pluck(:name).join(', ') rescue nil %></td>
+        </tr>
+      </table>
+    <% else %>
+      <h3 style="color: red;">
+        Something Went wrong, code 101. Please try agian.
+      </h3>
+    <% end %>
   </div>
 
   <p style="color: peru; padding-top: 20px;">

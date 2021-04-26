@@ -112,6 +112,17 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
+      if new_admission_params[:batch] == '11th'
+        new_admission = NewAdmission.where(
+          parent_mobile: new_admission_params[:parent_mobile],
+          student_mobile: new_admission_params[:student_mobile],
+          free: true
+        )&.last
+        if new_admission.present?
+          redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
+        end
+      end
+
       new_admission = NewAdmission.new
       new_admission.name = new_admission_params[:name]
       new_admission.email = new_admission_params[:email]
@@ -243,12 +254,20 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def admission_done_set
-    @new_admission = NewAdmission.in_progress.find_by(reference_id: params[:id])
+    @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
     if @new_admission.present?
       @new_admission.success!
 
-      student = Student.add_student(@new_admission) rescue nil
+      student = Student.find_by(
+        parent_mobile: @new_admission.parent_mobile,
+        student_mobile: @new_admission.student_mobile
+      )
+
+      if student.blank?
+        student = Student.add_student(@new_admission) rescue nil
+      end
+
       if student.blank?
         flash[:errors] = "Error 101, please try agian later"
         @errors << "Error 101, please try agian later"

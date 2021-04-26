@@ -81,14 +81,21 @@ class Batch < ApplicationRecord
   def self.get_11th_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
+    if na&.jee?
     batch_name = rcc_branch == "latur" ?
+      "Ltr-11-foundation-JEE-#{course.name.upcase}-2021" :
+      "Ned-11-foundation-JEE-#{course.name.upcase}-2021"
+    else
+      batch_name = rcc_branch == "latur" ?
       "Ltr-11-foundation-#{course.name.upcase}-2021" :
       "Ned-11-foundation-#{course.name.upcase}-2021"
+    end
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
       admin = Admin.where(org_id: org.id).first
-      batch_group = BatchGroup.find_or_create_by(name: "JEE-#{batch}-#{rcc_branch}-2021-2022", org_id: org.id)
+      group_name = na&.jee? ? "FOUNDATION-JEE-#{batch}-#{rcc_branch}-2021-2022" : "FOUNDATION-#{batch}-#{rcc_branch}-2021-2022"
+      batch_group = BatchGroup.find_or_create_by(name: group_name, org_id: org.id)
       _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
       AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
     end
@@ -98,14 +105,14 @@ class Batch < ApplicationRecord
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
-    if na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
-      return get_jee_batches(rcc_branch, course, batch, na)
-    end
-
     return Batch.where(name: '7th-A') if batch == '7th'
     return Batch.where(name: '8th-A') if batch == '8th'
     return Batch.where(name: '9th-A') if batch == '9th'
     return Batch.where(name: '10th-A') if batch == '10th'
+
+    if batch != '11th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
+      return get_jee_batches(rcc_branch, course, batch, na)
+    end
 
     if batch == '11th'
       get_11th_batches(rcc_branch, course, batch, na)
