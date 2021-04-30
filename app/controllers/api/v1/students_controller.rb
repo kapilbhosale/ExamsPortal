@@ -46,7 +46,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
     if request.subdomain == 'bhargav'
       student.reset_apps
-      student.generate_and_send_otp
+      @otp = student.generate_and_send_otp
     end
     sign_in(student)
     student.update(

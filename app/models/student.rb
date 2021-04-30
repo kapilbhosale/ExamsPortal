@@ -250,6 +250,7 @@ class Student < ApplicationRecord
     strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
     uri = URI(strUrl)
     puts Net::HTTP.get(uri)
+    return @otp
   end
 
   def otp_sms_text(otp)
