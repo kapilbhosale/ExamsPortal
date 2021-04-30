@@ -17,10 +17,6 @@ class Admin::Api::ApiController < ApplicationController
     end
   end
 
-  def bhargav_admin
-    Admin.where(org_id: 7).last
-  end
-
   def render_unauthorized
     self.headers['WWW-Authenticate'] = 'Token realm="Application"'
     render json: { message:"Authorization failed" }, status: :unauthorized

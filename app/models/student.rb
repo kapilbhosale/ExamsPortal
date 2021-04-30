@@ -249,7 +249,7 @@ class Student < ApplicationRecord
     strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
     strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
     uri = URI(strUrl)
-    # puts Net::HTTP.get(uri)
+    puts Net::HTTP.get(uri)
   end
 
   def otp_sms_text(otp)
