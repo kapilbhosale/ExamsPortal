@@ -1,0 +1,82 @@
+<div class="container">
+  <h5 class="text-center"> Please check details and pay</h5>
+
+  <div style="text-align: center;">
+    <div>
+      <table class="table" style="text-align: left;">
+        <tr>
+          <td>Name: </td><td><%= @student.name %></td>
+        </tr>
+        <tr>
+          <td>Student mobile: </td><td><%= @student&.student_mobile %></td>
+        </tr>
+        <tr>
+          <td>Parent mobile: </td><td><%= @student&.parent_mobile %></td>
+        </tr>
+        <tr>
+          <td>Batches: </td><td><%= @batch.name %></td>
+        </tr>
+        <tr>
+          <td>You are paying: </td><td><h4><%= number_to_currency(@student_payment.amount, unit: "₹") %></h4></td>
+        </tr>
+        <tr>
+          <td>Total Fees: </td><td><b><%= number_to_currency(@payment_link&.amount, unit: "₹") %></b></td>
+        </tr>
+        <tr>
+          <td>Next Payable: </td><td><b><%= number_to_currency( @payment_link&.amount - @student_payment.amount, unit: "₹") %></b></td>
+        </tr>
+      </table>
+      <div id="loading-container" style="text-align: center;" class="hidden">
+        <i class="fa fa-4x fa-refresh fa-spin"></i>
+        <h3>Wait... Processing Payment.</h3>
+        <p>It may take some time, please do not refresh or go back.</p>
+      </div>
+
+      <div style="text-align: center;">
+        <p>I acknowledge, all the details are correct. I want to pay further.</p>
+          <button class="btn btn-info" id="rzp-button1"><i class="fa fa-inr"></i> Proceed to Pay </button>
+      </div>
+    </div>
+    <hr>
+    <button id="btn-goback" onclick="goBack()" class="btn"><i class="fa fa-info"></i> Go Back </button>
+    <p style="color: red; padding-top: 10px;">
+      Warning: Do not press back button or go back to payment page.
+      Close browser or app after you download pdf receipt.
+    </p>
+  </div>
+</div>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+</script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = {
+      "key": "<%= ENV.fetch('RZ_KEY_ID') %>", // Enter the Key ID generated from the Dashboard
+      "amount": "50000", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "",
+      "description": "<%= "#{@student.name}" %>",
+      "order_id": "<%= @order.id %>",
+      "callback_url": "<%= @org.data.dig('pay-callback-url')%>",
+      "prefill": {
+          "name": "<%= @student.name %>",
+          "email": "<%= @student.email %>",
+          "contact": "<%= @student.parent_mobile %>",
+          "remember_card": false,
+      },
+  };
+  var rzp1 = new Razorpay(options);
+  document.getElementById('rzp-button1').onclick = function(e){
+
+    this.classList.add("hidden");
+    document.getElementById('btn-goback').classList.add("hidden");
+    document.getElementById('loading-container').classList.remove("hidden")
+
+    rzp1.open();
+    e.preventDefault();
+  }
+</script>

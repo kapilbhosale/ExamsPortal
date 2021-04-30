@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Admission form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function() {
+      });
+    </script>
+  </head>
+  <style>
+  .bg {
+    height: 100px;
+    background-color: white;
+    background-image:
+      radial-gradient(
+        #73b6fa,
+        #5bdbf5
+      );
+  }
+  </style>
+
+  <body class="bg">
+    <div class="bg container" style="padding: 20px; background-color: white;">
+      <% logo_props = get_logo(request.subdomain) %>
+      <div class="row" style="text-align: center; border-bottom: 1px solid lightgray; padding-bottom: 1px;">
+        <div class="text-center" style="padding-left: 40px;">
+          <%= image_tag logo_props[:logo], width: 100, height: 50 %>
+        </div>
+      </div>
+      <div style="text-align: center;  padding-top: 20px; padding-left: 20px;">
+        <p class="pull-right" style="font-size: large;"> <span style="color: red"><%= get_header_name(request.subdomain) %></span> | Admission form / Payments page</p>
+      </div>
+      <div style="text-align: center; color: lightgray;">
+        <p>Please fill all the details</p>
+      </div>
+      <% if @errors.present? %>
+        <div style="color: red;">
+          <ul>
+            <% @errors.each do |error| %>
+              <li>
+                <%= error %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <% disable_field = false %>
+
+      <%= form_tag pay_path_url, method: :post, class: 'needs-validation form-horizontal' do %>
+        <input type="hidden" name="id" value="<%= @payment_link.id %>">
+        <div class="form-group">
+          <input type="text" class="form-control" id="name" placeholder="First middle Last Name" name="name" required <%= disable_field ? 'readonly': '' %>>
+        </div>
+        <div class="form-group">
+          <input type="number" value="<%= @student&.parent_mobile %>" class="form-control" id="parent_mobile"  maxlength="10" placeholder="Parent Mobile" name="parent_mobile" required <%= disable_field ? 'readonly': '' %>>
+          <div class="valid-feedback">Valid.</div>
+          <div class="invalid-feedback">Please enter Parent Mobile.</div>
+        </div>
+        <div class="form-group">
+          <input type="number" value="<%= @student&.student_mobile.present? ? @student&.student_mobile : @student&.parent_mobile %>" class="form-control" id="student_mobile" maxlength="10" placeholder="Student Mobile" name="student_mobile" required <%= disable_field && @student.student_mobile.present? ? 'readonly': '' %>>
+          <div class="valid-feedback">Valid.</div>
+          <div class="invalid-feedback">Please enter Student Mobile.</div>
+        </div>
+
+        <div class="form-group" style="text-align: center; background-color:rgb(239, 239, 239);">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label" for="a">Gender: </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" checked>
+            <label class="form-check-label" for="inlineRadio1">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female">
+            <label class="form-check-label" for="inlineRadio2">Female</label>
+          </div>
+        </div>
+        <div>
+          <div>
+            <% if @student.present? %>
+              <p style="color: gray;">Your Existing Batch: </p>
+            <% else %>
+              <p style="color: gray;">Batch Selection: </p>
+            <% end %>
+          </div>
+          <div class="form-group">
+            <select id="batch" class="form-control" name="batch">
+              <% (@payment_link.batches || []).each do |batch| %>
+                <option value="<%= batch.id %>"><%= batch.name %></option>
+              <% end %>
+            </select>
+          </div>
+        </div>
+
+        <div style="background-color:azure; padding: 10px">
+          <table style="width: 100%">
+            <tr>
+              <td>
+                <p style="color: gray;">Total Fees:</p>
+              </td>
+              <td>
+                <h6><%= number_to_currency(@payment_link.amount, unit: "₹") %></h6>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p style="color: gray;">Amount You Are Paying :</p>
+              </td>
+              <td style="padding-right: 50px;">
+                <input type="number" class="form-control" id="amount"  maxlength="10" placeholder="Amount" name="amount" min="<%= @payment_link.min_payable_amount %>" max="<%= @payment_link.amount %>" required>
+              </td>
+              <td style="padding-left: 30px;">
+                <div style="display: none" id="pay-error">..You Must pay atleast <span class="text-danger" style="font-size:20px"><%= number_to_currency(@payment_link.min_payable_amount, unit: "₹") %></span></div>
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="form-group form-check" style="background-color: rgb(240, 202, 202); padding: 10px 10px 10px 30px;">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember" required>
+              I agree, to proceed my online admission.
+            <div class="valid-feedback">Valid.</div>
+            <div class="invalid-feedback">Check this checkbox to continue.</div>
+          </label>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-warning">Submit</button>
+        </div>
+
+        <div class="text-center" style="padding-top: 20px;">
+          <p style="color: gray; font-size: small;">* Please complete payment, your admission will be confirmed once the payment is processed by the Bank.</p>
+        </div>
+      <% end %>
+    </div>
+  </body>
+</html>>

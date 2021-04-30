@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_08_055612) do
+ActiveRecord::Schema.define(version: 2021_04_30_071708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -80,6 +80,15 @@ ActiveRecord::Schema.define(version: 2021_04_08_055612) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["org_id"], name: "index_batch_groups_on_org_id"
+  end
+
+  create_table "batch_micro_payments", force: :cascade do |t|
+    t.bigint "micro_payment_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_batch_micro_payments_on_batch_id"
+    t.index ["micro_payment_id"], name: "index_batch_micro_payments_on_micro_payment_id"
   end
 
   create_table "batch_notifications", force: :cascade do |t|
@@ -238,6 +247,18 @@ ActiveRecord::Schema.define(version: 2021_04_08_055612) do
     t.index ["messageable_type", "messageable_id"], name: "index_messages_on_messageable_type_and_messageable_id"
   end
 
+  create_table "micro_payments", force: :cascade do |t|
+    t.string "link", null: false
+    t.decimal "amount"
+    t.decimal "min_payable_amount"
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "active", default: true
+    t.index ["link"], name: "index_micro_payments_on_link", unique: true
+    t.index ["org_id"], name: "index_micro_payments_on_org_id"
+  end
+
   create_table "new_admissions", force: :cascade do |t|
     t.string "first_name"
     t.string "middle_name"
@@ -267,6 +288,8 @@ ActiveRecord::Schema.define(version: 2021_04_08_055612) do
     t.text "prev_receipt_number"
     t.string "rz_order_id"
     t.decimal "fees", default: "0.0"
+    t.integer "course_type", default: 0
+    t.boolean "free", default: false
     t.index ["course_id"], name: "index_new_admissions_on_course_id"
     t.index ["payment_id"], name: "index_new_admissions_on_payment_id"
     t.index ["reference_id"], name: "index_new_admissions_on_reference_id"
@@ -279,6 +302,9 @@ ActiveRecord::Schema.define(version: 2021_04_08_055612) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "notif_types", default: 0
+    t.string "attachment_pdf"
+    t.string "attachment_image"
     t.index ["org_id"], name: "index_notifications_on_org_id"
   end
 
@@ -457,6 +483,19 @@ ActiveRecord::Schema.define(version: 2021_04_08_055612) do
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_student_exams_on_exam_id"
     t.index ["student_id"], name: "index_student_exams_on_student_id"
+  end
+
+  create_table "student_payments", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "micro_payment_id"
+    t.string "rz_order_id"
+    t.decimal "amount"
+    t.integer "status", default: 0
+    t.jsonb "raw_data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["micro_payment_id"], name: "index_student_payments_on_micro_payment_id"
+    t.index ["student_id"], name: "index_student_payments_on_student_id"
   end
 
   create_table "student_video_folders", force: :cascade do |t|

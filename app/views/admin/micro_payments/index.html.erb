@@ -1,0 +1,93 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-10">
+          <h5 class="pt-3">Payment Links</h5>
+        </div>
+        <div class="col-md-1 text-right">
+          <%= link_to 'New Payment Link', new_admin_micro_payment_path, method: :get, class: "btn btn-info btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @payment_links.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Link</th>
+                  <th>Batches</th>
+                  <th>Amount</th>
+                  <th>Min Amount</th>
+                  <th>Amount Received</th>
+                  <th>Students Count</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @payment_links.each do |payment_link| %>
+                  <tr>
+                    <td><%= payment_link.id %></td>
+                    <td id="payment-link">
+                      <%= payment_link.link %>
+                    </td>
+                    <td>
+                      <span style="font-size: 10px; color: darkgreen">
+                        <ul>
+                          <% payment_link.batches.order(:id).pluck(:name).each do |name| %>
+                            <li><%= name %></li>
+                          <% end %>
+                        </ul>
+                      </span>
+                    </td>
+
+                    <td><%= number_to_currency(payment_link.amount, unit: "₹")  %></td>
+                    <td><%= number_to_currency(payment_link.min_payable_amount, unit: "₹") %></td>
+                    <td><%= @amount_by_link_id[payment_link.id].to_f %></td>
+                    <td><%= @count_by_link_id[payment_link.id] %></td>
+                    <td>
+                      <% if payment_link.active %>
+                        <span class="badge badge-success">Active</span>
+                      <% else %>
+                        <span class="badge badge-secondary">Inactive</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= link_to 'Details', admin_micro_payment_path(payment_link), method: :get, class: "btn btn-outline-primary btn-sm" %>
+                      <button class="btn btn-outline-warning btn-sm copy-link-btn" data-link="<%= payment_link.link %>">Copy Link</button>
+                      <%= link_to 'Deactivate', admin_micro_payment_path(payment_link), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <%= paginate @payment_links %>
+          <% else %>
+            <div class="alert alert-info">No Payment Links added, please add one.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $(".copy-link-btn").on("click", function(){
+      var link = this.getAttribute('data-link');
+      var el = document.createElement('textarea');
+      el.value = window.location.origin + "/pay/" + link;
+      el.setAttribute('readonly', '');
+      el.style.position = 'absolute';
+      el.style.left = '-9999px';
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      alert("Link copied to Clipboard - " + window.location.origin + "/pay/" +  link);
+    });
+  });
+</script>
+

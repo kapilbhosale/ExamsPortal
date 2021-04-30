@@ -84,7 +84,13 @@
             </li>
           <% end %>
           <li class="nav-item">
-            <%= link_to '<i class="fa fa-users"></i> Admin Users'.html_safe, admin_users_path, class: current_page?(admin_users_path) ? "nav-link active" : "nav-link" %>
+            <a class="<%= current_page?(admin_android_apps_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
+              <i class="fas fa-tools"></i> Administration
+            </a>
+            <div class="dropdown-menu">
+              <%= link_to '<i class="fa fa-users"></i> Admin Users'.html_safe, admin_users_path, class: "dropdown-item"%>
+              <%= link_to '<i class="fas fa-rupee-sign"></i> Payments'.html_safe, admin_micro_payments_path, class: "dropdown-item"%>
+            </div>
           </li>
         </ul>
       </div>

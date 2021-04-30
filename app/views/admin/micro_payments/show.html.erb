@@ -1,0 +1,51 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-10">
+          <h5 class="pt-3">Payment Received</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @student_payments.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Student Id</th>
+                  <th>Name</th>
+                  <th>Batch</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @student_payments.each do |student_payment| %>
+                  <tr>
+                    <td><%= student_payment.student&.id %></td>
+                    <td><%= student_payment.student&.name %></td>
+                    <td>
+                      <span style="font-size: 10px; color: darkgreen">
+                        <ul>
+                          <% (student_payment.student&.batches&.order(:id)&.pluck(:name) || []).each do |name| %>
+                            <li><%= name %></li>
+                          <% end %>
+                        </ul>
+                      </span>
+                    </td>
+                    <td><%= number_to_currency(student_payment.amount, unit: "₹")  %></td>
+                    <th><%= student_payment.status %></th>
+                    <td><%= student_payment.created_at.strftime("%d-%B-%Y %I:%M%p")  %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="alert alert-info">No Payments Collected, please share link with students.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

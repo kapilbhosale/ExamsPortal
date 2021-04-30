@@ -22,6 +22,11 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'students/home#index'
 
+  get 'pay/:slug', to: 'pay#show'
+  post 'pay', to: 'pay#create', as: :pay_path
+  post 'process-pay', to: 'pay#process_pay', as: :pay_process_path
+  post 'auth-pay', to: 'pay#auth_pay', as: :pay_auth_path
+
   get 'new-admission', to: 'students/admissions#show'
   get 'foundation-admission', to: 'students/admissions#foundation_show'
   get 'admission-done', to: 'students/admissions#admission_done'
@@ -144,6 +149,10 @@ Rails.application.routes.draw do
     resources :attendance do
       get :overview_report, on: :collection
     end
+
+    resources :micro_payments do
+    end
+
 
     namespace :api do
       resources :students

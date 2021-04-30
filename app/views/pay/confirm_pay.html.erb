@@ -1,0 +1,43 @@
+<div class="container">
+  <h5 class="text-center"> Payment Successful.</h5>
+  <div style="text-align: center">
+    <%= image_tag 'success', height: '120px' %>
+  </div>
+
+  <div style="text-align: center;">
+    <div>
+      <table class="table" style="text-align: left;">
+        <tr>
+          <td>Name: </td><td><%= @student['name'] %></td>
+        </tr>
+        <tr>
+          <td>Student mobile: </td><td><%= @student['student_mobile'] %></td>
+        </tr>
+        <tr>
+          <td>Parent mobile: </td><td><%= @student['parent_mobile'] %></td>
+        </tr>
+        <tr>
+          <td>Batches: </td><td><%= @batch.name %></td>
+        </tr>
+        <tr>
+          <td>PAID: </td><td><h4><%= number_to_currency(@student_payment.amount, unit: "₹") %></h4></td>
+        </tr>
+        <tr>
+          <td>REFERENCE NO: </td><td><b><%= @student_payment&.id %></b></td>
+        </tr>
+      </table>
+      <div id="loading-container" style="text-align: center;" class="hidden">
+        <i class="fa fa-4x fa-check-circle"></i>
+        <h3>Thank you for Payment</h3>
+      </div>
+    </div>
+    <hr>
+    <p style="color: red; padding-top: 10px;">
+      Take Screenshot and close this page.
+    </p>
+    <p>
+    You can use this Screenshot for futher communication.
+    Thank you. :)
+    </p>
+  </div>
+</div>
