@@ -105,6 +105,22 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    if na&.jee?
+      batch_name = rcc_branch == "latur" ?
+        "LTR-11-REG-JEE-#{course.name.upcase}-21-22" :
+        "NED-11-REG-JEE-#{course.name.upcase}-21-22"
+    else
+      batch_name = rcc_branch == "latur" ?
+        "LTR-11-REG-NEET-#{course.name.upcase}-21-22" :
+        "NED-11-REG-NEET-#{course.name.upcase}-21-22"
+    end
+
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
@@ -113,12 +129,14 @@ class Batch < ApplicationRecord
     return Batch.where(name: '9th-A') if batch == '9th'
     return Batch.where(name: '10th-A') if batch == '10th'
 
-    if batch != '11th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
+    if batch == '12th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
       return get_jee_batches(rcc_branch, course, batch, na)
     end
 
     if batch == '11th'
       get_11th_batches(rcc_branch, course, batch, na)
+    elsif batch == '11th_new'
+      get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       org = Org.first
       batch_name = rcc_branch == "latur" ?

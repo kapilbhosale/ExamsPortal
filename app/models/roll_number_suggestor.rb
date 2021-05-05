@@ -25,6 +25,7 @@ class RollNumberSuggestor < ApplicationRecord
     "10th" => 4_000,
     'free' => 1_00_000,
     'pay_adm' => 1000,
+    '11th_new' => 2_00_000,
   }
   def self.suggest_roll_number(batch_name, na=nil)
     batch_name = 'free' if na&.free?

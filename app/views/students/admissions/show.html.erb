@@ -53,9 +53,95 @@
           }
         }
 
-        $('#batch').on('change', adjustUI);
-        $('input[name=course_type]').on('change', adjustUI);
         $('#batch').trigger("change");
+
+
+        function showFeesDetails() {
+          var totalFees = '₹60,000';
+          var oneTimeFees = '₹55,000';
+          var installmentFees = '₹30,000';
+          var nextInstallmentFees = '₹30,000';
+
+          if ($('input[name="course[]"]:checked').length >= 1 && $('#batch').find(":selected").val() === '11th_new') {
+            $('.payment-selection-div').animate( { "opacity": "show", top:"100"} , 1000 );
+          } else {
+            $('.payment-selection-div').animate( { "opacity": "hide", top:"100"} , 1000 );
+            return;
+          }
+
+          var subjectCount = 0
+          if ($('input[value=phy]:checked').length == 1) {
+            subjectCount += 1
+          }
+          if ($('input[value=chem]:checked').length == 1) {
+            subjectCount += 1
+          }
+          if ($('input[value=bio]:checked').length == 1) {
+            subjectCount += 1
+          }
+          if ($('input[value=pcb]:checked').length == 1) {
+            subjectCount = 3
+          }
+          var rccBranch = $('input[name=rcc_branch]:checked').val();
+
+          if (subjectCount == 0) {
+            totalFees = '-';
+            oneTimeFees = '-';
+            installmentFees = '-';
+            nextInstallmentFees = '-';
+          }
+
+          if (rccBranch === "nanded") {
+            if (subjectCount === 3) {
+              totalFees = '₹55,000';
+              oneTimeFees = '₹50,000';
+              installmentFees = '₹30,000';
+              nextInstallmentFees = '₹25,000';
+            } else if (subjectCount === 2) {
+              totalFees = '₹40,000';
+              oneTimeFees = '₹40,000';
+              installmentFees = '₹20,000';
+              nextInstallmentFees = '₹20,000';
+            } else if (subjectCount === 1) {
+              totalFees = '₹25,000';
+              oneTimeFees = '₹25,000';
+              installmentFees = '₹15,000';
+              nextInstallmentFees = '₹10,000';
+            }
+          } else {
+            if (subjectCount === 3) {
+              totalFees = '₹60,000';
+              oneTimeFees = '₹55,000';
+              installmentFees = '₹30,000';
+              nextInstallmentFees = '₹30,000';
+            } else if (subjectCount === 2) {
+              totalFees = '₹50,000';
+              oneTimeFees = '₹45,000';
+              installmentFees = '₹25,000';
+              nextInstallmentFees = '₹25,000';
+            } else if (subjectCount === 1) {
+              totalFees = '₹25,000';
+              oneTimeFees = '₹25,000';
+              installmentFees = '₹15,000';
+              nextInstallmentFees = '₹10,000';
+            }
+          }
+
+          $('#total').text(totalFees);
+          $('#one-time-val').text(oneTimeFees);
+          $('#installment-val').text(installmentFees)
+          $('#next-installment-val').text(nextInstallmentFees)
+        }
+
+        $('input[name="course[]"]').on('change', showFeesDetails);
+
+        function batchChange() {
+          adjustUI();
+          showFeesDetails();
+        }
+
+        $('#batch').on('change', batchChange);
+        $('input[name=rcc_branch]').on('change', batchChange);
       });
 
     </script>
@@ -173,7 +259,8 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option value="11th" selected >11th Foundation (RCC-SET-2021)</option>
+                <option value="11th_new" selected >11th Regular Batch (2021-2022)</option>
+                <option value="11th">11th Foundation (RCC-SET-2021)</option>
                 <option value="12th">12th-new-2021-2022</option>
                 <option value="repeater">Repeater</option>
                 <option value="test_series">Test Series</option>
@@ -188,7 +275,7 @@
             <% if @student.present? %>
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
-              <p style="color: gray;">Course Selection: <span id="foundation-help-text" style="color: green; font-size: 10px">[11 Foundation (RCC-SET-2021) is for all subjects]</span></p>
+              <p style="color: gray;">Course Selection: <span id="foundation-help-text" style="color: green; font-size: 10px; display: none">[11 Foundation (RCC-SET-2021) is for all subjects]</span></p>
             <% end %>
           </div>
           <div class="form-group" style="text-align: center;">
@@ -209,6 +296,29 @@
               <label class="form-check-label" for="inlineRadio2">P + C + B</label>
             </div>
           </div>
+        </div>
+
+        <div class="payment-selection-div" style="background-color: #d0f1cd; padding: 10px; display: none">
+          <table style="width: 90%;">
+            <tr>
+              <td><p style="color: gray;">Select Payment mode : </p> </td>
+              <td colspan="2" class="text-center"><p>Total Fees:	<b><span id="total">₹60,000</span></b></p></td>
+            </tr>
+            <tr>
+              <td><p style="color: gray;">If Paid OneTime</p></td>
+              <td><span id="one-time-val">₹55,000</span></td>
+              <td><input type='radio' name="pay_type" value="one_time" checked> Pay One time</input></td>
+            </tr>
+            <tr>
+              <td><p style="color: gray;">If Paid In Installments, First Installment</p></td>
+              <td><span id="installment-val">₹30,000</span></td>
+              <td><input type='radio' name="pay_type" value="installment"> Pay First Installment</input></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td colspan="2"><p style="color: gray;">Next Installment will be <span id="next-installment-val">₹30,000</span></p> </td>
+            </tr>
+          </table>
         </div>
 
         <div class="form-group form-check" style="background-color: rgb(240, 202, 202); padding: 10px 10px 10px 30px;">

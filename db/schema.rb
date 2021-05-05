@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_071708) do
+ActiveRecord::Schema.define(version: 2021_05_05_190207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(version: 2021_04_30_071708) do
     t.index ["id", "type"], name: "index_admins_on_id_and_type"
     t.index ["org_id"], name: "index_admins_on_org_id"
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "admission_batches", force: :cascade do |t|
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -290,6 +293,7 @@ ActiveRecord::Schema.define(version: 2021_04_30_071708) do
     t.decimal "fees", default: "0.0"
     t.integer "course_type", default: 0
     t.boolean "free", default: false
+    t.jsonb "extra_data", default: {}
     t.index ["course_id"], name: "index_new_admissions_on_course_id"
     t.index ["payment_id"], name: "index_new_admissions_on_payment_id"
     t.index ["reference_id"], name: "index_new_admissions_on_reference_id"

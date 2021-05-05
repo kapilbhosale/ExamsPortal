@@ -135,7 +135,8 @@ class Students::AdmissionsController < ApplicationController
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
       new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
-      new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch)
+      new_admission.extra_data = {pay_type: params[:pay_type]}
+      new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
         if new_admission.batch == '11th'
@@ -209,15 +210,29 @@ class Students::AdmissionsController < ApplicationController
       return 20_000 if course.name == "pb"
       return 20_000 if course.name == "cb"
     end
-    if batch == '11th'
-      return 6_000 if course.name == "phy"
-      return 6_000 if course.name == "chem"
-      return 6_000 if course.name == "bio"
-      return 6_000 if course.name == "pcb"
+    if batch == '11th_new'
+      if new_admission.extra_data.dig('pay_type') == 'installment'
+        return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
-      return 6_000 if course.name == "pc"
-      return 6_000 if course.name == "pb"
-      return 6_000 if course.name == "cb"
+        if ['pc', 'pb', 'cb'].include?(course.name)
+          return 20_000 if rcc_branch == 'nanded'
+          return 25_000 if rcc_branch == 'latur'
+        end
+
+        return 30_000 if ['pcb'].include?(course.name)
+      else
+        return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
+
+        if ['pc', 'pb', 'cb'].include?(course.name)
+          return 40_000 if rcc_branch == 'nanded'
+          return 45_000 if rcc_branch == 'latur'
+        end
+
+        if ['pcb'].include?(course.name)
+          return 50_000 if rcc_branch == 'nanded'
+          return 55_000 if rcc_branch == 'latur'
+        end
+      end
     end
     if batch == '12th'
       return 10_000 if course.name == "phy"

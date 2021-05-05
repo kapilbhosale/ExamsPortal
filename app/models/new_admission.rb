@@ -11,6 +11,7 @@
 #  email                 :string
 #  error_code            :string
 #  error_info            :string
+#  extra_data            :jsonb
 #  fees                  :decimal(, )      default(0.0)
 #  first_name            :string
 #  free                  :boolean          default(FALSE)
@@ -67,7 +68,8 @@ class NewAdmission < ApplicationRecord
     '7th': 101,
     '8th': 102,
     '9th': 103,
-    '10th': 104
+    '10th': 104,
+    '11th_new': 10,
   }
   enum course_type: { neet: 0, jee: 1 }
   enum rcc_branch: { latur: 0, nanded: 1 }
