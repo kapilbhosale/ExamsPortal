@@ -44,6 +44,8 @@ class Students::AdmissionsController < ApplicationController
   def pay_due_fees
     errors = []
     student = Student.find_by(id: params[:student_id])
+    is_set = params[:set] == 'true'
+
     if student.blank?
       flash[:error] = "Invalid student id, please contact admin."
       redirect_back(fallback_location: '/')
@@ -56,6 +58,8 @@ class Students::AdmissionsController < ApplicationController
     new_admission.student_mobile = student.student_mobile
     new_admission.student_id = student.id
     new_admission.fees = student.pending_amount.to_s.to_i
+
+    new_admission.extra_data = { is_set: true } if is_set
 
     if new_admission.fees <= 0
       flash[:error] = "No pending fees for the student."

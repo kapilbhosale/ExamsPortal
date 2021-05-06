@@ -25,6 +25,7 @@ class Api::V1::HomeController < Api::V1::ApiController
     banners_data = []
     return current_org.data['top_banners'] unless current_org.subdomain == 'exams'
 
+    set_batch_ids = [208, 209, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223]
     if (current_student.batches&.ids & [192, 196, 197, 198]).present?
       banners_data << {
         "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/foundation-banner.jpg",
@@ -32,6 +33,14 @@ class Api::V1::HomeController < Api::V1::ApiController
       }
     else
       if current_student.pending_amount.present?
+        if (current_student.batches&.ids & set_batch_ids).present?
+          banners_data <<
+          {
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/set-banner.jpg",
+            "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}&set=true"
+          }
+        end
+
         banners_data <<
           {
             "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.jpg",
