@@ -97,13 +97,13 @@ namespace :deploy do
     end
   end
 
-  # COMMENTED for HETZNER SERVER
+  # COMMENTED for HETZNER SERVER and PUNE Server
   # desc 'Webpack Compiling assets'
   # task :webpack_compile do
   #   on roles(:app) do
   #     within release_path do
-  #       # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
-  #       execute :rake, "webpacker:compile"
+  #       execute("NODE_ENV=production ./bin/webpack")
+  #       # execute :rake, "webpacker:compile"
   #     end
   #   end
   # end
@@ -119,3 +119,6 @@ namespace :deploy do
   after  :restart,      :sidekiq_restart
 
 end
+
+# sudo vi /etc/resolv.conf
+# sudo systemctl restart systemd-resolved.service
