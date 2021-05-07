@@ -63,7 +63,9 @@ class PaymentWorker
           if batches.present?
             batches_to_add = batches - student.batches
             if batches_to_add.present?
-              # student.batches.destroy_all
+              if (student&.batches&.ids & MAPPING.keys).present?
+                student.batches.destroy_all
+              end
               student.batches << batches_to_add
 
               suggested_rn = RollNumberSuggestor.suggest_roll_number(@new_admission.batch)
