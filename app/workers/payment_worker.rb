@@ -53,7 +53,7 @@ class PaymentWorker
           student.new_admission_id = new_admission.id
           student.save
           new_batches = Batch.where(id: batch_mapping(student.batches.ids))
-          student.batches.destroy_all
+          student.batches.destroy_all if new_batches.present?
           student.batches << new_batches
           student.send_sms
         else

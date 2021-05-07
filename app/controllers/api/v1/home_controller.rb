@@ -58,7 +58,7 @@ class Api::V1::HomeController < Api::V1::ApiController
           banners_data <<
           {
             "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/set-all-reminder.jpg",
-            "on_click"=>"https://exams.smartclassapp.in/new-admisssion?set=true"
+            "on_click"=>"https://exams.smartclassapp.in/new-admisssion?set=true&student_id=#{current_student.id}"
           }
           return banners_data
         end

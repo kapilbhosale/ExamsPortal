@@ -14,6 +14,7 @@ class Students::AdmissionsController < ApplicationController
     redirect_to '/' unless request.subdomain == 'exams'
     @errors = []
     @is_set = params[:set] == 'true'
+    @student_id = params[:student_id]
     # @url = eazy_pay_url
   end
 
