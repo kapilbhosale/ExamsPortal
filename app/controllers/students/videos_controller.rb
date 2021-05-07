@@ -42,8 +42,8 @@ class Students::VideosController < Students::BaseController
 
       next unless include_flag
 
-      @lectures_data[lect.subject&.name] ||= []
-      @lectures_data[lect.subject&.name] << lect
+      @lectures_data[vl.subject&.name] ||= []
+      @lectures_data[vl.subject&.name] << vl
     end
   end
 
