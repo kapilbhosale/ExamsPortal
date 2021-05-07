@@ -13,6 +13,7 @@ class Students::AdmissionsController < ApplicationController
   def show
     redirect_to '/' unless request.subdomain == 'exams'
     @errors = []
+    @is_set = params[:set] == 'true'
     # @url = eazy_pay_url
   end
 
@@ -139,7 +140,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
       new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
-      new_admission.extra_data = {pay_type: params[:pay_type]}
+      new_admission.extra_data = {pay_type: params[:pay_type], is_set: params[:is_set]}
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save

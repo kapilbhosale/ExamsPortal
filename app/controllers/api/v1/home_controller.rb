@@ -25,6 +25,12 @@ class Api::V1::HomeController < Api::V1::ApiController
     banners_data = []
     return current_org.data['top_banners'] unless current_org.subdomain == 'exams'
 
+    banners_data <<
+      {
+        "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/default-banner.jpg",
+        "on_click"=>"https://rccpattern.com"
+      }
+
     set_batch_ids = [208, 209, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223]
     if (current_student.batches&.ids & [192, 196, 197, 198]).present?
       banners_data << {
@@ -39,13 +45,23 @@ class Api::V1::HomeController < Api::V1::ApiController
             "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/set-banner.jpg",
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}&set=true"
           }
-        end
-
-        banners_data <<
+          return banners_data
+        else
+          banners_data <<
           {
             "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_fees_reminder.jpg",
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
           }
+        end
+      else
+        if (current_student.batches&.ids & set_batch_ids).present?
+          banners_data <<
+          {
+            "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/set-all-reminder.jpg",
+            "on_click"=>"https://exams.smartclassapp.in/new-admisssion?set=true"
+          }
+          return banners_data
+        end
       end
       if (current_student.batches&.ids & [173,174,175,176,177,178,179,180,181,182,183,184,185,186]).present?
         banners_data <<

@@ -49,7 +49,7 @@ class PaymentWorker
           pending_fees.save
         end
 
-        if new_admission.extra_data[:is_set] == true
+        if new_admission.extra_data['is_set'] == 'true'
           student.new_admission_id = new_admission.id
           student.save
           new_batches = Batch.where(id: batch_mapping(student.batches.ids))

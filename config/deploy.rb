@@ -98,19 +98,19 @@ namespace :deploy do
   end
 
   # COMMENTED for HETZNER SERVER
-  desc 'Webpack Compiling assets'
-  task :webpack_compile do
-    on roles(:app) do
-      within release_path do
-        # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
-        execute :rake, "webpacker:compile"
-      end
-    end
-  end
+  # desc 'Webpack Compiling assets'
+  # task :webpack_compile do
+  #   on roles(:app) do
+  #     within release_path do
+  #       # execute("cd #{release_path} && NODE_ENV=production ./bin/webpack")
+  #       execute :rake, "webpacker:compile"
+  #     end
+  #   end
+  # end
 
   before "deploy:assets:precompile", "deploy:yarn_install"
   # COMMENTED for HETZNER SERVER
-  after  :compile_assets, :webpack_compile
+  # after  :compile_assets, :webpack_compile
 
   before :starting,     :check_revision
   after  :finishing,    :compile_assets
