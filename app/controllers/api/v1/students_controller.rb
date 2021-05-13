@@ -74,6 +74,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
   def login_allowed?(student)
     # add OPT config based condition for org.
     return true if request.subdomain == 'bhargav'
+    return true if request.subdomain == 'demo'
 
     return true if demo_account?(student)
 

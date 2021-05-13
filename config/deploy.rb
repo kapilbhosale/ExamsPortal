@@ -97,13 +97,13 @@ namespace :deploy do
     end
   end
 
-  # COMMENTED for HETZNER SERVER and PUNE Server
+  # COMMENTED for HETZNER SERVER & PUNE SERVER
   # desc 'Webpack Compiling assets'
   # task :webpack_compile do
   #   on roles(:app) do
   #     within release_path do
-  #       execute("NODE_ENV=production ./bin/webpack")
-  #       # execute :rake, "webpacker:compile"
+  #       # execute("NODE_ENV=production ./bin/webpack")
+  #       execute :rake, "webpacker:compile"
   #     end
   #   end
   # end
