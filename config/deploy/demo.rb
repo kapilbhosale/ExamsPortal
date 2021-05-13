@@ -4,4 +4,6 @@ set :branch, 'master'
 set :sidekiq_env, :production
 set :stage, :production
 
-server '13.126.87.94', user: 'ubuntu', roles: [:web, :app, :db], primary: true
+# server '13.126.87.94', user: 'ubuntu', roles: [:web, :app, :db], primary: true
+
+server '3.7.255.52', user: 'ubuntu', roles: [:web, :app, :db], primary: true
