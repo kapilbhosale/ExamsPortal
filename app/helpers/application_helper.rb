@@ -34,6 +34,8 @@ module ApplicationHelper
       return { logo: 'bep-logo', height: 40}
     elsif %w[chate].include? subdomain
       return { logo: 'chate', height: 50}
+    elsif %w[jmc].include? subdomain
+      return { logo: 'joshi-logo', height: 50}
     end
 
     { logo: 'exams-logo', width: 30 }
@@ -62,6 +64,8 @@ module ApplicationHelper
     return 'Bhargav Career Academy' if ['bhargav'].include? subdomain
 
     return 'Chate digiEdu' if ['chate'].include? subdomain
+    
+    return '' if ['jmc'].include? subdomain
 
     request.subdomain.humanize || "Exams"
   end
