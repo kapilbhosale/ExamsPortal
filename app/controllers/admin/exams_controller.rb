@@ -46,7 +46,7 @@ class Admin::ExamsController < Admin::BaseController
     exam = Exam.find_by(id: params[:exam_id])
     if exam.present?
       if exam.show_exam_at.present? && Time.current >= (exam.show_exam_at + (exam.time_in_minutes + 15).minutes)
-        ses_sync_by_student_ids = StudentExamSync.where(exam_id: exam_id).index_by(:student_id)
+        ses_sync_by_student_ids = StudentExamSync.where(exam_id: exam.id).index_by(&:student_id)
         StudentExam.where(exam_id: exam.id).each do |student_exam|
           ses_sync = ses_sync_by_student_ids[student_exam.student_id]
           if ses_sync.present?
