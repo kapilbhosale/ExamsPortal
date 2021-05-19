@@ -45,13 +45,22 @@ class Admin::ExamsController < Admin::BaseController
   def re_evaluate_exam
     exam = Exam.find_by(id: params[:exam_id])
     if exam.present?
-      StudentExam.where(exam_id: exam.id).each do |student_exam|
-        # Students::SyncService.new(student_exam.student_id, exam.id, ses_sync.sync_data).call
-        StudentExamSummary.where(student_exam_id: student_exam.id).destroy_all
-        StudentExamScoreCalculator.new(student_exam.id).calculate
+      if exam.show_exam_at.present? && Time.current >= (exam.show_exam_at + (exam.time_in_minutes + 15).minutes)
+        ses_sync_by_student_ids = StudentExamSync.where(exam_id: exam_id).index_by(:student_id)
+        StudentExam.where(exam_id: exam.id).each do |student_exam|
+          ses_sync = ses_sync_by_student_ids[student_exam.student_id]
+          if ses_sync.present?
+            Students::SyncService.new(student_exam.student_id, exam.id, ses_sync.sync_data).call
+            StudentExamSummary.where(student_exam_id: student_exam.id).destroy_all
+            StudentExamScoreCalculator.new(student_exam.id).calculate
+          end
+        end
+        flash[:success] = 'Exam Scores updated successfully..!'
+        redirect_back(fallback_location: admin_exams_path)
+      else
+        flash[:success] = 'Can not re-evaluate exam, Make changes after its completely finished.'
+        redirect_back(fallback_location: admin_exams_path)
       end
-      flash[:success] = 'Exam Scores updated successfully..!'
-      redirect_back(fallback_location: admin_exams_path)
     else
       flash[:error] = 'No Exam Found, please try again.'
       redirect_back(fallback_location: admin_exams_path)
