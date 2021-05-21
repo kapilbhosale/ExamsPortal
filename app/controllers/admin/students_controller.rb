@@ -107,7 +107,7 @@ class Admin::StudentsController < Admin::BaseController
 
   def progress_report
     @student = Student.find_by(id: params[:student_id])
-    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids })
+    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids }).where(is_pr_generated: true)
     progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
     data = {}
     progress_report_data.each do |prd|

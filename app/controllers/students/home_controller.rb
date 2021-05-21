@@ -39,7 +39,7 @@ class Students::HomeController < Students::BaseController
 
   def progress_report
     @student = current_student
-    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids })
+    exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids }).where(is_pr_generated: true)
     progress_report_data = ProgressReport.where(student_id: @student.id).order(exam_date: :desc)
     data = {}
     progress_report_data.each do |prd|
