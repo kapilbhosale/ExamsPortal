@@ -221,11 +221,11 @@ class Students::AdmissionsController < ApplicationController
         return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
         if ['pc', 'pb', 'cb'].include?(course.name)
-          return 20_000 if rcc_branch == 'nanded'
-          return 25_000 if rcc_branch == 'latur'
+          return 15_000 if rcc_branch == 'nanded'
+          return 15_000 if rcc_branch == 'latur'
         end
 
-        return 30_000 if ['pcb'].include?(course.name)
+        return 20_000 if ['pcb'].include?(course.name)
       else
         return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
