@@ -24,11 +24,12 @@ class RollNumberSuggestor < ApplicationRecord
     "9th" => 3_000,
     "10th" => 4_000,
     'free' => 1_00_000,
+    'saarthi' => 3_00_000,
     'pay_adm' => 1000,
     '11th_new' => 2_00_000,
   }
   def self.suggest_roll_number(batch_name, na=nil)
-    batch_name = 'free' if na&.free?
+    batch_name = 'saarthi' if na&.free?
 
     rns = self.find_by(batch_name: batch_name)
 

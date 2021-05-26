@@ -83,21 +83,12 @@ class Batch < ApplicationRecord
 
   def self.get_11th_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
-
-    if na&.jee?
-    batch_name = rcc_branch == "latur" ?
-      "Ltr-11-foundation-JEE-#{course.name.upcase}-2021" :
-      "Ned-11-foundation-JEE-#{course.name.upcase}-2021"
-    else
-      batch_name = rcc_branch == "latur" ?
-      "Ltr-11-foundation-#{course.name.upcase}-2021" :
-      "Ned-11-foundation-#{course.name.upcase}-2021"
-    end
+    batch_name = "SAARTHI-2021"
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
       admin = Admin.where(org_id: org.id).first
-      group_name = na&.jee? ? "FOUNDATION-JEE-#{batch}-#{rcc_branch}-2021-2022" : "FOUNDATION-#{batch}-#{rcc_branch}-2021-2022"
+      group_name = "SAARTHI-2021"
       batch_group = BatchGroup.find_or_create_by(name: group_name, org_id: org.id)
       _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
       AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
