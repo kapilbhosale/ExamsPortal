@@ -1,0 +1,73 @@
+
+<div class="container">
+  <div class="row">
+      <div class="col-xs-8">
+        <div class="col-md-8 text-center" style="color: #e91e63">
+          Vidya Aradhana Academy, Latur, आपले स्वागत आहे
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <a href="/students/tests" class="btn btn-info" role="button">
+          Start Exam
+        </a>
+      </div>
+  </div>
+</div>
+
+&nbsp;
+<div class="main-banner">
+</div>
+&nbsp;
+&nbsp;
+
+<section>
+  <div id="grad2" style="color: aliceblue; text-align: center; padding: 20px 10px; border-radius: 20px">
+    <div class="heading-text heading-section">
+      <h2>क्लासेस बद्दल दोन शब्द..</h2>
+      <%= image_tag 'vaa-img', width: '90%', height: 400 %>
+    </div>
+  </div>
+</section>
+
+<div class="col-md-12 text-center" style="padding-top: 40px;">
+  <a href="/students/tests" class="btn btn-warning" role="button">Start Online Examinations</a>
+</div>
+<hr>
+
+
+ <!-- Footer -->
+ <footer class="page-footer font-small blue" style="background-color: rgb(33, 150, 243);">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2021 Copyright:
+    <a href="#" style="color:antiquewhite"> Vidya Aradhana Academy, Latur.</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+<style>
+  #grad2 {
+    background-color: transparent;
+    background-image: linear-gradient(120deg, rgb(88 144 255) 0%, #2d8e41 100%);
+  }
+  @media (max-width: 600px) {
+    .main-banner {
+      background-image: url(<%= asset_path 'vaa-banner' %>);
+      width: 100%;
+      max-width: 100%;
+      height: 48vh;
+      background-size: cover;
+    }
+  }
+  @media (min-width: 600px) {
+    .main-banner {
+      background-image: url(<%= asset_path 'vaa-banner' %>);
+      width: 100%;
+      max-width: 100%;
+      height: 85vh;
+      background-size: cover;
+    }
+  }
+</style>
