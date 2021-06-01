@@ -70,6 +70,15 @@ class Api::V1::HomeController < Api::V1::ApiController
             'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScDKOfqKtmJdjs8xKTRQ46zD--BywQNFylrt4dynvq63M6kww/viewform'
           }
       end
+
+      if (current_student.batches&.ids & [250, 253]).present?
+        banners_data <<
+          {
+            'img_url' => 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/saarthi-banner.jpg',
+            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScGrRhV3VFDTKlHyhdtkcd8be-O-LxcOjMktmcVYtup87Mh4A/viewform'
+          }
+      end
+
       banners_data <<
         {
           "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-banner-29-march.jpg",
