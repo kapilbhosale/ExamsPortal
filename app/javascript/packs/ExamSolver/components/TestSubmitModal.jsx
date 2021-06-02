@@ -66,7 +66,6 @@ export default class TestSubmitModal extends React.Component {
       let tableDataRows = [];
       let totalAnswered = 0;
       let totalNotAnswered = 0;
-      debugger;
 
       Object.keys(questionsBySections).forEach(sectionName => {
         let answered = 0;

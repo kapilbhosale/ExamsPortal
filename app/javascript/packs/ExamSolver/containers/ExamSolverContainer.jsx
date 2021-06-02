@@ -102,6 +102,7 @@ class ExamSolverContainer extends Component {
     const timeLeftMessage = $$examSolverStore.get('timeLeftMessage');
     const examFinished = $$examSolverStore.get('examFinished');
     const examSummary = $$examSolverStore.get('examSummary');
+    const resultSynced = $$examSolverStore.get('resultSynced');
 
     const customStyles = {
     content : {
@@ -130,8 +131,9 @@ class ExamSolverContainer extends Component {
     };
 
     if(examFinished) {
+      const actions = this.actions();
       return(
-        <ExamSummary examSummary={examSummary}/>
+        <ExamSummary examSummary={examSummary} resultSynced={resultSynced} reSubmitTest={actions.submitTest} />
       )
     }
 

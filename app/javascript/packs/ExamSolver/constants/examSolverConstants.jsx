@@ -19,6 +19,7 @@ const actionTypes = mirrorCreator([
   'SET_CURRENT_TIME',
   'SET_EXAM_SUMMARY',
   'UPDATE_TIME_SPENT_ON_QUESTION',
+  'RESULT_SYNCED',
 ]);
 
 export default actionTypes;

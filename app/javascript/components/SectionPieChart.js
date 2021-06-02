@@ -57,7 +57,7 @@ class SectionPieChart extends React.Component {
                 <div className="text-right">
                   <button type="button" className="btn btn-outline-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
                 </div>
-                <div class='graph-container' style={{height: 160}}>
+                <div className="graph-container" style={{height: 160}}>
                   <ResponsivePie
                     data={data}
                     margin={{ top: 0, right: 0, bottom: 20, left: 0 }}

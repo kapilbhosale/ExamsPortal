@@ -106,7 +106,6 @@ export function getCurrentServerTime() {
       url: '/current-server-time',
       method: 'get',
       success: (data) => {
-      
         dispatch({type: actionTypes.SET_CURRENT_TIME, val: data.time });
       },
       error: (data) => {
@@ -195,6 +194,12 @@ export function submitTest() {
         url: '/students/submit/' + store.get('examId'),
         method: 'put',
         data: { id: store.get('examId'), questions: dataJSON },
+        success: (data) => {
+          dispatch(resultSynced(true));
+        },
+        error: (data) => {
+          dispatch(resultSynced(false));
+        }
       });
       dispatch(updateExamSummary(store.get('examId')));
     } else {
@@ -296,6 +301,13 @@ export function onTick(e) {
 export function loading(val) {
   return {
     type: actionTypes.LOADING,
+    val: val
+  }
+}
+
+export function resultSynced(val) {
+  return {
+    type: actionTypes.RESULT_SYNCED,
     val: val
   }
 }
