@@ -63,11 +63,12 @@ class Api::V1::HomeController < Api::V1::ApiController
           return banners_data
         end
       end
-      if (current_student.batches&.ids & [173,174,175,176,177,178,179,180,181,182,183,184,185,186]).present?
+
+      if (current_student.batches&.ids & [141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156]).present?
         banners_data <<
           {
             'img_url' => 'https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc_dispatch_2.png',
-            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScDKOfqKtmJdjs8xKTRQ46zD--BywQNFylrt4dynvq63M6kww/viewform'
+            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScFBdTA4VSp-g41qkG0u-ZX_PtGQXvUcqrXVLqMRMlRt_c3Pw/viewform'
           }
       end
 
