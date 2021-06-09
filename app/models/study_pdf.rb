@@ -36,9 +36,9 @@ class StudyPdf < ApplicationRecord
   def send_push_notifications
     fcm = FCM.new(org.fcm_server_key)
     batches.each do |batch|
-      reg_ids = batch.students.where.not(fcm_token: nil).pluck(:fcm_token)
-      # response = fcm.send(reg_ids, push_options)
-      fcm.send(reg_ids, push_options)
+      batch.students.where.not(fcm_token: nil).pluck(:fcm_token).each_slice(500) do |reg_ids|
+        fcm.send(reg_ids, push_options)
+      end
     end
   end
 

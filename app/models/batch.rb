@@ -43,6 +43,14 @@ class Batch < ApplicationRecord
   has_many :batch_micro_payments
   has_many :micro_payments, through: :batch_micro_payments
 
+  # after_create :create_push_notif_topic
+
+  # def create_push_notif_topic
+  #   fcm = FCM.new(org.fcm_server_key)
+  #   topic = name.parameterize
+  #   response = fcm.topic_subscription(topic, registration_id)
+  # end
+
   def recount_disable
     student_ids = StudentBatch.where(batch_id: id).pluck(:student_id)
     self.disable_count = Student.where(id: student_ids, disable: true).count

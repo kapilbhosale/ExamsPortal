@@ -187,6 +187,7 @@ Rails.application.routes.draw do
     namespace :v2 do
       resources :students, only: [:index] do
         post 'login', on: :collection
+        get :progress_report, on: :collection
       end
       resources :notifications, only: [:index] do
         get :filter_types, on: :collection
