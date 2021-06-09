@@ -74,7 +74,7 @@ module Students
       end
       return {sucess: true}
     rescue StandardError => e
-      Rails.logger.error("#{e.message} Student_id: #{student.id}")
+      Rails.logger.error("#{e.message} Student_id: #{student&.id}")
       return {success: false, errors: []}
     end
   end
