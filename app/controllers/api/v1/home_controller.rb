@@ -16,7 +16,12 @@ class Api::V1::HomeController < Api::V1::ApiController
         total: 0,
       },
       'exam_portal_link' => exam_portal_link,
-      'org_data' => current_org&.data&.dig('org_data')
+      'org_data' => current_org&.data&.dig('org_data'),
+      'badges' => {
+        new_videos: 1,
+        new_exams: 2,
+        new_pdfs: 3
+      }
     }
     render json: json_data, status: :ok
   end
