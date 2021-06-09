@@ -1,5 +1,5 @@
 <%
-  @g_data = [['Exam IDs', 'Prcnt %']]
+  @g_data = [['Exam IDs', '%']]
   @data.each_with_index do |prd, index|
     if prd[:present]
       @g_data << ["#{index+1}", prd[:data][:percentage]&.round(2)&.to_f || 0]
