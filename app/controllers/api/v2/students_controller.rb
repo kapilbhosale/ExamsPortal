@@ -81,7 +81,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
     exams.each do |exam|
       key = "#{exam.id || 0}-#{exam.name.parameterize}"
       data[key] ||= {
-        exam_date: exam.show_exam_at.strftime("%d-%b-%Y"),
+        exam_date: exam.show_exam_at,
         present: false,
         data: {
           exam_date: exam.show_exam_at.strftime("%d-%b-%Y"),
@@ -93,7 +93,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
         }
       }
     end
-    @data = Hash[data.sort_by{|k, v| DateTime.parse(v[:exam_date]) || Date.today }.reverse].values
+    @data = Hash[data.sort_by{|k, v| v[:exam_date] || Date.today }.reverse].values
     render json: {data: @data}
   end
 
