@@ -93,7 +93,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
         }
       }
     end
-    @data = Hash[data.sort_by{|k, v| v[:exam_date] || Date.today }.reverse].values
+    @data = Hash[data.sort_by{|k, v| DateTime.parse(v[:exam_date]) || Date.today }.reverse].values
     render json: {data: @data}
   end
 
