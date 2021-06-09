@@ -18,10 +18,11 @@ class Api::V1::HomeController < Api::V1::ApiController
       'exam_portal_link' => exam_portal_link,
       'org_data' => current_org&.data&.dig('org_data'),
       'badges' => {
-        new_videos: 1,
-        new_exams: 2,
-        new_pdfs: 3
-      }
+        new_videos: nil,
+        new_exams: nil,
+        new_pdfs: nil
+      },
+      'student_name' => current_student.name.split(' ').first,
     }
     render json: json_data, status: :ok
   end
