@@ -59,7 +59,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
   end
 
   def progress_report
-    exams = Exam.includes(:batches).where(batches: { id: current_student.batches.ids })
+    exams = Exam.includes(:batches).where(batches: { id: current_student.batches.ids }).where(is_pr_generated: true)
     progress_report_data = ProgressReport.where(student_id: current_student.id).order(exam_date: :desc)
     data = {}
     progress_report_data.each do |prd|
