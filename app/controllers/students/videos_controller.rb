@@ -3,6 +3,8 @@ class Students::VideosController < Students::BaseController
   before_action :authenticate_student!
   layout false, only: [:show_lecture]
 
+  before_action :check_valid_rcc_request, only: [:category_videos, :lectures, :show_lecture]
+
   def index
   end
 
@@ -144,6 +146,12 @@ class Students::VideosController < Students::BaseController
   end
 
   private
+
+  def check_valid_rcc_request
+    @is_rcc = current_org.subdomain == 'exams'
+    @req_from_electron = request.user_agent.include?('Electron') && cookies['electron'] == "YES-9890"
+    @req_from_browser = !@req_from_electron
+  end
 
   def lectures_json(lectures)
     lectures_data = {}
