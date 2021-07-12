@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_05_190207) do
+ActiveRecord::Schema.define(version: 2021_07_12_070543) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -65,6 +65,17 @@ ActiveRecord::Schema.define(version: 2021_05_05_190207) do
   create_table "admission_batches", force: :cascade do |t|
   end
 
+  create_table "attachments", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "file_name"
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id"
+    t.index ["org_id"], name: "index_attachments_on_org_id"
+  end
+
   create_table "attendances", force: :cascade do |t|
     t.bigint "org_id"
     t.bigint "student_id"
@@ -75,6 +86,15 @@ ActiveRecord::Schema.define(version: 2021_05_05_190207) do
     t.datetime "updated_at", null: false
     t.index ["org_id"], name: "index_attendances_on_org_id"
     t.index ["student_id"], name: "index_attendances_on_student_id"
+  end
+
+  create_table "banners", force: :cascade do |t|
+    t.string "image"
+    t.string "on_click_url"
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_banners_on_org_id"
   end
 
   create_table "batch_groups", force: :cascade do |t|
@@ -175,6 +195,23 @@ ActiveRecord::Schema.define(version: 2021_05_05_190207) do
     t.decimal "fees", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "doubts", force: :cascade do |t|
+    t.bigint "org_id"
+    t.bigint "subject_id"
+    t.integer "parent_id"
+    t.string "details"
+    t.boolean "is_solved", default: false
+    t.integer "upvotes", default: 0
+    t.bigint "admin_id"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_doubts_on_admin_id"
+    t.index ["org_id"], name: "index_doubts_on_org_id"
+    t.index ["student_id"], name: "index_doubts_on_student_id"
+    t.index ["subject_id"], name: "index_doubts_on_subject_id"
   end
 
   create_table "exam_batches", force: :cascade do |t|
