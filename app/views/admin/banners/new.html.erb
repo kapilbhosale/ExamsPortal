@@ -1,0 +1,33 @@
+<div class="row" >
+  <div class="col-lg-12" style="background-color:rgb(222, 222, 222); ">
+      <%= form_tag(admin_banners_path, method: :post, multipart: true) do %>
+        <div class="card-body">
+          <h3 class="card-title">Add New Banner</h3>
+          <div style="margin-bottom: 10px">
+            <p>Please add URL to redirect when clicked on Image</p>
+            <input type="text" name="on_click_url" class="full-width" required>
+          </div>
+          <div>
+            <p>Please add URL Banner Image, must have size 620px by 250px</p>
+            <input type="file" id="ImageFile" name="image" required>
+          </div>
+          <hr>
+          <%= render partial: 'admin/select_batches', locals: {var_name: 'batches[]', selected_batches: []} %>
+
+          <input type="submit" class="btn btn-primary pull-right" />
+        </div>
+      <% end %>
+  </div>
+</div>
+
+<script>
+  $(document).ready(
+    function(){
+      $('input[type="file"]').change(function(e){
+          var fileName = e.target.files[0].name;
+          var label = e.target.parentElement.lastElementChild;
+          label.innerText = fileName;
+      });
+    }
+  );
+</script>

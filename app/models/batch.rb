@@ -43,6 +43,9 @@ class Batch < ApplicationRecord
   has_many :batch_micro_payments
   has_many :micro_payments, through: :batch_micro_payments
 
+  has_many :batch_banners
+  has_many :banners, through: :batch_banners
+
   # after_create :create_push_notif_topic
 
   # def create_push_notif_topic

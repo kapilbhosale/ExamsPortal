@@ -4,6 +4,7 @@ class CreateBanners < ActiveRecord::Migration[5.2]
       t.string      :image
       t.string      :on_click_url
       t.references  :org
+      t.boolean     :active
       t.timestamps
     end
   end

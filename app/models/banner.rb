@@ -3,6 +3,7 @@
 # Table name: banners
 #
 #  id           :bigint(8)        not null, primary key
+#  active       :boolean
 #  image        :string
 #  on_click_url :string
 #  created_at   :datetime         not null
@@ -15,4 +16,10 @@
 #
 
 class Banner < ApplicationRecord
+  mount_uploader :image, PhotoUploader
+
+  belongs_to :org
+
+  has_many :batch_banners
+  has_many :batches, through: :batch_banners
 end

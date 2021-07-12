@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_070543) do
+ActiveRecord::Schema.define(version: 2021_07_12_071709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -92,9 +92,19 @@ ActiveRecord::Schema.define(version: 2021_07_12_070543) do
     t.string "image"
     t.string "on_click_url"
     t.bigint "org_id"
+    t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["org_id"], name: "index_banners_on_org_id"
+  end
+
+  create_table "batch_banners", force: :cascade do |t|
+    t.bigint "banner_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["banner_id"], name: "index_batch_banners_on_banner_id"
+    t.index ["batch_id"], name: "index_batch_banners_on_batch_id"
   end
 
   create_table "batch_groups", force: :cascade do |t|

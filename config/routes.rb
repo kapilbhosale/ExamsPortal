@@ -150,9 +150,8 @@ Rails.application.routes.draw do
       get :overview_report, on: :collection
     end
 
-    resources :micro_payments do
-    end
-
+    resources :micro_payments
+    resources :banners
 
     namespace :api do
       resources :students

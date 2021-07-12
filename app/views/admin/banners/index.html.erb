@@ -1,0 +1,53 @@
+<div class="container" style="background-color: white; padding: 5px">
+  <div class="card-header row">
+    <div class="col-md-2">
+      <h5>Top Banners</h5>
+    </div>
+    <div class="col-md-10 text-right">
+      <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Banner'.html_safe, new_admin_banner_path %>
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table card-table">
+      <thead>
+        <tr>
+          <th>Id.</th>
+          <th>Image</th>
+          <th>Link</th>
+          <th>Visible</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @banners.each do |banner| %>
+          <tr>
+            <td>
+              <span class="text-muted"><%= banner.id %></span>
+            </td>
+            <td class="text-center">
+              <%= image_tag banner.image.url, height:'150px', width: '300px' %>
+            </td>
+            <td>
+              <%= banner.on_click_url %>
+            </td>
+            <td>
+              <% if banner.active %>
+                <span style="color: green">●</span>
+              <% else %>
+                <span style="color: red">●</span>
+              <% end %>
+            </td>
+            <td>
+              <% if banner.active %>
+                <%= link_to 'Disable'.html_safe, admin_banner_path(banner), 'data-toggle': 'tooltip', title: 'Disable', method: :delete, data: {confirm: 'Are you sure, You want to disable the banner.'} %>
+              <% else %>
+                <%= link_to 'Enable'.html_safe, admin_banner_path(banner), 'data-toggle': 'tooltip', title: 'Enable', method: :delete %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate @banners %>
+  </div>
+</div>

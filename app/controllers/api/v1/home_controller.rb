@@ -29,13 +29,21 @@ class Api::V1::HomeController < Api::V1::ApiController
 
   def top_banners_data
     banners_data = []
-    return current_org.data['top_banners'] unless current_org.subdomain == 'exams'
+    banners = Banner.includes(:org).where(active: true).where(org: current_org).includes(:batches, :batch_banners).where(batches: {id: current_student.batches&.ids}).all.order(id: :desc) || []
 
-    banners_data <<
-      {
-        "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/default-banner.jpg",
-        "on_click"=>"https://rccpattern.com"
+    banners.each do |banner|
+      banners_data << {
+        "img_url"=> banner.image.url,
+        "on_click"=> banner.on_click_url
       }
+    end
+
+    return (banners_data + current_org.data['top_banners']) unless current_org.subdomain == 'exams'
+
+    banners_data << {
+      "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/default-banner.jpg",
+      "on_click"=>"https://rccpattern.com"
+    }
 
     set_batch_ids = [208, 209, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223]
     if (current_student.batches&.ids & [192, 196, 197, 198]).present?
