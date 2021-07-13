@@ -11,13 +11,13 @@ class Api::V1::NotificationsController < Api::V1::ApiController
       if USE_CACHE && batch_notifs.present?
         render json: JSON.parse(batch_notifs), status: :ok and return
       else
-        @notifications = BatchNotification.includes(:notification).where(batch: current_student.batches).order(id: :desc).map(&:notification)
+        @notifications = Notification.where('notifications.created_at >= ?', Time.current - 15.days).includes(:batch_notifications, :batches).where(batches: {id: current_student.batches&.ids}).order(id: :desc)
         batch_notifs = notifications_json
         REDIS_CACHE.set(cache_key, JSON.dump(batch_notifs), { ex: 1.day })
         render json: batch_notifs, status: :ok and return
       end
     end
-    @notifications = BatchNotification.includes(:notification).where(batch: current_student.batches).order(id: :desc).map(&:notification)
+    @notifications = Notification.where('notifications.created_at >= ?', Time.current - 15.days).includes(:batch_notifications, :batches).where(batches: {id: current_student.batches&.ids}).order(id: :desc)
     render json: notifications_json, status: :ok
   end
 
