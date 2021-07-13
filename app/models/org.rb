@@ -18,7 +18,30 @@
 #
 
 class Org < ApplicationRecord
+  has_many :students
+
   def bhargav?
     subdomain == 'bhargav'
+  end
+
+  def send_push_notifications
+    fcm = FCM.new(fcm_server_key)
+    students.where.not(fcm_token: nil).each do |student|
+      fcm.send([student.fcm_token], push_options(student.name.split(' ').first))
+    end
+  end
+
+  def push_options(student_name)
+    {
+      priority: 'high',
+      data: {
+        message: "#{name} - Dear #{student_name}, its time to study."
+      },
+      notification: {
+        body: "Dear #{student_name}, lets study hard today. Lets count every minute of the day and Score More. :)",
+        title: "#{name} - Study Motivation",
+        image: data['push_image']
+      }
+    }
   end
 end
