@@ -55,6 +55,10 @@ class Admin::ExamsController < Admin::BaseController
             StudentExamScoreCalculator.new(student_exam.id).calculate
           end
         end
+
+        # re-generate PR report
+        exam.prepare_report
+
         flash[:success] = 'Exam Scores updated successfully..!'
         redirect_back(fallback_location: admin_exams_path)
       else
@@ -107,6 +111,16 @@ class Admin::ExamsController < Admin::BaseController
     @response = Exams::UpdateExamService.new(params, current_org).update
     set_flash
     redirect_to admin_exams_path
+  end
+
+  def create_section
+    if params[:section_name].present?
+      Section.find_or_create_by(name: params[:section_name], is_jee: true)
+      flash[:success] = 'Section Added, please re-create exam.'
+    else
+      flash[:error] = 'Section cannot be added, please try again.'
+    end
+    redirect_to new_admin_exam_path
   end
 
   private

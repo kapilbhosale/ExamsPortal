@@ -104,6 +104,7 @@ Rails.application.routes.draw do
         get 'question_bank', to: 'exams#question_bank'
         get 'new_jee', to: 'exams#new_jee'
         post 'change_question_answer'
+        post :create_section
       end
       get :re_evaluate_exam
     end
