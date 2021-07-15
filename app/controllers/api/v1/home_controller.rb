@@ -38,7 +38,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       }
     end
 
-    return (banners_data + current_org.data['top_banners']) unless current_org.subdomain == 'exams'
+    return (banners_data + (current_org.data['top_banners'] || [])) unless current_org.subdomain == 'exams'
 
     banners_data << {
       "img_url"=>"https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/default-banner.jpg",
