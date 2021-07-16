@@ -160,7 +160,7 @@ class Question extends React.Component {
           <br></br>
           <div style={{marginTop: '-10px'}}>
             <span style={{fontSize: 12, fontWeight: '400'}}>
-              Total questions: 15, Solve only 10. You solved <span> 1/10</span>
+              Total questions: 15, Solve only 10.
             </span>
           </div>
         </div>
