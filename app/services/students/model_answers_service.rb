@@ -13,7 +13,7 @@ module Students
     def call
       validate_request
 
-      questions_by_section = exam.questions.includes(:options).group_by(&:section_id)
+      questions_by_section = exam.questions.order(:id).includes(:options).group_by(&:section_id)
       sections_by_id = Section.all.index_by(&:id)
       all_styles = '' #exam.questions.collect {|x| x.css_style}.join(' ')
 

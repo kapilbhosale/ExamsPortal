@@ -104,9 +104,9 @@ module Exams
       return questions_with_options if questions_with_options.present?
 
       exam = Exam.find exam_id
-      indexed_questions = exam.questions.includes(:options, :section).index_by(&:id)
+      indexed_questions = exam.questions.order(:id).includes(:options, :section).index_by(&:id)
 
-      questions = exam.questions.includes(:options).map do |question|
+      questions = exam.questions.order(:id).includes(:options).map do |question|
         {
           id: question.id,
           title: question.title,

@@ -27,11 +27,11 @@ module Exams
       questions = {}
       es_by_id = exam.exam_sections.index_by(&:section_id)
 
-      question_ids = exam.questions.ids
+      question_ids = exam.questions.order(:id).ids
       true_options_by_q_id = Option.where(question_id: question_ids)
                                    .where(is_answer: true).index_by(&:question_id)
 
-      exam.questions.includes(:options).each do |question|
+      exam.questions.order(:id).includes(:options).each do |question|
         exam_section = es_by_id[question.section_id]
         questions[question.id] = {
           type: question.question_type,

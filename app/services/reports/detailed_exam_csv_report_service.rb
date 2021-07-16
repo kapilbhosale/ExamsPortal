@@ -165,7 +165,7 @@ module Reports
       headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Batch']
       sub_headers = ['', '', '' ,'']
       exam.sections.order(:id).each do |section|
-        exam.questions.where(section_id: section.id).each_with_index do |question, index|
+        exam.questions.order(:id).where(section_id: section.id).each_with_index do |question, index|
           headers << "#{section.name}[#{index+1}]"
           headers += ['', '', '']
           sub_headers << 'status'
