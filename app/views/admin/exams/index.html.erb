@@ -32,6 +32,7 @@
                     <tr>
                       <td>
                         <%= link_to "#{exam.name}", admin_exam_path(exam.id) %>
+                        <%= "(NEET new Pattern)" if exam.neet? %>
                         <br />
                         <span style="font-size: 10px; color: darkgreen">
                           <ul>

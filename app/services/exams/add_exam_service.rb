@@ -63,6 +63,7 @@ module Exams
 
     def exam_json_data
       {
+        exam_type: @exam.exam_type,
         questions: exam_questions_with_options(@exam.id),
         model_ans: Exams::ModelAnsService.new(@exam.id).call
       }
