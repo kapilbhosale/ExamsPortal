@@ -7,6 +7,7 @@ class Question extends React.Component {
     const {
       title, options, currentQuestionIndex, answerQuestion,
       answerProps, question_type, is_image, inputAnsweredQuestions,
+      examType,
     } = this.props;
 
     const onMultiSelectAnswerChanged = (value) => {
@@ -121,7 +122,7 @@ class Question extends React.Component {
     const getOptionData = (is_image, data) => {
       if (is_image) {
         const img_data = `data:image/png;base64,${data}`
-        return (<img src={img_data} style={{width: "60%", maxWidth: ($win.width()-20)}} />)
+        return (<img src={img_data} style={{width: "90%", maxWidth: ($win.width()-20)}} />)
       }
       return(<div dangerouslySetInnerHTML={{ __html: data}} />);
     }
@@ -134,8 +135,47 @@ class Question extends React.Component {
       return(<div dangerouslySetInnerHTML={{ __html: title}} />);
     }
 
+    const getSectionHead = (qIndex) => {
+      if (qIndex <= 35) {
+        return(
+          <div>
+            <span style={{fontWeight: 'bold'}}>
+              Section A
+            </span>
+            <br></br>
+            <div style={{marginTop: '-10px'}}>
+              <span style={{fontSize: 12, fontWeight: '400'}}>
+                Total questions: 35, Solve all.
+              </span>
+            </div>
+          </div>
+        )
+      }
+
+      return(
+        <div>
+          <span style={{fontWeight: 'bold'}}>
+            Section B
+          </span>
+          <br></br>
+          <div style={{marginTop: '-10px'}}>
+            <span style={{fontSize: 12, fontWeight: '400'}}>
+              Total questions: 15, Solve only 10. You solved <span> 1/10</span>
+            </span>
+          </div>
+        </div>
+      )
+    }
+
     return (
       <div>
+        {examType === 'neet' && (
+          <div className="row" style={{padding: '2px 0px', marginTop: '1px', backgroundColor: 'lightblue'}}>
+          <div className="col-md-12">
+            {getSectionHead(currentQuestionIndex + 1)}
+          </div>
+        </div>
+        )}
         <div className="row">
           <div className="col-md-12">
             <span className="badge badge-secondary">

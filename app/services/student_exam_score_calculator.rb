@@ -7,6 +7,8 @@ class StudentExamScoreCalculator
   end
 
   def calculate
+    neet_sectional_question_ids()
+
     sections.each do |section|
       @current_section = section
       @exam_section = ExamSection.find_by(exam: exam, section: @current_section)
@@ -33,13 +35,35 @@ class StudentExamScoreCalculator
           multi_not_solved_count: @exam_section.multi_count - (counts[:multi_correct_count] + counts[:multi_incorrect_count] + counts[:multi_partial_count]),
           input_not_solved_count: @exam_section.input_count - (counts[:input_correct_count] + counts[:input_incorrect_count]),
           posetive_marks: @exam_section.positive_marks,
-          negative_marks: @exam_section.negative_marks
+          negative_marks: @exam_section.negative_marks,
+          sec_b_count: counts[:sec_b_count],
+          sec_b_correct_count: counts[:sec_b_correct_count],
+          sec_b_incorrect_count: counts[:sec_b_incorrect_count],
         }
       )
     end
   end
 
   private
+
+  def neet_sectional_question_ids
+    @neet_data = {}
+    return unless exam.neet?
+
+    counter = {}
+    exam.questions.order(:id).each do |question|
+      @neet_data[question.section_id] ||= {a: [], b: []}
+      counter[question.section_id] ||= 1
+
+      if counter[question.section_id] <= 35
+        @neet_data[question.section_id][:a] << question.id
+      else
+        @neet_data[question.section_id][:b] << question.id
+      end
+      counter[question.section_id] += 1
+    end
+    @neet_data
+  end
 
   def sections
     @_sections ||= exam.sections
@@ -93,12 +117,28 @@ class StudentExamScoreCalculator
     multi_partial_count = 0
     multi_mark_total = 0
 
+    sec_b_count = 0
+    sec_b_correct_count = 0
+    sec_b_incorrect_count = 0
+
     se_sea.select do |sea|
       next if sea.option_id == 0
       next if sea.question.section_id != @current_section.id
 
       if sea.question.single_select?
-        sea.option.is_answer ? correct_count += 1 : in_correct_count += 1
+        sec_b = @neet_data[@current_section.id][:b].include?(sea.question.id)
+
+        if sec_b_count < 10
+          if sea.option.is_answer
+            correct_count += 1
+            sec_b_correct_count += 1 if sec_b
+          else
+            in_correct_count += 1
+            sec_b_incorrect_count += 1 if sec_b
+          end
+        end
+        sec_b_count += 1 if sec_b
+
       elsif sea.question.input?
         if sea.question.options.first.data.to_f.round(2) == sea.ans.to_f.round(2)
           input_correct_count += 1
@@ -138,7 +178,10 @@ class StudentExamScoreCalculator
       multi_correct_count: multi_correct_count,
       multi_incorrect_count: multi_incorrect_count,
       multi_partial_count: multi_partial_count,
-      multi_mark_total: multi_mark_total
+      multi_mark_total: multi_mark_total,
+      sec_b_count: sec_b_count,
+      sec_b_correct_count: sec_b_correct_count,
+      sec_b_incorrect_count: sec_b_incorrect_count,
     }
   end
 

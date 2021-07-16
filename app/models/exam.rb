@@ -39,7 +39,7 @@ class Exam < ApplicationRecord
 
   belongs_to :org
 
-  enum exam_type: { jee: 0, cet: 1, other: 2, jee_advance: 3 }
+  enum exam_type: { jee: 0, cet: 1, other: 2, jee_advance: 3, neet: 10 }
 
   # after_create :send_push_notifications
   # has_one :style, as: :component, dependent: :destroy
@@ -65,17 +65,6 @@ class Exam < ApplicationRecord
     end
     REDIS_CACHE.set("exam-total-marks-#{id}", _total_marks)
     _total_marks.to_i
-  end
-
-  def display_image
-    return 'bio' if only_biology?
-    return 'math' if only_math?
-    return 'phy' if only_physics?
-    return 'chem' if only_chemistry?
-    return 'neet' if neet?
-    return 'jee' if jee?
-
-    'general'
   end
 
   def check_exam(section)
@@ -104,10 +93,6 @@ class Exam < ApplicationRecord
 
   def jee?
     sections.pluck(:name).length > 1 && sections.pluck(:name).include?('maths')
-  end
-
-  def neet?
-    sections.pluck(:name).length > 1 && sections.pluck(:name).include?('biology')
   end
 
   def send_push_notifications

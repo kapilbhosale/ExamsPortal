@@ -21,11 +21,11 @@ class ExamSection < ApplicationRecord
   belongs_to :section
 
   def total_marks
-    _total_marks = REDIS_CACHE.get("exam-section-total-marks-#{id}")
+    _total_marks = REDIS_CACHE&.get("exam-section-total-marks-#{id}")
     return _total_marks.to_i if _total_marks.present?
 
     _total_marks = exam.jee_advance? ? jee_advance_total_marks : regular_total_marks
-    REDIS_CACHE.set("exam-section-total-marks-#{id}", _total_marks)
+    REDIS_CACHE&.set("exam-section-total-marks-#{id}", _total_marks)
     _total_marks.to_i
   end
 

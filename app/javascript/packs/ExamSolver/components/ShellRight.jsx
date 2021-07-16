@@ -26,7 +26,9 @@ class ShellRight extends React.Component {
       notVisitedQuestions,
       setNavigationMap,
       isNavigationMapOpen,
-      toggleTestSubmitModal } = this.props;
+      toggleTestSubmitModal,
+      examType,
+     } = this.props;
     const closeNav = () => {
       setNavigationMap(false);
       document.getElementById("mySidenav").style.width = "0";
@@ -77,54 +79,72 @@ class ShellRight extends React.Component {
                   >
                 </span>
               </div>
-              <div onClick={ () => { changeNavigationMapStatus() }} className='col-md-2 cursor-pointer' style={{borderRadius: '10px'}}>
-                <span className="label label-danger">
-                  { 'X' }
-                </span>
-              </div>
-              <div className='row text-right'>
-                <div className='col-md-6'>
-                  <span className="label label-default label-sm margin-5">
-                    { `Not visited (${notVisitedQuestions})`}
-                  </span>
-                </div>
-                <div className='col-md-6'>
-                  <div >
-                  <span className="label label-primary label-sm margin-5">
-                    { `Marked (${markedQuestions})` }
-                  </span>
-                  </div>
-                </div>
-              </div>
-              <div className='row margin-bottom-20 text-right'>
-                <div className='col-md-6'>
-                  <span className="label label-success label-sm margin-5">
-                    { `Answered (${answeredQuestions})` }
-                  </span>
-                </div>
-                {inputAnsweredQuestions && (
-                  <div className='col-md-6'>
-                    <span className="label label-success label-sm margin-5">
-                      { `Input Answered (${inputAnsweredQuestions})` }
-                    </span>
-                  </div>
-                )}
-                <div className='col-md-6'>
-                  <span className="label label-danger label-sm margin-5">
-                    { `Not answered (${notAnsweredQuestions})` }
-                  </span>
-                </div>
-              </div>
-
-              <div className='row margin-bottom-20 text-center'>
-                <div className="col-md-12">
-                  Navigation Map
-                </div>
-              </div>
+              <table>
+                <tr>
+                  <td>
+                    <div onClick={ () => { changeNavigationMapStatus() }} className='col-md-2 cursor-pointer' style={{borderRadius: '10px'}}>
+                      <span className="label label-danger">
+                        { 'X' }
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className='col-md-6'>
+                      <span className="label label-default label-sm margin-5">
+                        { `Not visited (${notVisitedQuestions})`}
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className='col-md-6'>
+                      <div>
+                        <span className="label label-primary label-sm margin-5">
+                          { `Marked (${markedQuestions})` }
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {inputAnsweredQuestions && (
+                      <div className='col-md-6'>
+                        <span className="label label-success label-sm margin-5">
+                          { `Input Answered (${inputAnsweredQuestions})` }
+                        </span>
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    <div className='col-md-6'>
+                      <span className="label label-success label-sm margin-5">
+                        { `Answered (${answeredQuestions})` }
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <div className='col-md-6'>
+                      <span className="label label-danger label-sm margin-5">
+                        { `Not answered (${notAnsweredQuestions})` }
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </table>
 
               <div className='row' style={{ height: '70vh', overflow: 'scroll' }}>
               <div className='col-md-12'>
                 <div className="btn-toolbar form-group text-center margin-bottom-110" role="toolbar" aria-label="...">
+                  <h6 style={{
+                    width: '100%',
+                    textAlign: 'center',
+                    borderBottom: '1px solid #000',
+                    lineHeight: '0.1em',
+                    margin: '10px 0 20px'}}>
+                      <span style={{background: 'rgb(231 249 255)', padding:' 0 10px'}}>
+                        Section A
+                      </span>
+                  </h6>
                   {
                     questions.map((question, idx) => {
                       const { isAnswered, needReview, visited } = question.answerProps;
@@ -141,6 +161,29 @@ class ShellRight extends React.Component {
                         }
                       } else {
                         dynamicClass = "btn-warning"
+                      }
+                      if (examType === 'neet' && idx+1 == 35) {
+                        return(<span>
+                          <button
+                            key={idx}
+                            type="button"
+                            className={ `btn btn-default ${dynamicClass}` }
+                            style={{ marginRight: '10px', marginLeft: '5px', marginBottom: '10px', width: '40px', height: '40px' }}
+                            onClick={ () => { jumpToQuestion(idx) }}
+                          >
+                            {idx + 1}
+                          </button>
+                          <h6 style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            borderBottom: '1px solid #000',
+                            lineHeight: '0.1em',
+                            margin: '10px 0 20px'}}>
+                              <span style={{background: 'rgb(231 249 255)', padding:' 0 10px'}}>
+                                Section B
+                              </span>
+                          </h6>
+                        </span>)
                       }
                       return (
                         <button

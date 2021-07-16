@@ -120,6 +120,7 @@ export function updateExamSummary(examID) {
     const store = getState().$$examSolverStore;
     let localData = localStorage.getItem(`${store.get('studentId')}-${store.get('examId')}-store`);
     const localSAData = JSON.parse(localData)
+    const examType =  store.get('examType');
 
     localData = localStorage.getItem(`model-ans-${store.get('examId')}`);
     const localModelAnsData = JSON.parse(localData)
@@ -135,7 +136,10 @@ export function updateExamSummary(examID) {
         let input_questions_present = false;
         let correct_input_questions = 0;
         let incorrect_input_questions = 0;
-        localSAData.questionsBySections[section].forEach((question) => {
+        let secBcount = 0;
+        let secBcorrect = 0;
+        let secBwrong = 0;
+        localSAData.questionsBySections[section].forEach((question, index) => {
           let modelAns = localModelAnsData.questions[question.id];
           if (question.answerProps.answer) {
             if ( modelAns.type === 'input') {
@@ -147,12 +151,27 @@ export function updateExamSummary(examID) {
                 incorrect_input_questions++;
               }
             } else {
-              if (modelAns.ans === question.answerProps.answer[0]) {
-                correct++;
-                score += modelAns.pm;
+              if (examType === 'neet' && index >= 35) {
+                secBcount++;
+                if (secBcount <= 10) {
+                  if (modelAns.ans === question.answerProps.answer[0]) {
+                    correct++;
+                    secBcorrect++;
+                    score += modelAns.pm;
+                  } else {
+                    wrong++;
+                    secBwrong++;
+                    score += modelAns.nm;
+                  }
+                }
               } else {
-                wrong++;
-                score += modelAns.nm;
+                if (modelAns.ans === question.answerProps.answer[0]) {
+                  correct++;
+                  score += modelAns.pm;
+                } else {
+                  wrong++;
+                  score += modelAns.nm;
+                }
               }
             }
             ans++;
@@ -160,7 +179,14 @@ export function updateExamSummary(examID) {
           count++;
           section_out_of_marks += modelAns.pm;
         })
+
+        if (examType === 'neet') {
+          count = 45;
+          section_out_of_marks = 45 * 4;
+        }
+
         resultSummary[section] = {
+          exam_type: examType,
           ans,
           correct,
           wrong,
@@ -169,7 +195,10 @@ export function updateExamSummary(examID) {
           section_out_of_marks,
           input_questions_present,
           correct_input_questions,
-          incorrect_input_questions
+          incorrect_input_questions,
+          sec_b_count: secBcount,
+          sec_b_correct_count: secBcorrect,
+          sec_b_incorrect_count: secBwrong,
         }
       })
     }
@@ -322,6 +351,7 @@ function formatDataToOldFormat(data) {
   const studentAns = data.student_ans;
   const timeData = data.time_data;
   const modelAns = data.model_ans;
+  const examType = data.exam_type;
   //  store modelAns data in local storage
   localStorage.setItem(`model-ans-${JSON.parse(modelAns).exam_id}`, modelAns);
 
@@ -352,6 +382,7 @@ function formatDataToOldFormat(data) {
   const formattedData = {
     ...questionsData,
     questionsBySections,
+    examType,
     ...timeData}
   return (formattedData);
 }
@@ -411,6 +442,7 @@ export function initialize() {
               time_data: time_data,
               questions: data.questions,
               model_ans: data.model_ans,
+              exam_type: data.exam_type,
             }
             processExamData(preparedData, store, dispatch);
           }

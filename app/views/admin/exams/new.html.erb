@@ -53,10 +53,16 @@
                 <input checked="checked" id="radio_regular" name="exam_type" type="radio" value="jee" /> &nbsp; Regular
               </label>
               <label class="custom-control custom-radio custom-control-inline">
+                <input id="radio_neet" name="exam_type" type="radio" value="neet" /> &nbsp; NEET New pattern
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
                 <input id="radio_jee_advance" name="exam_type" type="radio" value="jee_advance" /> &nbsp; JEE Advance
               </label>
               <p style="font-size: 10px; padding-left: 100px" class="" id="jee-instructions">
                 add [input] for input type questions, 10 input questions will make 5 optional as per new JEE pattern.
+              </p>
+              <p style="font-size: 10px; padding-left: 100px" class="hidden" id="neet-instructions">
+                Section A: First 35 questions will be compulsury, Section B: student can solve 10 out of next 15.
               </p>
               <p style="font-size: 10px; padding-left: 100px" class="hidden" id="jee-advance-instructions">
                 For JEE advance, +ve and -ve Marks are only for Single Input questions. For 'Multi Input' & 'Numeric Input' marks will be calculated as per rules of JEE Advance.
@@ -163,10 +169,17 @@
     $('#radio_jee_advance').on("click", function(){
       $('#jee-advance-instructions').removeClass("hidden");
       $('#jee-instructions').addClass("hidden");
+      $('#neet-instructions').addClass("hidden");
     });
     $('#radio_regular').on("click", function(){
       $('#jee-advance-instructions').addClass("hidden");
       $('#jee-instructions').removeClass("hidden");
+      $('#neet-instructions').addClass("hidden");
+    });
+    $('#radio_neet').on("click", function(){
+      $('#jee-advance-instructions').addClass("hidden");
+      $('#jee-instructions').addClass("hidden");
+      $('#neet-instructions').removeClass("hidden");
     });
   });
 </script>

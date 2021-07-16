@@ -17,6 +17,7 @@ export default class TestSubmitModal extends React.Component {
       sectionWiseSummary,
       submitTest,
       isTestSubmitModalOpen,
+      examType,
     } = this.props;
 
     const $win = $(window);
@@ -44,7 +45,7 @@ export default class TestSubmitModal extends React.Component {
     };
 
     const renderTableHeaders = () => {
-      const headersNames = ['Section', 'Answered', 'Not Ans'];
+      const headersNames = examType === 'neet' ? ['Subject', 'Section', 'Answered', 'Not Ans'] : ['Section', 'Answered', 'Not Ans'];
       const tableHeaders = headersNames.map((headersName) => {
         return (
           <th key={ headersName }>
@@ -58,6 +59,68 @@ export default class TestSubmitModal extends React.Component {
             { tableHeaders }
           </tr>
         </thead>
+      );
+    }
+
+    const renderNeetTableBody = () => {
+      const questionsBySections = this.props.questionsBySections;
+      let tableDataRows = [];
+      let totalAnswered = 0;
+      let totalNotAnswered = 0;
+
+      Object.keys(questionsBySections).forEach(sectionName => {
+        let answered = 0;
+        let notAnswered = 0;
+        let sectionBAns = 0;
+        let sectionBNotAns = 0;
+        let i = 1;
+        questionsBySections[sectionName].forEach(ansData => {
+          if (examType === 'neet') {
+            if (i <= 35) {
+              ansData.answerProps.isAnswered ? answered += 1 : notAnswered += 1;
+            } else {
+              ansData.answerProps.isAnswered ? sectionBAns += 1 : sectionBNotAns += 1;
+            }
+          } else {
+            ansData.answerProps.isAnswered ? answered += 1 : notAnswered += 1;
+          }
+          i += 1;
+        });
+        sectionBNotAns = 10 - sectionBAns;
+        if (sectionBNotAns < 0) {
+          sectionBNotAns = 0
+        }
+
+        totalAnswered += answered + sectionBAns;
+        totalNotAnswered += notAnswered + sectionBNotAns;
+        tableDataRows.push(
+          <tr key={ `data_row_${ sectionName }` }>
+            <td rowSpan='2'> { sectionName } </td>
+            <td className='text-center'> Section-A </td>
+            <td className='text-center'> { answered } </td>
+            <td className='text-center'> <b>{ notAnswered } </b></td>
+          </tr>
+        );
+        tableDataRows.push(
+          <tr key={ `data_row_${ sectionName }` }>
+            <td className='text-center'> Section-B </td>
+            <td className='text-center'> { sectionBAns } </td>
+            <td className='text-center'> <b>{ sectionBNotAns } </b></td>
+          </tr>
+        );
+      });
+
+      tableDataRows.push(
+        <tr>
+          <td colSpan='2' className='text-right'> { 'Total' } </td>
+          <td className='text-center'> { totalAnswered } </td>
+          <td className='text-center text-danger'> <h5>{ totalNotAnswered }</h5></td>
+        </tr>
+      )
+      return (
+        <tbody>
+          { tableDataRows }
+        </tbody>
       );
     }
 
@@ -131,7 +194,7 @@ export default class TestSubmitModal extends React.Component {
                 <div className="container">
                   <table className='table table-bordered'>
                     { renderTableHeaders() }
-                    { renderTableBody() }
+                    { examType === 'neet' ? renderNeetTableBody() : renderTableBody() }
                   </table>
                 </div>
               </div>

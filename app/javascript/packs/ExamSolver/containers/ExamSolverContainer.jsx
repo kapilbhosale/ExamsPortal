@@ -103,6 +103,7 @@ class ExamSolverContainer extends Component {
     const examFinished = $$examSolverStore.get('examFinished');
     const examSummary = $$examSolverStore.get('examSummary');
     const resultSynced = $$examSolverStore.get('resultSynced');
+    const examType = $$examSolverStore.get('examType');
 
     const customStyles = {
     content : {
@@ -133,7 +134,7 @@ class ExamSolverContainer extends Component {
     if(examFinished) {
       const actions = this.actions();
       return(
-        <ExamSummary examSummary={examSummary} resultSynced={resultSynced} reSubmitTest={actions.submitTest} />
+        <ExamSummary examType={examType} examSummary={examSummary} resultSynced={resultSynced} reSubmitTest={actions.submitTest} />
       )
     }
 
@@ -174,6 +175,7 @@ class ExamSolverContainer extends Component {
               currentTime={ currentTime }
               timeLeftMessage={ timeLeftMessage }
               inputAnsweredQuestions={ inputAnsweredQuestions }
+              examType= { examType }
               { ...this.actions() }
               />
             <ShellRight
@@ -186,6 +188,7 @@ class ExamSolverContainer extends Component {
               markedQuestions={ markedQuestions }
               notVisitedQuestions={ notVisitedQuestions }
               isNavigationMapOpen={ isNavigationMapOpen }
+              examType= { examType }
               { ...this.actions() }
             />
           </div>
@@ -226,6 +229,7 @@ class ExamSolverContainer extends Component {
             submitTest={ actions.submitTest }
             isTestSubmitModalOpen={ isTestSubmitModalOpen }
             questionsBySections= { questionsBySections }
+            examType= { examType }
           />
 	</div>
       );

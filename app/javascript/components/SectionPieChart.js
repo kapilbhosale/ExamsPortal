@@ -55,7 +55,7 @@ class SectionPieChart extends React.Component {
             <tr>
               <td colSpan="3">
                 <div className="text-right">
-                  <button type="button" className="btn btn-outline-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
+                  <button type="button" className="btn btn-info btn-sm">{ section_data.section_name && section_data.section_name.toUpperCase() }</button>
                 </div>
                 <div className="graph-container" style={{height: 160}}>
                   <ResponsivePie
@@ -134,6 +134,51 @@ class SectionPieChart extends React.Component {
                 Topper: <span className="badge badge-warning">{section_data.topper_score}</span>
               </td>
             </tr>
+            {section_data.exam_type === 'neet' && (
+              <tr>
+                <td>NEET Sections: </td>
+                <td style={{textAlign: 'left'}}>
+                  <table style={{border: 'none', width: '100%'}}>
+                    <tr>
+                      <td colSpan="2"><span style={{paddingLeft: '20px', fontWeight: 'bold'}}>section-A</span></td>
+                    </tr>
+                    <tr>
+                      <td>Solved:</td>
+                      <td>
+                        {(section_data.correct + section_data.incorrect) - (section_data.extra_data.sec_b_correct_count + section_data.extra_data.sec_b_incorrect_count)}/35
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>correct:</td>
+                      <td>{section_data.correct - section_data.extra_data.sec_b_correct_count}</td>
+                    </tr>
+                    <tr>
+                      <td>wrong:</td>
+                      <td>{section_data.incorrect - section_data.extra_data.sec_b_incorrect_count}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td style={{textAlign: 'left'}}>
+                  <table style={{border: 'none', width: '100%'}}>
+                    <tr>
+                      <td colSpan="2"><span style={{paddingLeft: '20px', fontWeight: 'bold'}}>section-B</span></td>
+                    </tr>
+                    <tr>
+                      <td>Solved:</td>
+                      <td>{section_data.extra_data.sec_b_correct_count + section_data.extra_data.sec_b_incorrect_count}/10</td>
+                    </tr>
+                    <tr>
+                      <td>correct:</td>
+                      <td>{section_data.extra_data.sec_b_correct_count}</td>
+                    </tr>
+                    <tr>
+                      <td>wrong:</td>
+                      <td>{section_data.extra_data.sec_b_incorrect_count}</td>
+                    </tr>
+                  </table>
+                </td>
+            </tr>
+            )}
           </tbody>
         </table>
       </div>

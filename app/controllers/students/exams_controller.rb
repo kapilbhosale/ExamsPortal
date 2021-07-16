@@ -44,6 +44,7 @@ class Students::ExamsController < Students::BaseController
 
     render json: {
       questions: questions,
+      exam_type: exam.exam_type,
       student_ans: student_answers_by_question_id,
       time_data: time_data,
       model_ans: Exams::ModelAnsService.new(exam_id).call
@@ -70,6 +71,7 @@ class Students::ExamsController < Students::BaseController
     }
 
     render json: {
+      exam_type: exam.exam_type,
       student_ans: {},
       time_data: time_data,
       s3_url: "https://smart-exams-production.s3.ap-south-1.amazonaws.com/json-data/#{Rails.env}-#{current_org.subdomain}-#{exam.id}.json"

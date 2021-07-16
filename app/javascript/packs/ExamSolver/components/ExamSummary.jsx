@@ -28,6 +28,12 @@ class ExamSummary extends React.Component {
           input_questions_present: value.input_questions_present,
           correct_input_questions: value.correct_input_questions,
           incorrect_input_questions: value.incorrect_input_questions,
+          exam_type: value.exam_type,
+          extra_data: {
+            sec_b_correct_count: value.sec_b_correct_count,
+            sec_b_count: value.sec_b_count,
+            sec_b_incorrect_count: value.sec_b_incorrect_count,
+          }
         }
       );
     }
@@ -47,7 +53,7 @@ class ExamSummary extends React.Component {
     if (this.props.resultSynced === null) {
       return(
         <div className="text-center">
-          <div className="text-center" style={{backgroundColor: '#f1c40f', borderRadius: '10px', padding: '12px 0px 1px 0px'}} >
+          <div className="text-center" style={{backgroundColor: '#f1c40f', borderRadius: '10px', padding: '12px 0px 1px 0px', marginBottom: '2px'}} >
             <h1>⌛</h1>
             <h5 className="text-white">WAIT, we are storing your result to server.</h5>
           </div>
@@ -58,14 +64,14 @@ class ExamSummary extends React.Component {
       );
     } else if (this.props.resultSynced) {
       return(
-        <div className="text-center" style={{backgroundColor: '#5eba01', padding: '12px 0px 1px 0px', borderRadius: '10px'}} >
-          <h5 className="text-white"> 👍 Result Synced with Server.</h5>
+        <div className="text-center" style={{backgroundColor: '#5eba01', padding: '12px 0px px 0px', borderRadius: '10px', marginBottom: '2px'}} >
+          <h5 className="text-white" style={{padding: '10px 0px'}}> 👍 Result Synced with Server.</h5>
         </div>
       );
     } else {
       return(
         <div className="text-center">
-          <div className="text-center" style={{backgroundColor: '#f76564', borderRadius: '10px', padding: '12px 0px 1px 0px'}} >
+          <div className="text-center" style={{backgroundColor: '#f76564', borderRadius: '10px', padding: '12px 0px 1px 0px', marginBottom: '2px'}} >
             <h1>😢</h1>
             <h5 className="text-white">Error Storing your result to Server</h5>
           </div>
@@ -84,6 +90,7 @@ class ExamSummary extends React.Component {
 
   render() {
     const {total_question, total_score, time_spent, section_data, topper_total, total_marks} = this.formatData();
+    const {examType} = this.props;
     return(
       <div>
         <div className="text-center">
@@ -93,16 +100,19 @@ class ExamSummary extends React.Component {
         {
           this.props.resultSynced && (
           <div>
-            <Summary
-              is_result_processed={true}
-              total_question={total_question}
-              total_score={total_score}
-              time_spent={time_spent}
-              section_data={section_data}
-              topper_total={topper_total}
-              total_marks={total_marks}
-            />
-            <div className="text-center">
+            <div>
+              <Summary
+                is_result_processed={true}
+                total_question={total_question}
+                total_score={total_score}
+                time_spent={time_spent}
+                section_data={section_data}
+                topper_total={topper_total}
+                total_marks={total_marks}
+                examType={examType}
+              />
+            </div>
+            <div className="text-center pt-4">
               <a href='/students/tests'>
                 <button className="btn btn-success">Continue</button>
               </a>
