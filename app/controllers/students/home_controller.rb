@@ -171,7 +171,6 @@ class Students::HomeController < Students::BaseController
     total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
     time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at - @student_exam.started_at) rescue "Not available"
     section_data = student_exam_summaries.map do |student_exam_summary|
-      #TODO::Kapil store topper in cache & remove it when anyone submit the same exam.
       topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
       total_score += student_exam_summary.score
       total_question += student_exam_summary.no_of_questions

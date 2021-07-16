@@ -121,20 +121,27 @@ class StudentExamScoreCalculator
     sec_b_correct_count = 0
     sec_b_incorrect_count = 0
 
-    se_sea.select do |sea|
+    se_sea.order(:question_id).select do |sea|
       next if sea.option_id == 0
       next if sea.question.section_id != @current_section.id
 
       if sea.question.single_select?
         sec_b = @neet_data[@current_section.id][:b].include?(sea.question.id)
-
-        if sec_b_count < 10
+        if sec_b
+          if sec_b_count < 10
+            if sea.option.is_answer
+              correct_count += 1
+              sec_b_correct_count += 1 if sec_b
+            else
+              in_correct_count += 1
+              sec_b_incorrect_count += 1 if sec_b
+            end
+          end
+        else
           if sea.option.is_answer
             correct_count += 1
-            sec_b_correct_count += 1 if sec_b
           else
             in_correct_count += 1
-            sec_b_incorrect_count += 1 if sec_b
           end
         end
         sec_b_count += 1 if sec_b
