@@ -126,7 +126,7 @@ class StudentExamScoreCalculator
       next if sea.question.section_id != @current_section.id
 
       if sea.question.single_select?
-        sec_b = @neet_data[@current_section.id][:b].include?(sea.question.id)
+        sec_b = @neet_data.present? && @neet_data[@current_section.id][:b].include?(sea.question.id)
         if sec_b
           if sec_b_count < 10
             if sea.option.is_answer
