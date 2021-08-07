@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_071709) do
+ActiveRecord::Schema.define(version: 2021_08_07_134504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -271,6 +271,15 @@ ActiveRecord::Schema.define(version: 2021_07_12_071709) do
     t.boolean "is_pr_generated", default: false
     t.index ["name"], name: "index_exams_on_name"
     t.index ["org_id"], name: "index_exams_on_org_id"
+  end
+
+  create_table "form_data", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "form_id"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_form_data_on_student_id"
   end
 
   create_table "genres", force: :cascade do |t|

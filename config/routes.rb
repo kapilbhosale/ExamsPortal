@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post 'process-pay', to: 'pay#process_pay', as: :pay_process_path
   post 'auth-pay', to: 'pay#auth_pay', as: :pay_auth_path
 
+  post 'process-gform', to: 'students/google_forms#register'
+  get  'is-registered', to: 'students/google_forms#is_registered'
+
   get 'new-admission', to: 'students/admissions#show'
   get 'foundation-admission', to: 'students/admissions#foundation_show'
   get 'admission-done', to: 'students/admissions#admission_done'
@@ -167,6 +170,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post 'sign-in', to: 'students#login'
       post 'update-fcm-token', to: 'students#update_fcm_token'
+      get  'is-form-registered', to: 'students#is_form_registered'
       get 'dashboard_data', to: 'home#dashboard_data'
       get 'gallery', to: 'home#gallery'
       get 'app-version', to: 'home#app_version'

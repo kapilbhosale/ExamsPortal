@@ -66,6 +66,7 @@ class Student < ApplicationRecord
   has_many   :batches, through: :student_batches
   belongs_to :org
   has_many   :pending_fees
+  has_many   :form_data
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}

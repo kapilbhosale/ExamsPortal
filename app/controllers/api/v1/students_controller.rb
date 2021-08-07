@@ -72,6 +72,11 @@ class Api::V1::StudentsController < Api::V1::ApiController
     render json: { message: 'No fcm_token present in params to update' }, status: :unprocessable_entity
   end
 
+  def is_form_registered
+    form_url = 'https://forms.gle/RnQVEwQu4raYp5Gh9'
+    render json: { status: current_student.form_data.present?, ulr: form_url }
+  end
+
   private
 
   # return true if allowed to login, false if not allowed to login
