@@ -74,7 +74,16 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
   def is_form_registered
     form_url = 'https://forms.gle/RnQVEwQu4raYp5Gh9'
-    render json: { status: current_student.form_data.present?, ulr: form_url }
+
+    if current_student.form_data.present?
+      render json: { status: true, ulr: form_url } and return
+    else
+      if (current_student.batches&.ids & [250, 251, 252, 253]).present?
+        render json: { status: false, ulr: form_url } and return
+      else
+        render json: { status: true, ulr: form_url } and return
+      end
+    end
   end
 
   private

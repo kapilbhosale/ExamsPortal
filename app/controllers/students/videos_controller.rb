@@ -132,6 +132,11 @@ class Students::VideosController < Students::BaseController
     # @video_lecture = VideoLecture.find_by(laptop_vimeo_id: params[:video_id])
     # @messages = Message.where(messageable: @video_lecture)
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
+    @yt_playable_link = nil
+    if current_org.subdomain == 'exams'
+      lecture = VideoLecture.find_by(video_id: params[:video_id])
+      @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture.id}-url_hd") || REDIS_CACHE&.get("lecture-#{lecture.id}-url_sd")
+    end
   end
 
   def pay_vimeo
