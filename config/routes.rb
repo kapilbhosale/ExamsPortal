@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   post 'auth-pay', to: 'pay#auth_pay', as: :pay_auth_path
 
   post 'process-gform', to: 'students/google_forms#register'
-  get  'is-registered', to: 'students/google_forms#is_registered'
 
   get 'new-admission', to: 'students/admissions#show'
   get 'foundation-admission', to: 'students/admissions#foundation_show'
