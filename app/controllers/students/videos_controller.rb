@@ -136,7 +136,11 @@ class Students::VideosController < Students::BaseController
     if current_org.subdomain == 'exams'
       puts "------------>#{params[:video_id].to_s}"
       lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
-      @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd") || REDIS_CACHE&.get("lecture-#{lecture&.id}-url_sd")
+      if REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd").present?
+        @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd")
+      else
+        @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture&.id}-url_sd")
+      end
     end
   end
 
