@@ -106,7 +106,7 @@ module Reports
         end
 
         Student.where(id: exam.un_appeared_student_ids).includes(:batches).find_each do |student|
-          csv << [student.roll_number, student.name, student.parent_mobile, student.batches.pluck(:name).join(', ')]
+          csv << [student.roll_number, student.name, student.parent_mobile, student.student_mobile, student.batches.pluck(:name).join(', ')]
         end
 
       end
@@ -117,7 +117,7 @@ module Reports
     private
 
     def csv_headers
-      headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Batch']
+      headers = ['Roll Number', 'Student Name', 'Parent Mobile', 'Student Mobile', 'Batch']
       exam.sections.order(:id).each do |section|
         section_name = section.name
         headers += ["#{section_name}_no_of_questions",
