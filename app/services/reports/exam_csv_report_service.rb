@@ -61,6 +61,7 @@ module Reports
         data[student_exam_id][:roll_number] = student.roll_number
         data[student_exam_id][:name] = student.name
         data[student_exam_id][:parent_mobile] = student.parent_mobile
+        data[student_exam_id][:student_mobile] = student.student_mobile
         data[student_exam_id][:batch] = student.batches.pluck(:name).first
         result.each do |section_id, res|
           data[student_exam_id][section_id] ||= res
@@ -85,6 +86,7 @@ module Reports
               row[:roll_number],
               row[:name],
               row[:parent_mobile],
+              row[:student_mobile],
               row[:batch]]
 
               exam_section_ids.each do |sec_id|
