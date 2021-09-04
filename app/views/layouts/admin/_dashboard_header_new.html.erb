@@ -21,7 +21,7 @@
               <a class="dropdown-item" href="#">
                 <i class="dropdown-icon fa fa-user"></i> Profile
               </a>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="<%= profile_admin_users_path %>">
                 <i class="dropdown-icon fa fa-settings"></i> Settings
               </a>
               <div class="dropdown-divider"></div>
@@ -45,38 +45,58 @@
       <div class="col-lg order-lg-first">
         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
           <li class="nav-item">
-            <%= link_to '<i class="fa fa-users"></i> Students'.html_safe, admin_students_path, class: current_page?(admin_students_path) ? "nav-link active" : "nav-link" %>
+            <% if current_admin.can_manage(:students) %>
+              <%= link_to '<i class="fa fa-users"></i> Students'.html_safe, admin_students_path, class: current_page?(admin_students_path) ? "nav-link active" : "nav-link" %>
+            <% end %>
           </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-list"></i> Batches'.html_safe, admin_batches_path, class: current_page?(admin_batches_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-list"></i> Subjects'.html_safe, admin_subjects_path, class: current_page?(admin_subjects_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-chart-bar"></i> Reports'.html_safe, admin_reports_path, class: current_page?(admin_reports_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-paste"></i> Exams'.html_safe, admin_exams_path, class: current_page?(admin_exams_path) ? "nav-link active" : "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-photo-video"></i> Videos Portal'.html_safe, admin_video_lectures_path, class: current_page?(admin_video_lectures_path) ? "nav-link active" : "nav-link" %>
-          </li>
+          <% if current_admin.can_manage(:batches) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-list"></i> Batches'.html_safe, admin_batches_path, class: current_page?(admin_batches_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
+          <% if current_admin.can_manage(:subjects) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-list"></i> Subjects'.html_safe, admin_subjects_path, class: current_page?(admin_subjects_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
+          <% if current_admin.can_manage(:reports) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-chart-bar"></i> Reports'.html_safe, admin_reports_path, class: current_page?(admin_reports_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
+          <% if current_admin.can_manage(:exams) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-paste"></i> Exams'.html_safe, admin_exams_path, class: current_page?(admin_exams_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
+          <% if current_admin.can_manage(:videos) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-photo-video"></i> Videos Portal'.html_safe, admin_video_lectures_path, class: current_page?(admin_video_lectures_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
           <li class="nav-item">
             <a class="<%= current_page?(admin_android_apps_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
               <i class="fa fa-mobile-alt"></i> Android APP
             </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="<%= admin_study_pdfs_path %>">PDF</a>
-              <a class="dropdown-item" href="<%= admin_notifications_path %>">Notifications</a>
-              <a class="dropdown-item" href="<%= admin_zoom_meetings_path %>">Live Classes</a>
+              <% if current_admin.can_manage(:pdfs) %>
+                <a class="dropdown-item" href="<%= admin_study_pdfs_path %>">PDF</a>
+              <% end %>
+              <% if current_admin.can_manage(:notifications) %>
+                <a class="dropdown-item" href="<%= admin_notifications_path %>">Notifications</a>
+              <% end %>
+              <% if current_admin.can_manage(:live_classes) %>
+                <a class="dropdown-item" href="<%= admin_zoom_meetings_path %>">Live Classes</a>
+              <% end %>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="<%= admin_banners_path %>">Top Banners</a>
             </div>
           </li>
-          <li class="nav-item">
-            <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>
-          </li>
+          <% if current_admin.can_manage(:omr) %>
+            <li class="nav-item">
+              <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>
+            </li>
+          <% end %>
           <% if request.subdomain == 'bhargav' %>
             <li class="nav-item">
               <%= link_to '<i class="fa fa-address-card"></i> Attendance'.html_safe, admin_attendance_index_path, class: current_page?(admin_attendance_index_path) ? "nav-link active" : "nav-link" %>
@@ -87,8 +107,12 @@
               <i class="fas fa-tools"></i> Administration
             </a>
             <div class="dropdown-menu">
-              <%= link_to '<i class="fa fa-users"></i> Admin Users'.html_safe, admin_users_path, class: "dropdown-item"%>
-              <%= link_to '<i class="fas fa-rupee-sign"></i> Payments'.html_safe, admin_micro_payments_path, class: "dropdown-item"%>
+              <% if current_admin.can_manage(:admin_users) %>
+                <%= link_to '<i class="fa fa-users"></i> Admin Users'.html_safe, admin_users_path, class: "dropdown-item"%>
+              <% end %>
+              <% if current_admin.can_manage(:payments) %>
+                <%= link_to '<i class="fas fa-rupee-sign"></i> Payments'.html_safe, admin_micro_payments_path, class: "dropdown-item"%>
+              <% end %>
             </div>
           </li>
         </ul>

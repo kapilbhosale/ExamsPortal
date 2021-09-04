@@ -1,4 +1,6 @@
 class Admin::MicroPaymentsController < Admin::BaseController
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   def index
     @payment_links = MicroPayment.includes(:org)
@@ -77,5 +79,9 @@ class Admin::MicroPaymentsController < Admin::BaseController
 
   def payment_params
     params.permit(:amount, :min_payable_amount)
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:payments)
   end
 end

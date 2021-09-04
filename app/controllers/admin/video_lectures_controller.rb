@@ -1,4 +1,6 @@
 class Admin::VideoLecturesController < Admin::BaseController
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   require 'ostruct'
   def index
@@ -197,5 +199,9 @@ class Admin::VideoLecturesController < Admin::BaseController
     end
 
     { name_cont: search_term }
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:videos)
   end
 end

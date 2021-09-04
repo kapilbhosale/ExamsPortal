@@ -1,4 +1,6 @@
 class Admin::ReportsController < Admin::BaseController
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   USE_CACHE = false
 
@@ -82,4 +84,7 @@ class Admin::ReportsController < Admin::BaseController
     end
   end
 
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:reports)
+  end
 end

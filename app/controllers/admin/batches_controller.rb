@@ -1,4 +1,5 @@
 class Admin::BatchesController < Admin::BaseController
+  before_action :check_permissions
 
   def index
     @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group).all.order(:id)
@@ -64,5 +65,9 @@ class Admin::BatchesController < Admin::BaseController
   def set_flash
     key = @response[:status] ? :success : :warning
     flash[key] = @response[:message]
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:batches)
   end
 end

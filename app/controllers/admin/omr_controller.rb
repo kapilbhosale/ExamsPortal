@@ -1,4 +1,5 @@
 class Admin::OmrController < Admin::BaseController
+  before_action :check_permissions
 
   def create
     @test_names_for_ranks = {}
@@ -264,4 +265,7 @@ class Admin::OmrController < Admin::BaseController
     ["data", "exam_date", "exam_name", "is_imported", "omr", "percentage", "org_id", "student_id"]
   end
 
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:omr)
+  end
 end

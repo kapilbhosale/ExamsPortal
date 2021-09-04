@@ -14,6 +14,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  roles                  :jsonb
 #  sign_in_count          :integer          default(0), not null
 #  type                   :string           default("Teacher")
 #  created_at             :datetime         not null
@@ -68,8 +69,23 @@ class Admin < ApplicationRecord
   # 1. teacher
   # 1. operator
 
-
   attr_writer :login
+
+  ROLES = [
+    :students,
+    :batches,
+    :subjects,
+    :reports,
+    :exams,
+    :videos,
+    :pdfs,
+    :notifications,
+    :live_classes,
+    :omr,
+    :attendance,
+    :admin_users,
+    :payments,
+  ]
 
   def login
     @login || self.email
@@ -82,5 +98,11 @@ class Admin < ApplicationRecord
     elsif conditions.has_key?(:email)
       where(conditions.to_h).first
     end
+  end
+
+  # methods to mangae acces
+
+  def can_manage(area)
+    roles.include? area.to_s
   end
 end

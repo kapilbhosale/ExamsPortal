@@ -1,4 +1,6 @@
 class Admin::StudyPdfsController < Admin::BaseController
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   #  pdf controller section
   def index
@@ -112,5 +114,9 @@ class Admin::StudyPdfsController < Admin::BaseController
   def clear_cache(batch_id)
     cache_key = "BatchStudyPdf-batch-id-#{batch_id}"
     REDIS_CACHE.del(cache_key)
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:pdfs)
   end
 end

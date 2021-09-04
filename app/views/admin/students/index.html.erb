@@ -39,7 +39,9 @@
                     <% end %>
                     <th>App Login</th>
                     <th>laptop Login</th>
-                    <th><button class="btn btn-danger clearfix btn-sm">
+                    <th>
+                      <% unless @current_org.rcc? %>
+                        <button class="btn btn-danger clearfix btn-sm">
                           <span class="fa fa-file-pdf-o"></span>
                           <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
                         </button>
@@ -47,6 +49,7 @@
                           <span class="fa fa-file-text-o"></span>
                           <%= link_to ' CSV'.html_safe, admin_students_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
                         </button>
+                      <% end %>
                     </th>
                   </tr>
                 </thead>
@@ -83,7 +86,14 @@
                 </tbody>
               </table>
             <% end %>
-            <%= paginate @students %>
+            <% if @current_org.rcc? %>
+              <div style="padding: 10px; padding-left: 40%" >
+                <%= link_to_previous_page @students, 'PREV PAGE', class: 'btn btn-sm btn-outline-primary' %> |
+                <%= link_to_next_page @students, 'NEXT PAGE', class: 'btn btn-sm btn-outline-primary' %>
+              </div>
+            <% else %>
+              <%= paginate @students %>
+            <% end %>
           <% else %>
             <div class="alert alert-info">No students were found.</div>
           <% end %>

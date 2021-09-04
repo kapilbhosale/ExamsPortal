@@ -19,7 +19,6 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'activeadmin'
 gem 'activeadmin_json_editor', '~> 0.0.7'
-gem 'pundit'
 gem 'base32', '~> 0.3.2'
 gem 'rotp'
 

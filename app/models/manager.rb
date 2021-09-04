@@ -14,6 +14,7 @@
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
+#  roles                  :jsonb
 #  sign_in_count          :integer          default(0), not null
 #  type                   :string           default("Teacher")
 #  created_at             :datetime         not null

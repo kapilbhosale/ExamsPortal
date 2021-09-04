@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_07_134504) do
+ActiveRecord::Schema.define(version: 2021_09_04_191852) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_08_07_134504) do
     t.string "photo"
     t.integer "org_id", default: 0
     t.string "type", default: "Teacher"
+    t.jsonb "roles", default: []
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["id", "type"], name: "index_admins_on_id_and_type"
     t.index ["org_id"], name: "index_admins_on_org_id"
@@ -292,6 +293,16 @@ ActiveRecord::Schema.define(version: 2021_08_07_134504) do
     t.integer "video_lectures_count", default: 0
     t.index ["org_id"], name: "index_genres_on_org_id"
     t.index ["subject_id"], name: "index_genres_on_subject_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["student_id"], name: "index_likes_on_student_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -683,10 +694,11 @@ ActiveRecord::Schema.define(version: 2021_08_07_134504) do
     t.bigint "student_id"
     t.string "resource_type"
     t.integer "resource_id"
-    t.string "event"
+    t.integer "event"
     t.jsonb "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "device_type", default: 0
     t.index ["student_id"], name: "index_trackers_on_student_id"
   end
 

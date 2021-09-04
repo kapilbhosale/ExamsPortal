@@ -1,5 +1,7 @@
 class Admin::ExamsController < Admin::BaseController
   before_action :sections, only: [:new, :create]
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   def index
     @exams = Exam
@@ -133,4 +135,9 @@ class Admin::ExamsController < Admin::BaseController
     key = @response[:status] ? :success : :warning
     flash[key] = @response[:message]
   end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:exams)
+  end
+
 end

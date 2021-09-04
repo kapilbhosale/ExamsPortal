@@ -1,4 +1,6 @@
 class Admin::NotificationsController < Admin::BaseController
+  before_action :check_permissions
+
   ITEMS_PER_PAGE = 20
   def index
     @notifications = Notification
@@ -82,5 +84,9 @@ class Admin::NotificationsController < Admin::BaseController
   def clear_cache(batch_id)
     cache_key = "BatchNotifications-batch-id-#{batch_id}"
     REDIS_CACHE.del(cache_key)
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:notifications)
   end
 end

@@ -24,6 +24,10 @@ class Org < ApplicationRecord
     subdomain == 'bhargav'
   end
 
+  def rcc?
+    subdomain == 'exams'
+  end
+
   def send_push_notifications
     fcm = FCM.new(fcm_server_key)
     students.where.not(fcm_token: nil).each do |student|

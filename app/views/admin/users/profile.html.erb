@@ -1,0 +1,47 @@
+
+
+<div class="row">
+  <div class="col-lg-8">
+    <%= form_for :admin, url: admin_user_path(@admin), method: :patch, html: {class: 'card'} do  |form| %>
+      <div class="card-body">
+        <h3 class="card-title">Profile Password change form</h3>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Your Email</label>
+              <%= form.text_field :email, class: 'form-control', value: @admin.email, disabled: true%>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Current Password</label>
+              <%= form.password_field :current_password, class: 'form-control', placeholder: 'current password', required: true %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <%= form.password_field :new_password, class: 'form-control', placeholder: 'new password', required: true %>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Re enter New Password</label>
+              <%= form.password_field :re_new_password, class: 'form-control', placeholder: 'verify new password', required: true %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-right">
+        <%= link_to "Cancel", admin_batches_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+        <button type="submit" class="btn btn-success">Update</button>
+      </div>
+    <% end %>
+  </div>
+</div>

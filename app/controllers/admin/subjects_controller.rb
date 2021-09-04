@@ -1,5 +1,6 @@
 
 class Admin::SubjectsController < Admin::BaseController
+  before_action :check_permissions
 
   def index
     @subjects = Subject.where(org: current_org).all
@@ -62,5 +63,9 @@ class Admin::SubjectsController < Admin::BaseController
   def set_flash
     key = @response[:status] ? :success : :warning
     flash[key] = @response[:message]
+  end
+
+  def check_permissions
+    redirect_to '/404' unless current_admin.can_manage(:subjects)
   end
 end
