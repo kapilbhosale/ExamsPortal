@@ -96,10 +96,10 @@ class Question extends React.Component {
           <input
             type="text"
             value={ inputTypeValue() }
-            disabled= { inputAnsCount >= 5 && !inputTypeValue()}
+            disabled= { examType == 'jee' && inputAnsCount >= 5 && !inputTypeValue()}
             onChange={ (e) => { answerQuestion(currentQuestionIndex, [e.target.value]) } }
           />
-          { inputAnsweredQuestions && inputAnsCount >= 5 ? (
+          { inputAnsweredQuestions && examType == 'jee' && inputAnsCount >= 5 ? (
             <span className='text-danger text-small'> Maximum 5 Input can be answered, please clear if you want to solve this.</span>
           ) : (
             <span className='text-muted text-medium'> Write answers up to 2 precisions only.</span>
