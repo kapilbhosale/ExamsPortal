@@ -165,7 +165,7 @@ class StudentExamScoreCalculator
 
         if (student_ans - model_ans).present?
           multi_incorrect_count += 1
-          multi_mark_total += -1
+          multi_mark_total += -2
         elsif student_ans.size == model_ans.size && (student_ans & model_ans).size == model_ans.size
           multi_correct_count += 1
           multi_mark_total += 4
