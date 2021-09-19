@@ -1,7 +1,7 @@
 
 class Students::VideosController < Students::BaseController
   before_action :authenticate_student!
-  layout false, only: [:show_lecture]
+  layout 'student_exam_layout', only: [:show_lecture]
 
   before_action :check_valid_rcc_request, only: [:category_videos, :lectures, :show_lecture]
 
@@ -134,7 +134,6 @@ class Students::VideosController < Students::BaseController
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
     if current_org.subdomain == 'exams'
-      puts "------------>#{params[:video_id].to_s}"
       lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
       if REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd").present?
         @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd")

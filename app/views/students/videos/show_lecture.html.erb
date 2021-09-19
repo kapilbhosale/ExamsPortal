@@ -3,9 +3,8 @@
 <% else %>
   <% if @yt_playable_link.present? %>
     <div style="width: 100%; text-align: center; background-color: black">
-      <video width="95%" controls disablePictureInPicture controlsList="nodownload">
-        <source src="<%= @yt_playable_link %>" type="video/mp4">
-      </video>
+      <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
+      <%= react_component("Ytplayer", props: {url: @yt_playable_link}) %>
     </div>
   <% else %>
     <div style="width: 100%;">

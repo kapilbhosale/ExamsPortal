@@ -261,12 +261,12 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option value="11th">NEET SAARTHI(Free)-2021</option>
-                <option value="11th_new" selected >11th Regular Batch (2021-2022)</option>
+                <%# <option value="11th">NEET SAARTHI(Free)-2021</option> %>
+                <option value="11th_new">11th Regular Batch (2021-2022)</option>
                 <option value="12th">12th-new-2021-2022</option>
-                <option value="repeater">Repeater</option>
-                <option value="test_series">Test Series</option>
-                <option value="crash_course">Crash Course</option>
+                <option value="repeater" selected>Repeater-2021-2022</option>
+                <%# <option value="test_series">Test Series</option>
+                <option value="crash_course">Crash Course</option> %>
               <% end %>
             </select>
           </div>
