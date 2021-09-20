@@ -53,8 +53,8 @@
           }
         }
 
+        adjustUI();
         $('#batch').trigger("change");
-
 
         function showFeesDetails() {
           var totalFees = '₹60,000';
@@ -261,10 +261,10 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <%# <option value="11th">NEET SAARTHI(Free)-2021</option> %>
+                <option value="11th" selected>FREE RCC Repeater SET 2021-22</option>
                 <option value="11th_new">11th Regular Batch (2021-2022)</option>
                 <option value="12th">12th-new-2021-2022</option>
-                <option value="repeater" selected>Repeater-2021-2022</option>
+                <option value="repeater">Repeater-2021-2022</option>
                 <%# <option value="test_series">Test Series</option>
                 <option value="crash_course">Crash Course</option> %>
               <% end %>
@@ -278,7 +278,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="foundation-help-text" style="color: green; font-size: 10px; display: none">[NEET SAARTHI(Free)-2021 is for all subjects]</span>
+                <span id="foundation-help-text" style="color: green; font-size: 10px; display: none">[RCC Repeater SET EXAM 2021-22 is free for all subjects]</span>
               </p>
             <% end %>
           </div>
