@@ -99,15 +99,6 @@ class Batch < ApplicationRecord
       "Ltr-RCC-REP-SET-21-22" :
       "Ned-RCC-REP-SET-21-22"
 
-    _batch = Batch.find_by(org_id: org.id, name: batch_name)
-    if _batch.blank?
-      group_name = "REP-SET-21-22"
-      batch_group = BatchGroup.find_or_create_by(name: group_name, org_id: org.id)
-      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
-      Admin.where(org_id: org.id).each do |admin|
-        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
-      end
-    end
     Batch.where(org_id: org.id, name: batch_name)
   end
 
@@ -199,5 +190,16 @@ end
 #     Admin.where(org_id: org.id).each do |admin|
 #       AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
 #     end
+#   end
+# end
+
+
+# org = Org.first
+# batch_group = BatchGroup.find_or_create_by(name: "REP-SET-21-22", org_id: org.id)
+# ['Ltr', 'Ned'].each do |center|
+#   batch_name = "#{center}-RCC-REP-SET-21-22"
+#   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+#   Admin.where(org_id: org.id).each do |admin|
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
 #   end
 # end
