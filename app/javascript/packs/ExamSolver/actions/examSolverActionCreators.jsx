@@ -224,7 +224,11 @@ export function submitTest() {
         method: 'put',
         data: { id: store.get('examId'), questions: dataJSON },
         success: (data) => {
-          dispatch(resultSynced(true));
+          if(data.show_result_now) {
+            dispatch(resultSynced(true));
+          } else {
+            window.location = '/students/summary/' + store.get('examId');
+          }
         },
         error: (data) => {
           dispatch(resultSynced(false));

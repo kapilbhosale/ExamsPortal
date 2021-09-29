@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_04_191852) do
+ActiveRecord::Schema.define(version: 2021_09_29_111536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(version: 2021_09_04_191852) do
     t.integer "org_id", default: 0
     t.datetime "exam_available_till"
     t.boolean "is_pr_generated", default: false
+    t.datetime "show_result_at"
     t.index ["name"], name: "index_exams_on_name"
     t.index ["org_id"], name: "index_exams_on_org_id"
   end

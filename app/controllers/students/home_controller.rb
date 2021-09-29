@@ -204,15 +204,21 @@ class Students::HomeController < Students::BaseController
       topper_total: topper_total,
       total_marks: total_marks
     }
+    @exam = exam
   end
 
   def submit
     student_exam = StudentExam.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+    exam = Exam.find_by(id: params[:exam_id])
     if student_exam && student_exam.ended_at.blank?
       SyncWorker.perform_async(current_student.id, exam_params[:exam_id], exam_params[:questions].to_h, true)
       # sync_data_now(current_student.id, params[:exam_id], params[:questions])
       student_exam.update!(ended_at: Time.current)
-      return {}, status: :ok
+
+      show_result_now = exam.show_result_at.present? ? ((exam.show_result_at - exam.time_in_minutes.minutes) <= Time.current) : true
+      show_result_at = exam.show_result_at&.strftime("%d-%B-%Y %I:%M %p")
+
+      render json: { show_result_now: show_result_now, show_result_at: show_result_at }, status: :ok and return
     end
     return {error: "Exam Already submitted"}, status: 422
   end

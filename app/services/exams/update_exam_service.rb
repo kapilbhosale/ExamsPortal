@@ -32,6 +32,7 @@ module Exams
         :no_of_questions,
         :time_in_minutes,
         :show_exam_at,
+        :show_result_at,
         :exam_available_till).merge!(publish_result: exam_params[:publish_result] == 'Yes')
     end
 

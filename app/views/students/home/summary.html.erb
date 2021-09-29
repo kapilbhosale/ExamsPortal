@@ -1,5 +1,13 @@
-<%= react_component("Summary", props: @summary_data) %>
-<div class="text-center">
-  <%=  link_to  '<button class="btn btn-success">Continue</button>'.html_safe, students_tests_path %>
-  <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@exam_id) %>
-</div>
+<% if @exam.show_result_at.present? && @exam.show_result_at  > Time.current %>
+  <div class="text-center">
+    <p>You Completed the exam, your result will be availabe at</p>
+    <h4><%= @exam.show_result_at.strftime("%d-%b-%y %I:%M %p") %></h3>
+    <p>Thank you.</p>
+  </div>
+<% else %>
+  <%= react_component("Summary", props: @summary_data) %>
+  <div class="text-center">
+    <%=  link_to  '<button class="btn btn-success">Continue</button>'.html_safe, students_tests_path %>
+    <%=  link_to  '<button class="btn btn-primary">View Model Answer details</button>'.html_safe, students_model_answer_path(@exam_id) %>
+  </div>
+<% end %>

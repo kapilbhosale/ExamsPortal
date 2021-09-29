@@ -14,6 +14,7 @@
 #  publish_result      :boolean          default(FALSE), not null
 #  published           :boolean
 #  show_exam_at        :datetime
+#  show_result_at      :datetime
 #  time_in_minutes     :integer
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
