@@ -215,7 +215,7 @@ class Students::HomeController < Students::BaseController
       # sync_data_now(current_student.id, params[:exam_id], params[:questions])
       student_exam.update!(ended_at: Time.current)
 
-      show_result_now = exam.show_result_at.present? ? ((exam.show_result_at - exam.time_in_minutes.minutes) <= Time.current) : true
+      show_result_now = exam.show_result_at.present? ? (exam.show_result_at <= Time.current) : true
       show_result_at = exam.show_result_at&.strftime("%d-%B-%Y %I:%M %p")
 
       render json: { show_result_now: show_result_now, show_result_at: show_result_at }, status: :ok and return
