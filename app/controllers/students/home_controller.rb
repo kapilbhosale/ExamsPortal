@@ -133,23 +133,15 @@ class Students::HomeController < Students::BaseController
   # end
 
   def summary
-    @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
-    student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
+    exam = Exam.find_by(id: params[:exam_id])
+    @exam = exam
+    if exam.show_result_at.blank? || exam.show_result_at <= Time.current
+      @student_exam = StudentExam.find_by(exam_id: params[:exam_id], student_id: current_student.id)
+      student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id)
 
-    ses_sync = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
+      ses_sync = StudentExamSync.find_by(student_id: current_student.id, exam_id: params[:exam_id])
 
-    if student_exam_summaries.blank?
-      if ses_sync
-        if ses_sync.end_exam_sync
-          Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
-          StudentExamScoreCalculator.new(@student_exam.id).calculate
-          # ses.destroy
-        end
-      end
-      student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
-    else
-      if ses_sync && student_exam_summaries.first.updated_at < ses_sync.updated_at
-        student_exam_summaries.destroy_all
+      if student_exam_summaries.blank?
         if ses_sync
           if ses_sync.end_exam_sync
             Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
@@ -158,53 +150,63 @@ class Students::HomeController < Students::BaseController
           end
         end
         student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+      else
+        if ses_sync && student_exam_summaries.first.updated_at < ses_sync.updated_at
+          student_exam_summaries.destroy_all
+          if ses_sync
+            if ses_sync.end_exam_sync
+              Students::SyncService.new(current_student.id, params[:exam_id], ses_sync.sync_data).call
+              StudentExamScoreCalculator.new(@student_exam.id).calculate
+              # ses.destroy
+            end
+          end
+          student_exam_summaries = StudentExamSummary.includes(:section).where(student_exam_id: @student_exam.id).all
+        end
       end
-    end
-    @exam_id = params[:exam_id]
+      @exam_id = params[:exam_id]
+      es_by_section_id = exam.exam_sections.index_by(&:section_id)
 
-    exam = Exam.find_by(id: @exam_id)
-    es_by_section_id = exam.exam_sections.index_by(&:section_id)
+      se_ids = StudentExam.where(exam_id: @exam_id).ids
+      ses = StudentExamSummary.where(student_exam_id: se_ids)
 
-    se_ids = StudentExam.where(exam_id: @exam_id).ids
-    ses = StudentExamSummary.where(student_exam_id: se_ids)
+      total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
+      time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at - @student_exam.started_at) rescue "Not available"
+      section_data = student_exam_summaries.map do |student_exam_summary|
+        topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
+        total_score += student_exam_summary.score
+        total_question += student_exam_summary.no_of_questions
+        topper_total += topper_score
+        section_out_of_marks = es_by_section_id[student_exam_summary.section.id].total_marks
+        total_marks += section_out_of_marks
 
-    total_score, total_question, topper_total, total_marks = 0, 0, 0, 0
-    time_spent = helpers.distance_of_time_in_hours_and_minutes(@student_exam.ended_at - @student_exam.started_at) rescue "Not available"
-    section_data = student_exam_summaries.map do |student_exam_summary|
-      topper_score = ses.where(section_id: student_exam_summary.section.id).maximum(:score)
-      total_score += student_exam_summary.score
-      total_question += student_exam_summary.no_of_questions
-      topper_total += topper_score
-      section_out_of_marks = es_by_section_id[student_exam_summary.section.id].total_marks
-      total_marks += section_out_of_marks
+        {
+          exam_type: exam.exam_type,
+          section_name: student_exam_summary.section.name,
+          total_question: student_exam_summary.no_of_questions,
+          correct: student_exam_summary.correct,
+          incorrect: student_exam_summary.incorrect,
+          input_questions_present: student_exam_summary.input_questions_present,
+          correct_input_questions: student_exam_summary.correct_input_questions,
+          incorrect_input_questions: student_exam_summary.incorrect_input_questions,
+          not_answered: student_exam_summary.not_answered,
+          score: student_exam_summary.score,
+          topper_score: topper_score,
+          section_out_of_marks: section_out_of_marks,
+          extra_data: student_exam_summary.extra_data
+        }
+      end
 
-      {
-        exam_type: exam.exam_type,
-        section_name: student_exam_summary.section.name,
-        total_question: student_exam_summary.no_of_questions,
-        correct: student_exam_summary.correct,
-        incorrect: student_exam_summary.incorrect,
-        input_questions_present: student_exam_summary.input_questions_present,
-        correct_input_questions: student_exam_summary.correct_input_questions,
-        incorrect_input_questions: student_exam_summary.incorrect_input_questions,
-        not_answered: student_exam_summary.not_answered,
-        score: student_exam_summary.score,
-        topper_score: topper_score,
-        section_out_of_marks: section_out_of_marks,
-        extra_data: student_exam_summary.extra_data
+      @summary_data = {
+        is_result_processed: student_exam_summaries.present? || ses_sync&.end_exam_sync,
+        total_question: total_question,
+        total_score: total_score,
+        time_spent: time_spent,
+        section_data: section_data,
+        topper_total: topper_total,
+        total_marks: total_marks
       }
+      @exam = exam
     end
-
-    @summary_data = {
-      is_result_processed: student_exam_summaries.present? || ses_sync&.end_exam_sync,
-      total_question: total_question,
-      total_score: total_score,
-      time_spent: time_spent,
-      section_data: section_data,
-      topper_total: topper_total,
-      total_marks: total_marks
-    }
-    @exam = exam
   end
 
   def submit

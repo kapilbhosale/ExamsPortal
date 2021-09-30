@@ -286,7 +286,8 @@ export function syncAnswers() {
 export function timeIsUp() {
   // console.log('timeIsUp');
   return (dispatch, getState) => {
-    syncWithBackend();
+    // we don't want to sync data to servers, as this causes huge load and severs and eventually leads to crash.
+    // syncWithBackend();
     dispatch({ type: actionTypes.SHOW_TIME_UP_MODAL, val: true });
   }
 }
