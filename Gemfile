@@ -75,6 +75,7 @@ gem 'jquery-rails'
 gem 'redis'
 gem 'redis-rails'
 gem 'hiredis'
+gem 'redis-store'
 gem 'activerecord-import'
 
 #monitoring gems

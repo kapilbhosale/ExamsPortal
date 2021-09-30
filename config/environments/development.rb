@@ -19,9 +19,11 @@ Rails.application.configure do
   if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
 
-    config.cache_store = :memory_store
+    # config.cache_store = :memory_store
     ## DOCKER
-    # config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL_CACHING", "redis://redis:6379/0") }
+    config.cache_store = :redis_cache_store, { url: ENV.fetch("REDIS_URL", "redis://localhost:6379/0") }
+    config.session_store :cache_store, key: 'smart_exams_dev_session'
+
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }

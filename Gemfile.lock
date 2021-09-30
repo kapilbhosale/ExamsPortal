@@ -504,6 +504,7 @@ DEPENDENCIES
   react_on_rails (= 10.0.2)
   redis
   redis-rails
+  redis-store
   rmagick
   rollbar
   rotp
