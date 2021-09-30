@@ -3,7 +3,7 @@
 # .NET, PHP, Python, Node, and Go applications with deep visibility and low
 # overhead.  For more information, visit www.newrelic.com.
 #
-# Generated March 22, 2021
+# Generated October 1, 2021
 #
 # This configuration file is custom generated for NewRelic Administration
 #
@@ -12,11 +12,11 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: eu01xx230242cbb82465401b736b8824f38cNRAL
+  license_key: 6b44733654eac3ef33568cdf53c9bc823528NRAL
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: SmartExamsProd
+  app_name: EduAakar
 
   distributed_tracing:
     enabled: true
@@ -33,16 +33,16 @@ common: &default_settings
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: SmartExamsProd (Development)
+  app_name: EduAakar (Development)
 
-# test:
-#   <<: *default_settings
-#   # It doesn't make sense to report to New Relic from automated test runs.
-#   monitor_mode: false
+test:
+  <<: *default_settings
+  # It doesn't make sense to report to New Relic from automated test runs.
+  monitor_mode: false
 
-# staging:
-#   <<: *default_settings
-#   app_name: SmartExamsProd (Staging)
+staging:
+  <<: *default_settings
+  app_name: EduAakar (Staging)
 
 production:
   <<: *default_settings
