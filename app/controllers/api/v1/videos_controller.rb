@@ -93,7 +93,7 @@ class Api::V1::VideosController < Api::V1::ApiController
   def set_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: {} and return if lecture.blank?
-  
+
     REDIS_CACHE.set("lecture-#{lecture.id}-url_sd", params[:urls][:url_sd], { ex: 1.hour })
     REDIS_CACHE.set("lecture-#{lecture.id}-url_sd_contentLength", params[:urls][:url_sd_contentLength])
     REDIS_CACHE.set("lecture-#{lecture.id}-url_hd", params[:urls][:url_hd], { ex: 1.hour })
@@ -103,6 +103,18 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def categories
+    if current_org.subdomain == 'exams' && current_student.pending_amount.present? && current_student.block_videos?
+      render json: {}, status: :ok and return
+    end
+
+    student_video_folders = StudentVideoFolder.where(student_id: current_student.id)
+    cache_key = "VF-#{current_student.batches.order(:id).ids.join('-')}"
+    cached_data = REDIS_CACHE.get(cache_key)
+
+    if student_video_folders.blank? && cached_data.present?
+      render json: JSON.parse(cached_data), status: :ok and return
+    end
+
     all_vls = VideoLecture
       .includes(:genre, :subject, :batches)
       .where(org_id: current_org.id)
@@ -110,10 +122,6 @@ class Api::V1::VideosController < Api::V1::ApiController
 
     video_lectures = all_vls.where(enabled: true)
     categories_data = {}
-
-    if current_org.subdomain == 'exams' && current_student.pending_amount.present? && current_student.block_videos?
-      render json: {}, status: :ok and return
-    end
 
     video_lectures.each do |vl|
       next if vl.publish_at.present? && vl.publish_at > Time.current
@@ -132,13 +140,19 @@ class Api::V1::VideosController < Api::V1::ApiController
       end
     end
 
+    if student_video_folders.blank?
+      REDIS_CACHE.set(cache_key, categories_data.to_json)
+      render json: categories_data, status: :ok and return
+    end
+
     # considering enalbed false videos for students admitted late.
     # starts here
+
     video_lectures = all_vls.where(enabled: false)
     video_lectures.each do |vl|
       next if vl.publish_at.present? && vl.publish_at > Time.current
 
-      svfs = StudentVideoFolder.where(student_id: current_student.id).index_by(&:genre_id)
+      svfs = student_video_folders.index_by(&:genre_id)
       svf = svfs[vl&.genre&.id]
 
       include_flag = false
@@ -173,6 +187,14 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def category_videos
+    student_video_folders = StudentVideoFolder.where(student_id: current_student.id)
+    cache_key = "CV-#{current_student.batches.order(:id).ids.join('-')}"
+    cached_data = REDIS_CACHE.get(cache_key)
+
+    if student_video_folders.blank? && cached_data.present?
+      render json: JSON.parse(cached_data), status: :ok and return
+    end
+
     all_vls = VideoLecture.includes(:batches)
               .where(org_id: current_org.id)
               .where(batches: {id: current_student.batches.ids}, genre_id: params[:id].to_i)
@@ -181,12 +203,19 @@ class Api::V1::VideosController < Api::V1::ApiController
     lectures_json = lectures_json(video_lectures)
     lectures_json = lectures_json.delete_if { |_, value| value.blank? }
 
+    if student_video_folders.blank?
+      REDIS_CACHE.set(cache_key, lectures_json.to_json)
+      render json: lectures_json, status: :ok and return
+    end
+    # considering enalbed false videos for students admitted late.
+    # starts here
+
     disabled_vls = all_vls.where(enabled: false).order(id: :desc)
 
     disabled_vls.each do |vl|
       next if vl.publish_at.present? && vl.publish_at > Time.current
 
-      svfs = StudentVideoFolder.where(student_id: current_student.id).index_by(&:genre_id)
+      svfs = student_video_folders.index_by(&:genre_id)
       svf = svfs[vl&.genre&.id]
 
       include_flag = false
