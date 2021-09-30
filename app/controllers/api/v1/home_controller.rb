@@ -28,6 +28,11 @@ class Api::V1::HomeController < Api::V1::ApiController
   end
 
   def top_banners_data
+    cache_key = "BA-#{current_student.batches.order(:id).ids.join('-')}"
+    cached_data = REDIS_CACHE.get(cache_key)
+
+    return JSON.parse(cached_data) if cached_data.present?
+
     banners_data = []
     banners = Banner.includes(:org).where(active: true).where(org: current_org).includes(:batches, :batch_banners).where(batches: {id: current_student.batches&.ids}).all.order(id: :desc) || []
 
@@ -100,6 +105,8 @@ class Api::V1::HomeController < Api::V1::ApiController
           "on_click"=>"https://exams.smartclassapp.in/new-admission"
         }
       banners_data + current_org.data['top_banners']
+
+      REDIS_CACHE.set(cache_key, banners_data.to_json)
     end
   end
 

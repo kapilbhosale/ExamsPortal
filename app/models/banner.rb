@@ -22,4 +22,15 @@ class Banner < ApplicationRecord
 
   has_many :batch_banners
   has_many :batches, through: :batch_banners
+
+  after_create :flush_banner_cache
+
+  private
+
+  def flush_banner_cache
+    REDIS_CACHE.keys('BA-*').each do |cache_key|
+      REDIS_CACHE.del(cache_key)
+    end
+  end
+
 end

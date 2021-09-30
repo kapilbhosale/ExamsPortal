@@ -7,4 +7,4 @@ class MorningStudyNotifWorker
   end
 end
 
-Sidekiq::Cron::Job.create(name: 'MorningStudyNotifWorker - every day 9 AM', cron: '0 9 * * *', class: 'MorningStudyNotifWorker')
+Sidekiq::Cron::Job.create(name: 'MorningStudyNotifWorker - every day 9 AM', cron: '0 9 * * 1', class: 'MorningStudyNotifWorker')
