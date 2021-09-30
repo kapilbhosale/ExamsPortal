@@ -141,7 +141,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     end
 
     if student_video_folders.blank?
-      REDIS_CACHE.set(cache_key, categories_data.to_json)
+      REDIS_CACHE.set(cache_key, categories_data.to_json, { ex: 1.day })
       render json: categories_data, status: :ok and return
     end
 
@@ -188,7 +188,7 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def category_videos
     student_video_folders = StudentVideoFolder.where(student_id: current_student.id)
-    cache_key = "CV-#{current_student.batches.order(:id).ids.join('-')}"
+    cache_key = "CV-#{params[:id]}"
     cached_data = REDIS_CACHE.get(cache_key)
 
     if student_video_folders.blank? && cached_data.present?
@@ -204,7 +204,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     lectures_json = lectures_json.delete_if { |_, value| value.blank? }
 
     if student_video_folders.blank?
-      REDIS_CACHE.set(cache_key, lectures_json.to_json)
+      REDIS_CACHE.set(cache_key, lectures_json.to_json, { ex: 1.day })
       render json: lectures_json, status: :ok and return
     end
     # considering enalbed false videos for students admitted late.
