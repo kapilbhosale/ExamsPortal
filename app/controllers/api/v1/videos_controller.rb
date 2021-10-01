@@ -191,9 +191,9 @@ class Api::V1::VideosController < Api::V1::ApiController
     cache_key = "CV-#{params[:id]}"
     cached_data = REDIS_CACHE.get(cache_key)
 
-    if student_video_folders.blank? && cached_data.present?
-      render json: JSON.parse(cached_data), status: :ok and return
-    end
+    # if student_video_folders.blank? && cached_data.present?
+    #   render json: JSON.parse(cached_data), status: :ok and return
+    # end
 
     all_vls = VideoLecture.includes(:batches)
               .where(org_id: current_org.id)
