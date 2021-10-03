@@ -134,7 +134,7 @@ class Students::VideosController < Students::BaseController
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
     # disabling video from ytdl
-    if fasle && current_org.subdomain == 'exams'
+    if false && current_org.subdomain == 'exams'
       lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
       if REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd").present?
         @yt_playable_link = REDIS_CACHE&.get("lecture-#{lecture&.id}-url_hd")
