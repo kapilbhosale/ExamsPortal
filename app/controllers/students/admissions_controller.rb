@@ -207,14 +207,28 @@ class Students::AdmissionsController < ApplicationController
     return 12_000 if batch == '10th'
 
     if batch == 'repeater'
-      return 15_000 if course.name == "phy"
-      return 15_000 if course.name == "chem"
-      return 15_000 if course.name == "bio"
-      return 25_000 if course.name == "pcb"
+      if new_admission.extra_data.dig('pay_type') == 'installment'
+        return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
-      return 25_000 if course.name == "pc"
-      return 25_000 if course.name == "pb"
-      return 25_000 if course.name == "cb"
+        if ['pc', 'pb', 'cb'].include?(course.name)
+          return 20_000 if rcc_branch == 'nanded'
+          return 25_000 if rcc_branch == 'latur'
+        end
+
+        return 25_000 if ['pcb'].include?(course.name)
+      else
+        return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
+
+        if ['pc', 'pb', 'cb'].include?(course.name)
+          return 40_000 if rcc_branch == 'nanded'
+          return 45_000 if rcc_branch == 'latur'
+        end
+
+        if ['pcb'].include?(course.name)
+          return 50_000 if rcc_branch == 'nanded'
+          return 55_000 if rcc_branch == 'latur'
+        end
+      end
     end
     if batch == '11th_new'
       if new_admission.extra_data.dig('pay_type') == 'installment'
