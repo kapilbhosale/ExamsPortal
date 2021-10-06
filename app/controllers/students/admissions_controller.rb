@@ -303,13 +303,13 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def admission_done
-    puts "PAYMENT**********"
-    puts params
-    puts "PAYMENT**********"
+    Rails.logger.info "PAYMENT**********"
+    Rails.logger.info params
+    Rails.logger.info "PAYMENT**********"
     @params = params
     @status = (params['Response Code'] == 'E000')
     @error_code = params['Response Code']
-    @new_admission = NewAdmission.find_by(payment_id: params['ReferenceNo'])
+    @new_admission = NewAdmission.in_progress.find_by(payment_id: params['ReferenceNo'])
 
     if @new_admission
       @new_admission.payment_callback_data = params
