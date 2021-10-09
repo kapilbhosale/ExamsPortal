@@ -776,6 +776,7 @@ class Api::V1::VideosController < Api::V1::ApiController
       if [115843].include?(current_student.id)
         lect_data['video_type'] = 'vimeo'
         lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"
+        lect_data['video_id'] = lect.laptop_vimeo_id
       end
 
       lectures_data[lect.subject&.name] ||= []
