@@ -182,6 +182,7 @@ Rails.application.routes.draw do
       resources :videos, only: [:index] do
         get   :get_yt_url
         post  :set_yt_url
+        get   :need_url
       end
       resources :study_pdfs, only: [:index]
       resources :meetings, only: [:index]
