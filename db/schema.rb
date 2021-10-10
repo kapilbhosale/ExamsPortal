@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_29_111536) do
+ActiveRecord::Schema.define(version: 2021_10_10_214945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -723,6 +723,8 @@ ActiveRecord::Schema.define(version: 2021_09_29_111536) do
     t.integer "subject_id"
     t.datetime "publish_at"
     t.integer "view_limit", default: 3
+    t.string "play_url_from_server"
+    t.datetime "link_udpated_at"
     t.index ["genre_id"], name: "index_video_lectures_on_genre_id"
     t.index ["org_id"], name: "index_video_lectures_on_org_id"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"

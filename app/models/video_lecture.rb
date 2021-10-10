@@ -2,26 +2,28 @@
 #
 # Table name: video_lectures
 #
-#  id                 :bigint(8)        not null, primary key
-#  by                 :string
-#  description        :string
-#  enabled            :boolean          default(TRUE)
-#  publish_at         :datetime
-#  subject_name       :integer
-#  tag                :string
-#  thumbnail          :string
-#  title              :string
-#  uploaded_thumbnail :string
-#  url                :string
-#  video_type         :integer          default("vimeo")
-#  view_limit         :integer          default(3)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  genre_id           :integer          default(0)
-#  laptop_vimeo_id    :integer
-#  org_id             :integer          default(0)
-#  subject_id         :integer
-#  video_id           :string
+#  id                   :bigint(8)        not null, primary key
+#  by                   :string
+#  description          :string
+#  enabled              :boolean          default(TRUE)
+#  link_udpated_at      :datetime
+#  play_url_from_server :string
+#  publish_at           :datetime
+#  subject_name         :integer
+#  tag                  :string
+#  thumbnail            :string
+#  title                :string
+#  uploaded_thumbnail   :string
+#  url                  :string
+#  video_type           :integer          default("vimeo")
+#  view_limit           :integer          default(3)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  genre_id             :integer          default(0)
+#  laptop_vimeo_id      :integer
+#  org_id               :integer          default(0)
+#  subject_id           :integer
+#  video_id             :string
 #
 # Indexes
 #
@@ -53,8 +55,8 @@ class VideoLecture < ApplicationRecord
   belongs_to :genre, optional: true, counter_cache: true
   mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
-  after_create :flush_video_folders_cache
-  after_create :flush_videos_cache
+  after_save :flush_video_folders_cache
+  after_save :flush_videos_cache
 
   def set_thumbnail
     require 'net/http'
@@ -114,14 +116,14 @@ class VideoLecture < ApplicationRecord
   end
 
   def flush_video_folders_cache
-    REDIS_CACHE.keys('VF-*').each do |cache_key|
-      REDIS_CACHE.del(cache_key)
+    REDIS_CACHE&.keys('VF-*').each do |cache_key|
+      REDIS_CACHE&.del(cache_key)
     end
   end
 
   def flush_videos_cache
-    REDIS_CACHE.keys('CV-*').each do |cache_key|
-      REDIS_CACHE.del(cache_key)
+    REDIS_CACHE&.keys('CV-*').each do |cache_key|
+      REDIS_CACHE&.del(cache_key)
     end
   end
 
