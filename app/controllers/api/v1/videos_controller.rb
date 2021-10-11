@@ -36,7 +36,7 @@ class Api::V1::VideosController < Api::V1::ApiController
   # def set_yt_url
   #   lecture = VideoLecture.find_by(id: params[:video_id])
   #   render json: {} and return if lecture.blank?
-    
+
   #   urls = params[:urls]
   #   expiry_time = params[:expiry_time]
 
@@ -50,16 +50,10 @@ class Api::V1::VideosController < Api::V1::ApiController
   #   render json: { url_hd: cached_url, url_sd: cached_url }
   # end
 
-  # this method can execute in background.
   def need_url
     lecture = VideoLecture.find_by(id: params[:video_id])
-    if lecture.present? && (lecture.play_url_from_server.blank? || lecture.link_udpated_at <= (Time.current - 1.hour))
-      video_data = `yt-dlp --get-url --format 18/22 '#{lecture.url}' --proxy #{PROXIES[Random.rand(999)]}`
-      if video_data.present?
-        lecture.play_url_from_server = video_data.squish
-        lecture.link_udpated_at = Time.current
-        lecture.save
-      end
+    if lecture.present? && lecture.play_url_expired?
+      VideoLinkFetchWorker.perform_async(lecture.id)
     end
     render json: {}, status: :ok
   end
@@ -282,7 +276,7 @@ class Api::V1::VideosController < Api::V1::ApiController
         lect_data['play_url'] = lect.url
       end
 
-      if lect.play_url_from_server.present? && lect.link_udpated_at <= (Time.current - 1.hour)
+      if lect.play_url_expired?
         lect_data['play_url_from_server'] = nil
       end
 

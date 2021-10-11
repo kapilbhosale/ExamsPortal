@@ -92,6 +92,45 @@ class VideoLecture < ApplicationRecord
     end
   end
 
+  def update_play_url
+    video_data = `yt-dlp --get-url --format 18/22 '#{url}' --proxy #{PROXIES[Random.rand(999)]}`
+    if video_data.blank?
+      yt_dlp_errors = REDIS_CACHE.get('yt-dlp-errors') || '{}'
+      yt_dlp_errors = JSON.parse(yt_dlp_errors)
+      yt_dlp_errors[id] = Time.current.strftime('%d-%b-%Y %I:%M%p')
+      REDIS_CACHE.set('yt-dlp-errors', yt_dlp_errors.to_json)
+      return
+    end
+
+    self.play_url_from_server = video_data.squish
+    self.link_udpated_at = Time.current
+    save
+  end
+
+  def play_url_live?
+    expired = play_url_expired?
+    !expired
+  end
+
+  def play_url_expired?
+    return true if play_url_from_server.blank?
+
+    expiry_time = nil
+    duration_seconds = nil
+
+    expiry_data = play_url_from_server.match(/expire=[\d]+/)
+    expiry_time = expiry_data.to_s.split('=').last&.to_i if expiry_data.present?
+
+    duration_data = play_url_from_server.match(/dur=[\d]+/)
+    duration_seconds = duration_data.to_s.split('=').last&.to_i if duration_data.present?
+
+    if expiry_time.present? && duration_seconds.present?
+      video_expiry_time = expiry_time - (duration_seconds + 30.minutes.to_i)
+      return Time.current.to_i >= video_expiry_time
+    end
+    link_udpated_at <= (Time.current - 1.hour)
+  end
+
   def send_push_notifications
     fcm = FCM.new(org.fcm_server_key)
     batches.each do |batch|
