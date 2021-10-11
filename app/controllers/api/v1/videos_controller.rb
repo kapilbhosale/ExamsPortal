@@ -282,6 +282,10 @@ class Api::V1::VideosController < Api::V1::ApiController
         lect_data['play_url'] = lect.url
       end
 
+      if lect.play_url_from_server.present? && lect.link_udpated_at <= (Time.current - 1.hour)
+        lect_data['play_url_from_server'] = nil
+      end
+
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data
     end
