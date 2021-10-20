@@ -183,6 +183,7 @@ Rails.application.routes.draw do
         get   :get_yt_url
         post  :set_yt_url
         get   :need_url
+        get   :get_ytdlp_url
       end
       resources :study_pdfs, only: [:index]
       resources :meetings, only: [:index]
