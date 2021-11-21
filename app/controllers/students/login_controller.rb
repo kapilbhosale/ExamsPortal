@@ -20,8 +20,12 @@ class Students::LoginController < Students::BaseController
       student.remember_me = login_params[:remember_me]
 
       if student.disable?
-        flash[:error] = 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'
-        sign_out student
+        if current_org.rcc?
+          flash[:error] = 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'
+        else
+          flash[:error] = 'your account is disabled, please contact office.'
+        end
+          sign_out student
         redirect_to("/student/sign_in") and return
       end
 

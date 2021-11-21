@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2021_10_10_214945) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -64,17 +63,6 @@ ActiveRecord::Schema.define(version: 2021_10_10_214945) do
   end
 
   create_table "admission_batches", force: :cascade do |t|
-  end
-
-  create_table "attachments", force: :cascade do |t|
-    t.bigint "org_id"
-    t.string "file_name"
-    t.string "attachable_type"
-    t.bigint "attachable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id"
-    t.index ["org_id"], name: "index_attachments_on_org_id"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -208,23 +196,6 @@ ActiveRecord::Schema.define(version: 2021_10_10_214945) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "doubts", force: :cascade do |t|
-    t.bigint "org_id"
-    t.bigint "subject_id"
-    t.integer "parent_id"
-    t.string "details"
-    t.boolean "is_solved", default: false
-    t.integer "upvotes", default: 0
-    t.bigint "admin_id"
-    t.bigint "student_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_doubts_on_admin_id"
-    t.index ["org_id"], name: "index_doubts_on_org_id"
-    t.index ["student_id"], name: "index_doubts_on_student_id"
-    t.index ["subject_id"], name: "index_doubts_on_subject_id"
-  end
-
   create_table "exam_batches", force: :cascade do |t|
     t.bigint "exam_id"
     t.bigint "batch_id"
@@ -296,16 +267,6 @@ ActiveRecord::Schema.define(version: 2021_10_10_214945) do
     t.index ["subject_id"], name: "index_genres_on_subject_id"
   end
 
-  create_table "likes", force: :cascade do |t|
-    t.bigint "student_id"
-    t.string "likeable_type"
-    t.bigint "likeable_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
-    t.index ["student_id"], name: "index_likes_on_student_id"
-  end
-
   create_table "messages", force: :cascade do |t|
     t.bigint "sender_id"
     t.string "sender_type"
@@ -374,9 +335,6 @@ ActiveRecord::Schema.define(version: 2021_10_10_214945) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "notif_types", default: 0
-    t.string "attachment_pdf"
-    t.string "attachment_image"
     t.index ["org_id"], name: "index_notifications_on_org_id"
   end
 
@@ -695,11 +653,10 @@ ActiveRecord::Schema.define(version: 2021_10_10_214945) do
     t.bigint "student_id"
     t.string "resource_type"
     t.integer "resource_id"
-    t.integer "event"
+    t.string "event"
     t.jsonb "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "device_type", default: 0
     t.index ["student_id"], name: "index_trackers_on_student_id"
   end
 
