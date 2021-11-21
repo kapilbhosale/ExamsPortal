@@ -79,9 +79,6 @@
           hidePaymentDivs();
           resetPaymentModeSelection();
 
-          if (batch === "11th_new" && courseSelected) {
-            $('.payment-selection-div').animate( { "opacity": "show", top:"100"} , 1000 );
-          }
 
           if (batch === "repeater" && courseSelected) {
             $('.payment-selection-div-rep').animate( { "opacity": "show", top:"100"} , 1000 );
@@ -370,7 +367,7 @@
         <div class="payment-selection-div" style="background-color: #d0f1cd; padding: 10px; display: none">
           <table style="width: 90%;">
             <tr>
-              <td><p style="color: gray;">Select Payment mode : </p> </td>
+              <td><p style="color: gray;">Select Payment mode :: </p> </td>
               <td colspan="2" class="text-center"><p>Total Fees:	<b><span id="total">₹60,000</span></b></p></td>
             </tr>
             <tr style="display: none">

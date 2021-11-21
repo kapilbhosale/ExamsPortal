@@ -221,7 +221,7 @@ class Students::AdmissionsController < ApplicationController
 
         if ['pc', 'pb', 'cb'].include?(course.name)
           return 40_000 if rcc_branch == 'nanded'
-          return 45_000 if rcc_branch == 'latur'
+          return 50_000 if rcc_branch == 'latur'
         end
 
         if ['pcb'].include?(course.name)
@@ -231,7 +231,7 @@ class Students::AdmissionsController < ApplicationController
       end
     end
     if batch == '11th_new'
-      if new_admission.extra_data.dig('pay_type') == 'installment'
+      if false && new_admission.extra_data.dig('pay_type') == 'installment'
         return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
         if ['pc', 'pb', 'cb'].include?(course.name)
@@ -245,12 +245,12 @@ class Students::AdmissionsController < ApplicationController
 
         if ['pc', 'pb', 'cb'].include?(course.name)
           return 40_000 if rcc_branch == 'nanded'
-          return 45_000 if rcc_branch == 'latur'
+          return 40_000 if rcc_branch == 'latur'
         end
 
         if ['pcb'].include?(course.name)
           return 50_000 if rcc_branch == 'nanded'
-          return 55_000 if rcc_branch == 'latur'
+          return 40_000 if rcc_branch == 'latur'
         end
       end
     end
