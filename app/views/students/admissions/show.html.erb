@@ -130,20 +130,20 @@
               }
             } else {
               if (subjectCount === 3) {
-                totalFees = '₹60,000';
-                oneTimeFees = '₹55,000';
-                installmentFees = '₹20,000';
-                nextInstallmentFees = '₹40,000';
+                totalFees = '₹40,000';
+                oneTimeFees = '₹40,000';
+                installmentFees = '₹40,000';
+                nextInstallmentFees = '₹00';
               } else if (subjectCount === 2) {
-                totalFees = '₹50,000';
-                oneTimeFees = '₹45,000';
-                installmentFees = '₹15,000';
-                nextInstallmentFees = '₹35,000';
+                totalFees = '₹40,000';
+                oneTimeFees = '₹40,000';
+                installmentFees = '₹40,000';
+                nextInstallmentFees = '₹00';
               } else if (subjectCount === 1) {
                 totalFees = '₹25,000';
                 oneTimeFees = '₹25,000';
-                installmentFees = '₹15,000';
-                nextInstallmentFees = '₹10,000';
+                installmentFees = '₹25,000';
+                nextInstallmentFees = '₹00';
               }
             }
           }
@@ -174,7 +174,7 @@
                 nextInstallmentFees = '₹35,000';
               } else if (subjectCount === 2) {
                 totalFees = '₹50,000';
-                oneTimeFees = '₹45,000';
+                oneTimeFees = '₹50,000';
                 installmentFees = '₹25,000';
                 nextInstallmentFees = '₹25,000';
               } else if (subjectCount === 1) {
@@ -185,6 +185,7 @@
               }
             }
           }
+
           if (batch === "11th_new") {
             $('#total').text(totalFees);
             $('#one-time-val').text(oneTimeFees);
