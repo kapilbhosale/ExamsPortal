@@ -74,7 +74,7 @@ class Students::ExamsController < Students::BaseController
       exam_type: exam.exam_type,
       student_ans: {},
       time_data: time_data,
-      s3_url: "https://smart-exams-production.s3.ap-south-1.amazonaws.com/json-data/#{Rails.env}-#{current_org.subdomain}-#{exam.id}.json"
+      s3_url: "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/json-data/#{Rails.env}-#{current_org.subdomain}-#{exam.id}.json"
     }
   end
 

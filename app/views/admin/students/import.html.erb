@@ -33,7 +33,7 @@
                 <input type="file" name="csv_file" accept=".csv" required>
               </div>
               <div>
-                <a href="https://smart-exams-production.s3.ap-south-1.amazonaws.com/templates/students.csv"
+                <a href="#{ENV.fetch('AWS_CLOUDFRONT_URL')}/templates/students.csv"
                   class="btn btn-outline-primary" role="button" aria-pressed="true">Download Template</a>
               </div>
               <p>

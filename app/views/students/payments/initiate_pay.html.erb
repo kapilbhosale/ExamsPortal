@@ -82,7 +82,7 @@
       "currency": "INR",
       "name": "RCC",
       "description": "<%= "#{@new_admission.batch} - #{@new_admission.course&.name}"%>",
-      "image": "https://smart-exams-production.s3.ap-south-1.amazonaws.com/apks/rcc/rcc-logo.jpg",
+      "image": "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc-logo.jpg",
       "order_id": "<%= @order.id %>", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
       "callback_url": "https://exams.smartclassapp.in/authorize_payment",
       "prefill": {
