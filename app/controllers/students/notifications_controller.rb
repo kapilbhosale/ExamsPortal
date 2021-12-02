@@ -4,9 +4,10 @@ class Students::NotificationsController < Students::BaseController
   def index
     @notifications = BatchNotification.includes(:notification)
     .where(batch: current_student.batches)
-    .page(params[:page])
+    .order(id: :desc)
+    .page(params[:page] || 1)
     .per(params[:limit] || ITEMS_PER_PAGE)
-    
+
     @notifications_data = @notifications.map(&:notification)
   end
 end
