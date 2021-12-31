@@ -14,6 +14,8 @@
 #
 
 class BatchGroup < ApplicationRecord
-  has_many :baches
+  has_many :batches
   belongs_to :org
+
+  validates_uniqueness_of :name
 end

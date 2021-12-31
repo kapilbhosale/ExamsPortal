@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5>Batch Groups</h5>
+        </div>
+        <div class="col-md-6 text-right">
+          <% if @current_admin.can_manage(:batches) %>
+            <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Batch Group'.html_safe, new_admin_batch_group_path %>
+          <% end %>
+        </div>
+      </div>
+      <% if @batch_groups.present? %>
+        <div class="table-responsive">
+          <table class="table card-table table-vcenter text-nowrap">
+            <thead>
+              <tr>
+                <th class="w-1">No.</th>
+                <th>group Name</th>
+                <th>Created</th>
+                <th>Batches</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @batch_groups.each do |batch_group| %>
+                <tr>
+                  <td>
+                    <span class="text-muted"><%= batch_group.id %></span>
+                  </td>
+                  <td>
+                    <%= link_to batch_group.name, admin_batch_path(batch_group) %>
+                  </td>
+                  <td>
+                    <%= batch_group.created_at.strftime("%d-%b-%Y") %>
+                  </td>
+                  <td>
+                    <%= batch_group.batches&.count || '-' %>
+                  </td>
+                  <td>
+                    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_batch_group_path(batch_group), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% else %>
+        <div class="alert alert-info">No batch Groups were found.</div>
+      <% end %>
+    </div>
+  </div>
+</div>

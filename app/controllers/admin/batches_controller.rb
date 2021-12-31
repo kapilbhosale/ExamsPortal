@@ -12,7 +12,13 @@ class Admin::BatchesController < Admin::BaseController
 
   def create
     @response = Batches::AddBatchService.new(params[:batch][:name], current_org, params[:batch_group_id]).call
-    current_admin.batches << @response[:batch] if @response[:status]
+
+    if @response[:status]
+      Admin.where(org_id: current_org.id).each do |admin|
+        admin.batches << @response[:batch]
+      end
+    end
+
     set_flash
     redirect_to admin_batches_path
   end
@@ -54,6 +60,38 @@ class Admin::BatchesController < Admin::BaseController
     @response = Batches::DeleteBatchService.new(params[:id], current_org).call
     set_flash
     redirect_to admin_batches_path
+  end
+
+  def change_batches
+    @student_data = {batches: Batch.where(org: current_org).all_batches}
+  end
+
+  def process_change_batches
+    csv_file_path = params[:csv_file].tempfile.path
+    batch_id = params[:batch_id]
+    @total_count, @success_count = 0, 0
+
+    CSV.open(csv_file_path, :row_sep => :auto, :encoding => 'ISO-8859-1', :col_sep => ",") do |csv|
+      flash[:error] = "Invalid CSV" and redirect back if csv.first.length != 4
+
+      # [Roll Number, name, parent mobile number, student mobile number]
+      csv.each do |row|
+        @total_count += 1
+        roll_number = row[0]&.strip
+        parent_mobile = row[2]&.strip
+        student_mobile = row[3]&.strip
+
+        student = Student.find_by(roll_number: roll_number, parent_mobile: parent_mobile, student_mobile: student_mobile)
+        next if student.blank?
+
+        StudentBatch.where(student: student).delete_all
+        StudentBatch.create!(student: student, batch_id: batch_id)
+        @success_count += 1
+      end
+    end
+    flash[:notice] = "Student Batches Changed #{@success_count}/#{@total_count}"
+    @student_data = {batches: Batch.where(org: current_org).all_batches}
+    render 'change_batches'
   end
 
   private

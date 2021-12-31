@@ -51,7 +51,13 @@
           </li>
           <% if current_admin.can_manage(:batches) %>
             <li class="nav-item">
-              <%= link_to '<i class="fa fa-list"></i> Batches'.html_safe, admin_batches_path, class: current_page?(admin_batches_path) ? "nav-link active" : "nav-link" %>
+              <a class="<%= current_page?(admin_batches_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                <i class="fas fa-tools"></i> Batches
+              </a>
+              <div class="dropdown-menu">
+                <%= link_to '<i class="fa fa-list"></i> Batches'.html_safe, admin_batches_path, class: "dropdown-item"%>
+                <%= link_to '<i class="fa fa-sitemap"></i> Batch Groups'.html_safe, admin_batch_groups_path, class: "dropdown-item"%>
+              </div>
             </li>
           <% end %>
           <% if current_admin.can_manage(:subjects) %>

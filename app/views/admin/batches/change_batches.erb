@@ -1,0 +1,59 @@
+<% if @success_count.present? || @total_count.present? %>
+  <%= "Successfully changed batches for - #{@success_count}/#{@total_count}" %>
+<% end %>
+<div>
+  <div class="col-lg-12">
+    <%= form_tag(process_change_batches_admin_batches_path, method: :post, multipart: true, class: 'card') do %>
+      <div class="card-body">
+        <h3 class="card-title">Bulk Change Students Batches</h3>
+        <hr>
+
+        <div class="col-sm-12 col-md-12">
+          <div class="form-group">
+            <div class="form-label">CSV File</div>
+            <div class="custom-file">
+              <input type="file" name="csv_file" accept=".csv" required>
+            </div>
+            <div>
+              <a href="#{ENV.fetch('AWS_CLOUDFRONT_URL')}/templates/students.csv"
+                class="btn btn-outline-primary" role="button" aria-pressed="true">Download Template</a>
+            </div>
+            <p>
+              Note: CSV file with only 4 columns is accepted. First row containts headers.
+            </p>
+            <p>
+              [Roll Number, name, parent mobile number, student mobile number]
+            </p>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-md-12">
+          <div class="form-group">
+            <label class="form-label">Please Select Batch To Transfer Students - </label>
+            <p>
+              Note: Students will get removed from previous batch. It will not be possible to undo this action.
+            </p>
+            <hr />
+            <% if @student_data[:batches].present? %>
+            <div class="selectgroup selectgroup-pills">
+              <% @student_data[:batches].each do |batch|%>
+              <label class="selectgroup-item">
+                <input type="radio" name="batch_id" value="<%= batch.id %>" class="selectgroup-input" required>
+                <span class="selectgroup-button"><%= batch.name %></span>
+              </label>
+              <% end %>
+            </div>
+            <% else %>
+            <div class="alert alert-info alert">No Batches are created yet. Create a batch first
+            </div>
+            <% end %>
+          </div>
+        </div>
+
+      </div>
+      <div class="card-footer text-right">
+        <button type="submit" class="btn btn-success">Change Batches of the Students</button>
+      </div>
+    <% end %>
+  </div>
+</div>

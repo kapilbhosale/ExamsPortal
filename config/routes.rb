@@ -124,7 +124,11 @@ Rails.application.routes.draw do
     resources :batches do
       root to: 'batches#index'
       get :disable
+      get :change_batches, on: :collection
+      post :process_change_batches, on: :collection
     end
+    resources :batch_groups
+
     get 'dashboard/profile', to: 'dashboard#profile'
     patch 'dashboard/update_profile', to: 'dashboard#update_profile'
 

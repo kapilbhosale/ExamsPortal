@@ -9,6 +9,10 @@
           <% if @current_admin.can_manage(:batches) %>
             <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Batch'.html_safe, new_admin_batch_path %>
           <% end %>
+          &nbsp;
+          <% if @current_admin.can_manage(:batches) %>
+            <%= link_to '<i class="glyphicon glyphicon-circle-arrow-right"> </i> Bulk Student Batch change'.html_safe, change_batches_admin_batches_path %>
+          <% end %>
         </div>
       </div>
       <% if @batches.present? %>
