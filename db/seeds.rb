@@ -129,10 +129,10 @@ end
 # end
 
 
-exam_concepts = %w[general physics chemistry maths biology]
-exam_concepts.each do |exam_concept|
-  Section.find_or_create_by(name: exam_concept, is_jee: true)
-end
+# exam_concepts = %w[general physics chemistry maths biology]
+# exam_concepts.each do |exam_concept|
+#   Section.find_or_create_by(name: exam_concept, is_jee: true)
+# end
 
 # jee_sections = {
 #   "phy-I" => "This section contains SIX (06) questions. 
@@ -171,5 +171,34 @@ end
 # end
 
 
-Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
-SuperAdmin.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+# Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each { |seed| load seed }
+# SuperAdmin.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+
+require 'csv'
+org = Org.first
+
+if org&.rcc?
+
+  batch_with_ids = {"REP-LTR-NEET-CB-21-22 (Offline)"=>369, "REP-LTR-NEET-PCB-21-22 (Offline)"=>371, "REP-LTR-NEET-PHY-21-22 (Offline)"=>365, "REP-NED-NEET-PHY-21-22 (Offline)"=>372, "REP-NED-NEET-CHEM-21-22 (Offline)"=>373, "REP-LTR-NEET-BIO-21-22 (Offline)"=>367, "REP-LTR-NEET-PB-21-22 (Offline)"=>370, "REP-LTR-NEET-PC-21-22 (Offline)"=>368, "REP-NED-NEET-BIO-21-22 (Offline)"=>374, "REP-NED-NEET-PCB-21-22 (Offline)"=>378, "REP-NED-NEET-PC-21-22 (Offline)"=>375, "REP-NED-NEET-CB-21-22 (Offline)"=>376, "REP-NED-NEET-PB-21-22 (Offline)"=>377, "REP-LTR-NEET-CHEM-21-22 (Offline)"=>366}
+
+  csv_text = File.read(Rails.root.join('db', 'seeds', 'rcc_batch_transfer.csv'))
+
+  csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+
+  csv.each do |row|
+    roll_number = row['Roll No.']
+    parent_mobile = row['Password']
+    batch_name = row['New Batch']
+
+    batch_id = batch_with_ids[batch_name]
+    student = Student.find_by(roll_number: roll_number, parent_mobile: parent_mobile)
+    if student.blank? || batch_id.blank?
+      puts "Batch not found - #{batch_name}"
+      next
+    end
+
+    StudentBatch.where(student: student).delete_all
+    StudentBatch.create!(student: student, batch_id: batch_id)
+    print '.'
+  end
+end
