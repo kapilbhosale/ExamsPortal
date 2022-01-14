@@ -64,6 +64,12 @@ class Admin::GenresController < Admin::BaseController
   def edit
     @genre = Genre.find_by(id: params[:id], org_id: current_org.id)
     @subjects = Subject.where(org_id: current_org.id)
+
+    video_lecture_ids = VideoLecture.where(genre_id: @genre.id).pluck(:id)
+    @selected_batch_ids = BatchVideoLecture.where(video_lecture_id: video_lecture_ids).pluck(:batch_id).uniq
+
+    @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.order(:id).group_by(&:batch_group_id)
+    @batch_groups = BatchGroup.where(org: current_org).order(:id).index_by(&:id)
   end
 
   def create
@@ -83,6 +89,25 @@ class Admin::GenresController < Admin::BaseController
     else
       @genre.update(name: params[:name])
     end
+
+    if params[:assign_batches] == 'yes'
+      @genre.batch_assigned = true
+      @genre.save
+      # video_lecture_ids = VideoLecture.where(genre_id: @genre.id).pluck(:id)
+      # already_selected_batch_ids = BatchVideoLecture.where(video_lecture_id: video_lecture_ids).pluck(:batch_id).uniq
+      input_batch_ids = params[:batches].map(&:to_i)
+      # new_batch_ids = input_batch_ids - already_selected_batch_ids
+      if input_batch_ids.present?
+        BatchVideoLecture.where(video_lecture_id: @genre.video_lectures.ids).destroy_all
+        @genre.video_lectures.each do |vl|
+          vl.batches << Batch.where(id: input_batch_ids)
+        end
+      end
+    else
+      @genre.batch_assigned = false
+      @genre.save
+    end
+
     flash[:success] = "Genre updated successfully.."
     redirect_to admin_genres_path
   end

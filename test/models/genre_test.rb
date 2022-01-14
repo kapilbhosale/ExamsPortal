@@ -3,6 +3,7 @@
 # Table name: genres
 #
 #  id                   :bigint(8)        not null, primary key
+#  batch_assigned       :boolean          default(FALSE)
 #  hidden               :boolean          default(FALSE)
 #  name                 :string
 #  video_lectures_count :integer          default(0)
