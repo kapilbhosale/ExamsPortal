@@ -116,8 +116,12 @@
               <span style="color: gray">Video TAG</span>
             </div>
 
-            <div class="col-sm-6" style="margin-left: 10px;">
+            <div class="col-sm-3" style="margin-left: 5px;">
               <span style="color: gray">Video Publish at</span>
+            </div>
+
+            <div class="col-sm-3" style="margin-left: 5px;">
+              <span style="color: red">Auto Hide at <span style="color: red; font-size: 10px">(blank, if wanted manual hide)</span></span>
             </div>
           </div>
 
@@ -125,8 +129,11 @@
             <div class="col-sm-6">
               <input type="text" class="form-control" placeholder="Enter Video TAG" name="tag">
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <input value="<%= Time.current&.strftime('%Y-%m-%dT%R') %>" type="datetime-local" class="form-control" id="publish_at" name="publish_at">
+            </div>
+            <div class="col-sm-3">
+              <input type="datetime-local" class="form-control" id="hide_at" name="hide_at" min=<%= (Time.current + 1.day)&.strftime('%Y-%m-%dT%R') %>>
             </div>
           </div>
 

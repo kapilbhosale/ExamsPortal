@@ -6,6 +6,7 @@
 #  by                   :string
 #  description          :string
 #  enabled              :boolean          default(TRUE)
+#  hide_at              :datetime
 #  link_udpated_at      :datetime
 #  play_url_from_server :string
 #  publish_at           :datetime
