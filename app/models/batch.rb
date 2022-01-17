@@ -95,10 +95,15 @@ class Batch < ApplicationRecord
   def self.get_11th_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    batch_name = rcc_branch == "latur" ?
-      "Ltr-RCC-REP-SET-21-22" :
-      "Ned-RCC-REP-SET-21-22"
-
+    if na&.jee?
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-RCC-JEE-11-SET-22" :
+        "Ned-RCC-JEE-11-SET-22"
+    else
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-RCC-NEET-11-SET-22" :
+        "Ned-RCC-NEET-11-SET-22"
+    end
     Batch.where(org_id: org.id, name: batch_name)
   end
 
@@ -207,5 +212,18 @@ end
 #   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
 #   Admin.where(org_id: org.id).each do |admin|
 #     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+#   end
+# end
+
+# org = Org.first
+# batch_names = ["Ltr-RCC-JEE-11-SET-22", "Ned-RCC-JEE-11-SET-22", "Ltr-RCC-NEET-11-SET-22", "Ned-RCC-NEET-11-SET-22"]
+
+# batch_names.each do |batch_name|
+#   _batch = Batch.find_by(org_id: org.id, name: batch_name)
+#   if _batch.blank?
+#     admin = Admin.where(org_id: org.id).first
+#     batch_group = BatchGroup.find_or_create_by(name: "11-RCC-SET-22", org_id: org.id)
+#     _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+#     AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
 #   end
 # end

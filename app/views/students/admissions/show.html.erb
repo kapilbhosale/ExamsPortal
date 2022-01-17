@@ -42,14 +42,16 @@
               $('input[value=pcb]').prop('checked', false);
             }
             $('input[name="course[]"]').css("pointer-events","none");
-            $('#foundation-help-text').show();
+            $('#rcc-set-exam-11').show();
+            $('#course-selection').hide();
           } else {
             $('input[value=phy]').prop('checked', false);
             $('input[value=chem]').prop('checked', false);
             $('input[value=bio]').prop('checked', false);
             $('input[value=pcb]').prop('checked', false);
             $('input[name="course[]"]').css("pointer-events","all");
-            $('#foundation-help-text').hide();
+            $('#rcc-set-exam-11').hide();
+            $('#course-selection').show();
           }
         }
 
@@ -326,9 +328,9 @@
               <% else %>
                 <option value="11th_new">11th Regular Batch (2021-2022)</option>
                 <option value="12th">12th-new-2021-2022</option>
-                <option value="repeater" selected>Repeater-2021-2022</option>
-                <%# <option value="test_series">Test Series</option>
-                <option value="crash_course">Crash Course</option> %>
+                <option value="repeater">Repeater-2021-2022</option>
+                <option value="11th" selected>11th RCC SET 2022</option>
+                <%# <option value="crash_course">Crash Course</option> %>
               <% end %>
             </select>
           </div>
@@ -340,11 +342,11 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="foundation-help-text" style="color: green; font-size: 10px; display: none">[RCC Repeater SET EXAM 2021-22 is free for all subjects]</span>
+                <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[RCC 11th SET EXAM 2022-23 is free for all subjects]</span>
               </p>
             <% end %>
           </div>
-          <div class="form-group" style="text-align: center;">
+          <div id="course-selection" class="form-group" style="text-align: center;">
             <div id="c" class="form-check form-check-inline">
               <input class="form-check-input" type="checkbox" name="course[]" value="chem">
               <label class="form-check-label" for="inlineRadio1">Chemistry</label>
