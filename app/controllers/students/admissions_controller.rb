@@ -302,7 +302,7 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      if student.blank? || (student.batches&.ids & [340, 341]).blank?
+      if student.blank? || (student.batches&.ids & [473, 474, 475, 476]).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 
