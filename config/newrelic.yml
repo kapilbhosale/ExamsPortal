@@ -3,7 +3,7 @@
 # .NET, PHP, Python, Node, and Go applications with deep visibility and low
 # overhead.  For more information, visit www.newrelic.com.
 #
-# Generated October 1, 2021
+# Generated January 29, 2022
 #
 # This configuration file is custom generated for NewRelic Administration
 #
@@ -12,11 +12,11 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: 6b44733654eac3ef33568cdf53c9bc823528NRAL
+  license_key: 36c4ab4c3b71b944b895503ff469d6e6ebaaNRAL
 
   # Your application name. Renaming here affects where data displays in New
   # Relic.  For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: EduAakar
+  app_name: RCC-SE-SERVER
 
   distributed_tracing:
     enabled: true
@@ -33,7 +33,7 @@ common: &default_settings
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: EduAakar (Development)
+  app_name: RCC-SE-SERVER (Development)
 
 test:
   <<: *default_settings
@@ -42,7 +42,7 @@ test:
 
 staging:
   <<: *default_settings
-  app_name: EduAakar (Staging)
+  app_name: RCC-SE-SERVER (Staging)
 
 production:
   <<: *default_settings
