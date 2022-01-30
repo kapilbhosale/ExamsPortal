@@ -303,7 +303,7 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      if student.blank? || (student.batches&.pluck(:name) & ['LTR-NEET-SAARTHI-2022']).blank?
+      if student.blank? || (student.batches&.pluck(:name) & ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 
