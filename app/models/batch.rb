@@ -92,6 +92,23 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_saartni_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    batch_name = rcc_branch == "latur" ?
+      "LTR-NEET-SAARTHI-2022" :
+      "NED-NEET-SAARTHI-2022"
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      admin = Admin.where(org_id: org.id).first
+      batch_group = BatchGroup.find_or_create_by(name: "SAARTHI-2022", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_11th_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
@@ -139,6 +156,8 @@ class Batch < ApplicationRecord
       get_11th_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
+    elsif batch == 'neet_saarthi'
+      get_saartni_batches(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       org = Org.first
       if na&.jee?

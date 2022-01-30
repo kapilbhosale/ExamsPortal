@@ -70,6 +70,7 @@ class NewAdmission < ApplicationRecord
     '9th': 103,
     '10th': 104,
     '11th_new': 10,
+    'neet_saarthi': 11,
   }
   enum course_type: { neet: 0, jee: 1 }
   enum rcc_branch: { latur: 0, nanded: 1 }

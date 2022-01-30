@@ -29,8 +29,29 @@
       $(document).ready(function() {
         function adjustUI() {
           var courseType = $('input[name=course_type]:checked').val();
-          if($('#batch').find(":selected").val() === '11th') {
-            if(courseType === 'neet') {
+          var selectedBatch = $('#batch').find(":selected").val();
+          if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi') {
+            if (selectedBatch === '11th') {
+              $('#rcc-set-exam-11').show();
+              $('#neet-saarthi').show();
+            }
+            if (selectedBatch === 'neet_saarthi') {
+              $('input[value=phy]').prop('checked', true);
+              $('input[value=chem]').prop('checked', true);
+              $('input[value=bio]').prop('checked', true);
+              $('input[value=pcb]').prop('checked', true);
+              $('#rcc-set-exam-11').hide();
+              $('#neet-saarthi').show();
+            }
+            $('#course-selection').hide();
+          } else {
+            $('#rcc-set-exam-11').hide();
+            $('#neet-saarthi').hide();
+            $('#course-selection').show();
+          }
+
+          if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi') {
+            if(courseType === 'neet' || $('#batch').find(":selected").val() === 'neet_saarthi') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
@@ -42,16 +63,12 @@
               $('input[value=pcb]').prop('checked', false);
             }
             $('input[name="course[]"]').css("pointer-events","none");
-            $('#rcc-set-exam-11').show();
-            $('#course-selection').hide();
           } else {
             $('input[value=phy]').prop('checked', false);
             $('input[value=chem]').prop('checked', false);
             $('input[value=bio]').prop('checked', false);
             $('input[value=pcb]').prop('checked', false);
             $('input[name="course[]"]').css("pointer-events","all");
-            $('#rcc-set-exam-11').hide();
-            $('#course-selection').show();
           }
         }
 
@@ -330,6 +347,7 @@
                 <option value="12th">12th-new-2021-2022</option>
                 <option value="repeater">Repeater-2021-2022</option>
                 <option value="11th" selected>11th RCC SET 2022</option>
+                <option value="neet_saarthi" >NEET SAARATHI 2022</option>
                 <%# <option value="crash_course">Crash Course</option> %>
               <% end %>
             </select>
@@ -343,6 +361,7 @@
             <% else %>
               <p style="color: gray;">Course Selection:
                 <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[RCC 11th SET EXAM 2022-23 is free for all subjects]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC NEET Saarthi is for PCB]</span>
               </p>
             <% end %>
           </div>

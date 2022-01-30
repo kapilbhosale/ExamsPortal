@@ -118,11 +118,12 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if new_admission_params[:batch] == '11th'
+      if new_admission_params[:batch] == '11th' || new_admission_params[:batch] == 'neet_saarthi'
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
-          free: true
+          free: true,
+          course_id: course.id
         )&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
@@ -145,7 +146,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if new_admission.batch == '11th'
+        if new_admission.batch == '11th' || new_admission.batch == 'neet_saarthi'
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -302,7 +303,7 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      if student.blank? || (student.batches&.ids & [473, 474, 475, 476]).blank?
+      if student.blank? || (student.batches&.pluck(:name) & ['LTR-NEET-SAARTHI-2022']).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 
