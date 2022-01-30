@@ -123,7 +123,7 @@ class Students::AdmissionsController < ApplicationController
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
           free: true,
-          course_id: course.id
+          batch: NewAdmission.batches[new_admission_params[:batch]]
         )&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
