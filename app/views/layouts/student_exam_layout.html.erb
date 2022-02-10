@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= get_header_name(request.subdomain) %></title>
+    <title><%= "#{get_header_name(request.subdomain)}-exam-#{params[:id]}"%></title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
