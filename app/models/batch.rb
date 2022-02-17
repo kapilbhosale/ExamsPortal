@@ -124,6 +124,21 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_12th_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    if na&.jee?
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-RCC-JEE-12-SET-22" :
+        "Ned-RCC-JEE-12-SET-22"
+    else
+      batch_name = rcc_branch == "latur" ?
+        "Ltr-RCC-NEET-12-SET-22" :
+        "Ned-RCC-NEET-12-SET-22"
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
@@ -154,6 +169,8 @@ class Batch < ApplicationRecord
 
     if batch == '11th'
       get_11th_batches(rcc_branch, course, batch, na)
+    elsif batch == '12th_set'
+      get_12th_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == 'neet_saarthi'
@@ -194,6 +211,46 @@ class Batch < ApplicationRecord
       Batch.where(org_id: org.id, name: batch_name)
     end
   end
+
+  def delete_batch_and_associated_data
+    batch_id = id
+    student_ids = StudentBatch.where(batch_id: batch_id).pluck(:student_id)
+
+    # verify this before running
+    other_batch_student_ids = StudentBatch.all.pluck(:student_id) - student_ids
+    student_ids = student_ids - other_batch_student_ids
+
+    student_ids.each_slice(1000) do |student_ids_slice|
+      se_ids = StudentExam.where(student_id: student_ids_slice).pluck(:id)
+      StudentExamSummary.where(student_exam_id: se_ids).delete_all
+      StudentExamAnswer.where(student_exam_id: se_ids).delete_all
+    end
+    StudentExam.where(student_id: student_ids).delete_all
+
+    StudentVideoFolder.where(student_id: student_ids).delete_all
+    StudentExamSync.where(student_id: student_ids).delete_all
+    PendingFee.where(student_id: student_ids).delete_all
+    NewAdmission.where(student_id: student_ids).delete_all
+    BatchStudyPdf.where(batch_id: batch_id).delete_all
+
+    ExamBatch.where(batch_id: batch_id).delete_all
+    BatchZoomMeeting.where(batch_id: batch_id).delete_all
+    BatchVideoLecture.where(batch_id: batch_id).delete_all
+
+    notif_ids = BatchNotification.where(batch_id: batch_id).pluck(:notification_id)
+    Notification.where(id: notif_ids).delete_all
+
+    BatchNotification.where(batch_id: batch_id).delete_all
+    BatchBanner.where(batch_id: batch_id).delete_all
+
+    ProgressReport.where(student_id: student_ids).delete_all
+
+    StudentBatch.where(batch_id: batch_id).delete_all
+    Batch.where(id: batch_id).delete_all
+    Student.where(id: student_ids).delete_all
+    print '.'
+  end
+
 end
 
 # ## Sample code to create batches and groups and admins
@@ -244,5 +301,17 @@ end
 #     batch_group = BatchGroup.find_or_create_by(name: "11-RCC-SET-22", org_id: org.id)
 #     _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
 #     AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+#   end
+# end
+
+# org = Org.first
+# batch_group = BatchGroup.find_or_create_by(name: "12th-RCC-SET-22-23", org_id: org.id)
+# ['NEET', 'JEE'].each do |nj|
+#   ['Ltr', 'Ned'].each do |center|
+#     batch_name = "#{center}-RCC-#{nj}-12-SET-22"
+#     batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+#     Admin.where(org_id: org.id).each do |admin|
+#       AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+#     end
 #   end
 # end

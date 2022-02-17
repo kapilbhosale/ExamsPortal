@@ -118,7 +118,7 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if new_admission_params[:batch] == '11th' || new_admission_params[:batch] == 'neet_saarthi'
+      if new_admission_params[:batch] == '11th' || new_admission_params[:batch] == 'neet_saarthi' || new_admission_params[:batch] == '12th_set'
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
@@ -146,7 +146,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if new_admission.batch == '11th' || new_admission.batch == 'neet_saarthi'
+        if new_admission.batch == '11th' || new_admission.batch == 'neet_saarthi' || new_admission.batch == '12th_set'
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -302,8 +302,10 @@ class Students::AdmissionsController < ApplicationController
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
       )
-
-      if student.blank? || (student.batches&.pluck(:name) & ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']).blank?
+      batches_set_12th = ["Ltr-RCC-NEET-12-SET-22", "Ned-RCC-NEET-12-SET-22", "Ltr-RCC-JEE-12-SET-22", "Ned-RCC-JEE-12-SET-22"]
+      batches_set_11th = ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']
+      student_batch_names = student&.batches&.pluck(:name) || []
+      if student.blank? || (@new_admission.batch == '11th' && ( student_batch_names & batches_set_11th).blank?) || (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12th).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 

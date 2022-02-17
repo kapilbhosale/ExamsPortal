@@ -30,8 +30,8 @@
         function adjustUI() {
           var courseType = $('input[name=course_type]:checked').val();
           var selectedBatch = $('#batch').find(":selected").val();
-          if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi') {
-            if (selectedBatch === '11th') {
+          if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi' || selectedBatch === '12th_set') {
+            if (selectedBatch === '11th' || selectedBatch === '12th_set') {
               $('#rcc-set-exam-11').show();
               $('#neet-saarthi').show();
             }
@@ -50,7 +50,7 @@
             $('#course-selection').show();
           }
 
-          if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi') {
+          if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi' || $('#batch').find(":selected").val() === '12th_set') {
             if(courseType === 'neet' || $('#batch').find(":selected").val() === 'neet_saarthi') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
@@ -346,8 +346,9 @@
                 <option value="11th_new">11th Regular Batch (2021-2022)</option>
                 <option value="12th">12th-new-2021-2022</option>
                 <option value="repeater">Repeater-2021-2022</option>
-                <option value="11th" selected>11th RCC SET 2022</option>
+                <option value="11th">11th Free Foundation 2022</option>
                 <option value="neet_saarthi" >NEET SAARATHI 2022</option>
+                <option value="12th_set" selected>12th RCC SET 2022-23</option>
                 <%# <option value="crash_course">Crash Course</option> %>
               <% end %>
             </select>
@@ -360,8 +361,8 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[RCC 11th SET EXAM 2022-23 is free for all subjects]</span>
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC NEET Saarthi is for PCB]</span>
+                <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[Your Course is free for all subjects]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC NEET SET is for PCB]</span>
               </p>
             <% end %>
           </div>

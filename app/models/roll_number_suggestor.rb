@@ -29,9 +29,10 @@ class RollNumberSuggestor < ApplicationRecord
     '11th_new' => 2_00_000,
     '11th_set' => 1_000,
     'neet_saarthi' => 1_00_001,
+    '12th_set' => 1_000
   }
   def self.suggest_roll_number(batch_name, na=nil)
-    if na&.free? && batch_name != 'neet_saarthi'
+    if na&.free? && batch_name != 'neet_saarthi' && batch_name != '12th_set'
       batch_name = '11th_set'
     end
 
