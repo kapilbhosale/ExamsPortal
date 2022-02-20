@@ -144,12 +144,12 @@ class Batch < ApplicationRecord
 
     if na&.jee?
       batch_name = rcc_branch == "latur" ?
-        "B3-LTR-11-REG-JEE-#{course.name.upcase}-21-22" :
-        "B3-NED-11-REG-JEE-#{course.name.upcase}-21-22"
+        "B1-LTR-11-REG-JEE-#{course.name.upcase}-22-23" :
+        "B1-NED-11-REG-JEE-#{course.name.upcase}-22-23"
     else
       batch_name = rcc_branch == "latur" ?
-        "B3-LTR-11-REG-NEET-#{course.name.upcase}-21-22" :
-        "B3-NED-11-REG-NEET-#{course.name.upcase}-21-22"
+        "B1-LTR-11-REG-NEET-#{course.name.upcase}-22-23" :
+        "B1-NED-11-REG-NEET-#{course.name.upcase}-22-23"
     end
 
     Batch.where(org_id: org.id, name: batch_name)
@@ -315,3 +315,18 @@ end
 #     end
 #   end
 # end
+
+org = Org.first
+courses = ["phy", "chem", "bio", "PC", "CB", "PB", "PCB"]
+batch_group = BatchGroup.find_or_create_by(name: "B1-11th-22-23", org_id: org.id)
+['NEET', 'JEE'].each do |nj|
+  ['LTR', 'NED'].each do |center|
+    courses.each do |course|
+      batch_name = "B1-#{center}-11-REG-#{nj}-#{course.upcase}-22-23"
+      batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+      end
+    end
+  end
+end
