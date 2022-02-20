@@ -60,12 +60,12 @@ class Api::V1::VideosController < Api::V1::ApiController
 
   def get_ytdlp_url
     lecture = VideoLecture.find_by(id: params[:video_id])
-    # if lecture.present?
-    #   lecture.update_play_url if lecture.play_url_expired?
-    #   render json: { url_hd: lecture.play_url_from_server, url_sd: lecture.play_url_from_server }, status: :ok and return
-    # end
+    if lecture.present?
+      lecture.update_play_url if lecture.play_url_expired?
+      render json: { url_hd: lecture.play_url_from_server, url_sd: lecture.play_url_from_server }, status: :ok and return
+    end
     # IMP:: Remove later, VAA fix.
-    VideoLinkFetchWorker.perform_async(lecture.id)
+    # VideoLinkFetchWorker.perform_async(lecture.id)
     render json: { url_hd: nil, url_sd: nil }, status: :ok
   end
 
