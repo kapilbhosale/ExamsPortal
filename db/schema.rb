@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_14_145914) do
+ActiveRecord::Schema.define(version: 2022_02_26_093237) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
@@ -453,6 +453,15 @@ ActiveRecord::Schema.define(version: 2022_01_14_145914) do
     t.index ["student_id"], name: "index_progress_reports_on_student_id"
   end
 
+  create_table "proxies", force: :cascade do |t|
+    t.string "user_name"
+    t.string "password"
+    t.string "ip_and_port"
+    t.string "conn_string"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "questions", force: :cascade do |t|
     t.text "title"
     t.text "explanation"
@@ -623,6 +632,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_145914) do
     t.datetime "deleted_at"
     t.boolean "disable", default: false
     t.string "rfid_card_number"
+    t.string "exam_hall"
     t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"
@@ -727,6 +737,7 @@ ActiveRecord::Schema.define(version: 2022_01_14_145914) do
     t.string "play_url_from_server"
     t.datetime "link_udpated_at"
     t.datetime "hide_at"
+    t.string "yt_video_id"
     t.index ["genre_id"], name: "index_video_lectures_on_genre_id"
     t.index ["org_id"], name: "index_video_lectures_on_org_id"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"

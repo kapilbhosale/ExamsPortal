@@ -25,6 +25,7 @@
 #  org_id               :integer          default(0)
 #  subject_id           :integer
 #  video_id             :string
+#  yt_video_id          :string
 #
 # Indexes
 #

@@ -24,6 +24,42 @@
     <% end %>
   <% end %>
 </div>
+<% if request.subdomain == 'exams' || current_student.exam_hall.present? %>
+  <div style="background-color: #1DA1F2; margin-bottom: 20px; color: white; padding: 4px;">
+    <h5 style="text-align: center">12th RCC SET 22-23 Hall ticket</h5>
+    <table class="table table-bordered">
+      <tr>
+        <td>Seat No.</td>
+        <td><%= current_student.roll_number %></td>
+      </tr>
+      <tr>
+        <td>Name:</td>
+        <td><%= current_student.name %></td>
+      </tr>
+      <tr>
+        <td>Date</td>
+        <td>27-feb-2022</td>
+      </tr>
+      <tr>
+        <td>Time</td>
+        <td>2:00-5:00 PM</td>
+      </tr>
+      <tr>
+        <td>Exam Centre</td>
+        <td><%= current_student.exam_hall %></td>
+      </tr>
+      <tr>
+        <td>Parent Mobile &nbsp; &nbsp; &nbsp;</td>
+        <td><%= current_student.parent_mobile %></td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <a class="btn btn-light" href="/students/print_hall_ticket.pdf" role="button">Download</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+<% end %>
 <div class="tabbable-panel" style="position: relative;">
   <a href="<%= students_progress_report_path %>">
     <div style="position: absolute; right: 0; top:0; padding: 5px 10px; margin-top: 5px; background-color: red; border-radius: 15px">

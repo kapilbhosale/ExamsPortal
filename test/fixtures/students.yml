@@ -19,6 +19,7 @@
 #  disable                :boolean          default(FALSE)
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
+#  exam_hall              :string
 #  fcm_token              :string
 #  gender                 :integer          default(0)
 #  is_laptop_login        :boolean          default(FALSE)

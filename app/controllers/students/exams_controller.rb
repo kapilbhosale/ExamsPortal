@@ -3,6 +3,18 @@ class Students::ExamsController < Students::BaseController
   skip_before_action :verify_authenticity_token, only: [:sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 
+
+  def print_hall_ticket
+    respond_to do |format|
+      format.pdf do
+        render pdf: "Exam Hall Ticket",
+              template: "students/exams/print_hall_ticket.pdf.erb",
+              locals: {current_student: current_student },
+              footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
+      end
+    end
+  end
+
   def is_exam_valid
     exam_id = params[:id]
     student_id = current_student.id
