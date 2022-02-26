@@ -24,7 +24,7 @@
     <% end %>
   <% end %>
 </div>
-<% if request.subdomain == 'exams' || current_student.exam_hall.present? %>
+<% if request.subdomain == 'exams' && current_student.exam_hall.present? %>
   <div style="background-color: #1DA1F2; margin-bottom: 20px; color: white; padding: 4px;">
     <h5 style="text-align: center">12th RCC SET 22-23 Hall ticket</h5>
     <table class="table table-bordered">
