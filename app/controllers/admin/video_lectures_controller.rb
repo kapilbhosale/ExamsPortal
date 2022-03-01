@@ -163,6 +163,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       genre_id: params[:genre_id],
       subject_id: params[:subject_id],
       publish_at: params[:publish_at],
+      hide_at: params[:hide_at],
       view_limit: params[:view_limit],
       video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
     }
@@ -183,6 +184,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       genre_id: params[:genre_id],
       publish_at: params[:publish_at],
       view_limit: params[:view_limit],
+      hide_at: params[:hide_at],
       video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
     }
   end
