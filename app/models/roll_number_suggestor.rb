@@ -30,7 +30,8 @@ class RollNumberSuggestor < ApplicationRecord
     '11th_set' => 1_000,
     'neet_saarthi' => 1_00_001,
     '12th_set' => 1_000,
-    '11th_22_23' => 40_000
+    '11th_22_23' => 40_000,
+    "12th_22_23" => 60_000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
@@ -38,9 +39,8 @@ class RollNumberSuggestor < ApplicationRecord
       batch_name = '11th_set'
     end
 
-    if batch_name == '11th_new'
-      batch_name = '11th_22_23'
-    end
+    batch_name = '11th_22_23' if batch_name == '11th_new'
+    batch_name = '12th_22_23' if batch_name == '12th'
 
     rns = self.find_by(batch_name: batch_name)
 

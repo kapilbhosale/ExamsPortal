@@ -234,7 +234,8 @@ class Students::AdmissionsController < ApplicationController
         end
       end
     end
-    if batch == '11th_new'
+
+    if batch == '11th_new' || batch == '12th'
       if new_admission.extra_data.dig('pay_type') == 'installment'
         return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
@@ -261,27 +262,7 @@ class Students::AdmissionsController < ApplicationController
         end
       end
     end
-    if batch == '12th'
-      return 10_000 if course.name == "phy"
-      return 10_000 if course.name == "chem"
-      return 6_000 if is_installment && course.name == "bio"
-      return 10_000 if course.name == "bio"
-      return 15_000 if course.name == "pcb"
 
-      return 15_000 if course.name == "pc"
-      return 15_000 if course.name == "pb"
-      return 15_000 if course.name == "cb"
-    end
-    if batch == 'test_series'
-      return 5_000 if course.name == "phy"
-      return 5_000 if course.name == "chem"
-      return 5_000 if course.name == "bio"
-      return 6_000 if course.name == "pcb"
-
-      return 5_000 if course.name == "pc"
-      return 5_000 if course.name == "pb"
-      return 5_000 if course.name == "cb"
-    end
     if batch == 'crash_course'
       return 8_000 if course.name == "phy"
       return 8_000 if course.name == "chem"

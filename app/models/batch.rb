@@ -129,13 +129,14 @@ class Batch < ApplicationRecord
 
     if na&.jee?
       batch_name = rcc_branch == "latur" ?
-        "Ltr-RCC-JEE-12-SET-22" :
-        "Ned-RCC-JEE-12-SET-22"
+        "B1-LTR-12-REG-JEE-#{course.name.upcase}-22-23" :
+        "B1-NED-12-REG-JEE-#{course.name.upcase}-22-23"
     else
       batch_name = rcc_branch == "latur" ?
-        "Ltr-RCC-NEET-12-SET-22" :
-        "Ned-RCC-NEET-12-SET-22"
+        "B1-LTR-12-REG-NEET-#{course.name.upcase}-22-23" :
+        "B1-NED-12-REG-NEET-#{course.name.upcase}-22-23"
     end
+
     Batch.where(org_id: org.id, name: batch_name)
   end
 
@@ -163,13 +164,13 @@ class Batch < ApplicationRecord
     return Batch.where(name: '9th-A') if batch == '9th'
     return Batch.where(name: '10th-A') if batch == '10th'
 
-    if batch == '12th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
-      return get_jee_batches(rcc_branch, course, batch, na)
-    end
+    # if batch == '12th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
+    #   return get_jee_batches(rcc_branch, course, batch, na)
+    # end
 
     if batch == '11th'
       get_11th_batches(rcc_branch, course, batch, na)
-    elsif batch == '12th_set'
+    elsif batch == '12th'
       get_12th_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
@@ -316,17 +317,17 @@ end
 #   end
 # end
 
-org = Org.first
-courses = ["phy", "chem", "bio", "PC", "CB", "PB", "PCB"]
-batch_group = BatchGroup.find_or_create_by(name: "B1-11th-22-23", org_id: org.id)
-['NEET', 'JEE'].each do |nj|
-  ['LTR', 'NED'].each do |center|
-    courses.each do |course|
-      batch_name = "B1-#{center}-11-REG-#{nj}-#{course.upcase}-22-23"
-      batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
-      Admin.where(org_id: org.id).each do |admin|
-        AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
-      end
-    end
-  end
-end
+# org = Org.first
+# courses = ["phy", "chem", "bio", "PC", "CB", "PB", "PCB"]
+# batch_group = BatchGroup.find_or_create_by(name: "B1-12th-22-23", org_id: org.id)
+# ['NEET', 'JEE'].each do |nj|
+#   ['LTR', 'NED'].each do |center|
+#     courses.each do |course|
+#       batch_name = "B1-#{center}-12-REG-#{nj}-#{course.upcase}-22-23"
+#       batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+#       Admin.where(org_id: org.id).each do |admin|
+#         AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+#       end
+#     end
+#   end
+# end
