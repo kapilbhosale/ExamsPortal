@@ -14,7 +14,7 @@ class Admin::UsersController < Admin::BaseController
     end
 
     if params[:admin][:new_password].length <= 7
-      error = "password must be of lenght more than 8 characters"
+      error = "password must be of length more than 8 characters"
       flash[:error] = error
       redirect_to profile_admin_users_path and return
     end

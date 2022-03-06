@@ -109,16 +109,31 @@
 
           var subjectCount = 0
           if ($('input[value=phy]:checked').length == 1) {
-            subjectCount += 1
+            subjectCount = 1
           }
           if ($('input[value=chem]:checked').length == 1) {
-            subjectCount += 1
+            subjectCount = 1
           }
           if ($('input[value=bio]:checked').length == 1) {
-            subjectCount += 1
+            subjectCount = 1
+          }
+          if ($('input[value=pc]:checked').length == 1) {
+            subjectCount = 2
+          }
+          if ($('input[value=cb]:checked').length == 1) {
+            subjectCount = 2
+          }
+          if ($('input[value=pb]:checked').length == 1) {
+            subjectCount = 2
           }
           if ($('input[value=pcb]:checked').length == 1) {
             subjectCount = 3
+          }
+          if ($('input[value=pcm]:checked').length == 1) {
+            subjectCount = 3
+          }
+          if ($('input[value=pcbm]:checked').length == 1) {
+            subjectCount = 4
           }
           var rccBranch = $('input[name=rcc_branch]:checked').val();
           var isOneTimePayment = $('input[name=one_time]:checked').val();
@@ -132,7 +147,12 @@
 
           if (batch === "11th_new" || batch === "12th") {
             if (rccBranch === "nanded") {
-              if (subjectCount === 3) {
+              if (subjectCount === 4) {
+                totalFees = '₹80,000';
+                oneTimeFees = '₹80,000';
+                installmentFees = '₹40,000';
+                nextInstallmentFees = '₹40,000';
+              } else if (subjectCount === 3) {
                 totalFees = '₹55,000';
                 oneTimeFees = '₹55,000';
                 installmentFees = '₹25,000';
@@ -149,7 +169,12 @@
                 nextInstallmentFees = '₹10,000';
               }
             } else {
-              if (subjectCount === 3) {
+              if (subjectCount === 4) {
+                totalFees = '₹80,000';
+                oneTimeFees = '₹80,000';
+                installmentFees = '₹40,000';
+                nextInstallmentFees = '₹40,000';
+              } else if (subjectCount === 3) {
                 totalFees = '₹60,000';
                 oneTimeFees = '₹60,000';
                 installmentFees = '₹25,000';
@@ -372,20 +397,40 @@
           </div>
           <div id="course-selection" class="form-group" style="text-align: center;">
             <div id="c" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" name="course[]" value="chem">
-              <label class="form-check-label" for="inlineRadio1">Chemistry</label>
+              <input class="form-check-input" type="radio" name="course[]" value="chem">
+              <label class="form-check-label" for="inlineRadio1">Chem</label>
             </div>
             <div id="p" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" name="course[]" value="phy">
-              <label class="form-check-label" for="inlineRadio2">Physics</label>
+              <input class="form-check-input" type="radio" name="course[]" value="phy">
+              <label class="form-check-label" for="inlineRadio2">Phy</label>
             </div>
             <div id="b" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" name="course[]" value="bio">
-              <label class="form-check-label" for="inlineRadio2">Biology</label>
+              <input class="form-check-input" type="radio" name="course[]" value="bio">
+              <label class="form-check-label" for="inlineRadio2">Bio</label>
+            </div>
+            <div id="b" class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="course[]" value="pc">
+              <label class="form-check-label" for="inlineRadio2">PC</label>
+            </div>
+            <div id="b" class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="course[]" value="cb">
+              <label class="form-check-label" for="inlineRadio2">CB</label>
+            </div>
+            <div id="b" class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="course[]" value="pb">
+              <label class="form-check-label" for="inlineRadio2">PB</label>
             </div>
             <div id="pcb" class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" name="course[]" value="pcb">
-              <label class="form-check-label" for="inlineRadio2">P + C + B</label>
+              <input class="form-check-input" type="radio" name="course[]" value="pcb">
+              <label class="form-check-label" for="inlineRadio2">PCB</label>
+            </div>
+            <div id="pcm" class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="course[]" value="pcm">
+              <label class="form-check-label" for="inlineRadio2">PCM</label>
+            </div>
+            <div id="pcbm" class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="course[]" value="pcbm">
+              <label class="form-check-label" for="inlineRadio2">PCBM</label>
             </div>
           </div>
         </div>

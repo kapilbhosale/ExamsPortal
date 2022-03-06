@@ -127,6 +127,9 @@ class Batch < ApplicationRecord
   def self.get_12th_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
+    return Batch.where(org_id: org.id, name: "B1-12-REG-PCM-22-23") if course.name.upcase == "PCM"
+    return Batch.where(org_id: org.id, name: "B1-12-REG-PCBM-22-23") if course.name.upcase == "PCBM"
+
     if na&.jee?
       batch_name = rcc_branch == "latur" ?
         "B1-LTR-12-REG-JEE-#{course.name.upcase}-22-23" :
@@ -142,6 +145,9 @@ class Batch < ApplicationRecord
 
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
+
+    return Batch.where(org_id: org.id, name: "B1-11-REG-PCM-22-23") if course.name.upcase == "PCM"
+    return Batch.where(org_id: org.id, name: "B1-11-REG-PCBM-22-23") if course.name.upcase == "PCBM"
 
     if na&.jee?
       batch_name = rcc_branch == "latur" ?
@@ -318,7 +324,7 @@ end
 # end
 
 # org = Org.first
-# courses = ["phy", "chem", "bio", "PC", "CB", "PB", "PCB"]
+# courses = ["phy", "chem", "bio", "PC", "CB", "PB", "PCB", "PCM", "PCBM"]
 # batch_group = BatchGroup.find_or_create_by(name: "B1-12th-22-23", org_id: org.id)
 # ['NEET', 'JEE'].each do |nj|
 #   ['LTR', 'NED'].each do |center|
@@ -329,5 +335,25 @@ end
 #         AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
 #       end
 #     end
+#   end
+# end
+
+
+# org = Org.first
+# batch_group = BatchGroup.find_or_create_by(name: "B1-12th-22-23", org_id: org.id)
+# ["B1-12-REG-PCM-22-23", "B1-12-REG-PCBM-22-23"].each do |batch_name|
+#   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+
+#   Admin.where(org_id: org.id).each do |admin|
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+#   end
+# end
+
+# batch_group = BatchGroup.find_or_create_by(name: "B1-11th-22-23", org_id: org.id)
+# ["B1-11-REG-PCM-22-23", "B1-11-REG-PCBM-22-23"].each do |batch_name|
+#   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+
+#   Admin.where(org_id: org.id).each do |admin|
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
 #   end
 # end

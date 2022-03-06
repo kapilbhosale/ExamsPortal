@@ -23,6 +23,8 @@ class Course < ApplicationRecord
   end
 
   def self.get_course(courses)
+    return Course.find_or_create_by(name: courses[0]) if courses.length == 1
+
     return Course.find_by(name: 'pcb') if courses.include?('pcb')
 
     return Course.find_by(name: courses.first) if courses.length == 1

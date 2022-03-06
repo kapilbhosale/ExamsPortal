@@ -244,10 +244,13 @@ class Students::AdmissionsController < ApplicationController
           return 25_000 if rcc_branch == 'latur'
         end
 
-        if ['pcb'].include?(course.name)
+        if ['pcb', 'pcm'].include?(course.name)
           return 25_000 if rcc_branch == 'nanded'
           return 25_000 if rcc_branch == 'latur'
         end
+
+        return 40_000 if ['pcbm'].include?(course.name)
+
       else
         return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
@@ -256,10 +259,12 @@ class Students::AdmissionsController < ApplicationController
           return 50_000 if rcc_branch == 'latur'
         end
 
-        if ['pcb'].include?(course.name)
+        if ['pcb', 'pcm'].include?(course.name)
           return 55_000 if rcc_branch == 'nanded'
           return 60_000 if rcc_branch == 'latur'
         end
+
+        return 80_000 if ['pcbm'].include?(course.name)
       end
     end
 
