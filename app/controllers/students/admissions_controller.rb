@@ -253,7 +253,7 @@ class Students::AdmissionsController < ApplicationController
 
         if ['pc', 'pb', 'cb'].include?(course.name)
           return 45_000 if rcc_branch == 'nanded'
-          return 50,000 if rcc_branch == 'latur'
+          return 50_000 if rcc_branch == 'latur'
         end
 
         if ['pcb'].include?(course.name)
