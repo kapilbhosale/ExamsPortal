@@ -172,6 +172,11 @@ class Admin::OmrController < Admin::BaseController
         create_pr_params = []
       end
     end
+
+    if create_pr_params.size >= 1
+      ProgressReport.import create_pr_params, validate: false
+      create_pr_params = []
+    end
   end
 
   def make_absent_entries
