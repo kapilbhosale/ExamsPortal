@@ -370,12 +370,12 @@
           <div class="invalid-feedback">Please enter your email.</div>
         </div>
         <div class="form-group">
-          <input type="number" value="<%= @student&.parent_mobile %>" class="form-control" id="parent_mobile"  maxlength="10" placeholder="Parent Mobile" name="parent_mobile" required <%= disable_field ? 'readonly': '' %>>
+          <input type="number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="<%= @student&.parent_mobile %>" class="form-control" id="parent_mobile" placeholder="Parent Mobile" name="parent_mobile" required <%= disable_field ? 'readonly': '' %>>
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter Parent Mobile.</div>
         </div>
         <div class="form-group">
-          <input type="number" value="<%= @student&.student_mobile.present? ? @student&.student_mobile : @student&.parent_mobile %>" class="form-control" id="student_mobile" maxlength="10" placeholder="Student Mobile" name="student_mobile" required <%= disable_field && @student.student_mobile.present? ? 'readonly': '' %>>
+          <input type="number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" value="<%= @student&.student_mobile.present? ? @student&.student_mobile : @student&.parent_mobile %>" class="form-control" id="student_mobile" maxlength="10" placeholder="Student Mobile" name="student_mobile" required <%= disable_field && @student.student_mobile.present? ? 'readonly': '' %>>
           <div class="valid-feedback">Valid.</div>
           <div class="invalid-feedback">Please enter Student Mobile.</div>
         </div>
