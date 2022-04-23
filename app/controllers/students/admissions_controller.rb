@@ -95,6 +95,7 @@ class Students::AdmissionsController < ApplicationController
 
   def create
     errors = []
+    params[:course] = ['pcb'] if params[:batch] == 'set_aurangabad'
     must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
@@ -118,13 +119,14 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if new_admission_params[:batch] == '11th' || new_admission_params[:batch] == 'neet_saarthi' || new_admission_params[:batch] == '12th_set'
+      if ['11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include?(new_admission_params[:batch])
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
         )&.last
+
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
@@ -146,7 +148,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if new_admission.batch == '11th' || new_admission.batch == 'neet_saarthi' || new_admission.batch == '12th_set'
+        if ['11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include? new_admission.batch
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -293,8 +295,12 @@ class Students::AdmissionsController < ApplicationController
       )
       batches_set_12th = ["Ltr-RCC-NEET-12-SET-22", "Ned-RCC-NEET-12-SET-22", "Ltr-RCC-JEE-12-SET-22", "Ned-RCC-JEE-12-SET-22"]
       batches_set_11th = ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']
+      batches_set_aurangabad = ['AUG-RCC-NEET-11-SET-22', 'AUG-RCC-JEE-11-SET-22']
       student_batch_names = student&.batches&.pluck(:name) || []
-      if student.blank? || (@new_admission.batch == '11th' && ( student_batch_names & batches_set_11th).blank?) || (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12th).blank?)
+      if student.blank? ||
+          (@new_admission.batch == '11th' && ( student_batch_names & batches_set_11th).blank?) ||
+          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12th).blank?) ||
+          (@new_admission.batch == 'set_aurangabad' && ( student_batch_names & batches_set_aurangabad).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 

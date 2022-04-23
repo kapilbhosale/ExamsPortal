@@ -31,7 +31,8 @@ class RollNumberSuggestor < ApplicationRecord
     'neet_saarthi' => 1_00_001,
     '12th_set' => 1_000,
     '11th_22_23' => 40_000,
-    "12th_22_23" => 60_000
+    "12th_22_23" => 60_000,
+    'set_aurangabad' => 1_000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)

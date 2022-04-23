@@ -30,12 +30,20 @@
         function adjustUI() {
           var courseType = $('input[name=course_type]:checked').val();
           var selectedBatch = $('#batch').find(":selected").val();
-          if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi' || selectedBatch === '12th_set') {
+          var rccBranch = $('input[name=rcc_branch]:checked').val();
+
+          if (rccBranch === 'aurangabad') {
+            $('#neet-saarthi').text("[RCC NEET SET is Free for PCB and PCM.]");
+          } else {
+            $('#neet-saarthi').text("[RCC NEET SET is for PCB]");
+          }
+
+          if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi' || selectedBatch === '12th_set' || rccBranch === 'aurangabad') {
             if (selectedBatch === '11th' || selectedBatch === '12th_set') {
               $('#rcc-set-exam-11').show();
               $('#neet-saarthi').show();
             }
-            if (selectedBatch === 'neet_saarthi') {
+            if (selectedBatch === 'neet_saarthi' || rccBranch === 'aurangabad') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
@@ -51,7 +59,7 @@
           }
 
           if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi' || $('#batch').find(":selected").val() === '12th_set') {
-            if(courseType === 'neet' || $('#batch').find(":selected").val() === 'neet_saarthi') {
+            if(courseType === 'neet' || $('#batch').find(":selected").val() === 'neet_saarthi' || rccBranch === 'aurangabad') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
@@ -246,9 +254,35 @@
 
         $('input[name="course[]"]').on('change', showFeesDetails);
 
+        const BATCHES = [
+          {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
+          {val: "12th", text: "12th Regular Batch (2022-2023)"},
+          {val: "repeater", text: "Repeater-2021-2022"},
+          {val: "11th", text: "11th Free Foundation 2022"},
+          {val: "neet_saarthi", text: "NEET SAARATHI 2022"},
+        ]
+
+        function adjustBatchDropdown() {
+          $('#batch option').remove();
+          var rccBranch = $('input[name=rcc_branch]:checked').val();
+
+          if (rccBranch === 'aurangabad') {
+            $('#batch').append($("<option selected></option>")
+                .attr("value", 'set_aurangabad')
+                .text('RCC SET 11th(2022) Aurangabad'));
+          } else {
+            BATCHES.forEach((item) => {
+              $('#batch').append($("<option></option>")
+                  .attr("value", item.val)
+                  .text(item.text));
+            })
+          }
+        }
+
         function batchChange() {
           adjustUI();
           showFeesDetails();
+          adjustBatchDropdown();
         }
 
         $('#batch').on('change', batchChange);
@@ -319,6 +353,12 @@
             <input class="form-check-input" type="radio" name="rcc_branch" id="radio-nanded" value="nanded" required />
             <label class="form-check-label" for="inlineRadio2">Nanded</label>
           </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-nanded" value="aurangabad" required />
+            <label class="form-check-label" for="inlineRadio2">
+              <span style="color: #007bff; font-size: 18px;">Aurangabad</span>
+            </label>
+          </div>
         </div>
 
         <div class="form-group">
@@ -372,11 +412,11 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option value="11th_new" selected>11th Regular Batch (2022-2023)</option>
-                <option value="12th">12th Regular Batch (2022-2023)</option>
-                <option value="repeater">Repeater-2021-2022</option>
-                <option value="11th">11th Free Foundation 2022</option>
-                <option value="neet_saarthi" >NEET SAARATHI 2022</option>
+                <option id="11th_new" value="11th_new">11th Regular Batch (2022-2023)</option>
+                <option id="12th" value="12th">12th Regular Batch (2022-2023)</option>
+                <option id="repeater" value="repeater">Repeater-2021-2022</option>
+                <option id="11th" value="11th">11th Free Foundation 2022</option>
+                <option id="neet_saarthi" value="neet_saarthi">NEET SAARATHI 2022</option>
                 <%# <option value="12th_set">12th RCC SET 2022-23</option> %>
                 <%# <option value="crash_course">Crash Course</option> %>
               <% end %>
@@ -392,6 +432,7 @@
               <p style="color: gray;">Course Selection:
                 <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[Your Course is free for all subjects]</span>
                 <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC NEET SET is for PCB]</span>
+                <span id="set-aurangabad" style="color: green; font-size: 12px; display: none">[RCC NEET SET is Free for PCB and PCM.]</span>
               </p>
             <% end %>
           </div>
