@@ -279,14 +279,19 @@
           }
         }
 
-        function batchChange() {
+        function branchChange() {
           adjustUI();
           showFeesDetails();
           adjustBatchDropdown();
         }
 
+        function batchChange() {
+          adjustUI();
+          showFeesDetails();
+        }
+
         $('#batch').on('change', batchChange);
-        $('input[name=rcc_branch]').on('change', batchChange);
+        $('input[name=rcc_branch]').on('change', branchChange);
       });
 
     </script>
@@ -407,7 +412,7 @@
               <p style="color: gray;">Batch Selection: </p>
             <% end %>
           </div>
-          <div class="form-group">
+          <div class="form-group"> 
             <select id="batch" class="form-control" name="batch">
               <% if @student.present? %>
                 <option value="12th">12th</option>
