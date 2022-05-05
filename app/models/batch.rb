@@ -160,17 +160,21 @@ class Batch < ApplicationRecord
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    return Batch.where(org_id: org.id, name: "B1-11-REG-PCM-22-23") if course.name.upcase == "PCM"
-    return Batch.where(org_id: org.id, name: "B1-11-REG-PCBM-22-23") if course.name.upcase == "PCBM"
-
-    if na&.jee?
-      batch_name = rcc_branch == "latur" ?
-        "B1-LTR-11-REG-JEE-#{course.name.upcase}-22-23" :
-        "B1-NED-11-REG-JEE-#{course.name.upcase}-22-23"
+    if rcc_branch == "aurangabad"
+      batch_name = "B1-11-AUG-2022-23"
     else
-      batch_name = rcc_branch == "latur" ?
-        "B1-LTR-11-REG-NEET-#{course.name.upcase}-22-23" :
-        "B1-NED-11-REG-NEET-#{course.name.upcase}-22-23"
+      return Batch.where(org_id: org.id, name: "B1-11-REG-PCM-22-23") if course.name.upcase == "PCM"
+      return Batch.where(org_id: org.id, name: "B1-11-REG-PCBM-22-23") if course.name.upcase == "PCBM"
+
+      if na&.jee?
+        batch_name = rcc_branch == "latur" ?
+          "B1-LTR-11-REG-JEE-#{course.name.upcase}-22-23" :
+          "B1-NED-11-REG-JEE-#{course.name.upcase}-22-23"
+      else
+        batch_name = rcc_branch == "latur" ?
+          "B1-LTR-11-REG-NEET-#{course.name.upcase}-22-23" :
+          "B1-NED-11-REG-NEET-#{course.name.upcase}-22-23"
+      end
     end
 
     Batch.where(org_id: org.id, name: batch_name)

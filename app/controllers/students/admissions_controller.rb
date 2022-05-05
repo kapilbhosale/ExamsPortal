@@ -209,6 +209,10 @@ class Students::AdmissionsController < ApplicationController
     return 12_000 if batch == '9th'
     return 12_000 if batch == '10th'
 
+    if rcc_branch == 'aurangabad'
+      return new_admission.extra_data.dig('pay_type') == 'installment' ? 30_000 : 70_000
+    end
+
     if batch == 'repeater'
       if new_admission.extra_data.dig('pay_type') == 'installment'
         return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
