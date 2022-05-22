@@ -290,6 +290,7 @@ class Students::AdmissionsController < ApplicationController
   def admission_done_set
     @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
+
     if @new_admission.present?
       @new_admission.success!
 
@@ -297,6 +298,7 @@ class Students::AdmissionsController < ApplicationController
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
       )
+
       batches_set_12th = ["Ltr-RCC-NEET-12-SET-22", "Ned-RCC-NEET-12-SET-22", "Ltr-RCC-JEE-12-SET-22", "Ned-RCC-JEE-12-SET-22"]
       batches_set_11th = ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']
       batches_set_aurangabad = ['AUG-RCC-NEET-11-SET-22', 'AUG-RCC-JEE-11-SET-22']
@@ -304,7 +306,8 @@ class Students::AdmissionsController < ApplicationController
       if student.blank? ||
           (@new_admission.batch == '11th' && ( student_batch_names & batches_set_11th).blank?) ||
           (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12th).blank?) ||
-          (@new_admission.batch == 'set_aurangabad' && ( student_batch_names & batches_set_aurangabad).blank?)
+          (@new_admission.batch == 'set_aurangabad' && ( student_batch_names & batches_set_aurangabad).blank?) ||
+          (@new_admission.batch == 'neet_saarthi' && (student_batch_names & ["AUR-SET(CBSE/ICSE)-2022-23"]).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 

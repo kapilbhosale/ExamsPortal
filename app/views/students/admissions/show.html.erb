@@ -50,13 +50,15 @@
               $('input[value=bio]').prop('checked', true);
               $('input[value=pcb]').prop('checked', true);
               $('#rcc-set-exam-11').hide();
-              $('#neet-saarthi').show();
+              $('#neet-saarthi').show(); // to show green heper text.
             }
             $('#course-selection').hide();
+            $('#course-selection-arng').hide();
           } else {
             $('#rcc-set-exam-11').hide();
             $('#neet-saarthi').hide();
             $('#course-selection').show();
+            $('#course-selection-arng').show();
           }
 
           if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi' || $('#batch').find(":selected").val() === '12th_set') {
@@ -264,8 +266,12 @@
           {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2022-2023)"},
           {val: "repeater", text: "Repeater-2021-2022"},
-          {val: "11th", text: "11th Free Foundation 2022"},
-          {val: "neet_saarthi", text: "NEET SAARATHI 2022"},
+          {val: "11th", text: "11th Free Foundation 2022"}
+        ]
+
+        const AUR_BATCHES = [
+          {val: '11th_new', text: '11th Aurangabad 2022-23'},
+          {val: "neet_saarthi", text: "RCC-SET aurangabad 2022-23"},
         ]
 
         function adjustBatchDropdown() {
@@ -273,9 +279,11 @@
           var rccBranch = $('input[name=rcc_branch]:checked').val();
 
           if (rccBranch === 'aurangabad') {
-            $('#batch').append($("<option selected></option>")
-                .attr("value", '11th_new')
-                .text('11th Aurangabad 2022-23'));
+            AUR_BATCHES.forEach((item) => {
+              $('#batch').append($("<option></option>")
+                  .attr("value", item.val)
+                  .text(item.text));
+            })
           } else {
             BATCHES.forEach((item) => {
               $('#batch').append($("<option></option>")
