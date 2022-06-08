@@ -155,7 +155,7 @@ class Students::VideosController < Students::BaseController
 
   def check_valid_rcc_request
     @is_rcc = current_org.subdomain == 'exams'
-    @req_from_electron = request.user_agent.include?('Electron') && cookies['electron'] == "YES-9890"
+    @req_from_electron = request.user_agent.include?('Electron') && cookies['electron'] == "RCC-245417"
     @req_from_browser = !@req_from_electron
   end
 
