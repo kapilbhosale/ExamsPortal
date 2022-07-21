@@ -97,7 +97,6 @@ namespace :deploy do
     end
   end
 
-  # COMMENTED for HETZNER SERVER & PUNE SERVER
   desc 'Webpack Compiling assets'
   task :webpack_compile do
     on roles(:app) do
@@ -109,7 +108,6 @@ namespace :deploy do
   end
 
   before "deploy:assets:precompile", "deploy:yarn_install"
-  # COMMENTED for HETZNER SERVER
   after  :compile_assets, :webpack_compile
 
   before :starting,     :check_revision
