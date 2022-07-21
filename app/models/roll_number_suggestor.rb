@@ -35,6 +35,7 @@ class RollNumberSuggestor < ApplicationRecord
     'set_aurangabad' => 1_000,
     '11_aurangabad' => 20_000,
     'set-aur' => 5_000,
+    'repeater_set' => 2_000,
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
@@ -47,7 +48,7 @@ class RollNumberSuggestor < ApplicationRecord
     end
     batch_name = '12th_22_23' if batch_name == '12th'
 
-    batch_name = 'set-aur' if batch_name == 'neet_saarthi'
+    batch_name = 'repeater_set' if batch_name == '12th_set'
 
     rns = self.find_by(batch_name: batch_name)
 

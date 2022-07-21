@@ -32,19 +32,14 @@
           var selectedBatch = $('#batch').find(":selected").val();
           var rccBranch = $('input[name=rcc_branch]:checked').val();
 
-          if (rccBranch === 'aurangabad') {
-            $('#neet-saarthi').text("[RCC NEET SET is Free for PCB and PCM.]");
-          } else {
-            $('#neet-saarthi').text("[RCC NEET SET is for PCB]");
-          }
-
+          $('#neet-saarthi').text("[RCC NEET SET is for PCB]");
 
           if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi' || selectedBatch === '12th_set') {
             if (selectedBatch === '11th' || selectedBatch === '12th_set') {
               $('#rcc-set-exam-11').show();
               $('#neet-saarthi').show();
             }
-            if (selectedBatch === 'neet_saarthi') {
+            if (selectedBatch === '12th_set') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
@@ -265,13 +260,13 @@
         const BATCHES = [
           {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2022-2023)"},
-          {val: "repeater", text: "Repeater-2021-2022"},
-          {val: "11th", text: "11th Free Foundation 2022"}
+          {val: "11th", text: "11th Free Foundation 2022"},
+          {val: "12th_set", text: "REPEATER RCC SET 2022-23"},
         ]
 
         const AUR_BATCHES = [
           {val: '11th_new', text: '11th Aurangabad 2022-23'},
-          {val: "neet_saarthi", text: "RCC-SET aurangabad 2022-23"},
+          {val: "12th_set", text: "REPEATER RCC SET 2022-23"},
         ]
 
         function adjustBatchDropdown() {
@@ -448,10 +443,9 @@
               <% else %>
                 <option id="11th_new" value="11th_new">11th Regular Batch (2022-2023)</option>
                 <option id="12th" value="12th">12th Regular Batch (2022-2023)</option>
-                <option id="repeater" value="repeater">Repeater-2021-2022</option>
                 <option id="11th" value="11th">11th Free Foundation 2022</option>
-                <option id="neet_saarthi" value="neet_saarthi">NEET SAARATHI 2022</option>
-                <%# <option value="12th_set">12th RCC SET 2022-23</option> %>
+                <%# <option id="neet_saarthi" value="neet_saarthi">NEET SAARATHI 2022</option> %>
+                <option value="12th_set">REPEATER RCC SET 2022-23</option>
                 <%# <option value="crash_course">Crash Course</option> %>
               <% end %>
             </select>
@@ -464,8 +458,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="rcc-set-exam-11" style="color: green; font-size: 10px; display: none">[Your Course is free for all subjects]</span>
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC NEET SET is for PCB]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC REPEATER NEET SET is for PCB]</span>
               </p>
             <% end %>
           </div>

@@ -299,15 +299,10 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      batches_set_12th = ["Ltr-RCC-NEET-12-SET-22", "Ned-RCC-NEET-12-SET-22", "Ltr-RCC-JEE-12-SET-22", "Ned-RCC-JEE-12-SET-22"]
-      batches_set_11th = ['LTR-NEET-SAARTHI-2022', 'Ltr-RCC-JEE-11-SET-22', 'Ned-RCC-JEE-11-SET-22', 'Ltr-RCC-NEET-11-SET-22', 'Ned-RCC-NEET-11-SET-22']
-      batches_set_aurangabad = ['AUG-RCC-NEET-11-SET-22', 'AUG-RCC-JEE-11-SET-22']
+      batches_set_repeater = ['LTR-REP-SET-2022-23', 'NED-REP-SET-2022-23', 'AUG-REP-SET-2022-23']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '11th' && ( student_batch_names & batches_set_11th).blank?) ||
-          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12th).blank?) ||
-          (@new_admission.batch == 'set_aurangabad' && ( student_batch_names & batches_set_aurangabad).blank?) ||
-          (@new_admission.batch == 'neet_saarthi' && (student_batch_names & ["AUR-SET(CBSE/ICSE)-2022-23"]).blank?)
+          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_repeater).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 

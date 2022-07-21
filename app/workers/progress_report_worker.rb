@@ -19,3 +19,5 @@ class ProgressReportWorker
 end
 
 Sidekiq::Cron::Job.create(name: 'ProgressReportWorker worker - every night 2 am', cron: '0 2 * * *', class: 'ProgressReportWorker')
+
+# exams = Exam.where('created_at > ?', Time.now - 30.days).where('show_exam_at < ?', Time.now).where('exam_available_till < ?', Time.now - 4.hours).where(is_pr_generated: false)
