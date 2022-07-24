@@ -165,6 +165,24 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def get_repeater_batches(rcc_branch, course, batch, na)
+    org = Org.first
+
+    case rcc_branch
+      when 'latur'
+        batch_name = "LTR-REP-#{course.name.upcase}-2022-23"
+      when 'nanded'
+        batch_name = "NED-REP-#{course.name.upcase}-2022-23"
+      when 'aurangabad'
+        batch_name = "AUR-REP-#{course.name.upcase}-2022-23"
+      else
+        batch_name = "LTR-REP-#{course.name.upcase}-2022-23"
+    end
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
@@ -211,18 +229,7 @@ class Batch < ApplicationRecord
     elsif batch == 'set_aurangabad'
       get_set_aug_batches(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
-      org = Org.first
-      if na&.jee?
-        batch_name = rcc_branch == "latur" ?
-          "B2-REP-LTR-JEE-#{course.name.upcase}-21-22" :
-          "B2-REP-NED-JEE-#{course.name.upcase}-21-22"
-      else
-        batch_name = rcc_branch == "latur" ?
-          "B2-REP-LTR-NEET-#{course.name.upcase}-21-22" :
-          "B2-REP-NED-NEET-#{course.name.upcase}-21-22"
-      end
-      Batch.find_or_create_by(org_id: org.id, name: batch_name)
-      Batch.where(org_id: org.id, name: batch_name)
+      get_repeater_batches(rcc_branch, course, batch, na)
     elsif batch == 'test_series'
       org = Org.first
       batch_name = rcc_branch == "latur" ?
@@ -368,8 +375,8 @@ end
 
 
 # org = Org.first
-# batch_group = BatchGroup.find_or_create_by(name: "B1-12th-22-23", org_id: org.id)
-# ["B1-12-REG-PCM-22-23", "B1-12-REG-PCBM-22-23"].each do |batch_name|
+# batch_group = BatchGroup.find_or_create_by(name: "LTR-REP-2022-23", org_id: org.id)
+# ["LTR-REP-PCB-2022-23", "LTR-REP-PC-2022-23"].each do |batch_name|
 #   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
 
 #   Admin.where(org_id: org.id).each do |admin|
@@ -377,8 +384,17 @@ end
 #   end
 # end
 
-# batch_group = BatchGroup.find_or_create_by(name: "B1-11th-22-23", org_id: org.id)
-# ["B1-11-REG-PCM-22-23", "B1-11-REG-PCBM-22-23"].each do |batch_name|
+# batch_group = BatchGroup.find_or_create_by(name: "NED-REP-2022-23", org_id: org.id)
+# ["NED-REP-PCB-2022-23", "NED-REP-PC-2022-23"].each do |batch_name|
+#   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+
+#   Admin.where(org_id: org.id).each do |admin|
+#     AdminBatch.create(admin_id: admin.id, batch_id: batch.id)
+#   end
+# end
+
+# batch_group = BatchGroup.find_or_create_by(name: "AUR-REP-2022-23", org_id: org.id)
+# ["AUR-REP-PCB-2022-23", "AUR-REP-PC-2022-23"].each do |batch_name|
 #   batch = Batch.find_or_create_by(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
 
 #   Admin.where(org_id: org.id).each do |admin|
