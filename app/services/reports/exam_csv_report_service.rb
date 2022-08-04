@@ -92,10 +92,12 @@ module Reports
               exam_section_ids.each do |sec_id|
                 section_columns = []
                 total.keys.each do |total_key|
-                  next if row[sec_id].blank?
-
-                  total[total_key] = total[total_key] + row[sec_id][total_key]
-                  section_columns << row[sec_id][total_key]
+                  if row[sec_id].blank?
+                    section_columns << 0
+                  else
+                    total[total_key] = total[total_key] + row[sec_id][total_key]
+                    section_columns << row[sec_id][total_key]
+                  end
                 end
                 csv_row += section_columns
               end
