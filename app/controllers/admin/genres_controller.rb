@@ -25,7 +25,8 @@ class Admin::GenresController < Admin::BaseController
 
       student_active_date = @student.created_at
 
-      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: @student.batches}).pluck(:genre_id).uniq
+      # genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: @student.batches}).pluck(:genre_id).uniq
+      genre_ids = VideoLecture.includes(:subject).pluck(:genre_id).uniq
       @genres = @genres.where(id: genre_ids).includes(:subject)
       @genres.each do |genre|
         next unless genre.hidden
