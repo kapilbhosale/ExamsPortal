@@ -8,28 +8,39 @@ class Ytplayer extends React.Component {
   }
 
   componentDidMount() {
-    this.player = new plyr('.js-plyr', this.props.options)
-    this.player.source = {
-      type: 'video',
-      sources: [
-        {
-          src: this.props.url,
-          type: 'video/mp4',
-          size: 720,
-        },
+
+    // more optinos - https://github.com/sampotts/plyr
+    const options = {
+      fullscreen: {
+        enabled: true,
+        iosNative: false
+      },
+      controls: [
+        "play-large",
+        "play",
+        "progress",
+        "duration",
+        "mute",
+        "volume",
+        "settings",
+        "fullscreen"
       ],
-    }
+      autoplay: true,
+      storage: { enabled: false }
+    };
+
+    const player = plyr.setup("#plyr-video", options);
   }
 
   componentWillUnmount() {
-    this.player.destroy()
+    plyr.destroy()
   }
 
   render() {
     return (
       <div>
-        <p>player here..</p>
-        <video className='js-plyr plyr'>
+        <video id="plyr-video" autoplay="autoplay" controls>
+          <source src={this.props.url} type="video/mp4" />
         </video>
       </div>
     )
