@@ -29,7 +29,7 @@ class Admin::GenresController < Admin::BaseController
       genre_ids = VideoLecture.includes(:subject).pluck(:genre_id).uniq
       @genres = @genres.where(id: genre_ids).includes(:subject)
       @genres.each do |genre|
-        next unless genre.hidden
+        # next unless genre.hidden
 
         svf = svfs[genre.id]
         if svf.present?

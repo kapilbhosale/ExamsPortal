@@ -55,7 +55,7 @@
             </td>
             <% if @student.present? %>
               <td>
-              <% if genre.hidden %>
+              <% if true || genre.hidden %>
                 <% folder_access_data = @student_folder_access_data[genre.id] %>
                 Days:
                 <a href="#" class="btn btn-sm btn-danger" role="button" aria-pressed="true">
