@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
   mount Sidekiq::Web => '/sidekiq'
 
+  post 'sync-attendance', to: 'admin/api/attendance#create'
   # mount PgHero::Engine, at: "/pg-stats-k"
 
   # authenticate :admin, -> (admin) { admin.present? } do

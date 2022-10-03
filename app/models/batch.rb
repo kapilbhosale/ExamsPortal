@@ -3,8 +3,11 @@
 # Table name: batches
 #
 #  id             :bigint(8)        not null, primary key
+#  config         :jsonb
 #  disable_count  :integer          default(0)
+#  end_time       :datetime
 #  name           :string
+#  start_time     :datetime
 #  students_count :integer          default(0)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null

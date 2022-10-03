@@ -6,13 +6,13 @@
         <div class="row">
           <div class="col-sm-12 col-md-12">
             <div class="form-group">
-              <label class="form-label">Batch Name</label>
+              <label class="form-label">Batch Name:</label>
               <%= form.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
             </div>
           </div>
           <div class="col-sm-12 col-md-12">
             <div class="form-group">
-              <label class="form-label">Group</label>
+              <label class="form-label">Group:</label>
               <select class="form-control" name="batch_group_id" id="batch_group_id" >
                 <% @batch_groups.each do |batch_group| %>
                   <option value="<%= batch_group.id %>">
@@ -20,6 +20,19 @@
                   </option>
                 <% end %>
               </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <p>Add Batch timming details, if this batch is offline and RFID attendance is being taken.</p>
+            </div>
+            <div class="col-md-6 col-sm-12 form-group">
+              <label class="form-label">Start Time</label>
+              <%= form.time_field :start_time, class: 'form-control', placeholder: 'Start Time' %>
+            </div>
+            <div class="col-md-6 col-sm-12 form-group">
+              <label class="form-label">End Time</label>
+              <%= form.time_field :end_time, class: 'form-control', placeholder: 'End Time' %>
             </div>
           </div>
           <div class="col-md-12">

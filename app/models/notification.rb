@@ -2,15 +2,12 @@
 #
 # Table name: notifications
 #
-#  id               :bigint(8)        not null, primary key
-#  attachment_image :string
-#  attachment_pdf   :string
-#  description      :string
-#  notif_types      :integer          default(0)
-#  title            :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  org_id           :bigint(8)
+#  id          :bigint(8)        not null, primary key
+#  description :string
+#  title       :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  org_id      :bigint(8)
 #
 # Indexes
 #

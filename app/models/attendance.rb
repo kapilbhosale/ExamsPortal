@@ -25,8 +25,25 @@ class Attendance < ApplicationRecord
   validates :student_id, uniqueness: { scope: :time_stamp }
 
   enum att_type: { rfid: 0, online: 1, other: 2 }
+
+  after_create :send_sms
 end
 
+# SMS_USER_NAME = "kalpakbhosale@hotmail.com"
+# SMS_PASSWORD = "k@lpak@2020"
+# TEMPLATE_ID = "1007674069396942106"
+SMS_USER_NAME = "maheshrccnanded@gmail.com"
+SMS_PASSWORD = "myadmin"
+BASE_URL = "https://www.businesssms.co.in/SMS.aspx";
+
+def send_sms
+  template_id = '1007771438372665235'
+  # msg = "Dear Students, \nWelcome in the world of RCC. \nYour admission is confirmed. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+  msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{created_at.strftime('%d %b %y')}. Kindly confirm. \r\nTeam RCC"
+  msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{student.parent_mobile}&TemplateID=#{template_id}&Text=#{msg}"
+  encoded_uri = URI(msg_url)
+  puts Net::HTTP.get(encoded_uri)
+end
 
 # # script to create attendance
 # student_ids = [1,2,3,5,6,7]

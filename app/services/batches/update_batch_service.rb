@@ -2,17 +2,19 @@ class UpdateBatchError < StandardError; end
 
 module Batches
   class UpdateBatchService
-    attr_reader :batch, :name, :batch_group_id
+    attr_reader :batch, :name, :start_time, :end_time, :batch_group_id
 
-    def initialize(id, name, batch_group_id)
+    def initialize(id, batch_params, batch_group_id)
       @batch = Batch.find_by(id: id)
-      @name = name
+      @name = batch_params[:name]
+      @start_time = batch_params[:start_time]
+      @end_time = batch_params[:end_time]
       @batch_group_id = batch_group_id
     end
 
     def call
       validate_request
-      batch.update!(name: name, batch_group_id: batch_group_id)
+      batch.update!(name: name, start_time: start_time, end_time: end_time, batch_group_id: batch_group_id)
       { status: true, message: 'Batch updated successfully' }
     rescue UpdateBatchError, ActiveRecord::RecordInvalid => ex
       { status: false, message: ex.message }

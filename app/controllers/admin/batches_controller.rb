@@ -11,7 +11,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def create
-    @response = Batches::AddBatchService.new(params[:batch][:name], current_org, params[:batch_group_id]).call
+    @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id]).call
 
     if @response[:status]
       Admin.where(org_id: current_org.id).each do |admin|
@@ -51,7 +51,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def update
-    @response = Batches::UpdateBatchService.new(params[:id], params[:batch][:name], params[:batch_group_id]).call
+    @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id]).call
     set_flash
     redirect_to admin_batches_path
   end

@@ -28,6 +28,19 @@
               </select>
             </div>
           </div>
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <p>Add Batch timming details, if this batch is offline and RFID attendance is being taken.</p>
+            </div>
+            <div class="col-md-6 col-sm-12 form-group">
+              <label class="form-label">Start Time</label>
+              <%= form.time_field :start_time, class: 'form-control', placeholder: 'Start Time' %>
+            </div>
+            <div class="col-md-6 col-sm-12 form-group">
+              <label class="form-label">End Time</label>
+              <%= form.time_field :end_time, class: 'form-control', placeholder: 'End Time' %>
+            </div>
+          </div>
           <div class="col-sm-6 col-md-8">
             <div class="form-group">
               <% if @batch.errors.any? %>
