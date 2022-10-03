@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_28_041325) do
+ActiveRecord::Schema.define(version: 2022_10_03_110625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,15 @@ ActiveRecord::Schema.define(version: 2022_09_28_041325) do
   end
 
   create_table "admission_batches", force: :cascade do |t|
+  end
+
+  create_table "att_sms_logs", force: :cascade do |t|
+    t.bigint "batch_id"
+    t.integer "present_count"
+    t.integer "absent_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_att_sms_logs_on_batch_id"
   end
 
   create_table "attendances", force: :cascade do |t|
