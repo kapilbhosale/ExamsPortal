@@ -22,7 +22,9 @@ class RawAttendance < ApplicationRecord
     data.each_slice(500) do |logs|
       att_params = {}
       roll_numbers = logs.map {|r| r['deviceUserId']}
-      students_by_roll_number = Student.where(org_id: org_id).where(roll_number: roll_numbers).index_by(&:roll_number)
+      batch_ids = Batch.where(org_id: org_id).where.not(start_time: nil).ids
+      student_ids = StudentBatch.where(batch_id: batch_ids).pluck(:student_id)
+      students_by_roll_number = Student.where(org_id: org_id).where(id: student_ids).where(roll_number: roll_numbers).index_by(&:roll_number)
       logs.each do |log|
         next if log.blank?
 
