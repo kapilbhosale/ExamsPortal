@@ -7,7 +7,7 @@ class Admin::AttendanceController < Admin::BaseController
 
   def overview_report
     @search = Attendance.search(search_params)
-    @batches = Batch.where(org: current_org).all_batches.order(:id)
+    @batches = Batch.where(org: current_org).where.not(start_time: nil).all_batches.order(:id)
     filtered_batch_ids = params.dig(:q, 'batch_id').present? ? params[:q]['batch_id'] : @batches.ids
     @all_students = Student.includes(:student_batches, :batches,).where(batches: { id: filtered_batch_ids })
 

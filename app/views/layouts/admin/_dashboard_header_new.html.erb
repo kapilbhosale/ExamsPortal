@@ -103,11 +103,9 @@
               <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>
             </li>
           <% end %>
-          <% if request.subdomain == 'bhargav' %>
-            <li class="nav-item">
-              <%= link_to '<i class="fa fa-address-card"></i> Attendance'.html_safe, admin_attendance_index_path, class: current_page?(admin_attendance_index_path) ? "nav-link active" : "nav-link" %>
-            </li>
-          <% end %>
+          <li class="nav-item">
+            <%= link_to '<i class="fa fa-address-card"></i> Attendance'.html_safe, admin_attendance_index_path, class: current_page?(admin_attendance_index_path) ? "nav-link active" : "nav-link" %>
+          </li>
           <li class="nav-item">
             <a class="<%= current_page?(admin_android_apps_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
               <i class="fas fa-tools"></i> Administration
