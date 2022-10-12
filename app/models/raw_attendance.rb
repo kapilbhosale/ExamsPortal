@@ -36,7 +36,7 @@ class RawAttendance < ApplicationRecord
         time_in_seconds = time_entry.to_i
 
         sampled_time = (time_in_seconds / 120) * 120
-        att_params[sampled_time] = {
+        att_params["#{student_id}-#{sampled_time}"] = {
           org_id: org_id,
           student_id: student_id,
           time_entry: time_entry,

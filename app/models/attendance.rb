@@ -30,7 +30,7 @@ class Attendance < ApplicationRecord
 
   after_create :send_sms
 
-  scope :today, -> { where('DATE(created_at) = ?', Date.today)}
+  scope :today, -> { where('DATE(time_entry) = ?', Date.today)}
 end
 
 SMS_USER_NAME = "maheshrccnanded@gmail.com"
