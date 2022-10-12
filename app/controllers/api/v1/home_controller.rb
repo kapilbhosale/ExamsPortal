@@ -109,7 +109,7 @@ class Api::V1::HomeController < Api::V1::ApiController
 
   def app_version
     version_code = current_org&.data&.dig('version_code') || '1.0.0'
-    if params[:code].to_f < version_code.to_f
+    if params[:code]&.to_f < version_code.to_f
       current_student.reset_apps
     end
     render json: { version_code: version_code, force_update: true }, status: :ok

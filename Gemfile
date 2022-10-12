@@ -132,6 +132,8 @@ group :development do
   # gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
   # gem 'mina-nginx', :require => false
   gem 'rack-mini-profiler'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 group :test do
