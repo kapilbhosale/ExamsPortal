@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::HomeController < Api::V1::ApiController
-  skip_before_action :authenticate, only: [:gallery, :app_version]
+  skip_before_action :authenticate, only: [:gallery]
 
   def dashboard_data
     exam_portal_link = "#{helpers.full_domain_path}/students/auto-auth"
@@ -109,6 +109,9 @@ class Api::V1::HomeController < Api::V1::ApiController
 
   def app_version
     version_code = current_org&.data&.dig('version_code') || '1.0.0'
+    if params[:code].to_f < version_code.to_f
+      current_student.reset_apps
+    end
     render json: { version_code: version_code, force_update: true }, status: :ok
   end
 end
