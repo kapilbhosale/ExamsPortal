@@ -11,7 +11,11 @@ class Admin::AttendanceController < Admin::BaseController
     filtered_batch_ids = params.dig(:q, 'batch_id').present? ? params[:q]['batch_id'] : @batches.ids
     @all_students = Student.includes(:student_batches, :batches,).where(batches: { id: filtered_batch_ids })
 
-    @students = @all_students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    if request.format.csv?
+      @students = @all_students
+    else
+      @students = @all_students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+    end
 
     @to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Date.today
     @from_date = params[:from_date].present? ? Date.parse(params[:from_date]) : Date.today - 30.days
@@ -31,8 +35,8 @@ class Admin::AttendanceController < Admin::BaseController
       pr_count = Attendance
         .where(org: current_org)
         .where(student_id: student_ids)
-        .where('time_entry >= ?', @from_date)
-        .where('time_entry <= ?', @to_date)
+        .where('time_entry >= ?', Date.today)
+        .where('time_entry <= ?', Date.today)
         .count
       std_count = student_ids.count
       @summary_data << {batch: batch, students_count: std_count, pr_count: pr_count, ab_count: (std_count - pr_count) }

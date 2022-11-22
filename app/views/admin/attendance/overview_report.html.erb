@@ -1,6 +1,6 @@
 <div class="card" style="padding: 10px">
   <div>
-    <p class="text-center">Attendance Summary Data</p>
+    <p class="text-center">Today's Attendance Summary Data</p>
     <table class="table table-condensed .table-bordered">
     <tr>
       <th>Batch Name</th>
@@ -22,6 +22,7 @@
     <% end %>
     </table>
   </div>
+  <p class="text-center">Attendance Details</p>
   <div style="background-color: #e0e0e0; padding: 5px">
     <%= search_form_for @search, url: overview_report_admin_attendance_index_path, class:"form-inline" do |f| %>
       <span class="p-2">From</span>
