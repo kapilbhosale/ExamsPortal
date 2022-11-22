@@ -10,6 +10,8 @@ class AbsentMessageSenderWorker
       present_student_ids = Attendance.today.where(org_id: org.id, student_id: batch.students.ids).pluck(:student_id).uniq
       absent_students = batch.students.where.not(id: present_student_ids)
 
+      next if absent_students.count >= present_student_ids.count
+
       absent_students.find_each do |student|
         send_absent_sms(student)
       end

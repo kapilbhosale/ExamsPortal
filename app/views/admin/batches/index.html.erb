@@ -28,6 +28,8 @@
                   <th>Total Students</th>
                   <th>Disabled Students</th>
                 <% end %>
+                <th>Start Time</th>
+                <th>End Time</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -54,6 +56,12 @@
                     <%= batch.disable_count %>
                   </td>
                   <% end %>
+                  <td>
+                    <%= batch.start_time.&strftime("%I:%M %p") || '-' %>
+                  </td>
+                  <td>
+                    <%= batch.end_time&.strftime("%I:%M %p") || '-' %>
+                  </td>
                   <td>
                     <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
                     <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
