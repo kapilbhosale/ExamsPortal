@@ -12,9 +12,10 @@ class AbsentMessageSenderWorker
 
       next if absent_students.count >= present_student_ids.count
 
-      absent_students.find_each do |student|
-        send_absent_sms(student)
-      end
+      # Disabling absent sms for now.
+      # absent_students.find_each do |student|
+      #   send_absent_sms(student)
+      # end
 
       AttSmsLog.create({
         absent_count: absent_students.count,

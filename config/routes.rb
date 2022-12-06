@@ -159,10 +159,16 @@ Rails.application.routes.draw do
     resources :omr
     resources :attendance do
       get :overview_report, on: :collection
+      get :settings, on: :collection
+      get :sms_logs, on: :collection
     end
 
     resources :micro_payments
     resources :banners
+    resources :att_machines do
+      patch :enable
+      patch :disable
+    end
 
     namespace :api do
       resources :students

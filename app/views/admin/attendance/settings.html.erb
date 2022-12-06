@@ -1,0 +1,68 @@
+<div class="row" style="margin-left: -25px">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-10">
+          <h5 class="pt-3">Attendance Machines</h5>
+        </div>
+        <div class="col-md-1 text-right">
+          <%= link_to 'Add New Machine', new_admin_att_machine_path, method: :get, class: "btn btn-info btn-sm" %>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <% if @att_machines.present? %>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>IP Address</th>
+                  <th>Connected</th>
+                  <th>Status</th>
+                  <th>Last Communicated at</th>
+                  <th>Added On</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @att_machines.each do |machine| %>
+                  <tr>
+                    <td><%= machine.id %></td>
+                    <td><%= machine.name %></td>
+                    <td><%= machine.ip_address %></td>
+                    <td>
+                      <% if machine.online %>
+                        <span class="badge badge-success">Online</span>
+                      <% else %>
+                        <span class="badge badge-danger">Offline</span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if machine.disabled %>
+                        <span class="text text-danger">Disabled</span>
+                      <% else %>
+                        <span class="text text-success">Enabled</span>
+                      <% end %>
+                    </td>
+                    <td> - </td>
+                    <td><%= machine.created_at.strftime("%d-%b-%Y %I:%M %p") %></td>
+                    <td>
+                      <% if machine.disabled %>
+                        <%= link_to 'Enable', admin_att_machine_enable_path(machine), method: :patch, class: "btn btn-outline btn-sm" %>
+                      <% else %>
+                        <%= link_to 'Disable', admin_att_machine_disable_path(machine), method: :patch, class: "btn btn-outline btn-sm" %>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% else %>
+            <div class="alert alert-info">No Attendance Machines added, please add one.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

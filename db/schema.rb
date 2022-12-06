@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_03_110625) do
+ActiveRecord::Schema.define(version: 2022_12_06_111350) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -65,6 +66,17 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
   create_table "admission_batches", force: :cascade do |t|
   end
 
+  create_table "att_machines", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "ip_address", null: false
+    t.boolean "disabled", default: false
+    t.boolean "online", default: false
+    t.bigint "org_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_att_machines_on_org_id"
+  end
+
   create_table "att_sms_logs", force: :cascade do |t|
     t.bigint "batch_id"
     t.integer "present_count"
@@ -72,6 +84,17 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["batch_id"], name: "index_att_sms_logs_on_batch_id"
+  end
+
+  create_table "attachments", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "file_name"
+    t.string "attachable_type"
+    t.bigint "attachable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id"
+    t.index ["org_id"], name: "index_attachments_on_org_id"
   end
 
   create_table "attendances", force: :cascade do |t|
@@ -140,6 +163,11 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.index ["study_pdf_id"], name: "index_batch_study_pdfs_on_study_pdf_id"
   end
 
+  create_table "batch_timings", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "batch_video_lectures", force: :cascade do |t|
     t.bigint "video_lecture_id"
     t.bigint "batch_id"
@@ -206,6 +234,37 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.decimal "fees", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "current_student_exam_answers", force: :cascade do |t|
+    t.string "ans"
+    t.jsonb "question_props", default: {}
+    t.bigint "student_exam_id"
+    t.bigint "question_id"
+    t.bigint "option_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["option_id"], name: "index_current_student_exam_answers_on_option_id"
+    t.index ["question_id"], name: "index_current_student_exam_answers_on_question_id"
+    t.index ["student_exam_id", "question_id"], name: "index_csea_on_student_exam_id_and_question_id", unique: true
+    t.index ["student_exam_id"], name: "index_current_student_exam_answers_on_student_exam_id"
+  end
+
+  create_table "doubts", force: :cascade do |t|
+    t.bigint "org_id"
+    t.bigint "subject_id"
+    t.integer "parent_id"
+    t.string "details"
+    t.boolean "is_solved", default: false
+    t.integer "upvotes", default: 0
+    t.bigint "admin_id"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_doubts_on_admin_id"
+    t.index ["org_id"], name: "index_doubts_on_org_id"
+    t.index ["student_id"], name: "index_doubts_on_student_id"
+    t.index ["subject_id"], name: "index_doubts_on_subject_id"
   end
 
   create_table "exam_batches", force: :cascade do |t|
@@ -280,6 +339,16 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.index ["subject_id"], name: "index_genres_on_subject_id"
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "likeable_type"
+    t.bigint "likeable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable_type_and_likeable_id"
+    t.index ["student_id"], name: "index_likes_on_student_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.bigint "sender_id"
     t.string "sender_type"
@@ -348,6 +417,9 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "notif_types", default: 0
+    t.string "attachment_pdf"
+    t.string "attachment_image"
     t.index ["org_id"], name: "index_notifications_on_org_id"
   end
 
@@ -676,10 +748,11 @@ ActiveRecord::Schema.define(version: 2022_10_03_110625) do
     t.bigint "student_id"
     t.string "resource_type"
     t.integer "resource_id"
-    t.string "event"
+    t.integer "event"
     t.jsonb "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "device_type", default: 0
     t.index ["student_id"], name: "index_trackers_on_student_id"
   end
 

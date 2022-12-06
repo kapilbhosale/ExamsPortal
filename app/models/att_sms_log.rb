@@ -15,6 +15,7 @@
 #
 
 class AttSmsLog < ApplicationRecord
-
   scope :today, -> { where('DATE(created_at) = ?', Date.today)}
+
+  belongs_to :batch
 end

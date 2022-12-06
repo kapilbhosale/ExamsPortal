@@ -19,6 +19,7 @@
 
 class Org < ApplicationRecord
   has_many :students
+  has_many :att_machines
 
   def bhargav?
     subdomain == 'bhargav'

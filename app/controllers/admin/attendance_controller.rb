@@ -5,6 +5,14 @@ class Admin::AttendanceController < Admin::BaseController
     redirect_to overview_report_admin_attendance_index_path
   end
 
+  def settings
+    @att_machines = current_org.att_machines
+  end
+
+  def sms_logs
+    @sms_logs = AttSmsLog.includes(:batch).where('created_at > ?', Time.now - 7.days)
+  end
+
   def overview_report
     @search = Attendance.search(search_params)
     @batches = Batch.where(org: current_org).where.not(start_time: nil).all_batches.order(:id)
