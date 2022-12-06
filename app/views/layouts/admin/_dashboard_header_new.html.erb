@@ -104,7 +104,17 @@
             </li>
           <% end %>
           <li class="nav-item">
-            <%= link_to '<i class="fa fa-address-card"></i> Attendance'.html_safe, admin_attendance_index_path, class: current_page?(admin_attendance_index_path) ? "nav-link active" : "nav-link" %>
+            <a class="<%= current_page?(admin_attendance_index_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
+              <i class="fa fa-list"></i> ATT
+            </a>
+            <div class="dropdown-menu">
+              <% if current_admin.can_manage(:admin_users) %>
+                <%= link_to '<i class="fa fa-list"></i> Attendance'.html_safe, admin_attendance_index_path, class: "dropdown-item"%>
+              <% end %>
+              <% if current_admin.can_manage(:payments) %>
+                <%= link_to '<i class="fas fa-tools"></i> Attendance Settings'.html_safe, admin_attendance_index_path, class: "dropdown-item"%>
+              <% end %>
+            </div>
           </li>
           <li class="nav-item">
             <a class="<%= current_page?(admin_android_apps_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
