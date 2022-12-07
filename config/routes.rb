@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   post 'sync-attendance', to: 'admin/api/attendance#create'
+  get  'machines', to: 'admin/api/attendance#machines'
   # mount PgHero::Engine, at: "/pg-stats-k"
 
   # authenticate :admin, -> (admin) { admin.present? } do
@@ -23,7 +24,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'students/home#index'
 
-  get 'pay/:slug', to: 'pay#show'
+  get  'pay/:slug', to: 'pay#show'
   post 'pay', to: 'pay#create', as: :pay_path
   post 'process-pay', to: 'pay#process_pay', as: :pay_process_path
   post 'auth-pay', to: 'pay#auth_pay', as: :pay_auth_path

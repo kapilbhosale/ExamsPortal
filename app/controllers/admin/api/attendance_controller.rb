@@ -7,4 +7,12 @@ class Admin::Api::AttendanceController < Admin::Api::ApiController
     end
     render json: {status: "ok"}, status: :ok
   end
+
+  def machines
+    if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463"
+      att_machines = AttMachine.where(org_id: current_org.id, disabled: false)
+      render json: { machines: att_machines }, status: :ok
+    end
+    render json: { machines: [] }, status: :ok
+  end
 end
