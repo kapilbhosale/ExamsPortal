@@ -267,15 +267,14 @@
         const BATCHES = [
           {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2022-2023)"},
-          {val: "11th", text: "11th Free Foundation 2022"},
-          {val: "12th_set", text: "REPEATER RCC SET 2022-23"},
           {val: "repeater", text: "REPEATER 2022-23"},
+          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
         ]
 
         const AUR_BATCHES = [
           {val: '11th_new', text: '11th Aurangabad 2022-23'},
-          {val: "12th_set", text: "REPEATER RCC SET 2022-23"},
           {val: "repeater", text: "REPEATER 2022-23"},
+          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
         ]
 
         function adjustBatchDropdown() {
@@ -450,13 +449,10 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="11th_new" value="11th_new">11th Regular Batch (2022-2023)</option>
-                <option id="12th" value="12th">12th Regular Batch (2022-2023)</option>
-                <option id="11th" value="11th">11th Free Foundation 2022</option>
-                <%# <option id="neet_saarthi" value="neet_saarthi">NEET SAARATHI 2022</option> %>
-                <option value="12th_set">REPEATER RCC SET 2022-23</option>
-                <option value="repeater">REPEATER 2022-23</option>
-                <%# <option value="crash_course">Crash Course</option> %>
+                <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option>
+                <option id="12th" value="12th"> 12th Regular Batch (2022-2023) </option>
+                <option id="repeater" value="repeater"> REPEATER 2022-23" </option>
+                <option id="12th_set" value="12th_set"> ** 12th RCC-SET (non-RCC) 2023-24 **</option>
               <% end %>
             </select>
           </div>

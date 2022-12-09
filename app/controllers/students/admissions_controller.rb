@@ -295,10 +295,10 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      batches_set_repeater = ['LTR-REP-SET-2022-23', 'NED-REP-SET-2022-23', 'AUG-REP-SET-2022-23']
+      batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_repeater).blank?)
+          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12_23_24).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 
