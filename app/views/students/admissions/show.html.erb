@@ -265,16 +265,15 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
+          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
           {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2022-2023)"},
           {val: "repeater", text: "REPEATER 2022-23"},
-          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
         ]
 
         const AUR_BATCHES = [
           {val: '11th_new', text: '11th Aurangabad 2022-23'},
           {val: "repeater", text: "REPEATER 2022-23"},
-          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
         ]
 
         function adjustBatchDropdown() {
@@ -307,7 +306,12 @@
             $('.course-aurgabad').show();
           } else {
             $('.course-aurgabad').hide();
-            $('.course-ned-ltr').show();
+
+            if ($('#batch').find(":selected").val() !== '12th_set') {
+              $('.course-ned-ltr').show();
+            } else {
+              $('.course-ned-ltr').hide();
+            }
           }
         }
 
@@ -449,10 +453,10 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
+                <option id="12th_set" value="12th_set"> ** 12th RCC-SET (non-RCC) 2023-24 **</option>
                 <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option>
                 <option id="12th" value="12th"> 12th Regular Batch (2022-2023) </option>
                 <option id="repeater" value="repeater"> REPEATER 2022-23" </option>
-                <option id="12th_set" value="12th_set"> ** 12th RCC-SET (non-RCC) 2023-24 **</option>
               <% end %>
             </select>
           </div>

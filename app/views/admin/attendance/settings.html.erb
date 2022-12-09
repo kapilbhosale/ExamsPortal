@@ -32,7 +32,7 @@
                     <td><%= machine.name %></td>
                     <td><%= machine.ip_address %></td>
                     <td>
-                      <% if machine.online %>
+                      <% if REDIS_CACHE.get(machine.ip_address).present? %>
                         <span class="badge badge-success">Online</span>
                       <% else %>
                         <span class="badge badge-danger">Offline</span>
@@ -45,7 +45,7 @@
                         <span class="text text-success">Enabled</span>
                       <% end %>
                     </td>
-                    <td> - </td>
+                    <td> <%= REDIS_CACHE.get(machine.ip_address) %> </td>
                     <td><%= machine.created_at.strftime("%d-%b-%Y %I:%M %p") %></td>
                     <td>
                       <% if machine.disabled %>
