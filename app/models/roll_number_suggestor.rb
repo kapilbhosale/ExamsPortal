@@ -38,12 +38,13 @@ class RollNumberSuggestor < ApplicationRecord
     'repeater_22_23' => 10_000,
     '12th_set_23_24_latur' => 21_000,
     '12th_set_23_24_nanded' => 81_000,
-    '12th_set_23_24_aurangabad' => 13_000
+    '12th_set_23_24_aurangabad' => 13_000,
+    '11th_set_22_23' => 1_000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
     if na&.free? && batch_name != 'neet_saarthi' && batch_name != '12th_set' && batch_name != 'set_aurangabad'
-      batch_name = '11th_set'
+      batch_name = '11th_set_22_23'
     end
 
     batch_name = '12th_22_23' if batch_name == '12th'

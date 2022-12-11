@@ -4,8 +4,7 @@
 #
 #  id            :bigint(8)        not null, primary key
 #  data          :jsonb
-#  device_type   :integer          default(0)
-#  event         :integer
+#  event         :string
 #  resource_type :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

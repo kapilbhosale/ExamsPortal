@@ -119,7 +119,7 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if ['11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include?(new_admission_params[:batch])
+      if ['11th_set', '11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include?(new_admission_params[:batch])
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
@@ -144,11 +144,11 @@ class Students::AdmissionsController < ApplicationController
       new_admission.gender = new_admission_params[:gender]
       new_admission.student_id = new_admission_params[:student_id]
       new_admission.prev_receipt_number = new_admission_params[:prev_receipt_number]
-      new_admission.extra_data = {pay_type: params[:pay_type], is_set: params[:is_set]}
+      new_admission.extra_data = {pay_type: params[:pay_type], is_set: params[:is_set], set_center_11th: params[:set_center_11th]}
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if ['11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include? new_admission.batch
+        if ['11th_set', '11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include? new_admission.batch
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -296,9 +296,11 @@ class Students::AdmissionsController < ApplicationController
       )
 
       batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
+      batches_set_11_23_24 = ['LTR-11-SET-2023-24', 'NED-11-SET-2023-24', 'AUR-11-SET-2023-24']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12_23_24).blank?)
+          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12_23_24).blank?) ||
+          (@new_admission.batch == '11th_set' && ( student_batch_names & batches_set_11_23_24).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 
