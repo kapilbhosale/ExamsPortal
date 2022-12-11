@@ -157,7 +157,7 @@ class Student < ApplicationRecord
 
     student.batches << batches
 
-    student.send_sms
+    student.send_sms if Rails.env.production?
     return student
   end
 

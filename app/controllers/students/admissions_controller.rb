@@ -96,6 +96,7 @@ class Students::AdmissionsController < ApplicationController
   def create
     errors = []
     params[:course] = ['pcb'] if params[:batch] == 'set_aurangabad'
+    params[:course] = ['pcb'] if params[:batch] == '11th_set'
     must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
