@@ -284,6 +284,7 @@
         ]
 
         const AUR_BATCHES = [
+          {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
           {val: '11th_new', text: '11th Aurangabad 2022-23'},
           {val: "repeater", text: "REPEATER 2022-23"},
         ]
@@ -326,6 +327,11 @@
             } else {
               $('.course-ned-ltr').show();
             }
+          }
+
+          if (selectedBatch == '12th_set' || selectedBatch == '11th_set') {
+            $('.course-aurgabad').hide();
+            $('.course-ned-ltr').hide();
           }
 
           if ( selectedBatch === "11th_set" ) {
