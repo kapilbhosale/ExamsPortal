@@ -65,6 +65,8 @@ gem 'fog-aws'
 gem 'mini_magick'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary', '= 0.12.3'
+gem 'prawn'
+gem 'prawn-table'
 
 gem 'rubyzip', '>= 1.0.0' # will load new rubyzip version
 gem 'zip-zip' # will load compatibility for old rubyzip API.
@@ -87,6 +89,7 @@ gem 'newrelic_rpm'
 group :production do
   gem 'rmagick'
 end
+gem "mini_magick"
 
 gem 'figaro'
 gem 'fcm'

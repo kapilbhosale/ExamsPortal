@@ -1,63 +1,9 @@
-<div class="container">
-  <% set_batch_ids = [208, 209, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223] %>
-  <% if request.subdomain == 'exams' %>
-    <% if (current_student.batches&.ids & set_batch_ids).present? %>
-      <% if current_student.pending_amount.present? %>
-        <a href='<%= "https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}&set=true" %>'>
-          <img
-            src="#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/set-banner.jpg"
-            width="100%" height="300px" style="padding:20px">
-        </a>
-      <% else %>
-        <a href='<%= "https://exams.smartclassapp.in/new-admission?student_id=#{current_student.id}" %>'>
-          <img
-            src="#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/set-all-reminder.jpg"
-            width="100%" height="300px" style="padding:20px">
-        </a>
-      <% end %>
-    <% elsif current_student.pending_amount.present? %>
-      <a href="<%= "https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}" %>">
-        <img
-          src="#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc_fees_reminder.png"
-          width="100%" height="300px" style="padding:20px">
-      </a>
-    <% end %>
-  <% end %>
-</div>
-<% if request.subdomain == 'exams' && current_student.exam_hall.present? %>
-  <div style="background-color: #1DA1F2; margin-bottom: 20px; color: white; padding: 4px;">
+<% if request.subdomain == 'exams' %>
+  <div style="background-color: #1DA1F2; margin-bottom: 10px; color: white; padding: 6px;">
     <h5 style="text-align: center">12th RCC SET 22-23 Hall ticket</h5>
-    <table class="table table-bordered">
-      <tr>
-        <td>Seat No.</td>
-        <td><%= current_student.roll_number %></td>
-      </tr>
-      <tr>
-        <td>Name:</td>
-        <td><%= current_student.name %></td>
-      </tr>
-      <tr>
-        <td>Date</td>
-        <td>27-feb-2022</td>
-      </tr>
-      <tr>
-        <td>Time</td>
-        <td>2:00-5:00 PM</td>
-      </tr>
-      <tr>
-        <td>Exam Centre</td>
-        <td><%= current_student.exam_hall %></td>
-      </tr>
-      <tr>
-        <td>Parent Mobile &nbsp; &nbsp; &nbsp;</td>
-        <td><%= current_student.parent_mobile %></td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <a class="btn btn-light" href="/students/print_hall_ticket.pdf" role="button">Download</a>
-        </td>
-      </tr>
-    </table>
+    <div>
+      <a style="text-align: center" class="btn btn-light" href="/students/print_hall_ticket.pdf" role="button">Download Hall Ticket</a>
+    </div>
   </div>
 <% end %>
 <div class="tabbable-panel" style="position: relative;">

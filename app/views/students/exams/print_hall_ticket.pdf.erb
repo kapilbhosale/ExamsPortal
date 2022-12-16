@@ -1,39 +1,61 @@
-<div class="col-12">
-<div style="text-align: center;">
-  <% logo_props = get_logo(request.subdomain) %>
-  <%= image_tag logo_props[:logo], width: 100, height: 60 %>
-  <h4 style="padding-top: 10px" >12th RCC SET 2022-23</h4>
-  <h5>Scholarship Eligibility Test</h5>
+<!-- app/views/example/generate_pdf.html.erb -->
+
+<div style="background-image: url(<%= asset_path('latur-hallticket.jpg') %>);">
+  <table>
+    <tr>
+      <th>Column 1</th>
+      <th>Column 2</th>
+    </tr>
+    <tr>
+      <td>Row 1</td>
+      <td>Row 1</td>
+    </tr>
+    <tr>
+      <td>Row 2</td>
+      <td>Row 2</td>
+    </tr>
+  </table>
 </div>
 
-<table class="table table-bordered">
-      <tr>
-        <td>Seat No.</td>
-        <td><%= current_student.roll_number %></td>
-      </tr>
-      <tr>
-        <td>Name:</td>
-        <td><%= current_student.name %></td>
-      </tr>
-      <tr>
-        <td>Date</td>
-        <td>27-feb-2022</td>
-      </tr>
-      <tr>
-        <td>Time</td>
-        <td>2:00-5:00 PM</td>
-      </tr>
-      <tr>
-        <td>Exam Centre</td>
-        <td><%= current_student.exam_hall %></td>
-      </tr>
-      <tr>
-        <td>Parent Mobile &nbsp; &nbsp; &nbsp;</td>
-        <td><%= current_student.parent_mobile %></td>
-      </tr>
-    </table>
 
-<div class="pull-right" style="width: 150px; height: 150px; background-color: gray; text-align: center">
-  photo here
-<div>
-</div>
+<!-- app/views/example/generate_pdf.html.erb -->
+
+<style>
+  /* Set the background image for the entire page */
+  body {
+    background-image: url(<%= asset_path('joshi-banner.jpeg') %>);
+  }
+
+  /* Style the table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th, td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+  }
+  th {
+    background-color: #cccccc;
+    font-size: 14px;
+    text-align: center;
+  }
+  td {
+    font-size: 12px;
+  }
+</style>
+
+<table>
+  <tr>
+    <th>Column 1</th>
+    <th>Column 2</th>
+  </tr>
+  <tr>
+    <td>Row 1</td>
+    <td>Row 1</td>
+  </tr>
+  <tr>
+    <td>Row 2</td>
+    <td>Row 2</td>
+  </tr>
+</table>
