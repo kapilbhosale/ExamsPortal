@@ -76,10 +76,10 @@
                       <td><%= student.app_login? ? 'YES' : '-' %></td>
                       <td><%= student.is_laptop_login? ? 'YES' : '-' %></td>
                       <td>
-                        <%= link_to '', admin_genres_path({student_id: student.id}), class: "fa fa-folder-open" %>&nbsp; &nbsp;
-                        <%= link_to '', admin_student_progress_report_path(student), class: "fa fa-chart-bar" %>&nbsp; &nbsp;
-                        <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit' %> &nbsp; &nbsp;
-                        <%= link_to '', admin_student_path(student), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "glyphicon glyphicon-trash" %>&nbsp; &nbsp;
+                        <%= link_to '', admin_genres_path({student_id: student.id}), class: "fa fa-folder-open" %>&nbsp;
+                        <%= link_to '', admin_student_progress_report_path(student), class: "fa fa-chart-bar" %>&nbsp;
+                        <%= link_to '', edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit', class: "fas fa-edit" %> &nbsp;
+                        <%= link_to '', admin_student_path(student), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "fa fa-trash" %>&nbsp;
                       </td>
                     </tr>
                   <% end %>
