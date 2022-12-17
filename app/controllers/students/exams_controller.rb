@@ -24,7 +24,7 @@ class Students::ExamsController < Students::BaseController
       table_data = [
               [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
               [{content: 'Exam Center', font_style: :bold}, get_center(current_student.roll_number)],
-              [{content: 'Candiate Name', font_style: :bold}, current_student.name],
+              [{content: 'Candidate Name', font_style: :bold}, current_student.name],
               [{content: 'Date & Time', font_style: :bold}, time],
               [{content: 'Student Mobile', font_style: :bold}, current_student.student_mobile],
               [{content: 'Parent Mobile', font_style: :bold}, current_student.parent_mobile]
@@ -37,8 +37,8 @@ class Students::ExamsController < Students::BaseController
       pdf.table table_data, row_colors: ["ffffff", "eeeeee"], cell_style: {height: 22, border_width: 0, width: 210, padding: [5, 0, 5, 20], text_color: '373737', inline_format: true} do
         # Aligning a specific column cells' text to right
         # columns(1).style = :bold
-        column(0).width = 100
-        column(-1).width = 320
+        column(0).width = 110
+        column(-1).width = 310
        end
 
       pdf.start_new_page
