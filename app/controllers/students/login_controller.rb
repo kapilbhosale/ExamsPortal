@@ -31,10 +31,7 @@ class Students::LoginController < Students::BaseController
 
       if request.subdomain == 'demo' || request.subdomain == 'dscl'
         sign_in_and_redirect(student, event: :authentication)
-      end
-
-      # change it to bhargav
-      if request.subdomain == 'bhargav'
+      elsif request.subdomain == 'bhargav'
         student.generate_and_send_otp
         redirect_to("/students/otp_input?student_id=#{student.id}") and return
       else
