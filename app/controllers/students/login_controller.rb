@@ -29,7 +29,7 @@ class Students::LoginController < Students::BaseController
         redirect_to("/student/sign_in") and return
       end
 
-      if request.subdomain == 'demo'
+      if request.subdomain == 'demo' || request.subdomain == 'dscl'
         sign_in_and_redirect(student, event: :authentication)
       end
 
