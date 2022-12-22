@@ -213,6 +213,9 @@ Rails.application.routes.draw do
         get :filter_types, on: :collection
       end
       resources :exams
+      get 'subjects', to: 'apis#subjects'
+      get 'subjects/:id/folders', to: 'apis#folders'
+      get 'subjects/:subject_id/folders/:folder_id/pdfs', to: 'apis#pdfs'
     end
   end
 end

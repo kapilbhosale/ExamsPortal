@@ -35,6 +35,7 @@
 #
 
 class VideoLecture < ApplicationRecord
+  require 'carrierwave/orm/activerecord'
   # validates :thumbnail, presence: true
   validates :title, presence: true
   validates :subject_name, presence: true
