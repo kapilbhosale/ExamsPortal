@@ -105,4 +105,12 @@ class Admin < ApplicationRecord
   def can_manage(area)
     roles.include? area.to_s
   end
+
+  def token
+    payload = {
+      id: id,
+      exp: 24.hours.from_now.to_i
+    }
+    JWT.encode(payload, Rails.application.secrets.secret_key_base.to_s)
+  end
 end

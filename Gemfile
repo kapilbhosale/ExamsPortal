@@ -100,6 +100,7 @@ gem "paranoia", "~> 2.2"
 
 gem 'razorpay'
 gem 'annotate'
+gem 'jwt'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

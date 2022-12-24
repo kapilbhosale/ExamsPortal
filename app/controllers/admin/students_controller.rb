@@ -1,6 +1,6 @@
 class Admin::StudentsController < Admin::BaseController
   before_action :check_permissions
-
+  before_action :generate_and_store_admin_refresh_token, only: [:index]
   ITEMS_PER_PAGE = 20
 
   def index
@@ -35,6 +35,8 @@ class Admin::StudentsController < Admin::BaseController
           pending_amount: student&.pending_fees.where(paid: false).last&.amount
       }
     end
+
+
 
     params.permit(:q, :limit)
     respond_to do |format|
@@ -282,5 +284,10 @@ class Admin::StudentsController < Admin::BaseController
 
   def check_permissions
     redirect_to '/404' unless current_admin.can_manage(:students)
+  end
+
+  def generate_and_store_admin_refresh_token
+    @refresh_token = SecureRandom.uuid
+    REDIS_CACHE.set(@refresh_token, current_admin.id, { ex: 10.minutes })
   end
 end
