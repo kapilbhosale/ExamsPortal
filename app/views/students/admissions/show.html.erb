@@ -32,7 +32,7 @@
           var selectedBatch = $('#batch').find(":selected").val();
           var rccBranch = $('input[name=rcc_branch]:checked').val();
 
-          $('#neet-saarthi').text("[RCC NEET SET is for PCB]");
+          $('#neet-saarthi').text("[RCC NEET SET/SAARTHI is for PCB]");
 
           if ( selectedBatch === "11th_set" ) {
             $('.11th-set-center-selection').show();
@@ -277,7 +277,7 @@
 
         const BATCHES = [
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
-          {val: "12th_set", text: "** 12th RCC-SET (non-RCC) 2023-24 **"},
+          {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2022-2023)"},
           {val: "repeater", text: "REPEATER 2022-23"},
@@ -285,6 +285,7 @@
 
         const AUR_BATCHES = [
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
+          {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: '11th_new', text: '11th Aurangabad 2022-23'},
           {val: "repeater", text: "REPEATER 2022-23"},
         ]
@@ -480,7 +481,7 @@
                 <option value="12th">12th</option>
               <% else %>
                 <option id="11th_set" value="11th_set"> ** New 11th RCC-SET (2023-24) **</option>
-                <option id="12th_set" value="12th_set"> ** 12th RCC-SET (non-RCC) 2023-24 **</option>
+                <option id="12th_set" value="12th_set"> ** NEET SAARTHI 2023 (rapid revision & test series) **</option>
                 <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option>
                 <option id="12th" value="12th"> 12th Regular Batch (2022-2023) </option>
                 <option id="repeater" value="repeater"> REPEATER 2022-23" </option>

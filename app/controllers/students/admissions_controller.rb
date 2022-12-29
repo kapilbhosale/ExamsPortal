@@ -97,6 +97,8 @@ class Students::AdmissionsController < ApplicationController
     errors = []
     params[:course] = ['pcb'] if params[:batch] == 'set_aurangabad'
     params[:course] = ['pcb'] if params[:batch] == '11th_set'
+    params[:course] = ['pcb'] if params[:batch] == '12th_set'
+
     must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
@@ -296,11 +298,11 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       )
 
-      batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
-      batches_set_11_23_24 = ['LTR-11-SET-2023-24', 'NED-11-SET-2023-24', 'AUR-11-SET-2023-24']
+      batches_set_11_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
+      batches_saarthi_23_24 = ['LTR-11-SET-2023-24', 'NED-11-SET-2023-24', 'AUR-11-SET-2023-24']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_set_12_23_24).blank?) ||
+          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_saarthi_23_24).blank?) ||
           (@new_admission.batch == '11th_set' && ( student_batch_names & batches_set_11_23_24).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
