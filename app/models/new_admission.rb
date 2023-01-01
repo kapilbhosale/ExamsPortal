@@ -74,6 +74,7 @@ class NewAdmission < ApplicationRecord
     '12th_set': 12,
     'set_aurangabad': 13,
     '11th_set': 14,
+    '12th_set_1': 15
   }
   enum course_type: { neet: 0, jee: 1 }
   enum rcc_branch: { latur: 0, nanded: 1, aurangabad: 2 }

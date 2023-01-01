@@ -120,6 +120,31 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_12th_set_batches_23_24(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    case rcc_branch
+      when 'latur'
+        batch_name = "LTR-12-SET-2023-24"
+      when 'nanded'
+        batch_name = "NED-12-SET-2023-24"
+      when 'aurangabad'
+        batch_name = "AUR-12-SET-2023-24"
+      else
+        batch_name = "LTR-12-SET-2023-24"
+    end
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      batch_group = BatchGroup.find_or_create_by(name: "12-SET-2023-24", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+      end
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_11th_set_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
@@ -254,6 +279,8 @@ class Batch < ApplicationRecord
       get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == '12th_set' # 12th set is used neet saarthi 2023 for now
       get_saarthi_batches_23_24(rcc_branch, course, batch, na)
+    elsif batch == '12th_set_1' # 12th set is used neet saarthi 2023 for now
+      get_12th_set_batches_23_24(rcc_branch, course, batch, na)
     elsif batch == '11th_set' # 12th set is used for repeaters set
       get_11th_set_batches(rcc_branch, course, batch, na)
     elsif batch == 'set_aurangabad'

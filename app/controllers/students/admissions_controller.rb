@@ -98,6 +98,7 @@ class Students::AdmissionsController < ApplicationController
     params[:course] = ['pcb'] if params[:batch] == 'set_aurangabad'
     params[:course] = ['pcb'] if params[:batch] == '11th_set'
     params[:course] = ['pcb'] if params[:batch] == '12th_set'
+    params[:course] = ['pcb'] if params[:batch] == '12th_set_1'
 
     must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
@@ -122,7 +123,7 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if ['11th_set', '11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include?(new_admission_params[:batch])
+      if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include?(new_admission_params[:batch])
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
@@ -151,7 +152,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if ['11th_set', '11th', 'neet_saarthi', '12th_set', 'set_aurangabad'].include? new_admission.batch
+        if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include? new_admission.batch
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -300,6 +301,7 @@ class Students::AdmissionsController < ApplicationController
 
       batches_set_11_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
       batches_saarthi_23_24 = ['LTR-11-SET-2023-24', 'NED-11-SET-2023-24', 'AUR-11-SET-2023-24']
+      batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
           (@new_admission.batch == '12th_set' && ( student_batch_names & batches_saarthi_23_24).blank?) ||
