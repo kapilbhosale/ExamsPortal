@@ -1,0 +1,31 @@
+# == Schema Information
+#
+# Table name: fees_transactions
+#
+#  id               :bigint(8)        not null, primary key
+#  academic_year    :string
+#  comment          :string
+#  discount_amount  :decimal(, )      default(0.0)
+#  next_due_date    :date
+#  paid_amount      :decimal(, )      default(0.0)
+#  payment_details  :jsonb
+#  receipt_number   :integer          not null
+#  received_by      :string
+#  remaining_amount :decimal(, )      default(0.0)
+#  token_of_the_day :integer
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  student_id       :bigint(8)
+#
+# Indexes
+#
+#  index_fees_transactions_on_student_id  (student_id)
+#
+
+require 'test_helper'
+
+class FeesTransactionTest < ActiveSupport::TestCase
+  # test "the truth" do
+  #   assert true
+  # end
+end

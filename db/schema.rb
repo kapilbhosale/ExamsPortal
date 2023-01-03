@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_06_111350) do
+ActiveRecord::Schema.define(version: 2023_01_03_175818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -267,6 +267,23 @@ ActiveRecord::Schema.define(version: 2022_12_06_111350) do
     t.datetime "show_result_at"
     t.index ["name"], name: "index_exams_on_name"
     t.index ["org_id"], name: "index_exams_on_org_id"
+  end
+
+  create_table "fees_transactions", force: :cascade do |t|
+    t.integer "receipt_number", null: false
+    t.bigint "student_id"
+    t.string "academic_year"
+    t.decimal "paid_amount", default: "0.0"
+    t.decimal "remaining_amount", default: "0.0"
+    t.decimal "discount_amount", default: "0.0"
+    t.jsonb "payment_details", default: {}
+    t.date "next_due_date"
+    t.string "received_by"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "token_of_the_day"
+    t.index ["student_id"], name: "index_fees_transactions_on_student_id"
   end
 
   create_table "form_data", force: :cascade do |t|

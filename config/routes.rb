@@ -181,6 +181,7 @@ Rails.application.routes.draw do
       namespace :v2 do
         get 'get-token', to: 'auth#get_token'
         get 'fees-details', to: 'fees#details'
+        post 'fees-transaction', to: 'fees#create_fees_transaction'
       end
     end
   end
