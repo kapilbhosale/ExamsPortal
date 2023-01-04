@@ -2,6 +2,8 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
   def details
     student = Student.find_by(id: params[:student_id])
+    fees_templates = student.batches.map(&:fees_templates)
+
     data = {
       student: {
         id: student.id,
@@ -13,15 +15,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         record_book: "Yes",
         academic_year: "2023-24",
       },
-      template: {
-        id: 101,
-        name: "Template 01",
-        fees: [
-          {head: "Tution Fees", amount: 40_000, cgst: 9, sgst: 9},
-          {head: "Book Fees", amount: 10_000, cgst: 2.5, sgst: 2.5},
-          {head: "Other Fees", amount: 0, cgst: 5, sgst: 5}
-        ]
-      },
+      templates: fees_templates&.flatten || [],
       payment_history: [
         {
           id: 102,
