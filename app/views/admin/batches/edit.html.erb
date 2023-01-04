@@ -41,6 +41,25 @@
               <%= form.time_field :end_time, class: 'form-control', placeholder: 'End Time' %>
             </div>
           </div>
+
+
+          <div class="col-sm-12 col-md-12" style="background-color: #bfe6ff; border-radius: 10px; padding-top: 10px">
+            <div class="form-group">
+              <p>Select Fees Template</p>
+            </div>
+            <div class="col-md-12 col-sm-12 form-group">
+              <% @fees_templates.each do |fees_template| %>
+                <div class="col-md-6" style="padding: 0">
+                  <label class="checkbox-inline">
+                    <input type="checkbox" name="batch[fees_template_ids][]" value=<%= fees_template.id %> <%= @selected_templates&.include?(fees_template.id) ? 'checked' : '' %> >
+                    <%= fees_template.name %>
+                    <p style="font-size: 10px"><%= fees_template.description %></p>
+                  </label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
           <div class="col-sm-6 col-md-8">
             <div class="form-group">
               <% if @batch.errors.any? %>

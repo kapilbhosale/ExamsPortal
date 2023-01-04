@@ -8,6 +8,8 @@ class Admin::BatchesController < Admin::BaseController
   def new
     @batch = Batch.new
     @batch_groups = BatchGroup.where(org: current_org).order(:id).all
+    @fees_templates = FeesTemplate.where(org: current_org)
+    @selected_templates = []
   end
 
   def create
@@ -48,6 +50,8 @@ class Admin::BatchesController < Admin::BaseController
   def edit
     @batch = Batch.find_by(org: current_org, id: params[:id])
     @batch_groups = BatchGroup.where(org: current_org).order(:id).all
+    @fees_templates = FeesTemplate.where(org: current_org)
+    @selected_templates = @batch.fees_templates&.ids || []
   end
 
   def update

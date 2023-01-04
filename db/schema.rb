@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_03_175818) do
+ActiveRecord::Schema.define(version: 2023_01_04_113318) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,16 @@ ActiveRecord::Schema.define(version: 2023_01_03_175818) do
     t.datetime "updated_at", null: false
     t.index ["banner_id"], name: "index_batch_banners_on_banner_id"
     t.index ["batch_id"], name: "index_batch_banners_on_batch_id"
+  end
+
+  create_table "batch_fees_templates", force: :cascade do |t|
+    t.bigint "fees_template_id"
+    t.bigint "batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["batch_id"], name: "index_batch_fees_templates_on_batch_id"
+    t.index ["fees_template_id", "batch_id"], name: "batch_fees_template_index", unique: true
+    t.index ["fees_template_id"], name: "index_batch_fees_templates_on_fees_template_id"
   end
 
   create_table "batch_groups", force: :cascade do |t|
@@ -269,7 +279,18 @@ ActiveRecord::Schema.define(version: 2023_01_03_175818) do
     t.index ["org_id"], name: "index_exams_on_org_id"
   end
 
+  create_table "fees_templates", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name"
+    t.string "description"
+    t.jsonb "heads", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_fees_templates_on_org_id"
+  end
+
   create_table "fees_transactions", force: :cascade do |t|
+    t.bigint "org_id"
     t.integer "receipt_number", null: false
     t.bigint "student_id"
     t.string "academic_year"
@@ -280,9 +301,11 @@ ActiveRecord::Schema.define(version: 2023_01_03_175818) do
     t.date "next_due_date"
     t.string "received_by"
     t.string "comment"
+    t.string "mode"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "token_of_the_day"
+    t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"
   end
 

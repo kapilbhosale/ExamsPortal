@@ -47,7 +47,8 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
   # {
   #   student_id: 1,
-  #   comment: "",
+  #   comment: "",\
+  #   mode_of_payment: ""
   #   next_due_date: "1212",
   #   received_by_id: 12,
   #   template_id: 101,
@@ -58,9 +59,21 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   # }
   def create_fees_transaction
     # create FeesTransaction
+    response = Fees::CreateFeesTransaction.new().create
+    
     render json: {
       receipt_number: 1002,
       created_at: DateTime.now.strftime("%d-%b-%Y %I:%M%p"),
     }
+  end
+
+  private
+  def create_fee_transaction_params
+    params.require(:fee).permit(
+      :student_id,
+      :comment,
+      :mode_of_payment,
+      :template_id,
+      fees_details: {})
   end
 end
