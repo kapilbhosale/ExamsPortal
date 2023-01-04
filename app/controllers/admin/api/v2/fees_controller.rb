@@ -14,6 +14,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         parent_mobile: student.parent_mobile,
         record_book: "Yes",
         academic_year: "2023-24",
+        current_template_id: FeesTemplate.first.id
       },
       templates: fees_templates&.flatten || [],
       payment_history: [
