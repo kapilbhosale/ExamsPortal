@@ -22,6 +22,7 @@
 #  exam_hall              :string
 #  fcm_token              :string
 #  gender                 :integer          default(0)
+#  intel_score            :integer
 #  is_laptop_login        :boolean          default(FALSE)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet

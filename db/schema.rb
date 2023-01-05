@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_04_113318) do
+ActiveRecord::Schema.define(version: 2023_01_05_070517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -654,6 +654,7 @@ ActiveRecord::Schema.define(version: 2023_01_04_113318) do
     t.boolean "disable", default: false
     t.string "rfid_card_number"
     t.string "exam_hall"
+    t.integer "intel_score"
     t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"

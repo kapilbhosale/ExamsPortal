@@ -23,6 +23,7 @@ require 'csv'
 #  exam_hall              :string
 #  fcm_token              :string
 #  gender                 :integer          default(0)
+#  intel_score            :integer
 #  is_laptop_login        :boolean          default(FALSE)
 #  last_sign_in_at        :datetime
 #  last_sign_in_ip        :inet
@@ -68,6 +69,7 @@ class Student < ApplicationRecord
   belongs_to :org
   has_many   :pending_fees
   has_many   :form_data
+  has_many   :fees_transactions
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}
@@ -172,6 +174,10 @@ class Student < ApplicationRecord
 
   def set_api_key
     self.api_key = generated_api_key
+  end
+
+  def set_intel_score
+    self.intel_score = (Student.count % 10) < 5 ? rand(1..99) : rand(100..200)
   end
 
   def generated_api_key

@@ -13,7 +13,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         student_mobile: student.student_mobile,
         parent_mobile: student.parent_mobile,
         record_book: "Yes",
-        academic_year: "2023-24",
+        academic_year: FeesTransaction::CURRENT_ACADEMIC_YEAR,
         current_template_id: FeesTemplate.first.id
       },
       templates: fees_templates&.flatten || [],
@@ -53,13 +53,13 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   #   }
   # }
   def create_fees_transaction
-    # create FeesTransaction
-    response = Fees::CreateFeesTransaction.new().create
-    
-    render json: {
-      receipt_number: 1002,
-      created_at: DateTime.now.strftime("%d-%b-%Y %I:%M%p"),
-    }
+    response = Fees::CreateFeesTransaction.new(current_org, create_fee_transaction_params).create
+
+    if response[:status]
+      render json: response[:data] and return
+    end
+
+    render json: response[:message], status: :unprocessable_entity
   end
 
   private
@@ -69,6 +69,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
       :comment,
       :mode_of_payment,
       :template_id,
+      :next_due_date,
       fees_details: {})
   end
 end

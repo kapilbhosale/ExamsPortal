@@ -50,4 +50,26 @@
 # }
 
 class FeesTransaction < ApplicationRecord
+  CURRENT_ACADEMIC_YEAR = "2023-24"
+  scope :current_year, ->() { where(academic_year: CURRENT_ACADEMIC_YEAR) }
+
+  belongs_to :student
+  belongs_to :org
+
+  before_create :update_token_of_the_day
+  before_create :update_receipt_number
+
+  private
+  def update_receipt_number
+    self.receipt_number = (FeesTransaction.order(:id).last&.receipt_number || 0) + 1
+  end
+
+  def update_token_of_the_day
+    if student.intel_score.present?
+      self.token_of_the_day = student.intel_score
+    else
+      student.update(intel_score: (Student.count % 10) < 5 ? rand(1..99) : rand(100..200))
+      self.token_of_the_day = student.intel_score
+    end
+  end
 end
