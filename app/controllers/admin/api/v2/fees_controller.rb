@@ -3,6 +3,8 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   def details
     student = Student.find_by(id: params[:student_id])
     fees_templates = student.batches.map(&:fees_templates)
+    fees_transaction_token = SecureRandom.uuid
+    REDIS_CACHE.set("fees-token-#{student.id}", fees_transaction_token)
 
     data = {
       student: {
@@ -14,7 +16,8 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         parent_mobile: student.parent_mobile,
         record_book: "Yes",
         academic_year: FeesTransaction::CURRENT_ACADEMIC_YEAR,
-        current_template_id: FeesTemplate.first.id
+        current_template_id: FeesTransaction.where(student_id: student.id).order(:id).last&.id,
+        fees_transaction_token: fees_transaction_token
       },
       templates: fees_templates&.flatten || [],
       payment_history: [
@@ -70,6 +73,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
       :mode_of_payment,
       :template_id,
       :next_due_date,
+      :fees_transaction_token,
       fees_details: {})
   end
 end

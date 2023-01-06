@@ -35,6 +35,7 @@ module Fees
       end
 
       if @fees_transaction.errors.blank?
+        REDIS_CACHE.del("fees-token-#{create_params[:student_id]}")
         return { status: true, data: {
           id: @fees_transaction.id,
           receipt_number: @fees_transaction.receipt_number,
@@ -53,6 +54,9 @@ module Fees
       raise FeeTransactionError, 'Fees Template not found, try again' if fees_template.blank?
       raise FeeTransactionError, 'Fees Template heads are not mathcing' unless matching_heads?
       raise FeeTransactionError, 'Invalid payment amounts' unless valid_payments?
+      if REDIS_CACHE.get("fees-token-#{create_params[:student_id]}") != create_params[:fees_transaction_token]
+        raise FeeTransactionError, 'Form already submitted, please try after page refresh'
+      end
     end
 
     def matching_heads?
@@ -61,8 +65,7 @@ module Fees
       end
 
       input_heads = create_params[:fees_details].keys
-
-      template_heads.sort == input_heads.sort
+      (input_heads - template_heads).blank?
     end
 
     def valid_payments?

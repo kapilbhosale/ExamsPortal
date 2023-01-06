@@ -121,6 +121,7 @@ group :development do
   gem 'pry'
   gem 'bullet'
   gem 'rb-readline'
+  gem 'rubocop'
   # gem 'rollbar'
 
   # gem 'sshkit-sudo'

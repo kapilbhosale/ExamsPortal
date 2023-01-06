@@ -4,9 +4,10 @@ class Admin::StudentsController < Admin::BaseController
   ITEMS_PER_PAGE = 20
 
   def index
+    @batches_with_templates = BatchFeesTemplate.all.pluck(:batch_id)
     @search = Student
       .where(org: current_org)
-      .includes(:student_batches, :batches, :pending_fees)
+      .includes(:student_batches, :pending_fees, :batches)
       .where(batches: {id: current_admin.batches&.ids})
 
     if params[:q].present? && params[:q][:batch_id].present?
