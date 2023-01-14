@@ -277,16 +277,15 @@ class Student < ApplicationRecord
       student_mobile = row[2]
       parent_mobile = row[3]
 
-      student = Student.find_by(roll_number: roll_number, student_mobile: student_mobile, parent_mobile: parent_mobile) || Student.first
+      student = Student.where(roll_number: roll_number, student_mobile: student_mobile, parent_mobile: parent_mobile)
       if student.present?
-        student.data = {
+        student.update_all(data: {
           center: row[4],
           course: row[5],
           school_name: row[6],
           address: row[7],
           board: row[9]
-        }
-        student.save
+        })
       end
     end
   end
