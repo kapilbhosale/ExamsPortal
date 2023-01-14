@@ -13,6 +13,7 @@ require 'csv'
 #  college                :string
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :inet
+#  data                   :jsonb
 #  date_of_birth          :date
 #  deleted_at             :datetime
 #  deviceName             :string

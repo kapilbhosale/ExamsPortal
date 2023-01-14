@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_05_070517) do
+ActiveRecord::Schema.define(version: 2023_01_14_071029) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -327,6 +327,7 @@ ActiveRecord::Schema.define(version: 2023_01_05_070517) do
     t.integer "subject_id"
     t.integer "video_lectures_count", default: 0
     t.boolean "batch_assigned", default: false
+    t.integer "study_pdfs_count", default: 0
     t.index ["org_id"], name: "index_genres_on_org_id"
     t.index ["subject_id"], name: "index_genres_on_subject_id"
   end
@@ -655,6 +656,7 @@ ActiveRecord::Schema.define(version: 2023_01_05_070517) do
     t.string "rfid_card_number"
     t.string "exam_hall"
     t.integer "intel_score"
+    t.jsonb "data", default: {}
     t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"
@@ -683,6 +685,8 @@ ActiveRecord::Schema.define(version: 2023_01_05_070517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "study_pdf_type_id"
+    t.bigint "genre_id"
+    t.index ["genre_id"], name: "index_study_pdfs_on_genre_id"
     t.index ["org_id"], name: "index_study_pdfs_on_org_id"
     t.index ["study_pdf_type_id"], name: "index_study_pdfs_on_study_pdf_type_id"
   end
@@ -693,6 +697,7 @@ ActiveRecord::Schema.define(version: 2023_01_05_070517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "org_id"
+    t.string "klass"
     t.index ["name_map"], name: "index_subjects_on_name_map"
     t.index ["org_id"], name: "index_subjects_on_org_id"
   end
