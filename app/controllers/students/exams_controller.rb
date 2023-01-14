@@ -27,8 +27,8 @@ class Students::ExamsController < Students::BaseController
               [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
               [{content: 'Course', font_style: :bold}, current_student.data['course']],
               [{content: 'Exam Center', font_style: :bold}, current_student.data['school_name']],
-              [{content: 'Address', font_style: :bold}, current_student.data['address'].split[0..6].join(' ')],
-              [{content: '', font_style: :bold}, current_student.data['address'].split[7..-1].join(' ')]
+              [{content: 'Address', font_style: :bold}, current_student.data['address'].split[0..6]&.join(' ')],
+              [{content: '', font_style: :bold}, current_student.data['address'].split[7..-1]&.join(' ')]
             ]
 
       pdf.canvas do

@@ -266,18 +266,13 @@ class Student < ApplicationRecord
     "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
 
-
-  # Student.import_students_xls("/Users/kapilbhosale/Downloads/11_set_data/beed.tsv")
-  def self.import_students_xls(path)
-    # path = "/Users/kapilbhosale/Downloads/11_set_data/beed.tsv"
-    # parsed_file = CSV.read(path, col_sep: "\t")
-
+  # Student.import_tsv("/home/ubuntu/data/a_nagar.tsv")
+  def self.import_tsv(path)
     CSV.foreach(path, col_sep: "\t", headers: true) do |row|
       roll_number = row[0]
-      student_mobile = row[2]
-      parent_mobile = row[3]
+      parent_mobile = row[2]
 
-      student = Student.where(roll_number: roll_number, student_mobile: student_mobile, parent_mobile: parent_mobile)
+      student = Student.where(roll_number: roll_number, parent_mobile: parent_mobile)
       if student.present?
         student.update_all(data: {
           center: row[4],
@@ -286,45 +281,8 @@ class Student < ApplicationRecord
           address: row[7],
           board: row[9]
         })
+        putc "."
       end
     end
   end
 end
-
-
-# import_tsv("/home/ubuntu/data/a_nagar.tsv")
-
-# def import_tsv(path)
-#   CSV.foreach(path, col_sep: "\t", headers: true) do |row|
-#     roll_number = row[0]
-#     parent_mobile = row[2]
-
-#     student = Student.where(roll_number: roll_number, parent_mobile: parent_mobile)
-#     if student.present?
-#       student.update_all(data: {
-#         center: row[4],
-#         course: row[5],
-#         school_name: row[6],
-#         address: row[7],
-#         board: row[9]
-#       })
-#       putc "."
-#     end
-#   end
-# end
-
-
-# import_tsv("/home/ubuntu/data/akola.tsv")
-
-# import_tsv("/home/ubuntu/data/beed.tsv")
-# import_tsv("/home/ubuntu/data/buldhana.tsv")
-# import_tsv("/home/ubuntu/data/hingoli.tsv")
-# import_tsv("/home/ubuntu/data/jalgaon.tsv")
-# import_tsv("/home/ubuntu/data/kolhapur.tsv")
-# import_tsv("/home/ubuntu/data/nagpur.tsv")
-# import_tsv("/home/ubuntu/data/parbhani.tsv")
-# import_tsv("/home/ubuntu/data/sangli.tsv")
-# import_tsv("/home/ubuntu/data/satara.tsv")
-# import_tsv("/home/ubuntu/data/solapur.tsv")
-# import_tsv("/home/ubuntu/data/washim.tsv")
-# import_tsv("/home/ubuntu/data/yavatmal.tsv")
