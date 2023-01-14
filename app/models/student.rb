@@ -290,3 +290,41 @@ class Student < ApplicationRecord
     end
   end
 end
+
+
+# import_tsv("/home/ubuntu/data/a_nagar.tsv")
+
+# def import_tsv(path)
+#   CSV.foreach(path, col_sep: "\t", headers: true) do |row|
+#     roll_number = row[0]
+#     parent_mobile = row[2]
+
+#     student = Student.where(roll_number: roll_number, parent_mobile: parent_mobile)
+#     if student.present?
+#       student.update_all(data: {
+#         center: row[4],
+#         course: row[5],
+#         school_name: row[6],
+#         address: row[7],
+#         board: row[9]
+#       })
+#       putc "."
+#     end
+#   end
+# end
+
+
+# import_tsv("/home/ubuntu/data/akola.tsv")
+
+# import_tsv("/home/ubuntu/data/beed.tsv")
+# import_tsv("/home/ubuntu/data/buldhana.tsv")
+# import_tsv("/home/ubuntu/data/hingoli.tsv")
+# import_tsv("/home/ubuntu/data/jalgaon.tsv")
+# import_tsv("/home/ubuntu/data/kolhapur.tsv")
+# import_tsv("/home/ubuntu/data/nagpur.tsv")
+# import_tsv("/home/ubuntu/data/parbhani.tsv")
+# import_tsv("/home/ubuntu/data/sangli.tsv")
+# import_tsv("/home/ubuntu/data/satara.tsv")
+# import_tsv("/home/ubuntu/data/solapur.tsv")
+# import_tsv("/home/ubuntu/data/washim.tsv")
+# import_tsv("/home/ubuntu/data/yavatmal.tsv")
