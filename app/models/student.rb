@@ -265,4 +265,29 @@ class Student < ApplicationRecord
   def otp_sms_text(otp)
     "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
+
+
+  # Student.import_students_xls("/Users/kapilbhosale/Downloads/11_set_data/beed.tsv")
+  def self.import_students_xls(path)
+    # path = "/Users/kapilbhosale/Downloads/11_set_data/beed.tsv"
+    # parsed_file = CSV.read(path, col_sep: "\t")
+
+    CSV.foreach(path, col_sep: "\t", headers: true) do |row|
+      roll_number = row[0]
+      student_mobile = row[2]
+      parent_mobile = row[3]
+
+      student = Student.find_by(roll_number: roll_number, student_mobile: student_mobile, parent_mobile: parent_mobile) || Student.first
+      if student.present?
+        student.data = {
+          center: row[4],
+          course: row[5],
+          school_name: row[6],
+          address: row[7],
+          board: row[9]
+        }
+        student.save
+      end
+    end
+  end
 end
