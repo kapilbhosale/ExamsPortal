@@ -29,10 +29,6 @@ class Students::LoginController < Students::BaseController
         redirect_to("/student/sign_in") and return
       end
 
-      if request.subdomain == 'exams' || (student.batches&.ids & [700, 701, 699]).present?
-        sign_in_and_redirect(student, event: :authentication) and return
-      end
-
       if request.subdomain == 'demo' || request.subdomain == 'dscl'
         sign_in_and_redirect(student, event: :authentication)
       elsif request.subdomain == 'bhargav'
