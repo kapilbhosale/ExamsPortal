@@ -40,6 +40,12 @@
             $('.11th-set-center-selection').hide();
           }
 
+          if( rccBranch == 'aurangabad') {
+            $('.course-pc').hide()
+          } else {
+            $('.course-pc').show()
+          }
+
           if(selectedBatch === '11th' || selectedBatch === 'neet_saarthi' || selectedBatch === '12th_set' || selectedBatch === '11th_set' || selectedBatch === '12th_set_1') {
             if (selectedBatch === '11th' || selectedBatch === '12th_set' || selectedBatch === '12th_set_1' || selectedBatch === '11th_set') {
               $('#rcc-set-exam-11').show();
@@ -54,12 +60,7 @@
               $('#neet-saarthi').show(); // to show green heper text.
             }
             $('#course-selection').hide();
-            $('#course-selection-arng').hide();
-            $('#course-selection-repeater').hide();
           } else if(selectedBatch === 'repeater') {
-            $('#course-selection').hide();
-            $('#course-selection-arng').hide();
-            $('#course-selection-repeater').show();
             if (rccBranch === 'aurangabad') {
               $('.rep-pc').hide();
             } else {
@@ -69,9 +70,7 @@
           } else {
             $('#rcc-set-exam-11').hide();
             $('#neet-saarthi').hide();
-            $('#course-selection-repeater').hide();
             $('#course-selection').show();
-            $('#course-selection-arng').show();
           }
 
           if($('#batch').find(":selected").val() === '11th' || $('#batch').find(":selected").val() === 'neet_saarthi' || $('#batch').find(":selected").val() === '12th_set' || $('#batch').find(":selected").val() === '11th_set' || $('#batch').find(":selected").val() === '12th_set_1') {
@@ -176,12 +175,7 @@
 
           if (batch === "11th_new" || batch === "12th") {
             if (rccBranch === "nanded") {
-              if (subjectCount === 4) {
-                totalFees = '₹80,000';
-                oneTimeFees = '₹80,000';
-                installmentFees = '₹40,000';
-                nextInstallmentFees = '₹40,000';
-              } else if (subjectCount === 3) {
+              if (subjectCount === 3) {
                 totalFees = '₹55,000';
                 oneTimeFees = '₹55,000';
                 installmentFees = '₹25,000';
@@ -198,12 +192,7 @@
                 nextInstallmentFees = '₹10,000';
               }
             } else if(rccBranch === "latur") {
-              if (subjectCount === 4) {
-                totalFees = '₹80,000';
-                oneTimeFees = '₹80,000';
-                installmentFees = '₹40,000';
-                nextInstallmentFees = '₹40,000';
-              } else if (subjectCount === 3) {
+              if (subjectCount === 3) {
                 totalFees = '₹60,000';
                 oneTimeFees = '₹60,000';
                 installmentFees = '₹25,000';
@@ -221,7 +210,7 @@
               }
             } else {
               totalFees = '₹75,000';
-              oneTimeFees = '₹70,000';
+              oneTimeFees = '₹75,000';
               installmentFees = '₹30,000';
               nextInstallmentFees = '₹45,000';
             }
@@ -279,17 +268,16 @@
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
-          {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
-          {val: "12th", text: "12th Regular Batch (2022-2023)"},
-          {val: "repeater", text: "REPEATER 2022-23"},
+          // {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
+          {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
 
         const AUR_BATCHES = [
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
-          {val: '11th_new', text: '11th Aurangabad 2022-23'},
-          {val: "repeater", text: "REPEATER 2022-23"},
+          // {val: '11th_new', text: '11th Aurangabad 2022-23'},
+          {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
 
         function adjustBatchDropdown() {
@@ -485,9 +473,9 @@
                 <option id="11th_set" value="11th_set"> ** New 11th RCC-SET (2023-24) **</option>
                 <option id="12th_set" value="12th_set"> ** NEET SAARTHI 2023 (rapid revision & test series) **</option>
                 <option id="12th_set_1" value="12th_set_1"> ** 12th RCC-SET (non-RCC ) 2023-24 **</option>
-                <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option>
-                <option id="12th" value="12th"> 12th Regular Batch (2022-2023) </option>
-                <option id="repeater" value="repeater"> REPEATER 2022-23" </option>
+                <%# <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option> %>
+                <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
+                <%# <option id="repeater" value="repeater"> REPEATER 2022-23 </option> %>
               <% end %>
             </select>
           </div>
@@ -512,40 +500,14 @@
               <input class="form-check-input" type="radio" name="course[]" value="pcm">
               <label class="form-check-label" for="inlineRadio2">PCM</label>
             </div>
-            <div id="pcbm" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course[]" value="pcbm">
-              <label class="form-check-label" for="inlineRadio2">PCMB</label>
-            </div>
-            <div id="pc" class="form-check form-check-inline">
+            <div id="pc" class="form-check form-check-inline course-pc" style="display: none">
               <input class="form-check-input" type="radio" name="course[]" value="pc">
               <label class="form-check-label" for="inlineRadio2">PC</label>
             </div>
-            <div id="c" class="form-check form-check-inline">
+            <%# <div id="c" class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="course[]" value="chem">
               <label class="form-check-label" for="inlineRadio1">Chem</label>
-            </div>
-          </div>
-
-          <div id="course-selection-arng" class="form-group course-aurgabad" style="text-align: center;">
-            <div id="pcb" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course[]" value="pcb">
-              <label class="form-check-label" for="inlineRadio2">PCB</label>
-            </div>
-            <div id="pcm" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course[]" value="pcm">
-              <label class="form-check-label" for="inlineRadio2">PCM</label>
-            </div>
-          </div>
-
-          <div id="course-selection-repeater" class="form-group" style="text-align: center;">
-            <div id="pcb" class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="course[]" value="pcb">
-              <label class="form-check-label" for="inlineRadio2">PCB</label>
-            </div>
-            <div id="pc" class="form-check form-check-inline rep-pc">
-              <input class="form-check-input" type="radio" name="course[]" value="pc">
-              <label class="form-check-label" for="inlineRadio2">PC</label>
-            </div>
+            </div> %>
           </div>
         </div>
 

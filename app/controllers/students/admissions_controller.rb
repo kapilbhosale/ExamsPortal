@@ -248,31 +248,35 @@ class Students::AdmissionsController < ApplicationController
 
     if batch == '11th_new' || batch == '12th'
       if new_admission.extra_data.dig('pay_type') == 'installment'
-        return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
+        # return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
         if ['pc', 'pb', 'cb'].include?(course.name)
           return 25_000 if rcc_branch == 'nanded'
           return 25_000 if rcc_branch == 'latur'
+          return 25_000 if rcc_branch == 'aurangabad'
         end
 
         if ['pcb', 'pcm'].include?(course.name)
           return 25_000 if rcc_branch == 'nanded'
           return 25_000 if rcc_branch == 'latur'
+          return 30_000 if rcc_branch == 'aurangabad'
         end
 
         return 40_000 if ['pcbm'].include?(course.name)
 
       else
-        return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
+        # return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
-        if ['pc', 'pb', 'cb'].include?(course.name)
+        if ['pc'].include?(course.name)
           return 45_000 if rcc_branch == 'nanded'
           return 50_000 if rcc_branch == 'latur'
+          return 75_000 if rcc_branch == 'aurangabad'
         end
 
         if ['pcb', 'pcm'].include?(course.name)
           return 55_000 if rcc_branch == 'nanded'
           return 60_000 if rcc_branch == 'latur'
+          return 75_000 if rcc_branch == 'aurangabad'
         end
 
         return 80_000 if ['pcbm'].include?(course.name)
