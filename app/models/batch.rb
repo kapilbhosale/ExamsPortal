@@ -153,13 +153,13 @@ class Batch < ApplicationRecord
 
     case rcc_branch
       when 'latur'
-        batch_name = "LTR-11-SET-2023-24"
+        batch_name = "LTR-11-SET-2023-24-PHASE-2"
       when 'nanded'
-        batch_name = "NED-11-SET-2023-24"
+        batch_name = "NED-11-SET-2023-24-PHASE-2"
       when 'aurangabad'
-        batch_name = "AUR-11-SET-2023-24"
+        batch_name = "AUR-11-SET-2023-24-PHASE-2"
       else
-        batch_name = "LTR-11-SET-2023-24"
+        batch_name = "LTR-11-SET-2023-24-PHASE-2"
     end
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)

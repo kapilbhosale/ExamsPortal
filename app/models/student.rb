@@ -136,6 +136,9 @@ class Student < ApplicationRecord
   end
 
   def self.add_student(na)
+    # do not process add student against the na if its started or done
+    return false if na.started? || na.done?
+
     org = Org.first
     batches = Batch.get_batches(na.rcc_branch, na.course, na.batch, na)
 

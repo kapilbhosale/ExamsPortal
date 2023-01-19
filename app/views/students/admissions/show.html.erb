@@ -274,7 +274,7 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
+          {val: "11th_set", text: "** New 11th RCC-SET (2023-24)  PHASE-2 **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
           // {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
@@ -282,7 +282,7 @@
         ]
 
         const AUR_BATCHES = [
-          {val: "11th_set", text: "** New 11th RCC-SET (2023-24) **"},
+          {val: "11th_set", text: "** New 11th RCC-SET (2023-24)  PHASE-2 **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
           {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
           // {val: '11th_new', text: '11th Aurangabad 2022-23'},
@@ -479,7 +479,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="11th_set" value="11th_set"> ** New 11th RCC-SET (2023-24) **</option>
+                <option id="11th_set" value="11th_set"> ** New 11th RCC-SET (2023-24)  PHASE-2 **</option>
                 <option id="12th_set" value="12th_set"> ** NEET SAARTHI 2023 (rapid revision & test series) **</option>
                 <option id="12th_set_1" value="12th_set_1"> ** 12th RCC-SET (non-RCC ) 2023-24 **</option>
                 <%# <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option> %>
@@ -549,8 +549,8 @@
         </div>
 
         <div class="11th-set-center-selection" style="padding: 10px; display: none">
-          <p style="color: gray;">11 SET Center selection (only for 11 SET): </p>
-          <div class="form-group">
+          <%# <p style="color: gray;">11 SET Center selection (only for 11 SET): </p> %>
+          <div class="form-group" style="display: none">
             <select id="set_center" class="form-control" name="set_center_11th">
               <option id="latur" value="latur">Latur (लातूर)</option>
               <option id="nanded" value="nanded">Nanded (नांदेड)</option>

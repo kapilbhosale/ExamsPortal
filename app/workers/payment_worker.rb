@@ -86,7 +86,8 @@ class PaymentWorker
         new_admission_id: new_admission.id
       ) rescue nil
 
-      if pay_transaction.blank?
+      if pay_transaction.blank? && new_admission.default?
+        new_admission.started!
         std = Student.add_student(new_admission)
         new_admission.student_id = std.id
         new_admission.save
@@ -96,6 +97,7 @@ class PaymentWorker
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
         ) rescue nil
+        new_admission.done!
       end
     end
 

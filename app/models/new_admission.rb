@@ -26,6 +26,7 @@
 #  prev_receipt_number   :text
 #  rcc_branch            :integer          default("latur")
 #  school_name           :string
+#  status                :string           default("default")
 #  student_mobile        :string
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
@@ -53,6 +54,12 @@ class NewAdmission < ApplicationRecord
     in_progress: 2,
     success: 3,
     failure: 4
+  }
+
+  enum status: {
+    default: 'default',
+    started: 'started',
+    done: 'done'
   }
 
   enum gender: { male: 1, female: 2, other: 3 }

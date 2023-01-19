@@ -302,7 +302,7 @@ class Students::AdmissionsController < ApplicationController
     @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
 
-    if @new_admission.present?
+    if @new_admission.present? && @new_admission.default?
       @new_admission.success!
 
       student = Student.find_by(
@@ -311,7 +311,7 @@ class Students::AdmissionsController < ApplicationController
       )
 
       batches_set_11_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
-      batches_saarthi_23_24 = ['LTR-11-SET-2023-24', 'NED-11-SET-2023-24', 'AUR-11-SET-2023-24']
+      batches_saarthi_23_24 = ['LTR-11-SET-2023-24-PHASE-2', 'NED-11-SET-2023-24-PHASE-2', 'AUR-11-SET-2023-24-PHASE-2']
       batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
