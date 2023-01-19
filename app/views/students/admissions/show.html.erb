@@ -136,6 +136,7 @@
           }
 
           var subjectCount = 0
+          var isPcm = false;
           if ($('input[value=phy]:checked').length == 1) {
             subjectCount = 1
           }
@@ -158,6 +159,7 @@
             subjectCount = 3
           }
           if ($('input[value=pcm]:checked').length == 1) {
+            isPcm = true
             subjectCount = 3
           }
           if ($('input[value=pcbm]:checked').length == 1) {
@@ -176,10 +178,17 @@
           if (batch === "11th_new" || batch === "12th") {
             if (rccBranch === "nanded") {
               if (subjectCount === 3) {
-                totalFees = '₹55,000';
-                oneTimeFees = '₹55,000';
-                installmentFees = '₹25,000';
-                nextInstallmentFees = '₹30,000';
+                if (isPcm) {
+                  totalFees = '₹60,000';
+                  oneTimeFees = '₹60,000';
+                  installmentFees = '₹25,000';
+                  nextInstallmentFees = '₹35,000';
+                } else {
+                  totalFees = '₹55,000';
+                  oneTimeFees = '₹55,000';
+                  installmentFees = '₹25,000';
+                  nextInstallmentFees = '₹30,000';
+                }
               } else if (subjectCount === 2) {
                 totalFees = '₹45,000';
                 oneTimeFees = '₹45,000';
