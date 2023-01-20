@@ -78,27 +78,6 @@ class Api::V1::HomeController < Api::V1::ApiController
         end
       end
 
-      if (current_student.batches&.ids & [141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156]).present?
-        banners_data <<
-          {
-            'img_url' => "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc_dispatch_2.png",
-            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScFBdTA4VSp-g41qkG0u-ZX_PtGQXvUcqrXVLqMRMlRt_c3Pw/viewform'
-          }
-      end
-
-      if (current_student.batches&.ids & [250, 253]).present?
-        banners_data <<
-          {
-            'img_url' => "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/saarthi-banner.jpg",
-            'on_click' => 'https://docs.google.com/forms/d/e/1FAIpQLScGrRhV3VFDTKlHyhdtkcd8be-O-LxcOjMktmcVYtup87Mh4A/viewform'
-          }
-      end
-
-      banners_data <<
-        {
-          "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc-banner-29-march.jpg",
-          "on_click"=>"https://exams.smartclassapp.in/new-admission"
-        }
       banners_data + current_org.data['top_banners']
     end
   end
