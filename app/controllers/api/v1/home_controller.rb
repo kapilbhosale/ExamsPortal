@@ -63,7 +63,7 @@ class Api::V1::HomeController < Api::V1::ApiController
         else
           banners_data <<
           {
-            "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc_fees_reminder.jpg",
+            "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc_fees_reminder-1.jpg",
             "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
           }
         end
