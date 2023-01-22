@@ -33,7 +33,7 @@
       </table>
     <% else %>
       <h3 style="color: red;">
-        Something Went wrong, code 101. Please try agian.
+        <%= @errors.join(', ') %>
       </h3>
     <% end %>
   </div>

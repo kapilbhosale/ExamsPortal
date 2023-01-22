@@ -302,6 +302,7 @@ class Students::AdmissionsController < ApplicationController
     @errors = []
 
     if @new_admission.present? && @new_admission.default?
+      @new_admission.started!
       @new_admission.success!
 
       # TODO:: student registered in old batch, fails to avoid duplicates in set
@@ -326,8 +327,13 @@ class Students::AdmissionsController < ApplicationController
       else
         @student = student
         student.new_admission_id = @new_admission.id
+        @new_admission.done!
         student.save
       end
+    elsif @new_admission.started?
+      @errors << "Admission already confirmed, Please check SMS for details"
+    elsif @new_admission.done?
+      @errors << "Admission already confirmed, Please check SMS for details"
     else
       @errors << "Error 101, please try agian later"
     end
