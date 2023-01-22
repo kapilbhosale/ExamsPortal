@@ -130,7 +130,6 @@ class Students::AdmissionsController < ApplicationController
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
         )&.last
-
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
@@ -305,24 +304,25 @@ class Students::AdmissionsController < ApplicationController
     if @new_admission.present? && @new_admission.default?
       @new_admission.success!
 
+      # TODO:: student registered in old batch, fails to avoid duplicates in set
       student = Student.find_by(
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
       )
 
-      batches_set_11_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
-      batches_saarthi_23_24 = ['LTR-11-SET-2023-24-PHASE-2', 'NED-11-SET-2023-24-PHASE-2', 'AUR-11-SET-2023-24-PHASE-2']
-      batches_set_12_23_24 = ['LTR-12-SET-2023-24', 'NED-12-SET-2023-24', 'AUR-12-SET-2023-24']
+      batches_saarthi_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
+      batches_set_11_23_24_p2 = ['LTR-11-SET-2023-24-PHASE-2', 'NED-11-SET-2023-24-PHASE-2', 'AUR-11-SET-2023-24-PHASE-2', 'AKOLA-11-SET-2023-24-PHASE-2', 'PUNE-11-SET-2023-24-PHASE-2']
+
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '12th_set' && ( student_batch_names & batches_saarthi_23_24).blank?) ||
-          (@new_admission.batch == '11th_set' && ( student_batch_names & batches_set_11_23_24).blank?)
+          (@new_admission.batch == '12th_set' && (student_batch_names & batches_saarthi_23_24).blank?) ||
+          (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_23_24_p2).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 
       if student.blank?
-        flash[:errors] = "Error 101, please try agian later"
-        @errors << "Error 101, please try agian later"
+        flash[:errors] = "Error 102, please try agian later"
+        @errors << "Error 102, please try agian later"
       else
         @student = student
         student.new_admission_id = @new_admission.id

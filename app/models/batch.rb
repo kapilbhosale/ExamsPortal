@@ -158,6 +158,10 @@ class Batch < ApplicationRecord
         batch_name = "NED-11-SET-2023-24-PHASE-2"
       when 'aurangabad'
         batch_name = "AUR-11-SET-2023-24-PHASE-2"
+      when 'akola'
+        batch_name = "AKOLA-11-SET-2023-24-PHASE-2"
+      when 'pune'
+        batch_name = "PUNE-11-SET-2023-24-PHASE-2"
       else
         batch_name = "LTR-11-SET-2023-24-PHASE-2"
     end

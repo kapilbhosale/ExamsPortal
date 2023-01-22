@@ -276,7 +276,7 @@
         const BATCHES = [
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24)  PHASE-2 **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
-          {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
+          // {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
           // {val: '11th_new', text: '11th Regular Batch (2022-2023)'},
           {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
@@ -284,7 +284,7 @@
         const AUR_BATCHES = [
           {val: "11th_set", text: "** New 11th RCC-SET (2023-24)  PHASE-2 **"},
           {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
-          {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
+          // {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
           // {val: '11th_new', text: '11th Aurangabad 2022-23'},
           {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
@@ -501,7 +501,7 @@
               <% else %>
                 <option id="11th_set" value="11th_set"> ** New 11th RCC-SET (2023-24)  PHASE-2 **</option>
                 <option id="12th_set" value="12th_set"> ** NEET SAARTHI 2023 (rapid revision & test series) **</option>
-                <option id="12th_set_1" value="12th_set_1"> ** 12th RCC-SET (non-RCC ) 2023-24 **</option>
+                <%# <option id="12th_set_1" value="12th_set_1"> ** 12th RCC-SET (non-RCC ) 2023-24 **</option> %>
                 <%# <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option> %>
                 <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
                 <%# <option id="repeater" value="repeater"> REPEATER 2022-23 </option> %>
@@ -596,7 +596,8 @@
           </div>
 
           <div class="form-group">
-            <p style="color: gray;">Board of Education</p>
+            <p style="color: red; text-align: center">Note: Students already registered for 11 SET Phase-1 will not be considered qualified for phase-2</p>
+            <p style="color: gray;">Select Board of Education</p>
             <select id="board" class="form-control" name="board">
               <option id="state_board_marathi" value="state_board_marathi">State Board (Marathi)</option>
               <option id="state_board_semi" value="state_board_semi">State Board (Semi)</option>

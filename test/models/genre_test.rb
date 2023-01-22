@@ -6,7 +6,6 @@
 #  batch_assigned       :boolean          default(FALSE)
 #  hidden               :boolean          default(FALSE)
 #  name                 :string
-#  study_pdfs_count     :integer          default(0)
 #  video_lectures_count :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null

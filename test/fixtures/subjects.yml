@@ -3,7 +3,6 @@
 # Table name: subjects
 #
 #  id         :bigint(8)        not null, primary key
-#  klass      :string
 #  name       :string           not null
 #  name_map   :string           not null
 #  created_at :datetime         not null
