@@ -40,6 +40,8 @@ module ApplicationHelper
       return { logo: 'vaa-logo', height: 50}
     elsif %w[bansalclasses].include? subdomain
       return { logo: 'bansal-logo', height: 50}
+    elsif %w[annapurnaacademy].include? subdomain
+      return { logo: 'anna-logo', height: 50}
     end
 
     { logo: 'exams-logo', width: 30 }
@@ -56,7 +58,7 @@ module ApplicationHelper
       return request.subdomain.split('-').last.humanize
     end
 
-    if %w[adhyayan-exams adhyayan-videos].include?(subdomain)
+    if %w[adhyayan-exams adhyayan-videos annapurnaacademy].include?(subdomain)
       return ''
     end
 
