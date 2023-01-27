@@ -151,24 +151,16 @@ class Batch < ApplicationRecord
   def self.get_11th_set_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    case rcc_branch
-      when 'latur'
-        batch_name = "LTR-11-SET-2023-24-PHASE-2"
-      when 'nanded'
-        batch_name = "NED-11-SET-2023-24-PHASE-2"
-      when 'aurangabad'
-        batch_name = "AUR-11-SET-2023-24-PHASE-2"
-      when 'akola'
-        batch_name = "AKOLA-11-SET-2023-24-PHASE-2"
-      when 'pune'
-        batch_name = "PUNE-11-SET-2023-24-PHASE-2"
-      else
-        batch_name = "LTR-11-SET-2023-24-PHASE-2"
-    end
+    board = 'state-marathi' if na.extra_data['board'] == 'state_board_marathi'
+    board = 'state-semi' if na.extra_data['board'] == 'state_board_semi'
+    board = 'cbse-icse' if na.extra_data['board'] == 'cbse'
+    board = 'cbse-icse' if na.extra_data['board'] == 'icse'
+
+    batch_name = "11SET-PHASE2-#{na.rcc_branch}-#{na.course_type}-#{board}"
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
-      batch_group = BatchGroup.find_or_create_by(name: "11-SET-2023-24", org_id: org.id)
+      batch_group = BatchGroup.find_or_create_by(name: "11-SET-2023-24(phase2)", org_id: org.id)
       _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
       Admin.where(org_id: org.id).each do |admin|
         AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
