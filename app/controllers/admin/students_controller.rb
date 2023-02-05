@@ -4,6 +4,9 @@ class Admin::StudentsController < Admin::BaseController
   ITEMS_PER_PAGE = 20
 
   def index
+    @base_url = request.host_with_port
+    @fees_host = Rails.env.production? ? "https://fees-app.eduaakar.com" : "http://localhost:3002"
+
     @batches_with_templates = BatchFeesTemplate.all.pluck(:batch_id)
     @search = Student
       .where(org: current_org)

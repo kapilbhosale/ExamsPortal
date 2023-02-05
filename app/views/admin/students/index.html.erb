@@ -81,7 +81,7 @@
                         <%= link_to '', edit_admin_student_path(student), 'data-toggle'=> 'tooltip', title: 'Edit', class: "fas fa-edit" %> &nbsp;
                         <%= link_to '', admin_student_path(student), method: :delete, data: {confirm: 'Are you sure?'}, 'data-toggle': 'tooltip', title: 'Delete', class: "fa fa-trash" %>&nbsp;
                         <% if (@batches_with_templates & student.batches&.ids).present? %>
-                          <%= link_to '', "http://localhost:3002/fees-connector?t=#{@refresh_token}&sid=#{student.id}", class: "fa fa-rupee", target: :_blank %>&nbsp;
+                          <%= link_to '', "#{@fees_host}/fees-connector?t=#{@refresh_token}&sid=#{student.id}&baseURL=#{@base_url}", class: "fa fa-rupee", target: :_blank %>&nbsp;
                         <% end %>
                       </td>
                     </tr>
