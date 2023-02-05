@@ -92,13 +92,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
         page_size: ITEMS_PER_PAGE,
         total_page: 0,
         count: 0,
-        data: {
-          subject_id: params[:subject_id].to_i,
-          subject_name: subject,
-          topic_id: params[:folder_id].to_i,
-          topic_name: "#{subject} - Chapter: #{params[:folder_id]}",
-          videos: []
-        }
+        data: []
       } and return
     end
 
@@ -129,13 +123,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
         page_size: ITEMS_PER_PAGE,
         total_page: 0,
         count: 0,
-        data: {
-          subject_id: subject&.id,
-          subject_name: subject&.name,
-          topic_id: folder&.id,
-          topic_name: folder&.name,
-          pdfs: []
-        }
+        data: []
       } and return
     end
 
