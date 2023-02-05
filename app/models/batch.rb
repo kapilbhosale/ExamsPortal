@@ -258,6 +258,36 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def get_center_prefix(rcc_branch)
+    return 'LTR' if rcc_branch == 'latur'
+    return 'NED' if rcc_branch == 'nanded'
+    return 'AUR' if rcc_branch == 'aurangabad'
+    return 'PUNE' if rcc_branch == 'pune'
+    return 'AK' if rcc_branch == 'akola'
+
+    'LTR'
+  end
+
+
+  def self.get_12th_batches_23_24(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    center_prefix = get_center_prefix(rcc_branch)
+    course_type = na.course_type&.upcase || 'NEET'
+
+    batch_name = "B1-#{center_prefix}-12-REG-#{course_type}-#{course.name.upcase}-23-24"
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      batch_group = BatchGroup.find_or_create_by(name: "12th-REG-2023-24", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+      end
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
@@ -273,7 +303,7 @@ class Batch < ApplicationRecord
     if batch == '11th'
       get_11th_batches(rcc_branch, course, batch, na)
     elsif batch == '12th'
-      get_12th_batches(rcc_branch, course, batch, na)
+      get_12th_batches_23_24(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == '12th_set' # 12th set is used neet saarthi 2023 for now

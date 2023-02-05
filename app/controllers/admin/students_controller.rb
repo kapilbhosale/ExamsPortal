@@ -22,7 +22,7 @@ class Admin::StudentsController < Admin::BaseController
       @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
     end
 
-    @batches = Batch.where(org: current_org).all_batches
+    @batches = Batch.where(org: current_org).all_batches.order(id: :desc)
 
     @students_data = @students.includes(:batches, :pending_fees).order(created_at: :desc).map do |student|
       {
@@ -36,7 +36,6 @@ class Admin::StudentsController < Admin::BaseController
           pending_amount: student&.pending_fees.where(paid: false).last&.amount
       }
     end
-
 
 
     params.permit(:q, :limit)
