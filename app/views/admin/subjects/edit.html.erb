@@ -11,6 +11,14 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12">
+            <div class="form-group">
+              <label class="form-label">Class</label>
+              <%= form.text_field :klass, value: @subject.klass, class: 'form-control', placeholder: 'Class', required: true %>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="card-footer text-right">
         <%= link_to "Cancel", admin_subjects_path, class: 'btn btn-primary' %> &nbsp;&nbsp;

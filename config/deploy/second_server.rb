@@ -1,6 +1,6 @@
 # app-eduaakr  bhargav  chate  demo  eduaakar-site  exams  videos
 set :rails_env, :production
-set :branch, 'master'
+set :branch, 'phase-2'
 set :sidekiq_env, :production
 set :stage, :production
 

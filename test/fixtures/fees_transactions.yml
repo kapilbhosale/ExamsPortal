@@ -2,7 +2,7 @@
 #
 # Table name: fees_transactions
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :uuid             not null, primary key
 #  academic_year    :string
 #  comment          :string
 #  discount_amount  :decimal(, )      default(0.0)

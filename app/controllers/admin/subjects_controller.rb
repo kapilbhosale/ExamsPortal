@@ -12,7 +12,11 @@ class Admin::SubjectsController < Admin::BaseController
 
   def create
     if params[:subject][:name].present?
-      @subject = Subject.create(name: params[:subject][:name].strip, org: current_org)
+      @subject = Subject.create(
+        name: params[:subject][:name].strip,
+        org: current_org,
+        klass: params[:subject][:klass].strip
+      )
       if @subject.persisted?
         flash[:success] = "Subject Added successfully."
       else
@@ -32,6 +36,7 @@ class Admin::SubjectsController < Admin::BaseController
     @subject = Subject.find_by(org: current_org, id: params[:id])
     if @subject && params[:subject][:name]
       @subject.name = params[:subject][:name].strip
+      @subject.klass = params[:subject][:klass].strip
       if @subject.save
         flash[:success] = "Subject updated successfully."
       else

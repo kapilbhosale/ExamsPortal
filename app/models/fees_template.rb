@@ -18,3 +18,37 @@
 class FeesTemplate < ApplicationRecord
   belongs_to :org
 end
+
+# FeesTemplate.create({
+#   org_id: 1,
+#   name: "Template-11",
+#   description: "Template for 11th students 2023-24",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 24000
+#   },{
+#     "cgst" => 2.5,
+#     "head" => "Book Fees",
+#     "sgst" => 2.5,
+#     "amount" => 10000
+#   }]
+# })
+
+# FeesTemplate.create({
+#   org_id: 1,
+#   name: "Template-12",
+#   description: "Template for 12th students 2023-24",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 40000
+#   },{
+#     "cgst" => 2.5,
+#     "head" => "Book Fees",
+#     "sgst" => 2.5,
+#     "amount" => 20000
+#   }]
+# })

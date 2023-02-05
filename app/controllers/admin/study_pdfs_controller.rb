@@ -13,7 +13,7 @@ class Admin::StudyPdfsController < Admin::BaseController
       .page(params[:page])
       .per(params[:limit] || ITEMS_PER_PAGE)
   end
-  
+
   def new
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.order(:id).group_by(&:batch_group_id)
     @batch_groups = BatchGroup.where(org: current_org).order(:id).index_by(&:id)

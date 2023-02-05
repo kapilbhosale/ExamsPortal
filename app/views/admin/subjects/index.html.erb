@@ -16,6 +16,7 @@
               <tr>
                 <th class="w-1">No.</th>
                 <th>Name</th>
+                <th>Class</th>
                 <th>Created</th>
                 <th></th>
               </tr>
@@ -28,6 +29,9 @@
                   </td>
                   <td>
                     <%= link_to subject.name, edit_admin_subject_path(subject) %>
+                  </td>
+                  <td>
+                    <%= subject.klass %>
                   </td>
                   <td>
                     <%= subject.created_at.strftime("%d-%B-%Y") %>

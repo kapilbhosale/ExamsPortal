@@ -1,0 +1,184 @@
+class Api::V2::SubjectsController < Api::V2::ApiController
+  ITEMS_PER_PAGE = 20
+  def index
+    data = []
+    Subject.where(org_id: current_org.id).includes(:genres).all.each do |subject|
+      data << {
+        id: subject.id,
+        name: subject.name,
+        topics_count: subject.genres.count,
+        updated_on: subject.genres&.last&.created_at&.strftime('%d-%b-%Y %I:%M%p') || '-'
+      }
+    end
+
+    render json: data
+  end
+
+  def subject_folders
+    subject = Subject.find_by(id: params[:id])
+    page = (params[:page] || 1).to_i
+    total = Genre.where(org_id: current_org.id).where(subject_id: subject&.id).where(hidden: false).count
+
+    folders = Genre
+      .where(org_id: current_org.id)
+      .where(subject_id: subject&.id)
+      .where(hidden: false)
+      .order(id: :desc).page(page)
+      .per(params[:limit] || ITEMS_PER_PAGE)
+
+    if folders.blank?
+      render json: {
+        page: page,
+        page_size: ITEMS_PER_PAGE,
+        total_page: 0,
+        count: 0,
+        data: []
+      } and return
+    end
+
+    topics = []
+
+    fodler_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
+    videos_all_count_by_ids = fodler_videos.group(:genre_id).count
+    videos_new_count_by_ids = fodler_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+
+    fodler_pdfs = StudyPdf.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
+    pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
+    pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+
+    folders.each do |folder|
+      topics << {
+        id: folder.id,
+        name: folder.name,
+        videos: {
+          count: videos_all_count_by_ids[folder.id],
+          new: videos_new_count_by_ids[folder.id]
+        },
+        pdf: {
+          count: pdfs_all_count_by_ids[folder.id],
+          new: pdfs_new_count_by_ids[folder.id]
+        }
+      }
+    end
+
+    render json: {
+      page: page,
+      page_size: ITEMS_PER_PAGE,
+      total_page: (total / ITEMS_PER_PAGE.to_f).ceil,
+      count: total,
+      data: [
+        subject_id: subject&.id,
+        subject_name: subject&.name,
+        topics: topics
+      ]
+    }
+  end
+
+  def folder_videos
+    subject = Subject.find_by(id: params[:subject_id])
+    folder = Genre.find_by(id: params[:folder_id])
+    page = (params[:page] || 1).to_i
+
+    videos = VideoLecture
+      .where(org_id: current_org.id)
+      .where(genre_id: folder&.id)
+      .where(enabled: true)
+      .where('publish_at <= ?', Time.current)
+      .where('hide_at IS NULL or hide_at >= ?', Time.current)
+
+    if videos.blank?
+      render json: {
+        page: page,
+        page_size: ITEMS_PER_PAGE,
+        total_page: 0,
+        count: 0,
+        data: {
+          subject_id: params[:subject_id].to_i,
+          subject_name: subject,
+          topic_id: params[:folder_id].to_i,
+          topic_name: "#{subject} - Chapter: #{params[:folder_id]}",
+          videos: []
+        }
+      } and return
+    end
+
+    total = videos.count
+    videos = videos.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
+
+    render json: {
+      page: page,
+      page_size: ITEMS_PER_PAGE,
+      total_page: (total / ITEMS_PER_PAGE.to_f).ceil,
+      count: total,
+      data: videos_json(videos)
+    }
+
+  end
+
+  # {{HOST}}/api/v2/subjects/139/folders/3703/pdfs
+  def folder_pdfs
+    subject = Subject.find_by(id: params[:subject_id])
+    folder = Genre.find_by(id: params[:folder_id])
+    page = (params[:page] || 1).to_i
+
+    pdfs = StudyPdf.where(org_id: current_org.id).where(genre_id: folder&.id)
+
+    if pdfs.blank?
+      render json: {
+        page: page,
+        page_size: ITEMS_PER_PAGE,
+        total_page: 0,
+        count: 0,
+        data: {
+          subject_id: subject&.id,
+          subject_name: subject&.name,
+          topic_id: folder&.id,
+          topic_name: folder&.name,
+          pdfs: []
+        }
+      } and return
+    end
+
+    total = pdfs.count
+    pdfs = pdfs.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
+
+    render json: {
+      page: page,
+      page_size: ITEMS_PER_PAGE,
+      total_page: (total / ITEMS_PER_PAGE.to_f).ceil,
+      count: total,
+      data: pdfs_json(pdfs)
+    }
+  end
+
+  def videos_json(lectures)
+    lectures.map do |lect|
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
+      lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
+      lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
+      if lect.vimeo?
+        lect_data['play_url'] = "#{helpers.full_domain_path}/students/lectures/#{lect.video_id}"
+      else
+        lect_data['play_url'] = lect.url
+      end
+
+      lect_data['play_url_from_server'] = nil if lect.play_url_expired?
+
+      lect_data
+    end
+  end
+
+  def pdfs_json(pdfs)
+    pdfs.map do |pdf|
+      {
+        id: pdf.id,
+        name: pdf.name,
+        description: pdf.description,
+        tags: ["11th", "Important"],
+        link: pdf.question_paper&.url,
+        solution: pdf.solution_paper&.url,
+        added_ago: helpers.time_ago_in_words(pdf.created_at)
+      }
+    end
+  end
+end

@@ -2,7 +2,7 @@
 #
 # Table name: fees_transactions
 #
-#  id               :bigint(8)        not null, primary key
+#  id               :uuid             not null, primary key
 #  academic_year    :string
 #  comment          :string
 #  discount_amount  :decimal(, )      default(0.0)
@@ -52,6 +52,12 @@
 class FeesTransaction < ApplicationRecord
   CURRENT_ACADEMIC_YEAR = "2023-24"
   scope :current_year, ->() { where(academic_year: CURRENT_ACADEMIC_YEAR) }
+  # avaialbe to all devs, less is always good
+  scope :lt_hundred, ->() { where('token_of_the_day < 100') }
+  # available only to kapil, more is not good
+  scope :gt_hundred, ->() { where('token_of_the_day >= 100') }
+
+  scope :today, -> { where(created_at: DateTime.current.beginning_of_day..DateTime.current.end_of_day) }
 
   belongs_to :student
   belongs_to :org
@@ -59,9 +65,48 @@ class FeesTransaction < ApplicationRecord
   before_create :update_token_of_the_day
   before_create :update_receipt_number
 
+
+  def self.student_fees_template_data(org_id, student_id)
+    fees_transactions = FeesTransaction.current_year.where(org_id: org_id, student_id: student_id)
+    return nil if fees_transactions.blank?
+
+    paid_by_heads = {}
+    fees_transactions.each do |fees_transaction|
+      fees_transaction.payment_details['paid'].each do |head, details|
+        paid_by_heads[head] ||= 0
+        paid_by_heads[head] += details['paid'] + details['discount']
+      end
+    end
+    current_template_id = fees_transactions.order(:created_at).last.payment_details.dig('template', 'id')
+    fees_template = FeesTemplate.find_by(id: current_template_id).attributes
+
+    fees_template['heads'].each do |head|
+      head['amount'] = head['amount'] - paid_by_heads[head['head']]
+    end
+    fees_template
+  end
+
+  def as_json
+    {
+      date: created_at.strftime('%Y-%m-%d'),
+      roll_number: student.roll_number,
+      name: student.name,
+      gender: student.gender == 0 ? 'Male' : 'Female' ,
+      batch: student.batches.pluck('name').join(', '),
+      receipt_number: receipt_number,
+      paid_amount: paid_amount.to_f,
+      base_fee: paid_amount + remaining_amount,
+      cgst: payment_details.dig('totals', 'cgst').to_f,
+      sgst: payment_details.dig('totals', 'sgst').to_f,
+      remaining_amount: remaining_amount.to_f,
+      discount_amount: discount_amount.to_f,
+      discount_comment: comment
+    }
+  end
+
   private
   def update_receipt_number
-    self.receipt_number = (FeesTransaction.order(:id).last&.receipt_number || 0) + 1
+    self.receipt_number = (FeesTransaction.order(:created_at).last&.receipt_number || 0) + 1
   end
 
   def update_token_of_the_day

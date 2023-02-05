@@ -6,6 +6,7 @@
 #  batch_assigned       :boolean          default(FALSE)
 #  hidden               :boolean          default(FALSE)
 #  name                 :string
+#  study_pdfs_count     :integer          default(0)
 #  video_lectures_count :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
@@ -20,6 +21,7 @@
 
 class Genre < ApplicationRecord
   has_many :video_lectures
+  has_many :study_pdfs
   belongs_to :org
   belongs_to :subject, optional: true
 end

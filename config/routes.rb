@@ -181,7 +181,10 @@ Rails.application.routes.draw do
       namespace :v2 do
         get 'get-token', to: 'auth#get_token'
         get 'fees-details', to: 'fees#details'
+        get 'payment-history', to: 'fees#payment_history'
         post 'fees-transaction', to: 'fees#create_fees_transaction'
+        get  'reports/collection', to: 'fees_reports#collection'
+        get  'reports/pending-fees', to: 'fees_reports#pending_fees'
       end
     end
   end
@@ -221,9 +224,10 @@ Rails.application.routes.draw do
         get :filter_types, on: :collection
       end
       resources :exams
-      get 'subjects', to: 'apis#subjects'
-      get 'subjects/:id/folders', to: 'apis#folders'
-      get 'subjects/:subject_id/folders/:folder_id/pdfs', to: 'apis#pdfs'
+      get 'subjects', to: 'subjects#index'
+      get 'subjects/:id/folders', to: 'subjects#subject_folders'
+      get 'subjects/:subject_id/folders/:folder_id/pdfs', to: 'subjects#folder_pdfs'
+      get 'subjects/:subject_id/folders/:folder_id/videos', to: 'subjects#folder_videos'
     end
   end
 end

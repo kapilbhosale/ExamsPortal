@@ -3,6 +3,7 @@
 # Table name: subjects
 #
 #  id         :bigint(8)        not null, primary key
+#  klass      :string
 #  name       :string           not null
 #  name_map   :string           not null
 #  created_at :datetime         not null
@@ -19,6 +20,13 @@ class Subject < ApplicationRecord
   before_create :add_name_map
   belongs_to :org
   has_many :video_lectures
+  has_many :genres
+
+  KLASSES = {
+    '11th': '11th Standard',
+    '12th': '11th Standard',
+    'repeater': 'Repeater'
+  }.freeze
 
   NAME_REGEX = /\A[a-zA-Z0-9 \.\(\)]+\z/
   validates :name, uniqueness: { scope: :org_id }

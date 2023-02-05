@@ -1,6 +1,8 @@
 class CreateFeesTransactions < ActiveRecord::Migration[5.2]
   def change
-    create_table :fees_transactions do |t|
+    enable_extension 'pgcrypto'
+
+    create_table :fees_transactions, id: :uuid do |t|
       t.references  :org
       t.integer     :receipt_number, null: false
       t.references  :student

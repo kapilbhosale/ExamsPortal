@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
@@ -337,7 +338,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.index ["org_id"], name: "index_fees_templates_on_org_id"
   end
 
-  create_table "fees_transactions", force: :cascade do |t|
+  create_table "fees_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "org_id"
     t.integer "receipt_number", null: false
     t.bigint "student_id"
@@ -375,6 +376,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.integer "subject_id"
     t.integer "video_lectures_count", default: 0
     t.boolean "batch_assigned", default: false
+    t.integer "study_pdfs_count", default: 0
     t.index ["org_id"], name: "index_genres_on_org_id"
     t.index ["subject_id"], name: "index_genres_on_subject_id"
   end
@@ -716,6 +718,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.boolean "disable", default: false
     t.string "rfid_card_number"
     t.string "exam_hall"
+    t.jsonb "data", default: {}
     t.integer "intel_score"
     t.jsonb "data", default: {}
     t.index ["api_key"], name: "index_students_on_api_key"
@@ -746,6 +749,8 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "study_pdf_type_id"
+    t.bigint "genre_id"
+    t.index ["genre_id"], name: "index_study_pdfs_on_genre_id"
     t.index ["org_id"], name: "index_study_pdfs_on_org_id"
     t.index ["study_pdf_type_id"], name: "index_study_pdfs_on_study_pdf_type_id"
   end
@@ -756,6 +761,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "org_id"
+    t.string "klass"
     t.index ["name_map"], name: "index_subjects_on_name_map"
     t.index ["org_id"], name: "index_subjects_on_org_id"
   end

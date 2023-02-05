@@ -10,11 +10,13 @@
 #  solution_paper    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  genre_id          :bigint(8)
 #  org_id            :bigint(8)
 #  study_pdf_type_id :integer
 #
 # Indexes
 #
+#  index_study_pdfs_on_genre_id           (genre_id)
 #  index_study_pdfs_on_org_id             (org_id)
 #  index_study_pdfs_on_study_pdf_type_id  (study_pdf_type_id)
 #
@@ -30,6 +32,7 @@ class StudyPdf < ApplicationRecord
 
   has_many :batch_study_pdfs
   has_many :batches, through: :batch_study_pdfs
+  belongs_to :genre, optional: true, counter_cache: true
 
   # after_create :send_push_notifications
 

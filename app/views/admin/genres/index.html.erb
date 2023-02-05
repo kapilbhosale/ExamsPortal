@@ -17,7 +17,7 @@
       <% end %>
     </div>
     <div class="col-md-4 text-right">
-      <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Video Folder'.html_safe, new_admin_genre_path %>
+      <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Folder'.html_safe, new_admin_genre_path %>
     </div>
   </div>
   <div class="table-responsive">
@@ -26,8 +26,9 @@
         <tr>
           <th>Id.</th>
           <th>Subject</th>
-          <th>Name</th>
+          <th>Folder Name</th>
           <th>Videos Count</th>
+          <th>PDF Count</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -51,6 +52,17 @@
             <td class="text-center">
               <a href="<%= admin_video_lectures_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
                 <%= genre.video_lectures_count %>
+              </a>
+              <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-danger" role="button" aria-pressed="true">
+                +
+              </a>
+            </td>
+            <td class="text-center">
+              <a href="<%= admin_video_lectures_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
+                <%= genre.study_pdfs_count %>
+              </a>
+              <a href="<%= admin_study_pdfs_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
+                +
               </a>
             </td>
             <% if @student.present? %>
@@ -80,10 +92,6 @@
                 <% else %>
                   <%= link_to 'Hide'.html_safe, admin_genre_hide_path(genre), method: :get, data: {confirm: 'Are you sure, you want to Hide folder?'} %>
                 <% end %>
-                |
-                <a href="<%= new_admin_video_lecture_path(genre_id: genre.id) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
-                  Add Video
-                </a>
               </td>
             <% end %>
           </tr>
