@@ -47,7 +47,8 @@ module Fees
           id: @fees_transaction.id,
           receipt_number: @fees_transaction.receipt_number,
           created_at: @fees_transaction.created_at.strftime("%d-%b-%Y %I:%M%p"),
-          received_by: @fees_transaction.received_by
+          received_by: @fees_transaction.received_by,
+          day_token: @fees_transaction.token_of_the_day
         }}
       end
 
