@@ -37,18 +37,18 @@ end
 # })
 
 # FeesTemplate.create({
-#   org_id: 1,
-#   name: "Template-12",
-#   description: "Template for 12th students 2023-24",
+#   org_id: org.id,
+#   name: "Template-11th_12th",
+#   description: "Template for 11th and 12th students 2023-24",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
 #     "sgst" => 9,
-#     "amount" => 40000
+#     "amount" => 40_000
 #   },{
-#     "cgst" => 2.5,
-#     "head" => "Book Fees",
-#     "sgst" => 2.5,
-#     "amount" => 20000
+#     "cgst" => 0,
+#     "head" => "Publication Fees",
+#     "sgst" => 0,
+#     "amount" => 16_000
 #   }]
 # })
