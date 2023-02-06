@@ -69,6 +69,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     render json: { url_hd: nil, url_sd: nil }, status: :ok
   end
 
+  # deprecated, remote it.
   def get_yt_url
     lecture = VideoLecture.find_by(id: params[:video_id])
     render json: { url_hd: nil, url_sd: nil } and return if lecture.blank?
@@ -79,7 +80,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     cached_url_hd_contentLength = REDIS_CACHE.get("lecture-#{lecture.id}-url_hd_contentLength")
 
     if cached_url_sd.blank?
-      if request.subdomain == 'exams'
+      if request.subdomain.include?('exams', 'rcc')
         json_data = {
           url_sd: "",
           url_sd_contentLength: "",

@@ -38,7 +38,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       }
     end
 
-    return (banners_data + (current_org.data['top_banners'] || [])) unless current_org.subdomain == 'exams'
+    return (banners_data + (current_org.data['top_banners'] || [])) unless current_org.rcc?
 
     banners_data << {
       "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/default-banner.jpg",

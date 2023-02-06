@@ -26,7 +26,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: {message: 'Invalid roll number or parent mobile. Please check and re-enter.'}, status: :unauthorized and return
     end
 
-    if student.disable? && request.subdomain == 'exams'
+    if student.disable? && org.rcc?
       render json: { message: 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'}, status: :unauthorized and return
     end
 

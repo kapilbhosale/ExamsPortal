@@ -59,7 +59,7 @@ class Students::VideosController < Students::BaseController
     video_lectures = all_vls.where(enabled: true)
     @categories_data = {}
 
-    if current_org.subdomain == 'exams' && current_student.pending_amount.present? && current_student.block_videos?
+    if current_org.rcc? && current_student.pending_amount.present? && current_student.block_videos?
       render json: {}, status: :ok and return
     end
 
@@ -134,7 +134,7 @@ class Students::VideosController < Students::BaseController
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
 
-    if current_org.subdomain == 'exams'
+    if current_org.rcc?
       lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
       @yt_playable_link = lecture.play_url_from_server if lecture.present? && lecture.play_url_live?
     end
@@ -154,7 +154,7 @@ class Students::VideosController < Students::BaseController
   private
 
   def check_valid_rcc_request
-    @is_rcc = current_org.subdomain == 'exams'
+    @is_rcc = current_org.rcc?
     @req_from_electron = request.user_agent.include?('Electron') && cookies['electron'] == "RCC-245417"
     @req_from_browser = !@req_from_electron
   end

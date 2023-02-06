@@ -1,9 +1,9 @@
 class AbsentMessageSenderWorker
   include Sidekiq::Worker
   def perform
-    org = Org.find_by(subdomain: 'exams')
+    orgs = Org.where(subdomain: ['exams', 'rcc'])
 
-    Batch.where(org_id: org.id).all.each do |batch|
+    Batch.where(org_id: orgs.ids).all.each do |batch|
       next if batch.start_time.blank?
       next unless valid_to_send_sms?(batch)
 

@@ -26,7 +26,7 @@ class Org < ApplicationRecord
   end
 
   def rcc?
-    subdomain == 'exams'
+    subdomain == 'exams' || subdomain == 'rcc'
   end
 
   def send_push_notifications

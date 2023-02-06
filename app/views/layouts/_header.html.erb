@@ -67,7 +67,7 @@
             <li class="nav-item">
               <%= link_to "<i class='fa fa-bell'></i> Notifications".html_safe, students_notifications_path, class: current_page?(students_notifications_path) ? "nav-link active" : "nav-link" %>
             </li>
-            <% if request.subdomain == 'exams' && (current_student&.batches&.ids & [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133]).present? %>
+            <% if request.subdomain.include?('exams', 'rcc') && (current_student&.batches&.ids & [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133]).present? %>
             <li class="nav-item">
               <a class="" href="https://docs.google.com/forms/d/e/1FAIpQLSeRV6coW9uEUEcFJInGCtqHhlNTmMrz6Qe8CpKeVl2krNRYxg/viewform" role="button" target="_blank">
                 <Button class="btn btn-sm btn-danger">Study Material Dispatch Form</Button>

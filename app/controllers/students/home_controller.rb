@@ -30,7 +30,7 @@ class Students::HomeController < Students::BaseController
     @previous_exams = Exam
       .where(id: exam_ids)
       .where('show_exam_at <= ?', Time.current - 1.days )
-    if request.subdomain == 'exams'
+    if current_org.rcc?
       @previous_exams = @previous_exams.where('show_exam_at > ?', Time.current - 7.days )
     end
     @previous_exams = @previous_exams.order(created_at: :desc)
