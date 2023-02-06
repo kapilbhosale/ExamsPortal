@@ -82,7 +82,8 @@ class FeesTransaction < ApplicationRecord
     fees_template = FeesTemplate.find_by(id: current_template_id).attributes
 
     fees_template['heads'].each do |head|
-      head['amount'] = head['amount'] - paid_by_heads[head['head']]
+      paid_amount = paid_by_heads[head['head']].to_f
+      head['amount'] = head['amount'] - paid_amount
     end
     fees_template
   end
