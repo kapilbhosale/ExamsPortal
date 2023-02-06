@@ -1,0 +1,84 @@
+
+<div class="container">
+  <div class="row">
+      <div class="col-xs-8">
+        <div class="col-md-8 text-center" style="color: #e91e63">
+          RCC Online Exam, आपले स्वागत आहे
+        </div>
+      </div>
+      <div class="col-xs-4">
+        <a href="/students/tests" class="btn btn-info" role="button">
+          Start Exam
+        </a>
+      </div>
+  </div>
+</div>
+
+&nbsp;
+<div class="main-banner">
+</div>
+&nbsp;
+&nbsp;
+
+<div style="height: 100%">
+  <iframe
+    height="1020px"
+    width="100%"
+    frameborder="0" style="border:0"
+    src="https://rccpattern.com/">
+    <p>Renukai Coaching classes</p>
+  </iframe>
+</div>
+
+&nbsp;
+
+<section>
+  <div id="grad2" style="color: aliceblue; text-align: center; padding: 20px 10px;">
+    <h1>About RCC</h1>
+    <p>Welcome to the world of RCC, the best coaching institute for national level competitive exams like NEET, IIT-JEE &amp; AIIMS.</p>
+  </div>
+</section>
+
+<div class="col-md-12 text-center" style="padding-top: 40px;">
+  <a href="/students/tests" class="btn btn-warning" role="button">Start RCC Online Examinations</a>
+</div>
+<hr>
+
+
+ <!-- Footer -->
+ <footer class="page-footer font-small blue" style="background-color: rgb(33, 150, 243);">
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://rccpattern.com/" style="color:antiquewhite"> RCC Patterns</a>
+  </div>
+  <!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+<style>
+  #grad2 {
+    background-color: transparent;
+    background-image: linear-gradient(120deg, rgba(227, 97, 9, 0.89) 0%, #2A00B1 100%);
+  }
+  @media (max-width: 600px) {
+    .main-banner {
+      background-image: url(<%= asset_path 'rcc-banner-mobile' %>);
+      width: 100%;
+      max-width: 100%;
+      height: 70vh;
+      background-size: cover;
+    }
+  }
+  @media (min-width: 600px) {
+    .main-banner {
+      background-image: url(<%= asset_path 'rcc-banner-web' %>);
+      width: 100%;
+      max-width: 100%;
+      height: 60vh;
+      background-size: cover;
+    }
+  }
+</style>
+

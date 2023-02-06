@@ -13,7 +13,6 @@
 ActiveRecord::Schema.define(version: 2023_01_19_165507) do
 
   # These are extensions that must be enabled in order to support this database
-  enable_extension "pg_stat_statements"
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
@@ -174,11 +173,6 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.index ["study_pdf_id"], name: "index_batch_study_pdfs_on_study_pdf_id"
   end
 
-  create_table "batch_timings", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "batch_video_lectures", force: :cascade do |t|
     t.bigint "video_lecture_id"
     t.bigint "batch_id"
@@ -245,20 +239,6 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.decimal "fees", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "current_student_exam_answers", force: :cascade do |t|
-    t.string "ans"
-    t.jsonb "question_props", default: {}
-    t.bigint "student_exam_id"
-    t.bigint "question_id"
-    t.bigint "option_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["option_id"], name: "index_current_student_exam_answers_on_option_id"
-    t.index ["question_id"], name: "index_current_student_exam_answers_on_question_id"
-    t.index ["student_exam_id", "question_id"], name: "index_csea_on_student_exam_id_and_question_id", unique: true
-    t.index ["student_exam_id"], name: "index_current_student_exam_answers_on_student_exam_id"
   end
 
   create_table "doubts", force: :cascade do |t|
@@ -720,7 +700,6 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.string "exam_hall"
     t.jsonb "data", default: {}
     t.integer "intel_score"
-    t.jsonb "data", default: {}
     t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"
