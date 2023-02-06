@@ -1,13 +1,11 @@
 class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
   def index
-    # @batches = BatchFeesTemplate.where(batch_id: current_admin.batches.ids).pluck(:batch_id)
   end
 
   def create
     system_roll_number = Student.random_roll_number
     errors = []
 
-    
     errors << "In-valid batch" if params[:batch_id].blank?
 
     if params[:parentMobile].to_s.length != 10 || params[:studentMobile].to_s.length != 10
@@ -37,6 +35,43 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
 
     student.batches << batch
     render json: student
+  end
+
+  def pending_amount
+    @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+    render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
+
+    fees_transaction = FeesTransaction.where(student_id: @student.id).order(:created_at).last
+    if fees_transaction
+      @pending_amount = FeesTransaction.where(student_id: @student.id).order(:created_at).last.remaining_amount.to_f
+    else
+      @message = ''
+      batch_templates = BatchFeesTemplate.where(batch_id: student.batches.ids)
+      if batch_templates.present?
+        @pending_amount = batch_templates.last.total_amount
+      else
+        @pending_amount = 60_000
+        @message = "No Template assigned to student batch"
+      end
+    end
+  end
+
+  def issued_notes
+    @student_notes = StudentNote.where(student_id: params[:student_id]).includes(:note)
+  end
+
+  def issue_notes
+    if params[:student_id].present? && params[:note_id].present?
+      student_note = StudentNote.create(
+        org_id: current_org.id,
+        student_id: params[:student_id],
+        note_id: params[:note_id]
+      )
+
+      render json: student_note and return
+    end
+
+    render json: {message: "Can not create student notes"}, status: :unprocessable_entity
   end
 
   private

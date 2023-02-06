@@ -17,6 +17,10 @@
 
 class FeesTemplate < ApplicationRecord
   belongs_to :org
+
+  def total_amount
+    heads.pluck("amount").sum
+  end
 end
 
 # FeesTemplate.create({

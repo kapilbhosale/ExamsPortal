@@ -186,7 +186,12 @@ Rails.application.routes.draw do
         get  'reports/collection', to: 'fees_reports#collection'
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
         get  'batches', to: 'batches#index'
-        resources :students
+        resources :students do
+          get :pending_amount, on: :collection
+          get :issued_notes
+          post :issue_notes
+        end
+        resources :notes
       end
     end
   end

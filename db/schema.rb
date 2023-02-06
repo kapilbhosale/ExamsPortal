@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_06_100256) do
+ActiveRecord::Schema.define(version: 2023_02_06_211918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -435,6 +435,15 @@ ActiveRecord::Schema.define(version: 2023_02_06_100256) do
     t.index ["rz_order_id"], name: "index_new_admissions_on_rz_order_id"
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_notes_on_org_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.bigint "org_id"
     t.string "title"
@@ -631,6 +640,17 @@ ActiveRecord::Schema.define(version: 2023_02_06_100256) do
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_student_exams_on_exam_id"
     t.index ["student_id"], name: "index_student_exams_on_student_id"
+  end
+
+  create_table "student_notes", force: :cascade do |t|
+    t.bigint "org_id"
+    t.bigint "student_id"
+    t.bigint "note_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["note_id"], name: "index_student_notes_on_note_id"
+    t.index ["org_id"], name: "index_student_notes_on_org_id"
+    t.index ["student_id"], name: "index_student_notes_on_student_id"
   end
 
   create_table "student_payments", force: :cascade do |t|
