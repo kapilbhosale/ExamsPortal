@@ -33,7 +33,7 @@
                     <th><%= sort_link(@search, :name) %></th>
                     <th>Password</th>
                     <th>Parent Mobile</th>
-                    <% if request.subdomain.include?('exams', 'rcc') %>
+                    <% if ['exams', 'rcc'].include?(request.subdomain) %>
                       <th> Pending amount <th>
                       <th> Blocked <th>
                     <% end %>
@@ -69,7 +69,7 @@
                       </td>
                       <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
-                      <% if request.subdomain.include?('exams', 'rcc') %>
+                      <% if ['exams', 'rcc'].include?(request.subdomain) %>
                         <td><%= student.pending_amount || '-' %><td>
                         <td><%= student.block_videos? ? 'YES' : '-' %><td>
                       <% end %>

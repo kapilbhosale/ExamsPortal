@@ -12,7 +12,7 @@
     <%= favicon_link_tag asset_path('favicon.png'), :rel => 'icon', :type =>  'image/png' %>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <% if request.subdomain.include?('exams', 'rcc') %>
+    <% if ['exams', 'rcc'].include?(request.subdomain) %>
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-40JFG6QG01"></script>
       <script>
         window.dataLayer = window.dataLayer || [];

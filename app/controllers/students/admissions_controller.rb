@@ -11,7 +11,7 @@ class Students::AdmissionsController < ApplicationController
   PAYMENT_MODE = "razor-pay"
 
   def show
-    redirect_to '/' unless request.subdomain.include?('exams', 'rcc')
+    redirect_to '/' unless ['exams', 'rcc'].include?(request.subdomain)
     @errors = []
     @is_set = params[:set] == 'true'
     @student_id = params[:student_id]
@@ -19,12 +19,12 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def foundation_show
-    redirect_to '/' unless request.subdomain.include?('exams', 'rcc')
+    redirect_to '/' unless ['exams', 'rcc'].include?(request.subdomain)
     @errors = []
   end
 
   def pay_installment
-    redirect_to '/' unless request.subdomain.include?('exams', 'rcc')
+    redirect_to '/' unless ['exams', 'rcc'].include?(request.subdomain)
     @errors = []
   end
 

@@ -1,4 +1,4 @@
-<% bg_imag = request.subdomain.include?('exams', 'rcc') ? 'login-bg-rcc' : 'login-bg' %>
+<% bg_imag = ['exams', 'rcc'].include?(request.subdomain) ? 'login-bg-rcc' : 'login-bg' %>
 <style>
   .bg {
     /* The image used */

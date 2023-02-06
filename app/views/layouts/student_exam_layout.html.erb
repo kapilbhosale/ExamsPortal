@@ -11,7 +11,7 @@
     <%= javascript_pack_tag 'application' %>
     <%= favicon_link_tag asset_path('favicon.png'), :rel => 'icon', :type =>  'image/png' %>
 
-    <% if request.subdomain.include?('exams', 'rcc') %>
+    <% if ['exams', 'rcc'].include?(request.subdomain) %>
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-40JFG6QG01"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
