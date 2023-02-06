@@ -134,10 +134,11 @@ module Fees
 
       @sanitized_input_payments.each do |key, val|
         @fees_tempalte_data[key]
+        total_gst = @fees_tempalte_data[key]['cgst'].to_f + @fees_tempalte_data[key]['sgst'].to_f
+        fees = val[:pay].to_f / ((100 + total_gst) / 100.0)
 
-        cgst = val[:pay].to_f * (@fees_tempalte_data[key]['cgst'].to_f / 100.0)
-        sgst = val[:pay].to_f * (@fees_tempalte_data[key]['sgst'].to_f / 100.0)
-        fees = val[:pay].to_f - (cgst + sgst)
+        cgst = fees * (@fees_tempalte_data[key]['cgst'].to_f / 100.0)
+        sgst = fees * (@fees_tempalte_data[key]['sgst'].to_f / 100.0)
 
         total_paid += val[:pay].to_f
         total_cgst += cgst
