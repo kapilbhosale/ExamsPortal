@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_19_165507) do
+ActiveRecord::Schema.define(version: 2023_02_06_100256) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -334,6 +334,7 @@ ActiveRecord::Schema.define(version: 2023_01_19_165507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "token_of_the_day"
+    t.integer "received_by_admin_id"
     t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"
   end

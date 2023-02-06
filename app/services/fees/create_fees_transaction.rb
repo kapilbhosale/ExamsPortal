@@ -2,12 +2,13 @@ class FeeTransactionError < StandardError; end
 
 module Fees
   class CreateFeesTransaction
-    attr_reader :create_params, :current_org, :fees_template
+    attr_reader :create_params, :current_org, :fees_template, :current_admin
     attr_writer :fees_tempalte_data, :fees_data
 
-    def initialize(current_org, create_params)
+    def initialize(current_org, current_admin, create_params)
       @create_params = create_params
       @current_org = current_org
+      @current_admin = current_admin
       @fees_template = FeesTemplate.find_by(id: create_params[:template_id] )
       @fees_tempalte_data, @fees_data = {}, {}
       sanitiz_input_payments
@@ -34,6 +35,8 @@ module Fees
           ft.payment_details[:template] = template_data
           ft.payment_details[:totals] = totals
           ft.payment_details[:paid] = @fees_data
+          ft.received_by_admin_id = current_admin&.id
+          ft.received_by = current_admin&.name || current_admin&.email
         end
         @fees_transaction.save
       end
@@ -43,7 +46,8 @@ module Fees
         return { status: true, data: {
           id: @fees_transaction.id,
           receipt_number: @fees_transaction.receipt_number,
-          created_at: @fees_transaction.created_at.strftime("%d-%b-%Y %I:%M%p")
+          created_at: @fees_transaction.created_at.strftime("%d-%b-%Y %I:%M%p"),
+          received_by: @fees_transaction.received_by
         }}
       end
 
@@ -92,7 +96,7 @@ module Fees
       template_to_validate = student_template.present? ? student_template : fees_template.attributes
 
       template_to_validate.dig('heads').each do |row|
-        if @paying_per_head[row['head']] > row['amount']
+        if @paying_per_head[row['head']] && @paying_per_head[row['head']] > row['amount']
           raise FeeTransactionError, "Invalid Amount for '#{row['head']}'"
         end
       end

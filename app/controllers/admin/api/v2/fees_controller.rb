@@ -1,4 +1,5 @@
 class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
+  before_action :authorize_request, only: [:create_fees_transaction]
 
   def details
     student = Student.find_by(org_id: current_org.id, id: params[:student_id])
@@ -41,7 +42,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   end
 
   def create_fees_transaction
-    response = Fees::CreateFeesTransaction.new(current_org, create_fee_transaction_params).create
+    response = Fees::CreateFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
     render json: response[:data] and return if response[:status]
 
     render json: response[:message], status: :unprocessable_entity
