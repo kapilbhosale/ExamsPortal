@@ -185,6 +185,8 @@ Rails.application.routes.draw do
         post 'fees-transaction', to: 'fees#create_fees_transaction'
         get  'reports/collection', to: 'fees_reports#collection'
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
+        get  'batches', to: 'batches#index'
+        resources :students
       end
     end
   end

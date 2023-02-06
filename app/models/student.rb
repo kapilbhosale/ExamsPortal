@@ -78,12 +78,18 @@ class Student < ApplicationRecord
   validates  :photo, file_size: { less_than: 2.megabytes }
   validates  :parent_mobile, uniqueness: { scope: :roll_number }
 
+  # add this code to new RCC server.
+  validates  :parent_mobile, uniqueness: { scope: :student_mobile }
+  validates :roll_number, uniqueness: true
+
   mount_uploader :photo, PhotoUploader
 
   devise :database_authenticatable, :recoverable, :rememberable,
   :trackable, :validatable, authentication_keys: [:login]
 
   before_save :set_api_key
+
+  ROLL_NUMBER_RANGE = (10_00_000..99_99_999)
 
   attr_writer :login
 
@@ -190,6 +196,12 @@ class Student < ApplicationRecord
     "#{key}-#{app_reset_count}"
   end
 
+  def self.random_roll_number
+    loop do
+      number = rand(ROLL_NUMBER_RANGE)
+      break number unless self.exists?(roll_number: number)
+    end
+  end
 
   INITIAL_TW_ROLL_NUMBER = 60_000
   def self.suggest_tw_online_roll_number

@@ -124,3 +124,43 @@ class FeesTransaction < ApplicationRecord
     end
   end
 end
+
+
+# reference code
+# FeesTransaction.all.each do |ft|
+#   totals = {"cgst" => 0, "fees"=> 0, "paid"=> 0, "sgst"=> 0, "discount"=> 0}
+#   paid = {}
+#   puts "------>  #{ft.id}"
+#   ft.payment_details['paid'].each do |head, details|
+#     if head == "Tution Fees"
+#       fees = details["paid"].to_f / ((100 + 18) / 100.0).round(2)
+#       paid[head] = {
+#         "paid" => details["paid"],
+#         "discount" => details["discount"],
+#         "fees" => fees,
+#         "cgst" => fees * (9 / 100.0).round(2),
+#         "sgst" => fees * (9 / 100.0).round(2),
+#       }
+#     elsif head == "Book Fees"
+#       fees = details["paid"].to_f / ((100 + 5) / 100.0).round(2)
+#       paid[head] = {
+#         "paid" => details["paid"],
+#         "discount" => details["discount"],
+#         "fees" => fees,
+#         "cgst" => fees * (2.5 / 100.0).round(2),
+#         "sgst" => fees * (2.5 / 100.0).round(2),
+#       }
+#     else
+#       paid[head] = details
+#     end
+#     totals["paid"] += paid[head]["paid"]
+#     totals["discount"] += paid[head]["discount"]
+#     totals["fees"] += paid[head]["fees"]
+#     totals["cgst"] += paid[head]["cgst"]
+#     totals["sgst"] += paid[head]["sgst"]
+#   end
+
+#   ft.payment_details['paid'] = paid
+#   ft.payment_details['totals'] = totals
+#   ft.save
+# end
