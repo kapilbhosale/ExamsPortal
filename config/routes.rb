@@ -191,6 +191,7 @@ Rails.application.routes.draw do
           get :pending_amount, on: :collection
           get :issued_notes
           post :issue_notes
+          get :suggested_roll_number, on: :collection
         end
         resources :notes
       end

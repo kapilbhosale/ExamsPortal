@@ -2,8 +2,12 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
   def index
   end
 
+  def suggested_roll_number
+    render json: {roll_number: Student.random_roll_number}
+  end
+
   def create
-    system_roll_number = Student.random_roll_number
+    system_roll_number = params[:roll_number] || Student.random_roll_number
     errors = []
 
     errors << "In-valid batch" if params[:batch_id].blank?
