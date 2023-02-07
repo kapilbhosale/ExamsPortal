@@ -22,14 +22,14 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         id: student.id,
         roll_number: student.roll_number,
         name: student.name,
-        batches: student.batches.joins(:fees_templates).pluck(:name),
+        batches: student.batches.joins(:fees_templates).pluck(:name).join(', '),
         student_mobile: student.student_mobile,
         parent_mobile: student.parent_mobile,
         record_book: "Yes",
         academic_year: FeesTransaction::CURRENT_ACADEMIC_YEAR,
         current_template_id: current_template_id,
         fees_transaction_token: fees_transaction_token,
-        rcc_batch: student.data[:rcc_batch]
+        rcc_batch: student.data["rcc_batch"]
       },
       templates: fees_templates&.flatten || []
     }
