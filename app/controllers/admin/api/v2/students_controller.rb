@@ -57,7 +57,6 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
     end
 
-    @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
     render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
 
     fees_transaction = FeesTransaction.where(student_id: @student.id).order(:created_at).last
