@@ -1,3 +1,9 @@
+<% 
+  refresh_token = SecureRandom.uuid
+  REDIS_CACHE.set(refresh_token, current_admin.id, { ex: 10.minutes })
+  base_url = request.host_with_port
+  fees_host = Rails.env.production? ? "https://fees-app.eduaakar.com" : "http://localhost:3002"
+%>
 <div class="header py-4">
   <div class="container">
     <div class="d-flex">
@@ -132,6 +138,9 @@
               <% if current_admin.can_manage(:payments) %>
                 <%= link_to '<i class="fas fa-rupee-sign"></i> Payments'.html_safe, admin_micro_payments_path, class: "dropdown-item"%>
               <% end %>
+              <% if current_admin.can_manage(:students) %>
+                <%= link_to '<i class="fas fa-rupee-sign"></i> Fees Portal'.html_safe, "#{fees_host}/fees-connector?t=#{refresh_token}&sid=#{0}&baseURL=#{base_url}", class: "dropdown-item"%>
+              <% end %>
             </div>
           </li>
         </ul>
@@ -139,4 +148,3 @@
     </div>
   </div>
 </div>
-
