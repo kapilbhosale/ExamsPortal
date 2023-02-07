@@ -79,8 +79,8 @@ class Student < ApplicationRecord
   validates  :parent_mobile, uniqueness: { scope: :roll_number }
 
   # add this code to new RCC server.
-  validates  :parent_mobile, uniqueness: { scope: :student_mobile }
-  validates :roll_number, uniqueness: true
+  # validates  :parent_mobile, uniqueness: { scope: :student_mobile }
+  # validates :roll_number, uniqueness: true
 
   mount_uploader :photo, PhotoUploader
 
