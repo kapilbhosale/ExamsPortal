@@ -38,6 +38,13 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
   end
 
   def pending_amount
+    if params[:qr_code].present?
+      student_id = params[:qr_code].split("|")[1]
+      @student = Student.find_by(id: student_id)
+    else
+      @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+    end
+
     @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
     render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
 
