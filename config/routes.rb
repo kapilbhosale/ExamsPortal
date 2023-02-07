@@ -176,7 +176,6 @@ Rails.application.routes.draw do
       resources :attendance
       resources :demo_logins
 
-
       # new admin api's for admin react front end.
       namespace :v2 do
         get 'get-token', to: 'auth#get_token'
