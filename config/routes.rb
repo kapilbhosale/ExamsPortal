@@ -180,6 +180,7 @@ Rails.application.routes.draw do
       # new admin api's for admin react front end.
       namespace :v2 do
         get 'get-token', to: 'auth#get_token'
+        post 'login', to: 'auth#login'
         get 'fees-details', to: 'fees#details'
         get 'payment-history', to: 'fees#payment_history'
         post 'fees-transaction', to: 'fees#create_fees_transaction'
