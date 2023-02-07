@@ -38,6 +38,14 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     end
 
     student.batches << batch
+    if params[:rcc_batch].present? && params[:rcc_batch] != '-'
+      student.data[:rcc_batch] = params[:rcc_batch]
+      student.save
+
+      second_batch = Batch.find_by(org_id: current_org.id, name: "#{batch.name} [#{params[:rcc_batch]}]")
+      student.batches << second_batch if second_batch
+    end
+
     render json: student
   end
 
