@@ -28,6 +28,18 @@
               </select>
             </div>
           </div>
+          <div class="col-sm-6 col-md-8">
+            <div class="form-group">
+              <label class="form-label">Class</label>
+              <select class="form-control" name="klass" id="klass" >
+                <% @klasses.each do |klass| %>
+                  <option value="<%= klass %>" <%= @batch.klass == klass ? 'selected' : '' %>>
+                    <%= klass %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
           <div class="col-sm-12 col-md-12">
             <div class="form-group">
               <p>Add Batch timming details, if this batch is offline and RFID attendance is being taken.</p>

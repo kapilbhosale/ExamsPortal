@@ -16,6 +16,12 @@
               <%= form.text_field :name, class: 'form-control', placeholder: 'Name',value: @batch.name.titlecase, disabled: true %>
             </div>
           </div>
+          <div class="col-sm-6 col-md-8">
+            <div class="form-group">
+              <label class="form-label">Class</label>
+              <%= form.text_field :name, class: 'form-control', placeholder: 'Name',value: @batch.klass.titlecase, disabled: true %>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card-footer text-right">

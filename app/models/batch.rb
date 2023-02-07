@@ -6,6 +6,7 @@
 #  config         :jsonb
 #  disable_count  :integer          default(0)
 #  end_time       :datetime
+#  klass          :string
 #  name           :string
 #  start_time     :datetime
 #  students_count :integer          default(0)

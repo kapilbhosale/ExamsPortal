@@ -8,12 +8,13 @@ class Admin::BatchesController < Admin::BaseController
   def new
     @batch = Batch.new
     @batch_groups = BatchGroup.where(org: current_org).order(:id).all
+    @klasses = current_org.data['classes'] || []
     @fees_templates = FeesTemplate.where(org: current_org)
     @selected_templates = []
   end
 
   def create
-    @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id]).call
+    @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id], params[:klass]).call
 
     if @response[:status]
       Admin.where(org_id: current_org.id).each do |admin|
@@ -50,12 +51,13 @@ class Admin::BatchesController < Admin::BaseController
   def edit
     @batch = Batch.find_by(org: current_org, id: params[:id])
     @batch_groups = BatchGroup.where(org: current_org).order(:id).all
+    @klasses = current_org.data['classes'] || []
     @fees_templates = FeesTemplate.where(org: current_org)
     @selected_templates = @batch.fees_templates&.ids || []
   end
 
   def update
-    @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id]).call
+    @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id], params[:klass]).call
     set_flash
     redirect_to admin_batches_path
   end

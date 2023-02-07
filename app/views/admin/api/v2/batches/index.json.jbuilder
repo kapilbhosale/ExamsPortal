@@ -5,4 +5,5 @@ json.array! @batches do |batch|
   json.name batch.name
   json.group_id batch.batch_group.id
   json.group_name batch.batch_group.name
+  json.klass batch.klass
 end

@@ -2,20 +2,21 @@ class UpdateBatchError < StandardError; end
 
 module Batches
   class UpdateBatchService
-    attr_reader :batch, :name, :start_time, :end_time, :batch_group_id, :fees_template_ids
+    attr_reader :batch, :name, :start_time, :end_time, :batch_group_id, :fees_template_ids, :klass
 
-    def initialize(id, batch_params, batch_group_id)
+    def initialize(id, batch_params, batch_group_id, klass)
       @batch = Batch.find_by(id: id)
       @name = batch_params[:name]
       @start_time = batch_params[:start_time]
       @end_time = batch_params[:end_time]
       @fees_template_ids = batch_params[:fees_template_ids]
       @batch_group_id = batch_group_id
+      @klass = klass
     end
 
     def call
       validate_request
-      batch.update!(name: name, start_time: start_time, end_time: end_time, batch_group_id: batch_group_id)
+      batch.update!(name: name, start_time: start_time, end_time: end_time, batch_group_id: batch_group_id, klass: klass)
 
       BatchFeesTemplate.where(batch_id: batch.id).delete_all
       batch.fees_templates << FeesTemplate.where(id: fees_template_ids)
