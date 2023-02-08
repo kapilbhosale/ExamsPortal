@@ -48,6 +48,7 @@ class Discount < ApplicationRecord
           discount_amount: row['con_amount']
         }
       })
+      putc "."
     end
   end
 end
