@@ -19,7 +19,8 @@
 #
 # Indexes
 #
-#  index_discounts_on_org_id  (org_id)
+#  index_discounts_on_org_id                         (org_id)
+#  index_discounts_on_roll_number_and_parent_mobile  (roll_number,parent_mobile)
 #
 
 require 'test_helper'

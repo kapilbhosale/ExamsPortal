@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_08_130727) do
+ActiveRecord::Schema.define(version: 2023_02_08_224742) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -257,6 +257,7 @@ ActiveRecord::Schema.define(version: 2023_02_08_130727) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["org_id"], name: "index_discounts_on_org_id"
+    t.index ["roll_number", "parent_mobile"], name: "index_discounts_on_roll_number_and_parent_mobile"
   end
 
   create_table "doubts", force: :cascade do |t|
