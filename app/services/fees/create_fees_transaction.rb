@@ -12,6 +12,7 @@ module Fees
       @fees_template = FeesTemplate.find_by(id: create_params[:template_id] )
       @fees_tempalte_data, @fees_data = {}, {}
       sanitiz_input_payments
+      injest_discounts if current_org.rcc?
       create_fees_tempalte_data
     end
 
@@ -69,6 +70,28 @@ module Fees
         }
         @paying_per_head[head] = values['pay'].to_f + values['discount'].to_f
       end
+    end
+
+    def injest_discounts
+      student = Student.find_by(id: create_params[:student_id])
+
+      discount = Discount.valid_discount.find_by(id: student.data['discount_id'])
+      return if discount.blank?
+
+      total_discount = discount.amount.to_f
+      @fees_template.heads.each do |row|
+        next if @sanitized_input_payments[row["head"]].blank?
+
+        if row["amount"] <= total_discount
+          @sanitized_input_payments[row["head"]][:discount] = row["amount"]
+          total_discount += row["amount"]
+        else
+          @sanitized_input_payments[row["head"]][:discount] = total_discount
+          total_discount = 0
+        end
+      end
+
+      discount.used_discount!
     end
 
     def validate_request

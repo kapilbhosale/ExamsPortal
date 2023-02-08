@@ -17,6 +17,9 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
       fees_templates = student.batches.map(&:fees_templates)
     end
 
+    # todo::kalpak, how if discount is present but not applied.
+    discount = Discount.valid_discount.find_by(id: student.data['discount_id'])
+
     data = {
       student: {
         id: student.id,
@@ -29,7 +32,10 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         academic_year: FeesTransaction::CURRENT_ACADEMIC_YEAR,
         current_template_id: current_template_id,
         fees_transaction_token: fees_transaction_token,
-        rcc_batch: student.data["rcc_batch"]
+        rcc_batch: student.data["rcc_batch"],
+        strict_discount: current_org.rcc?,
+        valid_discount: discount.present?,
+        discount: discount&.amount&.to_i || 0
       },
       templates: fees_templates&.flatten || []
     }

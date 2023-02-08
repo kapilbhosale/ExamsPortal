@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_07_110839) do
+ActiveRecord::Schema.define(version: 2023_02_08_130727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -240,6 +240,23 @@ ActiveRecord::Schema.define(version: 2023_02_07_110839) do
     t.decimal "fees", default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "type_of_discount"
+    t.decimal "amount"
+    t.string "comment"
+    t.string "approved_by"
+    t.string "status"
+    t.string "student_name"
+    t.string "parent_mobile"
+    t.string "student_mobile"
+    t.string "roll_number"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_discounts_on_org_id"
   end
 
   create_table "doubts", force: :cascade do |t|

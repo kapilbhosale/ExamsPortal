@@ -191,6 +191,10 @@ Rails.application.routes.draw do
           get :issued_notes
           post :issue_notes
           get :suggested_roll_number, on: :collection
+
+          collection do
+            resources :discounts, only: [:index]
+          end
         end
         resources :notes
       end

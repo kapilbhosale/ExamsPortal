@@ -28,7 +28,8 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       email: "#{system_roll_number}@#{current_org.subdomain}.eduaakar.com",
       roll_number: system_roll_number,
       password: student_params[:parent_mobile],
-      raw_password: student_params[:parent_mobile]
+      raw_password: student_params[:parent_mobile],
+      data: { discount_id: params[:discountId]}
     })
 
     student = Student.create(create_student_params)
@@ -42,7 +43,9 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       student.data[:rcc_batch] = params[:rcc_batch]
       student.save
 
-      second_batch = Batch.find_by(org_id: current_org.id, name: "#{batch.name} [#{params[:rcc_batch]}]")
+      batch_name = batch.name
+      batch_name = "11th-LTR-PCB-2023-24" if batch.id == 857
+      second_batch = Batch.find_by(org_id: current_org.id, name: "#{batch_name} [#{params[:rcc_batch]}]")
       student.batches << second_batch if second_batch
     end
 
