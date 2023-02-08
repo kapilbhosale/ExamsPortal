@@ -47,7 +47,8 @@ class Api::V2::StudentsController < Api::V2::ApiController
       manufacturer: device_params[:manufacturer],
       brand: device_params[:brand]
     )
-
+    @exam_portal_link = "#{helpers.full_domain_path}/students/auto-auth"
+    @exam_portal_link += "?r=#{student&.roll_number}&m=#{student&.parent_mobile}"
   end
 
   def update_fcm_token
