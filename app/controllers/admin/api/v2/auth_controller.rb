@@ -19,9 +19,8 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
 
   def login
     admin = Admin.find_for_authentication(username: params[:username])
-    admin.valid_password?(params[:password])
 
-    if admin.valid_password?(params[:password])
+    if admin && admin.valid_password?(params[:password])
       token = admin.token
       render json: {
         token: token,
