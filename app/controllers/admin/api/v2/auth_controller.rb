@@ -18,7 +18,7 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
   end
 
   def login
-    admin = Admin.find_for_authentication(username: params[:username])
+    admin = Admin.find_for_authentication(email: params[:email])
 
     if admin && admin.valid_password?(params[:password])
       token = admin.token
@@ -28,6 +28,6 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
         }, status: :ok and return
     end
 
-    render json: {message: "Invalid username or password" }, status: :unprocessable_entity
+    render json: {message: "Invalid login details" }, status: :unprocessable_entity
   end
 end
