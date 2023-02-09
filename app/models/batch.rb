@@ -259,7 +259,7 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
-  def get_center_prefix(rcc_branch)
+  def self.get_center_prefix(rcc_branch)
     return 'LTR' if rcc_branch == 'latur'
     return 'NED' if rcc_branch == 'nanded'
     return 'AUR' if rcc_branch == 'aurangabad'
