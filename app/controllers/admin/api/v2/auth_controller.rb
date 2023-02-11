@@ -24,7 +24,8 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
       token = admin.token
       render json: {
         token: token,
-        admin: admin
+        admin: admin,
+        roles: admin.roles
         }, status: :ok and return
     end
 

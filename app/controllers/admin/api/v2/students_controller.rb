@@ -1,8 +1,24 @@
 class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
+
   def index
+    if params[:qr_code].present?
+      student_id = params[:qr_code].split("|")[1]
+      @students = Student.where(id: student_id)
+    elsif params[:roll_number].present? && params[:parent_mobile].present?
+      @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+    elsif params[:roll_number].present?
+      @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number])
+    elsif params[:parent_mobile].present?
+      @students = Student.where(org_id: current_org.id, parent_mobile: params[:parent_mobile])
+    end
+    
+    if @students.present?
+      batch_ids = Batch.joins(:batch_fees_templates).ids.uniq
+      @students = @students.includes(:batches).where(batches: {id: batch_ids})
+    end
   end
 
-  def suggested_roll_number
+  def suggested_roll_number 
     render json: {roll_number: Student.random_roll_number}
   end
 

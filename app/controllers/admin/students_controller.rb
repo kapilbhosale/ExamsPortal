@@ -79,7 +79,7 @@ class Admin::StudentsController < Admin::BaseController
     @batches_with_group = Batch.where(org: current_org, id: current_admin.batches&.ids).all_batches.order(:id).order(:id).group_by(&:batch_group_id)
     @batch_groups = BatchGroup.where(org: current_org).order(:id).order(:id).index_by(&:id)
     @student_data = {
-      roll_number: current_org.rcc ? Student.random_roll_number : Student.suggest_roll_number(current_org),
+      roll_number: current_org.rcc? ? Student.random_roll_number : Student.suggest_roll_number(current_org),
       categories: Category.all
     }
   end
