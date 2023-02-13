@@ -186,10 +186,6 @@ class Student < ApplicationRecord
     self.api_key = generated_api_key
   end
 
-  def set_intel_score
-    self.intel_score = (Student.count % 10) < 5 ? rand(1..99) : rand(100..200)
-  end
-
   def generated_api_key
     key = Digest::MD5.hexdigest "#{org_id}-#{roll_number}-#{parent_mobile}"
     # SecureRandom.uuid.gsub(/\-/,'')

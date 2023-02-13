@@ -119,12 +119,11 @@ class FeesTransaction < ApplicationRecord
     if student.intel_score.present?
       self.token_of_the_day = student.intel_score
     else
-      student.update(intel_score: (Student.count % 10) < 5 ? rand(1..99) : rand(100..200))
+      student.update(intel_score: (student.id % 10) < 5 ? rand(1..99) : rand(100..200))
       self.token_of_the_day = student.intel_score
     end
   end
 end
-
 
 # reference code
 # FeesTransaction.all.each do |ft|

@@ -55,7 +55,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     end
 
     student.batches << batch
-    if params[:rcc_batch].present? && params[:rcc_batch] != '-'
+    if current_org.rcc? && params[:rcc_batch].present? && params[:rcc_batch] != '-'
       student.data[:rcc_batch] = params[:rcc_batch]
       student.save
 
