@@ -94,7 +94,7 @@ class FeesTransaction < ApplicationRecord
       roll_number: student.roll_number,
       name: student.name,
       gender: student.gender == 0 ? 'Male' : 'Female' ,
-      batch: student.batches.pluck('name').join(', '),
+      batch: student.batches.joins(:fees_templates).pluck(:name).join(', '),
       receipt_number: receipt_number,
       paid_amount: paid_amount.to_f,
       base_fee: paid_amount + remaining_amount,
