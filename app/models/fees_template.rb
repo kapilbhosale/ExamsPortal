@@ -154,98 +154,52 @@ end
 
 
 # *****
+# org = Org.find 1
 
 # FeesTemplate.create({
 #   org_id: org.id,
-#   name: "LTR-11th+12th-PCB",
-#   description: "Template for Latur 11th & 12th PCB students 2023-24",
+#   name: "11+12-PCB-54 (2023-24)",
+#   description: "Template for 11th & 12th PCB students 2023-24",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
 #     "sgst" => 9,
-#     "amount" => 120_000
+#     "amount" => 54_000
+#   }]
+# })
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "11+12-PC-50 (2023-24)",
+#   description: "Template for 11th & 12th PC students 2023-24",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 50_000
 #   }]
 # })
 
 
-
-# admin.name = "Vaibhav More"
-# admin.email = 'vaibhav.more@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#765285"
-# admin.roles = [:students, :batches]
-# admin.save
-
-# admin.name = "Gayatri Gajul"
-# admin.email = 'gayatri.gajul@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#653985"
-# admin.roles = [:students, :batches]
-# admin.save
-
-# -----
-# admin.name = "Kishor Chevale"
-# admin.email = 'kishor.chevale@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#654329"
-# admin.roles = [:videos, :batches]
-# admin.save
-# admin.batches << Batch.all
-
-# admin.name = "Ganesh Mohite"
-# admin.email = 'ganesh.mohite@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#698734"
-# admin.roles = [:videos, :exams, :pdfs, :batches, :notifications, :subjects]
-# admin.save
-# admin.batches << Batch.all
-
-# admin.name = "Navthan Shinde"
-# admin.email = 'navnath.shinde@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#653872"
-# admin.roles = [:exams, :pdfs, :batches, :notifications]
-# admin.save
-# admin.batches << Batch.all
-
-# ------
-
-# admin.name = "Irfan Sayaad"
-# admin.email = 'irgan.sayyad@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#654397"
-# admin.roles = Admin::ROLES
-# admin.save
-# admin.batches << Batch.all
-
-# org = Org.find 1
-# admin = Admin.new
-# admin.name = "Adinath Akanngire"
-# admin.email = 'adinath.akanngire@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#543298"
-# admin.roles = Admin::ROLES
-# admin.save
-# admin.batches << Batch.all
-
-# -------
-# org = Org.find 1
-# admin = Admin.new
-# admin.name = "Varsha More"
-# admin.email = 'varsha.more@rccpattern.com'
-# admin.org_id = org.id
-# admin.password = "RCC#765498"
-# admin.roles = [:students, :batches]
-# admin.save
-# admin.batches << Batch.all
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "11+12-Chem-25 (2023-24)",
+#   description: "Template for 11th & 12th Chem students 2023-24",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 25_000
+#   }]
+# })
 
 
 # org = Org.find 1
 # admin = Admin.new
-# admin.name = "Saudagar Birajdar"
-# admin.email = 'saudagar.birajdar@rccpattern.com'
+# admin.name = "Devne sir"
+# admin.email = 'devne@konale-eduaakar.com'
 # admin.org_id = org.id
-# admin.password = "RCC#659826"
-# admin.roles = [:students, :batches]
+# admin.password = "KONALE#239634"
+# admin.roles = [:students, :batches, :payments, :notes]
 # admin.save
-# admin.batches << Batch.all
+# admin.batches << Batch.where(org_id: org.id)

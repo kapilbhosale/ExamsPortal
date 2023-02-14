@@ -61,6 +61,28 @@ class VideoLecture < ApplicationRecord
   after_save :flush_video_folders_cache
   after_save :flush_videos_cache
 
+  def self.latest_videos(student, domain="")
+    VideoLecture
+      .includes(:batches, :subject)
+      .where(batches: {id: student.batches})
+      .where(org_id: student.org_id)
+      .where(enabled: true)
+      .where('publish_at <= ?', Time.current)
+      .where('hide_at IS NULL or hide_at >= ?', Time.current)
+      .order(:created_at).limit(3).map do |lect|
+        lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
+        lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
+        lect_data['added_ago'] = (lect.publish_at || lect.created_at).strftime("%d-%B-%Y %I:%M%p")
+        if lect.vimeo?
+          lect_data['play_url'] = "#{domain}/students/lectures/#{lect.video_id}"
+        else
+          lect_data['play_url'] = lect.url
+        end
+        lect_data['play_url_from_server'] = nil if lect.play_url_expired?
+        lect_data
+    end
+  end
+
   def set_thumbnail
     require 'net/http'
     require 'uri'
