@@ -62,6 +62,7 @@ class FeesTransaction < ApplicationRecord
 
   belongs_to :student
   belongs_to :org
+  belongs_to :admin, foreign_key: :received_by_admin_id
 
   before_create :update_token_of_the_day
   before_create :update_receipt_number
@@ -100,6 +101,8 @@ class FeesTransaction < ApplicationRecord
       base_fee: paid_amount + remaining_amount,
       cgst: payment_details.dig('totals', 'cgst').to_f,
       sgst: payment_details.dig('totals', 'sgst').to_f,
+      tax: payment_details.dig('totals', 'cgst').to_f + payment_details.dig('totals', 'sgst').to_f,
+      collected_by: admin.name,
       remaining_amount: remaining_amount.to_f,
       discount_amount: discount_amount.to_f,
       discount_comment: comment
