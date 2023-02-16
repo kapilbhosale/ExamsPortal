@@ -112,19 +112,19 @@ class FeesTransaction < ApplicationRecord
   private
   def update_receipt_number
     if token_of_the_day < 100
-      self.receipt_number = (FeesTransaction.lt_hundred.order(:created_at).last&.receipt_number || 0) + 1
+      self.receipt_number = (FeesTransaction.lt_hundred.where(org_id: org_id).order(:created_at).last&.receipt_number || 0) + 1
     else
-      self.receipt_number = (FeesTransaction.gt_hundred.order(:created_at).last&.receipt_number || 0) + 1
+      self.receipt_number = (FeesTransaction.gt_hundred.where(org_id: org_id).order(:created_at).last&.receipt_number || 0) + 1
     end
   end
 
   def update_token_of_the_day
-    if student.intel_score.present?
-      self.token_of_the_day = student.intel_score
-    else
-      student.update(intel_score: (student.id % 10) < 5 ? rand(1..99) : rand(100..200))
-      self.token_of_the_day = student.intel_score
+    if student.intel_score.blank?
+      count = Student.where(org_id: org_id).joins(:fees_transactions).count
+      student.update(intel_score: (count % 10) < 5 ? rand(1..99) : rand(100..200))
     end
+
+    self.token_of_the_day = student.intel_score
   end
 end
 
