@@ -11,10 +11,10 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     elsif params[:parent_mobile].present?
       @students = Student.where(org_id: current_org.id, parent_mobile: params[:parent_mobile])
     end
-    
+
     if @students.present?
       batch_ids = Batch.joins(:batch_fees_templates).ids.uniq
-      @students = @students.includes(:batches).where(batches: {id: batch_ids})
+      @students = @students.joins(:fees_transactions).includes(:batches).where(batches: {id: batch_ids})
     end
   end
 

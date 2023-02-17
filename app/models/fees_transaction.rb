@@ -218,6 +218,99 @@ class FeesTransaction < ApplicationRecord
     end
   end
 
+  # FeesTransaction.import_old_data_l2
+  def self.import_old_data_l2(csv_file_path)
+    csv_file_path = "/Users/kapilbhosale/Downloads/L2.csv"
+    csv_text = File.read(csv_file_path)
+    csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+    # sorted_csv = CSV::Table.new(csv.sort_by { |row| row["Receipt No"].to_i})
+
+    batches_by_id = Batch.where(id: BATCH_MAPPING.values).index_by(&:id)
+
+    csv.each do |row|
+      std = {
+        roll_number: row["Roll Number"],
+        name: row["Name"],
+        student_mobile: row["student mobile"],
+        parent_mobile: row["parent mobile"]
+      }
+
+      batch = Batch.find_by(id: 819)
+      # batch = Batch.find_by(id: 5)
+
+      random_roll_number = Student.random_roll_number
+      student = Student.create({
+        roll_number: random_roll_number,
+        name: std[:name],
+        parent_mobile: std[:parent_mobile],
+        student_mobile: std[:student_mobile],
+        org_id: 1,
+        email: "_#{random_roll_number}@rcc.eduaakar.com",
+        password: std[:parent_mobile],
+        raw_password: std[:parent_mobile]
+      })
+
+      if student.errors.blank?
+        batch = batches_by_id[BATCH_MAPPING[row["Batch"]]]
+        student.batches << batch if batch
+      end
+      template = batch.fees_templates.first
+
+      if row["R1"].present?
+        create_ft(student.id, row["P1"].to_i, row["R1"], row["D1"], row["Due1"], template)
+      end
+
+      if row["R2"].present?
+        create_ft(student.id, row["P2"].to_i, row["R2"], row["D2"], row["Due2"], template)
+      end
+
+      if row["R3"].present?
+        create_ft(student.id, row["P3"].to_i, row["R3"], row["D3"], row["Due"], template)
+      end
+
+      putc "."
+    end
+  end
+
+
+  def self.create_ft(student_id, paid, receipt_number, pay_date, rem_amount, template)
+    fees = (paid * 100) / 118.0
+    cgst = (paid - fees) / 2.0
+    sgst = (paid - fees) / 2.0
+
+    paid_data = {
+      "paid" => paid,
+      "discount" => 0,
+      "cgst" => cgst,
+      "sgst" => sgst,
+      "fees" => fees,
+    }
+
+    payment_details = {
+      'template' => template.slice(:id, :name, :heads),
+      'paid' => { "Tution Fees"=> paid_data},
+      'totals' => paid_data
+    }
+
+    FeesTransaction.find_or_create_by({
+      org_id: Org.first.id,
+      student_id: student_id,
+      academic_year: self::CURRENT_ACADEMIC_YEAR,
+      comment: "",
+      discount_amount: 0,
+      imported: true,
+      mode: "cash",
+      next_due_date: Time.now + 1.month,
+      paid_amount: paid,
+      receipt_number: receipt_number,
+      remaining_amount: rem_amount,
+      created_at: DateTime.parse(pay_date),
+      received_by: "import",
+      payment_details: payment_details,
+      received_by_admin_id: Admin.first.id
+    })
+  end
+
   private
   def update_receipt_number
     return if self.receipt_number.present?
