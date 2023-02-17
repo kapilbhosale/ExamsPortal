@@ -158,20 +158,20 @@ end
 
 # FeesTemplate.create({
 #   org_id: org.id,
-#   name: "11+12-PCB-54 (2023-24)",
-#   description: "Template for 11th & 12th PCB students 2023-24",
+#   name: "T-56",
+#   description: "Template for 11th & 12th PCB/PCM students 2023-24",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
 #     "sgst" => 9,
-#     "amount" => 54_000
+#     "amount" => 56_000
 #   }]
 # })
 
 # FeesTemplate.create({
 #   org_id: org.id,
-#   name: "11+12-PC-50 (2023-24)",
-#   description: "Template for 11th & 12th PC students 2023-24",
+#   name: "T-50",
+#   description: "Template for 11th & 12th PC students 2023-24 + foudation 10th",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
@@ -183,8 +183,8 @@ end
 
 # FeesTemplate.create({
 #   org_id: org.id,
-#   name: "11+12-Chem-25 (2023-24)",
-#   description: "Template for 11th & 12th Chem students 2023-24",
+#   name: "T-25",
+#   description: "Template for 11th & 12th Single Subject students 2023-24",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
@@ -192,6 +192,70 @@ end
 #     "amount" => 25_000
 #   }]
 # })
+
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "T-1L",
+#   description: "Template for 11th & 12th IIT center students 2023-24",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 1_00_000
+#   }]
+# })
+
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "T-30",
+#   description: "Template for Foundation - 6th",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 30_000
+#   }]
+# })
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "T-35",
+#   description: "Template for Foundation - 7th",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 35_000
+#   }]
+# })
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "T-40",
+#   description: "Template for Foundation - 8th",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 40_000
+#   }]
+# })
+
+# FeesTemplate.create({
+#   org_id: org.id,
+#   name: "T-45",
+#   description: "Template for Foundation - 9th",
+#   :heads => [{
+#     "cgst" => 9,
+#     "head" => "Tution Fees",
+#     "sgst" => 9,
+#     "amount" => 45_000
+#   }]
+# })
+
+
 
 
 # org = Org.find 1
@@ -203,3 +267,7 @@ end
 # admin.roles = [:students, :batches, :payments, :notes]
 # admin.save
 # admin.batches << Batch.where(org_id: org.id)
+
+
+
+=IF( != "", “Exists”, “Does Not Exist”)
