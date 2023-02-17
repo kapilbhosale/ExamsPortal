@@ -140,7 +140,7 @@ class FeesTransaction < ApplicationRecord
       student = Student.find_by(parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
       batch = Batch.find_by(id: 819)
 
-      if student.present?
+      if student.present? && FeesTransaction.where(student_id: student.id).present?
         batch = student.batches.joins(:fees_templates).first
         template = batch.fees_templates.first
       else
