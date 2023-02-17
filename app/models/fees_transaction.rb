@@ -220,7 +220,7 @@ class FeesTransaction < ApplicationRecord
 
   # FeesTransaction.import_old_data_l2
   def self.import_old_data_l2(csv_file_path)
-    csv_file_path = "/Users/kapilbhosale/Downloads/L2.csv"
+    # csv_file_path = "/Users/kapilbhosale/Downloads/L2.csv"
     csv_text = File.read(csv_file_path)
     csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
     # sorted_csv = CSV::Table.new(csv.sort_by { |row| row["Receipt No"].to_i})
