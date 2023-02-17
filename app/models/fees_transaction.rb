@@ -168,6 +168,7 @@ class FeesTransaction < ApplicationRecord
       if ft.present?
         template_id = ft.payment_details["template"]["id"]
         template = FeesTemplate.find(template_id)
+        # consider ft last amounts for calculating remaing fees etc.
       else
         if row["Status"] == "Nill" || row["due"].to_i == 0
           rem_amount = 0

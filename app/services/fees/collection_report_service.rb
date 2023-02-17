@@ -11,6 +11,9 @@ module Fees
     end
 
     def call
+      # showing reports only for one day.
+      return today_transactions
+
       return today_transactions if from_date == to_date && to_date == Date.today
 
       if to_date < Date.today
