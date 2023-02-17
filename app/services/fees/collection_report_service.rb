@@ -11,8 +11,7 @@ module Fees
     end
 
     def call
-      # showing reports only for one day.
-      return today_transactions
+      return today_transactions unless current_admin.roles.include?('ff')
 
       return today_transactions if from_date == to_date && to_date == Date.today
 
