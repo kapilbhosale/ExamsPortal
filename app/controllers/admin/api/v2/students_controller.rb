@@ -18,7 +18,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     end
   end
 
-  def suggested_roll_number 
+  def suggested_roll_number
     render json: {roll_number: Student.random_roll_number}
   end
 

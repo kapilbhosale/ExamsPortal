@@ -6,6 +6,7 @@
 #  academic_year        :string
 #  comment              :string
 #  discount_amount      :decimal(, )      default(0.0)
+#  imported             :boolean          default(FALSE)
 #  mode                 :string
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)

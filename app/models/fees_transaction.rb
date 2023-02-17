@@ -6,6 +6,7 @@
 #  academic_year        :string
 #  comment              :string
 #  discount_amount      :decimal(, )      default(0.0)
+#  imported             :boolean          default(FALSE)
 #  mode                 :string
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)
@@ -109,8 +110,117 @@ class FeesTransaction < ApplicationRecord
     }
   end
 
+  BATCH_MAPPING = {
+    "12th (PCB) 2023-24" => 819,
+    "12th (PCM) 2023-24" => 822,
+    "12th (Phy+Chem) 2023-24" => 820,
+    "12th (Chem) 2023-24" => 821,
+    "11th (PCB) 2023-24" => 837,
+    "11th (Phy+Chem) 2023-24" => 838,
+    "11th (PCM) 2023-24" => 840
+  }
+
+  # FeesTransaction.import_old_data
+  def self.import_old_data(csv_file_path)
+    # csv_file_path = "/Users/kapilbhosale/Downloads/L-test.csv"
+    csv_text = File.read(csv_file_path)
+    csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
+    sorted_csv = CSV::Table.new(csv.sort_by { |row| row["Receipt No"].to_i})
+
+    batches_by_id = Batch.where(id: BATCH_MAPPING.values).index_by(&:id)
+
+    sorted_csv.each do |row|
+      std = {
+        roll_number: row["Roll Number"],
+        name: row["Name"],
+        student_mobile: row["student mobile"],
+        parent_mobile: row["parent mobile"]
+      }
+
+      student = Student.find_by(parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
+      batch = Batch.find_by(id: 819)
+
+      if student.present?
+        batch = student.batches.joins(:fees_templates).first
+        template = batch.fees_templates.first
+      else
+        random_roll_number = Student.random_roll_number
+        student = Student.create({
+          roll_number: random_roll_number,
+          name: std[:name],
+          parent_mobile: std[:parent_mobile],
+          student_mobile: std[:student_mobile],
+          org_id: 1,
+          email: "_#{random_roll_number}@rcc.eduaakar.com",
+          password: std[:parent_mobile],
+          raw_password: std[:parent_mobile]
+        })
+
+        if student.errors.blank?
+          batch = batches_by_id[BATCH_MAPPING[row["Batch"]]]
+          student.batches << batch if batch
+        end
+        template = batch.fees_templates.first
+      end
+
+      # search for exisint fees transaction if present
+      ft = FeesTransaction.where(student_id: student.id).order(:created_at).last
+      if ft.present?
+        template_id = ft.payment_details["template"]["id"]
+        template = FeesTemplate.find(template_id)
+      else
+        if row["Status"] == "Nill" || row["due"].to_i == 0
+          rem_amount = 0
+        else
+          rem_amount = row["due"].to_i
+        end
+      end
+
+
+      paid = row["paid"].to_i
+      fees = (paid * 100) / 118.0
+      cgst = (paid - fees) / 2.0
+      sgst = (paid - fees) / 2.0
+
+      paid_data = {
+        "paid" => paid,
+        "discount" => row["discount"].to_i || 0,
+        "cgst" => cgst,
+        "sgst" => sgst,
+        "fees" => fees,
+      }
+
+      payment_details = {
+        'template' => template.slice(:id, :name, :heads),
+        'paid' => { "Tution Fees"=> paid_data},
+        'totals' => paid_data
+      }
+
+      FeesTransaction.create({
+        org_id: Org.first.id,
+        student_id: student.id,
+        academic_year: self::CURRENT_ACADEMIC_YEAR,
+        comment: row["Comment"],
+        discount_amount: row["discount"].to_i || 0,
+        imported: true,
+        mode: "cash",
+        next_due_date: Time.now + 1.month,
+        paid_amount: row["paid"].to_i,
+        receipt_number: row["Receipt No"],
+        remaining_amount: rem_amount,
+        created_at: DateTime.parse(row["pay date"]),
+        received_by: "import",
+        payment_details: payment_details,
+        received_by_admin_id: Admin.first.id
+      })
+      putc "."
+    end
+  end
+
   private
   def update_receipt_number
+    return if self.receipt_number.present?
+
     if token_of_the_day < 100
       self.receipt_number = (FeesTransaction.lt_hundred.where(org_id: org_id).order(:created_at).last&.receipt_number || 0) + 1
     else
@@ -127,42 +237,3 @@ class FeesTransaction < ApplicationRecord
     self.token_of_the_day = student.intel_score
   end
 end
-
-# reference code
-# FeesTransaction.all.each do |ft|
-#   totals = {"cgst" => 0, "fees"=> 0, "paid"=> 0, "sgst"=> 0, "discount"=> 0}
-#   paid = {}
-#   puts "------>  #{ft.id}"
-#   ft.payment_details['paid'].each do |head, details|
-#     if head == "Tution Fees"
-#       fees = details["paid"].to_f / ((100 + 18) / 100.0).round(2)
-#       paid[head] = {
-#         "paid" => details["paid"],
-#         "discount" => details["discount"],
-#         "fees" => fees,
-#         "cgst" => fees * (9 / 100.0).round(2),
-#         "sgst" => fees * (9 / 100.0).round(2),
-#       }
-#     elsif head == "Book Fees"
-#       fees = details["paid"].to_f / ((100 + 5) / 100.0).round(2)
-#       paid[head] = {
-#         "paid" => details["paid"],
-#         "discount" => details["discount"],
-#         "fees" => fees,
-#         "cgst" => fees * (2.5 / 100.0).round(2),
-#         "sgst" => fees * (2.5 / 100.0).round(2),
-#       }
-#     else
-#       paid[head] = details
-#     end
-#     totals["paid"] += paid[head]["paid"]
-#     totals["discount"] += paid[head]["discount"]
-#     totals["fees"] += paid[head]["fees"]
-#     totals["cgst"] += paid[head]["cgst"]
-#     totals["sgst"] += paid[head]["sgst"]
-#   end
-
-#   ft.payment_details['paid'] = paid
-#   ft.payment_details['totals'] = totals
-#   ft.save
-# end

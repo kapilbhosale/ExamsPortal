@@ -267,7 +267,3 @@ end
 # admin.roles = [:students, :batches, :payments, :notes]
 # admin.save
 # admin.batches << Batch.where(org_id: org.id)
-
-
-
-=IF( != "", “Exists”, “Does Not Exist”)
