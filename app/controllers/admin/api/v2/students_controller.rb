@@ -14,17 +14,22 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
 
     if @students.present?
       batch_ids = Batch.joins(:batch_fees_templates).ids.uniq
-      @students = @students.joins(:fees_transactions).includes(:batches).where(batches: {id: batch_ids})
+
+      # filtering batches of the current admin only.
+      batch_ids = current_admin.baches.ids & batch_ids
+      @students = @students.joins(:fees_transactions).includes(:batches).where(batches: { id: batch_ids })
     end
   end
 
   def suggested_roll_number
-    render json: {roll_number: Student.random_roll_number}
+    render json: { roll_number: Student.random_roll_number }
   end
 
   def create
     system_roll_number = params[:roll_number] || Student.random_roll_number
     errors = []
+
+    errors << "Invalid permissions" unless current_admin.roles.include?('payments')
 
     errors << "In-valid batch" if params[:batch_id].blank?
 
@@ -68,6 +73,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     render json: student
   end
 
+  # need to add a filter to show, students associated with the current admin.
   def pending_amount
     if params[:qr_code].present?
       student_id = params[:qr_code].split("|")[1]

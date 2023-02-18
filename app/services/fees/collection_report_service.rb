@@ -29,9 +29,10 @@ module Fees
     private
 
     def today_transactions
-      transactions = FeesTransaction.includes(:admin, student: [:batches])
+      transactions = FeesTransaction.includes(:admin, student: [:batches ,:student_batches])
         .current_year.today
         .where(org_id: current_org.id)
+        .where(students: { student_batches: { batch_id: current_admin.batches.ids }})
 
       return transactions unless nil_fees_only
 
@@ -39,7 +40,7 @@ module Fees
     end
 
     def transactions_between_dates(date1, date2)
-      fees_transactions = FeesTransaction.includes(:admin, student: [:batches])
+      fees_transactions = FeesTransaction.includes(:admin, student: [:batches, :student_batches])
       unless current_admin.roles.include?('ff')
         fees_transactions = fees_transactions.lt_hundred
       end
@@ -48,6 +49,7 @@ module Fees
         .where(org_id: current_org.id)
         .where('created_at >= ?', date1)
         .where('created_at <= ?', date2)
+        .where(students: { student_batches: { batch_id: current_admin.batches.ids }})
       return fees_transactions unless nil_fees_only
 
       fees_transactions.where(remaining_amount: 0)

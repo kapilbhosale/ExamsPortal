@@ -63,7 +63,8 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def destroy
-    @response = Batches::DeleteBatchService.new(params[:id], current_org).call
+    @response = Batches::DeleteBatchService.new("", current_org).call
+    # @response = Batches::DeleteBatchService.new(params[:id], current_org).call
     set_flash
     redirect_to admin_batches_path
   end

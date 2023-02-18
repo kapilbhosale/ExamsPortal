@@ -1,6 +1,8 @@
 class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
 
   def collection
+    render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('payments')
+
     from_date = DateTime.parse(params[:dates][0]).in_time_zone.to_date
     to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date
     nil_fees_only = params[:nilFees] == 'true'
@@ -14,8 +16,5 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
     end
 
     render json: collection_data
-  end
-
-  def pending_fees
   end
 end
