@@ -16,7 +16,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       batch_ids = Batch.joins(:batch_fees_templates).ids.uniq
 
       # filtering batches of the current admin only.
-      batch_ids = current_admin.baches.ids & batch_ids
+      batch_ids = current_admin.batches.ids & batch_ids
       @students = @students.joins(:fees_transactions).includes(:batches).where(batches: { id: batch_ids })
     end
   end
