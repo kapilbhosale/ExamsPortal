@@ -29,7 +29,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     system_roll_number = params[:roll_number] || Student.random_roll_number
     errors = []
 
-    errors << "Invalid permissions" unless current_admin.roles.include?('payments')
+    # errors << "Invalid permissions" unless current_admin.roles.include?('payments')
 
     errors << "In-valid batch" if params[:batch_id].blank?
 
