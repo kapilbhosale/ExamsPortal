@@ -35,7 +35,8 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         rcc_batch: student.data["rcc_batch"],
         strict_discount: current_org.rcc?,
         valid_discount: discount.present?,
-        discount: discount&.amount&.to_i || 0
+        discount: discount&.amount&.to_i || 0,
+        discount_type: discount&.type_of_discount
       },
       templates: fees_templates&.flatten || []
     }

@@ -187,13 +187,14 @@ Rails.application.routes.draw do
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
         get  'batches', to: 'batches#index'
         resources :students do
-          get :pending_amount, on: :collection
-          get :issued_notes
-          post :issue_notes
-          get :suggested_roll_number, on: :collection
+          get   :pending_amount, on: :collection
+          get   :issued_notes
+          post  :issue_notes
+          post  :apply_discount
+          get   :suggested_roll_number, on: :collection
 
           collection do
-            resources :discounts, only: [:index]
+            resources :discounts, only: [:index, :create]
           end
         end
         resources :notes

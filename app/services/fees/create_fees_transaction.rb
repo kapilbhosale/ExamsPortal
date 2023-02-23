@@ -95,6 +95,7 @@ module Fees
     end
 
     def validate_request
+      raise FeeTransactionError, 'not permitted' unless current_admin.roles.include?('payments')
       raise FeeTransactionError, 'No fees heads' if @sanitized_input_payments.blank?
       raise FeeTransactionError, 'Fees Template not found, try again' if fees_template.blank?
       raise FeeTransactionError, 'Fees Template heads are not mathcing' unless matching_heads?

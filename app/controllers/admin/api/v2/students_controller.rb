@@ -13,8 +13,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     end
 
     if @students.present?
-      batch_ids = Batch.joins(:batch_fees_templates).ids.uniq
-
+      batch_ids = Batch.where(org_id: current_org.id).joins(:batch_fees_templates).ids.uniq
       # filtering batches of the current admin only.
       batch_ids = current_admin.batches.ids & batch_ids
       @students = @students.joins(:fees_transactions).includes(:batches).where(batches: { id: batch_ids })
@@ -117,6 +116,18 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     render json: {message: "Can not create student notes"}, status: :unprocessable_entity
   end
 
+  def apply_discount
+    student = Student.find_by(org_id: current_org.id, id: params[:student_id])
+
+    if student
+      student.data[:discount_id] = params[:discount_id]
+      student.save
+      render json: {} and return
+    end
+
+    render json: {message: "Cannot apply discount"}, status: unprocessable_entity
+  end
+
   private
 
   def student_params
@@ -132,3 +143,4 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     }
   end
 end
+  

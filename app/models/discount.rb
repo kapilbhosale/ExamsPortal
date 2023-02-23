@@ -24,9 +24,8 @@
 #
 
 class Discount < ApplicationRecord
-  enum type_of_discount: { rcc_set: 'RCC_SET', fees_req: 'FEES_REQ', notes_req: 'NOTES_REQ', other: 'OTHER' }
+  enum type_of_discount: { rcc_set: 'RCC_SET', fees_req: 'FEES_REQ', notes_req: 'NOTES_REQ', onetime: "ONETIME", special: "SPECIAL", other: 'OTHER' }
   enum status: { valid_discount: 'valid_discount', used_discount: 'used_discount', expired_discount: 'expired_discount' }
-
 
   def self.import_csv(csv_file_path)
     csv_text = File.read(csv_file_path)
