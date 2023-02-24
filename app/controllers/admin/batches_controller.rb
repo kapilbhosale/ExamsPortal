@@ -2,7 +2,7 @@ class Admin::BatchesController < Admin::BaseController
   before_action :check_permissions
 
   def index
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group).all.order(:id)
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group, :fees_templates).all.order(:id)
   end
 
   def new
@@ -57,14 +57,21 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def update
-    @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id], params[:klass]).call
+    if current_admin.roles.include? 'batch_edit'
+      @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id], params[:klass]).call
+    else
+      @response = {
+        status: false,
+        message: "You dont have permissions to update batches"
+      }
+    end
+
     set_flash
     redirect_to admin_batches_path
   end
 
   def destroy
-    @response = Batches::DeleteBatchService.new("", current_org).call
-    # @response = Batches::DeleteBatchService.new(params[:id], current_org).call
+    @response = Batches::DeleteBatchService.new(params[:id], current_org).call
     set_flash
     redirect_to admin_batches_path
   end

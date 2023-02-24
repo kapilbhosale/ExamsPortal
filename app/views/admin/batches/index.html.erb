@@ -41,6 +41,9 @@
                   </td>
                   <td>
                     <%= link_to batch.name, admin_batch_path(batch) %>
+                    <% if batch.fees_templates.present? %>
+                      <span style="font-size: 10px; padding-bottom: 4px"><i class='fa fa-lock'></i></span>
+                    <% end %>
                   </td>
                   <td>
                     <%= batch.created_at.strftime("%d-%B-%Y") %>

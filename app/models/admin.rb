@@ -85,7 +85,12 @@ class Admin < ApplicationRecord
     :attendance,
     :admin_users,
     :payments,
-    :notes
+    :notes,
+    :discounts,
+
+
+    :batch_delete,
+    :batch_edit
   ]
 
   def login
