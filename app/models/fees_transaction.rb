@@ -431,8 +431,8 @@ class FeesTransaction < ApplicationRecord
     ]
 
     batch_ids = {
-      "12th - pcb" => Batch.find_by(id: 819) || Batch.find_by(id: 9),
-      "12th - pc" => Batch.find_by(id: 820) || Batch.find_by(id: 10)
+      "12th - pcb" => Batch.find_by(id: 819),
+      "12th - pc" => Batch.find_by(id: 820)
     }
 
     total_fees = {
@@ -485,7 +485,7 @@ class FeesTransaction < ApplicationRecord
         receipt_number: rand(100...200),
         remaining_amount: rem_amount,
         created_at: DateTime.parse(std[:pay_date]),
-        received_by: "import",
+        received_by: "import-online",
         payment_details: payment_details,
         received_by_admin_id: Admin.first.id
       })
