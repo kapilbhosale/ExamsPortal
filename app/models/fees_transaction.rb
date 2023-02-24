@@ -432,12 +432,14 @@ class FeesTransaction < ApplicationRecord
 
     batch_ids = {
       "12th - pcb" => Batch.find_by(id: 819),
-      "12th - pc" => Batch.find_by(id: 820)
+      "12th - pc" => Batch.find_by(id: 820),
+      "12th - pcm" => Batch.find_by(id: 822)
     }
 
     total_fees = {
       "12th - pcb" => 60_000,
-      "12th - pc" => 50_000
+      "12th - pc" => 50_000,
+      "12th - pcm" => 60_000
     }
 
     not_found = []
@@ -470,12 +472,12 @@ class FeesTransaction < ApplicationRecord
         'totals' => paid_data
       }
 
-      tem_amount = total_fees[std[:batch]] - paid
+      rem_amount = total_fees[std[:batch]] - paid
 
       FeesTransaction.create({
         org_id: Org.first.id,
         student_id: student.id,
-        academic_year: self::CURRENT_ACADEMIC_YEAR,
+        academic_year: "2023-24",
         comment: "",
         discount_amount: 0,
         imported: true,
