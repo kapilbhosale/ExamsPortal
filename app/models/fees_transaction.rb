@@ -504,10 +504,18 @@ class FeesTransaction < ApplicationRecord
     return if self.receipt_number.present?
 
     if token_of_the_day < 100
-      self.receipt_number = (FeesTransaction.lt_hundred.where(org_id: org_id).order(:created_at).last&.receipt_number || 0) + 1
+      fees_transactions = FeesTransaction.lt_hundred
     else
-      self.receipt_number = (FeesTransaction.gt_hundred.where(org_id: org_id).order(:created_at).last&.receipt_number || 0) + 1
+      fees_transactions = FeesTransaction.gt_hundred
     end
+
+    db_receipt_number = fees_transactions
+      .where(org_id: org_id)
+      .where(imported: false)
+      .order(:created_at)
+      .last&.receipt_number
+
+    self.receipt_number = ( db_receipt_number || 0) + 1
   end
 
   def update_token_of_the_day
