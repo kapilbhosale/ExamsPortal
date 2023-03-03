@@ -21,20 +21,20 @@ class RawAttendance < ApplicationRecord
   def process_raw_attendance
     data.each_slice(500) do |logs|
       att_params = {}
-      roll_numbers = logs.map {|r| r['deviceUserId']}
       batch_ids = Batch.where(org_id: org_id).where.not(start_time: nil).ids
       student_ids = StudentBatch.where(batch_id: batch_ids).pluck(:student_id)
-      students_by_roll_number = Student.where(org_id: org_id).where(id: student_ids).where(roll_number: roll_numbers).index_by(&:roll_number)
+      students_by_roll_number = Student.where(org_id: org_id).where(id: student_ids).index_by(&:roll_number)
+
       logs.each do |log|
         next if log.blank?
 
-        REDIS_CACHE.set(log['ip'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
+        REDIS_CACHE.set(log['device_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
 
-        student_id = students_by_roll_number[log['deviceUserId'].to_i]&.id
+        student_id = students_by_roll_number[log['emp_id'].to_i]&.id
         next if student_id.blank?
         # need to keep track of students those are not found.
 
-        time_entry = log['recordTime'].to_datetime
+        time_entry = log['punch_time'].to_datetime
         time_in_seconds = time_entry.to_i
 
         sampled_time = (time_in_seconds / 120) * 120
