@@ -110,54 +110,41 @@ class FeesTransaction < ApplicationRecord
     }
   end
 
-  BATCH_MAPPING = {
-    "12th (PCB) 2023-24" => 819,
-    "12th (PCM) 2023-24" => 822,
-    "12th (Phy+Chem) 2023-24" => 820,
-    "12th (Chem) 2023-24" => 821,
-    "11th (PCB) 2023-24" => 837,
-    "11th (Phy+Chem) 2023-24" => 838,
-    "11th (PCM) 2023-24" => 840
-  }
-
   # FeesTransaction.import_old_data
   def self.import_old_data(csv_file_path)
-    # csv_file_path = "/Users/kapilbhosale/Downloads/L-test.csv"
+    # csv_file_path = "/Users/kapilbhosale/Downloads/fees-entry-1.csv"
     csv_text = File.read(csv_file_path)
     csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-    sorted_csv = CSV::Table.new(csv.sort_by { |row| row["Receipt No"].to_i})
+    org = Org.find_by(subdomain: "konale-exams")
 
-    batches_by_id = Batch.where(id: BATCH_MAPPING.values).index_by(&:id)
-
-    sorted_csv.each do |row|
+    csv.each do |row|
       std = {
-        roll_number: row["Roll Number"],
-        name: row["Name"],
-        student_mobile: row["student mobile"],
-        parent_mobile: row["parent mobile"]
+        roll_number: row["roll_number"],
+        name: row["name"],
+        student_mobile: row["parent_mobile"],
+        parent_mobile: row["student_mobile"]
       }
 
-      student = Student.find_by(parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
-      batch = Batch.find_by(id: 819)
+      student = Student.find_by(roll_number: std[:roll_number], parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
+      batch = Batch.find_by(id: std[:batch_id])
 
       if student.present? && FeesTransaction.where(student_id: student.id).present?
         batch = student.batches.joins(:fees_templates).first
         template = batch.fees_templates.first
       else
-        random_roll_number = Student.random_roll_number
+        random_roll_number = std[:roll_number] || Student.random_roll_number
         student = Student.create({
           roll_number: random_roll_number,
           name: std[:name],
           parent_mobile: std[:parent_mobile],
           student_mobile: std[:student_mobile],
-          org_id: 1,
+          org_id: org.id,
           email: "_#{random_roll_number}@rcc.eduaakar.com",
           password: std[:parent_mobile],
           raw_password: std[:parent_mobile]
         })
 
         if student.errors.blank?
-          batch = batches_by_id[BATCH_MAPPING[row["Batch"]]]
           student.batches << batch if batch
         end
         template = batch.fees_templates.first
@@ -170,15 +157,11 @@ class FeesTransaction < ApplicationRecord
         template = FeesTemplate.find(template_id)
         # consider ft last amounts for calculating remaing fees etc.
       else
-        if row["Status"] == "Nill" || row["due"].to_i == 0
-          rem_amount = 0
-        else
-          rem_amount = row["due"].to_i
-        end
+        rem_amount = row["due"].to_i
       end
 
 
-      paid = row["paid"].to_i
+      paid = row["P1"].to_i
       fees = (paid * 100) / 118.0
       cgst = (paid - fees) / 2.0
       sgst = (paid - fees) / 2.0
@@ -198,18 +181,17 @@ class FeesTransaction < ApplicationRecord
       }
 
       FeesTransaction.create({
-        org_id: Org.first.id,
+        org_id: org.id,
         student_id: student.id,
         academic_year: self::CURRENT_ACADEMIC_YEAR,
-        comment: row["Comment"],
+        comment: "imported",
         discount_amount: row["discount"].to_i || 0,
         imported: true,
         mode: "cash",
         next_due_date: Time.now + 1.month,
-        paid_amount: row["paid"].to_i,
-        receipt_number: row["Receipt No"],
+        paid_amount: row["P1"].to_i,
         remaining_amount: rem_amount,
-        created_at: DateTime.parse(row["pay date"]),
+        created_at: DateTime.parse(row["D1"]),
         received_by: "import",
         payment_details: payment_details,
         received_by_admin_id: Admin.first.id
