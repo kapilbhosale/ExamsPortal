@@ -125,8 +125,8 @@ class FeesTransaction < ApplicationRecord
         parent_mobile: row["student_mobile"]
       }
 
-      student = Student.find_by(roll_number: std[:roll_number], parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
-      batch = Batch.find_by(id: std[:batch_id])
+      student = Student.find_by(org_id: org.id, roll_number: std[:roll_number], parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
+      batch = Batch.find_by(org_id: org.id, id: row["batch_id"])
 
       if student.present? && FeesTransaction.where(student_id: student.id).present?
         batch = student.batches.joins(:fees_templates).first
