@@ -32,7 +32,7 @@ module Fees
       transactions = FeesTransaction.includes(:admin, student: [:batches ,:student_batches])
         .current_year.today
         .where(org_id: current_org.id)
-        .where(students: { student_batches: { batch_id: current_admin.batches.ids }})
+        .where(students: { student_batches: { batch_id: current_admin.batches.joins(:fees_templates).ids }})
 
       return transactions unless nil_fees_only
 
@@ -49,7 +49,7 @@ module Fees
         .where(org_id: current_org.id)
         .where('created_at >= ?', date1)
         .where('created_at <= ?', date2)
-        .where(students: { student_batches: { batch_id: current_admin.batches.ids }})
+        .where(students: { student_batches: { batch_id: current_admin.batches.joins(:fees_templates).ids }})
       return fees_transactions unless nil_fees_only
 
       fees_transactions.where(remaining_amount: 0)
