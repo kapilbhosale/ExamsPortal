@@ -306,10 +306,10 @@ class Students::AdmissionsController < ApplicationController
       @new_admission.success!
 
       # TODO:: student registered in old batch, fails to avoid duplicates in set
-      student = Student.find_by(
+      student = Student.where(
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
-      )
+      ).where('created_at > ?', Date.parse("06-03-2023")).last
 
       batches_saarthi_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
       batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
