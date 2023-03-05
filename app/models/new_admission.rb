@@ -84,7 +84,7 @@ class NewAdmission < ApplicationRecord
     '12th_set_1': 15
   }
   enum course_type: { neet: 0, jee: 1 }
-  enum rcc_branch: { latur: 0, nanded: 1, aurangabad: 2, akola: 3, pune: 4 }
+  enum rcc_branch: { latur: 0, nanded: 1, aurangabad: 2, akola: 3, pune: 4, kolhapur: 5, pimpri: 6 }
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 

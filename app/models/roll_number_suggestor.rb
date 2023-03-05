@@ -36,15 +36,12 @@ class RollNumberSuggestor < ApplicationRecord
     'set-aur' => 5_000,
     'repeater_set' => 2_000,
     'repeater_22_23' => 10_000,
-    '12th_set_23_24_latur' => 21_000,
-    '12th_set_23_24_nanded' => 81_000,
-    '12th_set_23_24_aurangabad' => 13_000,
-    '11th_set_22_23' => 1_000,
+    '11th_set_3' => 50_000,
     'neet_23_24' => 50_000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
-    if na&.free? && batch_name != 'neet_saarthi' && batch_name != '12th_set' && batch_name != 'set_aurangabad' && batch_name != '12th_set_1'
+    if na&.free? && batch_name != 'neet_saarthi' && batch_name != '12th_set' && batch_name != '11th_set' && batch_name != '12th_set_1'
       batch_name = '11th_set_22_23'
     end
 
@@ -55,7 +52,7 @@ class RollNumberSuggestor < ApplicationRecord
     end
 
     batch_name = "neet_23_24" if na&.free? && batch_name == '12th_set'
-    batch_name = "12th_set_23_24_#{na&.rcc_branch}" if na&.free? && batch_name == '12th_set_1'
+    batch_name = "11th_set_3" if na&.free? && batch_name == '11th_set'
     batch_name = 'repeater_22_23' if batch_name == 'repeater'
 
     rns = self.find_by(batch_name: batch_name)

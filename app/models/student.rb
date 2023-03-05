@@ -227,23 +227,34 @@ class Student < ApplicationRecord
     INITIAL_ONLINE_ROLL_NUMBER
   end
 
-  SMS_USER_NAME = "maheshrccnanded@gmail.com"
-  SMS_PASSWORD = "myadmin"
-  BASE_URL = "https://www.businesssms.co.in/SMS.aspx";
+  BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
 
   def rcc_admission_confirm_sms(mobile_number)
+    sms_user = "RCCLatur"
+    sms_password = URI.encode_www_form_component("RCC@123#L")
+    sender_id = "RCCLtr"
     template_id = '1007270988222216500'
-    # msg = "Dear Students, \nWelcome in the world of RCC. \nYour admission is confirmed. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
+    entity_id = '1001545918985192145'
+
     msg = "Dear Student, \nFrom RCC \nWelcome in the world of RCC \nYour admission is confirmed \nRoll No - #{roll_number}\nParent Mob No - #{parent_mobile}\nDownload App from below link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
-    msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{mobile_number}&TemplateID=#{template_id}&Text=#{msg}"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{mobile_number}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
     encoded_uri = URI(msg_url)
     puts Net::HTTP.get(encoded_uri)
   end
 
   def rcc_installment_sms(mobile_number)
+    sms_user = "RCCLatur"
+    sms_password = URI.encode_www_form_component("RCC@123#L")
+    sender_id = "RCCLtr"
     template_id = '1007567986910703670'
+    entity_id = '1001545918985192145'
+
     msg = "Dear Students, \nWelcome in the world of RCC. \nYour Installment is processed, successfully. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
-    msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{mobile_number}&TemplateID=#{template_id}&Text=#{msg}"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{mobile_number}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
     encoded_uri = URI(msg_url)
     puts Net::HTTP.get(encoded_uri)
   end

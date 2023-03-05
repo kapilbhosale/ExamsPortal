@@ -152,12 +152,7 @@ class Batch < ApplicationRecord
   def self.get_11th_set_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    board = 'state-marathi' if na.extra_data['board'] == 'state_board_marathi'
-    board = 'state-semi' if na.extra_data['board'] == 'state_board_semi'
-    board = 'cbse-icse' if na.extra_data['board'] == 'cbse'
-    board = 'cbse-icse' if na.extra_data['board'] == 'icse'
-
-    batch_name = "11SET-PHASE2-#{na.rcc_branch}-#{na.course_type}-#{board}"
+    batch_name = "11-SET-2-april-23-(#{na.course_type})"
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
@@ -265,6 +260,8 @@ class Batch < ApplicationRecord
     return 'AUR' if rcc_branch == 'aurangabad'
     return 'PUNE' if rcc_branch == 'pune'
     return 'AK' if rcc_branch == 'akola'
+    return 'KLH' if rcc_branch == 'kolhapur'
+    return 'PMP' if rcc_branch == 'pimpri'
 
     'LTR'
   end

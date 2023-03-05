@@ -312,12 +312,12 @@ class Students::AdmissionsController < ApplicationController
       )
 
       batches_saarthi_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
-      batches_set_11_23_24_p2 = ['LTR-11-SET-2023-24-PHASE-2', 'NED-11-SET-2023-24-PHASE-2', 'AUR-11-SET-2023-24-PHASE-2', 'AKOLA-11-SET-2023-24-PHASE-2', 'PUNE-11-SET-2023-24-PHASE-2']
+      batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
 
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
           (@new_admission.batch == '12th_set' && (student_batch_names & batches_saarthi_23_24).blank?) ||
-          (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_23_24_p2).blank?)
+          (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_p3).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end
 
