@@ -4,6 +4,7 @@
 #
 #  id            :bigint(8)        not null, primary key
 #  absent_count  :integer
+#  mode          :string
 #  present_count :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null

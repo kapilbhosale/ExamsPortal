@@ -1,0 +1,15 @@
+<div style="background-color: #e0e0e0; padding: 5px">
+  <%= form_tag "#", class:"form-inline" do %>
+    <span class="p-1">From</span>
+    <input type="date" class="from-date" name="from_date" value="<%= @from_date.strftime("%Y-%m-%d")%>" max="<%= Date.today.strftime("%Y-%m-%d")%>" >
+    <span class="p-1">To</span>
+    <input type="date" class="to-date" name="to_date" value="<%= @to_date.strftime("%Y-%m-%d")%>" max="<%= Date.today.strftime("%Y-%m-%d")%>" >
+    <div class="offset-md-2 ">
+      <input type="submit" class="btn btn-primary" value="Search">
+    </div>
+    <div class="offset-md-2 ">
+      <input type="submit" class="btn btn-success" value="Download PDF Report">
+    </div>
+  <% end %>
+  <%= render partial: 'att_report', locals: {} %>
+</div>

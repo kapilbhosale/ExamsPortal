@@ -10,17 +10,27 @@ class AbsentMessageSenderWorker
       present_student_ids = Attendance.today.where(org_id: org.id, student_id: batch.students.ids).pluck(:student_id).uniq
       absent_students = batch.students.where.not(id: present_student_ids)
 
-      next if absent_students.count >= present_student_ids.count
+      if absent_students.count >= present_student_ids.count
+        AttSmsLog.create({
+          absent_count: absent_students.count,
+          present_count: present_student_ids.count,
+          batch_id: batch.id,
+          mode: 'not_sent'
+        })
+        next
+      end
 
-      # Disabling absent sms for now.
-      # absent_students.find_each do |student|
-      #   send_absent_sms(student)
-      # end
+      if org[:data]["auto_absent_sms"] == true
+        absent_students.find_each do |student|
+          send_absent_sms(student)
+        end
+      end
 
       AttSmsLog.create({
         absent_count: absent_students.count,
         present_count: present_student_ids.count,
-        batch_id: batch.id
+        batch_id: batch.id,
+        mode: 'auto'
       })
     end
   end
@@ -34,16 +44,23 @@ class AbsentMessageSenderWorker
     AttSmsLog.today.pluck(:batch_id)
   end
 
-  SMS_USER_NAME = "maheshrccnanded@gmail.com"
-  SMS_PASSWORD = "myadmin"
-  BASE_URL = "https://www.businesssms.co.in/SMS.aspx"
+  BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
 
   def send_absent_sms(student)
-  template_id = '1007771438372665235'
-  msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{Time.current.strftime('%d %b %y')}. Kindly confirm. \r\nTeam RCC"
-  msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{student.parent_mobile}&TemplateID=#{template_id}&Text=#{msg}"
-  encoded_uri = URI(msg_url)
-  puts Net::HTTP.get(encoded_uri)
+    Thread.new { puts Net::HTTP.get(URI(absent_sms(student))) }
+  end
+
+  def absent_sms(student)
+    sms_user = "RCCLatur"
+    sms_password = URI.encode_www_form_component("RCC@123#L")
+    sender_id = "RCCLtr"
+    template_id = '1007771438372665235'
+    entity_id = '1001545918985192145'
+
+    msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{Date.today.strftime('%d-%B-%Y')}. Kindly confirm. \r\nTeam RCC"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
   end
 end
 

@@ -123,6 +123,7 @@ Rails.application.routes.draw do
       get :disable
       get :enable
       get :progress_report
+      get :attendance_report
     end
     resources :batches do
       root to: 'batches#index'
@@ -162,6 +163,9 @@ Rails.application.routes.draw do
       get :overview_report, on: :collection
       get :settings, on: :collection
       get :sms_logs, on: :collection
+      post :change_auto_sms_settings, on: :collection
+      post :send_batch_sms, on: :collection
+      get :download_xls_report, on: :collection
     end
 
     resources :micro_payments

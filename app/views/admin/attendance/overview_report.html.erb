@@ -4,73 +4,75 @@
     <table class="table table-condensed .table-bordered">
     <tr>
       <th>Batch Name</th>
-      <th>From date</th>
-      <th>To date</th>
-      <th>Total Students</th>
-      <th>Present Students</th>
-      <th>Absent Students</th>
+      <th>Status</th>
+      <th>Present SMS</th>
+      <th>Abasent SMS</th>
     <tr>
     <% @summary_data.each do |sd| %>
       <tr>
         <td><%= sd[:batch].name %></td>
-        <td><%= @from_date.strftime("%d-%B-%y") %></td>
-        <td><%= @to_date.strftime("%d-%B-%y") %></td>
-        <td><%= sd[:students_count] %></td>
-        <td style="color: green"><%= sd[:pr_count] %></td>
-        <td style="color: red"><%= sd[:ab_count] %></td>
+        <td>
+          <div style="position:relative; padding-right: 70px">
+            <div style="position: absolute">
+              <span style="color: green; "><%= sd[:pr_percent] %> /</span>
+              <span style="color: red"><%= sd[:ab_percent] %>%</span>
+            </div>
+            <div style="width: 80%; margin-left: 80px; padding-top: 6px">
+              <div style="height: 10px; border: 1px solid; background-color: red">
+                <div style= "<%= "width: #{sd[:pr_percent]}%; height: 8px; background-color: green;" %>"><div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <%= link_to 'Send Now', send_batch_sms_admin_attendance_index_path(batch_id: sd[:batch].id, type: 'present'), method: :post, class: "btn btn-primary btn-sm" %>
+        </td>
+        <td>
+          <%= link_to 'Send Now', send_batch_sms_admin_attendance_index_path(batch_id: sd[:batch].id, type: 'absent'), method: :post, class: "btn btn-primary btn-sm" %>
+        </td>
+        <td>
+        </td>
       </tr>
     <% end %>
     </table>
+
+    <div style="background-color: #e0e0e0; padding: 10px 10px; border-radius: 5px" class="mb-4">
+      <p>Auto send sms settings</p>
+        <div class="row">
+          <div class="md-col-4 pl-3">
+            Send Present SMS Automatically:
+            <% if @sms_settings[:auto_present_sms] %>
+              <%= link_to 'ON', change_auto_sms_settings_admin_attendance_index_path(q: 'present'), method: :post, class: "btn btn-success btn-sm" %>
+            <% else %>
+              <%= link_to 'OFF', change_auto_sms_settings_admin_attendance_index_path(q: 'present'), method: :post, class: "btn btn-danger btn-sm" %>
+            <% end %>
+          </div>
+
+          <div class="md-col-4 pl-3">
+            Send Absent SMS Automatically:
+            <% if @sms_settings[:auto_absent_sms] %>
+              <%= link_to 'ON', change_auto_sms_settings_admin_attendance_index_path(q: 'absent'), method: :post, class: "btn btn-success btn-sm" %>
+            <% else %>
+              <%= link_to 'OFF', change_auto_sms_settings_admin_attendance_index_path(q: 'absent'), method: :post, class: "btn btn-danger btn-sm" %>
+            <% end %>
+          </div>
+        </div>
+    </div>
   </div>
-  <p class="text-center">Attendance Details</p>
+
+  <p class="text-center">Attendance Reports Section</p>
   <div style="background-color: #e0e0e0; padding: 5px">
-    <%= search_form_for @search, url: overview_report_admin_attendance_index_path, class:"form-inline" do |f| %>
-      <span class="p-2">From</span>
+    <%= search_form_for @search, url: download_xls_report_admin_attendance_index_path(request.parameters.merge({format: :csv})), class:"form-inline" do |f| %>
+      <span class="p-1">From</span>
       <input type="date" class="from-date" name="from_date" value="<%= @from_date.strftime("%Y-%m-%d")%>" max="<%= @today.strftime("%Y-%m-%d")%>" >
-      <span class="p-2">To</span>
+      <span class="p-1">To</span>
       <input type="date" class="to-date" name="to_date" value="<%= @to_date.strftime("%Y-%m-%d")%>" max="<%= @today.strftime("%Y-%m-%d")%>" >
-      <span class="p-2">Batch</span>
-      <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
-      <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
-      <div class="offset-md-3 btn btn-success">
-        <%= link_to ' CSV Download'.html_safe, overview_report_admin_attendance_index_path(request.parameters.merge({format: :csv})), target: '_blank', class: 'text-white no-underline'%>
+      <span class="p-1">Batch</span>
+      <%= f.collection_select(:batch_id, @batches, :id, :name, { selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
+      <%# <%= f.collection_select(:batch_id, @batches, :id, :name, { include_blank: 'All', selected: params&.[](:q)&.[](:batch_id)}, { class: 'form-control mr-sm-2'} )%>
+      <div class="offset-md-2 ">
+        <input type="submit" class="btn btn-success" value="Download CSV Report">
       </div>
     <% end %>
-  </div>
-  <% days = @from_date.upto(@to_date) %>
-  <div class="table-responsive">
-    <table class="table table-condensed table-bordered">
-      <thead>
-        <tr>
-          <th colspan="2">month</th>
-          <% days.each do |day| %>
-            <th style="max-width: 40px; width: 40px; font-size: 10px"><%= day.strftime("%b") %></th>
-          <% end %>
-        </tr>
-        <tr>
-          <th>RNo.</th>
-          <th>Name</th>
-          <% days.each do |day| %>
-            <th style="max-width: 40px; width: 40px"><%= "#{day.strftime("%d")}" %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <% @students.each do |student| %>
-          <tr>
-            <td style="font-size: 12px"><%= student.roll_number %></td>
-            <td style="font-size: 10px"><%= student.name %></td>
-            <% days.each do |day| %>
-              <% if @attendance["#{student.id}-#{day.strftime('%d%m%y')}"]%>
-                <th style="background-color: green"><%= 'P' %></th>
-              <% else %>
-                <th style="background-color: red"><%= 'A' %></th>
-              <% end %>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= paginate @students %>
   </div>
 </div>

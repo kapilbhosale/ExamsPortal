@@ -151,6 +151,13 @@ class Admin::StudentsController < Admin::BaseController
     @data = Hash[data.sort_by{|k, v| v[:exam_date] || Date.today }.reverse].values
   end
 
+
+  def attendance_report
+    @student = Student.find_by(id: params[:student_id])
+    @from_date = Date.today - 7.days
+    @to_date = Date.today
+  end
+
   def reset_login
     @student = Student.find_by(id: params[:student_id], org: current_org)
     if @student.present?

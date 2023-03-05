@@ -4,6 +4,7 @@
 #
 #  id            :bigint(8)        not null, primary key
 #  absent_count  :integer
+#  mode          :string
 #  present_count :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -18,4 +19,6 @@ class AttSmsLog < ApplicationRecord
   scope :today, -> { where('DATE(created_at) = ?', Date.today)}
 
   belongs_to :batch
+
+  enum status: { auto: 'auto', manual: 'manual', not_sent: "not_sent"}
 end

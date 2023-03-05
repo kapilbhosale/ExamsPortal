@@ -31,23 +31,29 @@ class Attendance < ApplicationRecord
   after_create :send_sms
 
   scope :today, -> { where('DATE(time_entry) = ?', Date.today)}
-end
 
-SMS_USER_NAME = "maheshrccnanded@gmail.com"
-SMS_PASSWORD = "myadmin"
-BASE_URL = "https://www.businesssms.co.in/SMS.aspx";
+  BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
 
-def send_sms
-  if time_entry.to_date == Date.current
+  def send_sms
+    if org[:data]["auto_present_sms"] == true && time_entry.to_date == Date.current
+      Thread.new { puts Net::HTTP.get(URI(present_sms)) }
+    end
+  end
+
+
+  def present_sms
+    sms_user = "RCCLatur"
+    sms_password = URI.encode_www_form_component("RCC@123#L")
+    sender_id = "RCCLtr"
     template_id = '1007511804251225784'
-    # msg = "Dear Students, \nWelcome in the world of RCC. \nYour admission is confirmed. \nName: #{name} \nCourse:#{batches.pluck(:name).join(",")} \nyour Login details are \nRoll Number: #{roll_number} \nParent Mobile: #{parent_mobile}\n Download App from given link \nhttps://play.google.com/store/apps/details?id=com.at_and_a.rcc_new"
-    msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{time_entry.strftime('%d %b %y')} Class,\r\nTeam RCC"
-    msg_url = "#{BASE_URL}?ID=#{SMS_USER_NAME}&Pwd=#{SMS_PASSWORD}&PhNo=+91#{student.parent_mobile}&TemplateID=#{template_id}&Text=#{msg}"
-    encoded_uri = URI(msg_url)
-    puts Net::HTTP.get(encoded_uri)
+    entity_id = '1001545918985192145'
+
+    msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{Date.today.strftime('%d-%B-%Y')} Class,\r\nTeam RCC"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
   end
 end
-
 # # script to create attendance
 # student_ids = [1,2,3,5,6,7]
 # year = 2021
