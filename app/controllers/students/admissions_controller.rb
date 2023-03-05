@@ -301,7 +301,7 @@ class Students::AdmissionsController < ApplicationController
     @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
 
-    if @new_admission.present? && @new_admission.default?
+    if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.default?)
       @new_admission.started!
       @new_admission.success!
 
