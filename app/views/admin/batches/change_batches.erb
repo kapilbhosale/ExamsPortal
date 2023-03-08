@@ -30,8 +30,14 @@
         <div class="col-sm-6 col-md-12">
           <div class="form-group">
             <label class="form-label">Please Select Batch To Transfer Students - </label>
+            <div class="form-group" style="background-color: #fe9494b3; padding: 10px 5px 0px 10px; border-radius: 10px">
+              <label class="form-check-label" for="flexCheckDefault">
+                <p stty>Remove from existing batch: YES</p>
+              </label>
+              <input class="form-check-input" name="remove-from-batch" type="checkbox" id="flexCheckDefault" style="margin-left: 10px; margin-top: 5px">
+            </div>
             <p>
-              Note: Students will get removed from previous batch. It will not be possible to undo this action.
+              Note: Students will get removed from previous batch if you select YES. It will not be possible to undo this action.
             </p>
             <hr />
             <% if @student_data[:batches].present? %>

@@ -86,7 +86,7 @@ class Admin::BatchesController < Admin::BaseController
     @total_count, @success_count = 0, 0
 
     CSV.open(csv_file_path, :row_sep => :auto, :encoding => 'ISO-8859-1', :col_sep => ",") do |csv|
-      flash[:error] = "Invalid CSV" and redirect back if csv.first.length != 4
+      flash[:error] = "Invalid CSV" and redirect_to change_batches_admin_batches_path and return if csv.first.length != 4
 
       # [Roll Number, name, parent mobile number, student mobile number]
       csv.each do |row|
@@ -98,7 +98,9 @@ class Admin::BatchesController < Admin::BaseController
         student = Student.find_by(roll_number: roll_number, parent_mobile: parent_mobile, student_mobile: student_mobile)
         next if student.blank?
 
-        StudentBatch.where(student: student).delete_all
+        if params["remove-from-batch"] == "on"
+          StudentBatch.where(student: student).delete_all
+        end
         StudentBatch.create!(student: student, batch_id: batch_id)
         @success_count += 1
       end
