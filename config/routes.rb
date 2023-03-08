@@ -245,6 +245,14 @@ Rails.application.routes.draw do
       get 'subjects/:id/folders', to: 'subjects#subject_folders'
       get 'subjects/:subject_id/folders/:folder_id/pdfs', to: 'subjects#folder_pdfs'
       get 'subjects/:subject_id/folders/:folder_id/videos', to: 'subjects#folder_videos'
+      resources :videos, only: [] do
+        post :like
+        post :dislike
+
+        get :comments
+        post :add_comment
+        post :remove_comment
+      end
     end
   end
 end

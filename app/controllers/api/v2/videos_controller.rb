@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class Api::V2::VideosController < Api::V2::ApiController
+  ITEMS_PER_PAGE = 20
+
   def like
     video = VideoLecture.find_by(id: params[:video_id])
     student_id = current_student&.id || params[:student_id]
@@ -19,12 +21,20 @@ class Api::V2::VideosController < Api::V2::ApiController
   end
 
   def comments
-    video = VideoLecture.find_by(id: params[:video_id])
-    if video
-      render json: { comments: video.messages.order(id: :desc) }
-    else
-      render json: { message: 'Cannot get comments' }, status: 402
-    end
+    page = (params[:page] || 1).to_i
+    video = VideoLecture.find_by(org_id: current_org.id, id: params[:video_id])
+    total = video.comments.count
+    comments  = video.messages.order(id: :desc).page(page).per(ITEMS_PER_PAGE)
+
+    render json: {
+      page: page,
+      page_size: ITEMS_PER_PAGE,
+      total_page: (total / ITEMS_PER_PAGE.to_f).ceil,
+      count: total,
+      data: [
+        comments: comments
+      ]
+    }
   end
 
   def add_comment
@@ -55,7 +65,4 @@ class Api::V2::VideosController < Api::V2::ApiController
     end
     render json: 'ok'
   end
-
-
-  private
 end
