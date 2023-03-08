@@ -99,7 +99,8 @@ class Admin::BatchesController < Admin::BaseController
         next if student.blank?
 
         if params["remove-from-batch"] == "on"
-          StudentBatch.where(student: student).delete_all
+          template_batch_ids = Batch.where(org_id: current_org.id).ids & BatchFeesTemplate.pluck(:batch_id).uniq
+          StudentBatch.where(student: student).where.not(batch_id: template_batch_ids).delete_all
         end
         StudentBatch.create!(student: student, batch_id: batch_id)
         @success_count += 1
