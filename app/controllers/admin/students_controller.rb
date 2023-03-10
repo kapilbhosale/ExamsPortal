@@ -29,6 +29,7 @@ class Admin::StudentsController < Admin::BaseController
 
     @students_data = @students.includes(:batches, :pending_fees).order(created_at: :desc).map do |student|
       {
+          id: student.id,
           roll_number: student.roll_number,
           batches: student&.batches&.each&.map(&:name).join(', '),
           name: student.name,
@@ -36,7 +37,8 @@ class Admin::StudentsController < Admin::BaseController
           raw_password: student.raw_password,
           parent_mobile: student.parent_mobile,
           student_mobile: student.student_mobile,
-          pending_amount: student&.pending_fees.where(paid: false).last&.amount
+          pending_amount: student&.pending_fees.where(paid: false).last&.amount,
+          admission_date: student.created_at.strftime("%d-%B-%Y %I:%M%p")
       }
     end
 
@@ -53,17 +55,17 @@ class Admin::StudentsController < Admin::BaseController
       end
       format.csv do
         students_csv = CSV.generate(headers: true) do |csv|
-          csv << ['Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Email', 'password', 'Batch']
+          csv << ['Id', 'Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Batch', "Admission date"]
 
           @students_data.each do |student|
             csv << [
-                student[:roll_number],
-                student[:name],
-                student[:student_mobile],
-                student[:parent_mobile],
-                student[:email],
-                student[:raw_password],
-                student[:batches]
+              student[:id],
+              student[:roll_number],
+              student[:name],
+              student[:student_mobile],
+              student[:parent_mobile],
+              student[:batches],
+              student[:admission_date]
             ]
           end
         end
