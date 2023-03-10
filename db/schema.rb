@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_04_110402) do
+ActiveRecord::Schema.define(version: 2023_03_10_111718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -462,6 +462,7 @@ ActiveRecord::Schema.define(version: 2023_03_04_110402) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "min_pay"
     t.index ["org_id"], name: "index_notes_on_org_id"
   end
 

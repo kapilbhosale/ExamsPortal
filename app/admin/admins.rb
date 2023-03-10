@@ -12,14 +12,27 @@ ActiveAdmin.register Admin do
 #   permitted
 # end
 
-	permit_params :name, :email, :password, :password_confirmation, :org_id
+	permit_params :name, :email, :password, :password_confirmation, :org_id, :roles
+
+  index do
+    selectable_column
+    id_column
+    column :name
+    column :email
+    column :password
+    column :phone
+    column :roles
+    column :created_at
+    actions
+  end
 
   form do |f|
     f.inputs 'Org Admins' do
       f.input :name
       f.input :email
-      f.input :password if f.object.new_record?
-      f.input :password_confirmation if f.object.new_record?
+      f.input :password
+      f.input :password_confirmation
+      f.input :roles
       f.input :org
     end
 
