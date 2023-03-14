@@ -1,5 +1,5 @@
 ActiveAdmin.register Note do
-  permit_params :name, :description, :org, :min_pay
+  permit_params :name, :description, :org_id, :min_pay
 
   filter :name
   filter :min_pay
@@ -20,8 +20,8 @@ ActiveAdmin.register Note do
     f.inputs 'Org Admins' do
       f.input :name
       f.input :description
-      f.input :min_pay, as: :select, collection: Note.min_pays.keys
-      f.input :org
+      f.input :min_pay, as: :select, collection: Note.min_pays.keys, include_blank: false
+      f.input :org, as: :select, collection: Org.all.map { |org| [org.subdomain, org.id] }, include_blank: false
     end
 
     f.actions
