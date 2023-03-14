@@ -78,7 +78,15 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       student_id = params[:qr_code].split("|")[1]
       @student = Student.find_by(id: student_id)
     else
-      @student = Student.find_by(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+      batch_ids = current_admin.batches.ids
+      if params[:roll_number].present? & params[:parent_mobile].present?
+        @students = Student.where(org_id: current_org.id).includes(:batches).where(batches: { id: batch_ids }).where(roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+      elsif params[:roll_number].present?
+        @students = Student.where(org_id: current_org.id).includes(:batches).where(batches: { id: batch_ids }).where(roll_number: params[:roll_number])
+      elsif params[:parent_mobile].present?
+        @students = Student.where(org_id: current_org.id).includes(:batches).where(batches: { id: batch_ids }).where(parent_mobile: params[:parent_mobile])
+      end
+      @student = @students.first
     end
 
     render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
@@ -88,7 +96,7 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       @pending_amount = FeesTransaction.where(student_id: @student.id).order(:created_at).last.remaining_amount.to_f
     else
       @message = ''
-      batch_templates = BatchFeesTemplate.where(batch_id: student.batches.ids)
+      batch_templates = BatchFeesTemplate.where(batch_id: @student.batches.ids)
       if batch_templates.present?
         @pending_amount = batch_templates.last.total_amount
       else
