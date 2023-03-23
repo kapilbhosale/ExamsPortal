@@ -33,7 +33,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         current_template_id: current_template_id,
         fees_transaction_token: fees_transaction_token,
         rcc_batch: student.data["rcc_batch"],
-        strict_discount: current_org.rcc?,
+        strict_discount: true, #current_org.rcc?,
         valid_discount: discount.present?,
         discount: discount&.amount&.to_i || 0,
         discount_type: discount&.type_of_discount
