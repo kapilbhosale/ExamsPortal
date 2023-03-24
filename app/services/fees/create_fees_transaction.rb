@@ -12,7 +12,7 @@ module Fees
       @fees_template = FeesTemplate.find_by(id: create_params[:template_id] )
       @fees_tempalte_data, @fees_data = {}, {}
       sanitiz_input_payments
-      injest_discounts if current_org.rcc?
+      injest_discounts #if current_org.rcc?
       create_fees_tempalte_data
     end
 
