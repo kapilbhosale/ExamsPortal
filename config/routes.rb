@@ -127,9 +127,10 @@ Rails.application.routes.draw do
     end
     resources :batches do
       root to: 'batches#index'
-      get :disable
-      get :change_batches, on: :collection
-      post :process_change_batches, on: :collection
+      get   :disable
+      get   :change_batches, on: :collection
+      post  :process_change_batches, on: :collection
+      get   :downoload_cet
     end
     resources :batch_groups
 

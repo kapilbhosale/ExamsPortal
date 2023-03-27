@@ -111,6 +111,40 @@ class Admin::BatchesController < Admin::BaseController
     render 'change_batches'
   end
 
+  def downoload_cet
+    headers = ["id", "Roll Number", "Name", "Parent mobile", "Student mobile", "email", "gender", "center", "course", "rcc branch", "Board"]
+
+    map_ids = {}
+    batch_ids = [params[:batch_id]]
+
+    valid_student_ids = StudentBatch.where(batch_id: batch_ids).pluck(:student_id)
+    valid_na_ids = Student.where(id: valid_student_ids).pluck(:new_admission_id).uniq
+
+    Student.where(new_admission_id: valid_na_ids).find_each do |s|
+      map_ids[s.new_admission_id] = s.roll_number
+    end
+
+    att_csv = CSV.generate(headers: true) do |writer|
+      writer << headers
+      NewAdmission.where(id: valid_na_ids).each do |na|
+        writer << [
+          na.id,
+          map_ids[na.id],
+          na.name,
+          na.parent_mobile,
+          na.student_mobile,
+          na.email,
+          na.gender,
+          na.extra_data["set_center_11th"],
+          na.course_type,
+          na.rcc_branch,
+          na.extra_data["board"]
+        ]
+      end
+    end
+    send_data att_csv, filename: "SET-#{Date.today}-#{params[:batch_id]}.csv"
+  end
+
   private
 
   def batch_params
