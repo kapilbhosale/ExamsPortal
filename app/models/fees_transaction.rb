@@ -237,7 +237,7 @@ class FeesTransaction < ApplicationRecord
       end
 
       if row["R1"].present?
-        create_ft(student.id, row["P1"].to_i, row["R1"], row["D1"], row["Due1"], template)
+        create_ft(student.id, row["P1"].to_i, row["R1"], row["D1"], row["Due1"], template, row["Discount"])
       end
 
       if row["R2"].present?
@@ -253,14 +253,14 @@ class FeesTransaction < ApplicationRecord
   end
 
 
-  def self.create_ft(student_id, paid, receipt_number, pay_date, rem_amount, template)
+  def self.create_ft(student_id, paid, receipt_number, pay_date, rem_amount, template, discount = 0)
     fees = (paid * 100) / 118.0
     cgst = (paid - fees) / 2.0
     sgst = (paid - fees) / 2.0
 
     paid_data = {
       "paid" => paid,
-      "discount" => 0,
+      "discount" => discount,
       "cgst" => cgst,
       "sgst" => sgst,
       "fees" => fees,
