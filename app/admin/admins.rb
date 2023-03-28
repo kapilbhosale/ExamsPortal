@@ -33,7 +33,7 @@ ActiveAdmin.register Admin do
       f.input :password
       f.input :password_confirmation
       f.input :roles
-      f.input :org
+      f.input :org, as: :select, collection: Org.all.map { |org| [org.subdomain, org.id] }, include_blank: false
     end
 
     f.actions
