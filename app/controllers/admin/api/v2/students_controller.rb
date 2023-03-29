@@ -21,7 +21,9 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
   end
 
   def suggested_roll_number
-    render json: { roll_number: Student.random_roll_number }
+    roll_number = (params[:orgCode] == '102' ? Student.random_roll_number(5) : Student.random_roll_number )
+
+    render json: { roll_number: roll_number }
   end
 
   def create

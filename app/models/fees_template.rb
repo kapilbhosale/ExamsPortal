@@ -23,20 +23,21 @@ class FeesTemplate < ApplicationRecord
   end
 end
 
+# org = Org.find_by(subdomain: 'bhosale')
 # FeesTemplate.create({
 #   org_id: 1,
-#   name: "Template-11",
+#   name: "Template-20k",
 #   description: "Template for 11th students 2023-24",
 #   :heads => [{
 #     "cgst" => 9,
 #     "head" => "Tution Fees",
 #     "sgst" => 9,
-#     "amount" => 24000
+#     "amount" => 14000
 #   },{
 #     "cgst" => 2.5,
-#     "head" => "Book Fees",
+#     "head" => "Publication Fees",
 #     "sgst" => 2.5,
-#     "amount" => 10000
+#     "amount" => 6000
 #   }]
 # })
 

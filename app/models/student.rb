@@ -90,6 +90,7 @@ class Student < ApplicationRecord
   before_save :set_api_key
 
   ROLL_NUMBER_RANGE = (10_00_000..99_99_999)
+  ROLL_NUMBER_RANGE_5_DIGITS = (10_000..99_999)
 
   attr_writer :login
 
@@ -192,9 +193,9 @@ class Student < ApplicationRecord
     "#{key}-#{app_reset_count}"
   end
 
-  def self.random_roll_number
+  def self.random_roll_number(digits=7)
     loop do
-      number = rand(ROLL_NUMBER_RANGE)
+      number = (digits == 7 ? rand(ROLL_NUMBER_RANGE) : rand(ROLL_NUMBER_RANGE_5_DIGITS))
       break number unless self.exists?(roll_number: number)
     end
   end
