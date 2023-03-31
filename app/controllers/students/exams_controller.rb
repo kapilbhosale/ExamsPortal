@@ -18,7 +18,7 @@ class Students::ExamsController < Students::BaseController
 
       pdf = Prawn::Document.new(:left_margin => 50)
       # Set the background image for the first page
-      time = "15 Jan 2023, 1:00PM - 4:20PM"
+      time = "02 April 2023, 11-02PM, 03-06PM"
 
       table_data = [
               [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
