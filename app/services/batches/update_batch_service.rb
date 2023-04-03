@@ -2,7 +2,7 @@ class UpdateBatchError < StandardError; end
 
 module Batches
   class UpdateBatchService
-    attr_reader :batch, :name, :start_time, :end_time, :batch_group_id, :fees_template_ids, :klass
+    attr_reader :batch, :name, :start_time, :end_time, :batch_group_id, :fees_template_ids, :klass, :admin_ids
 
     def initialize(id, batch_params, batch_group_id, klass)
       @batch = Batch.find_by(id: id)
@@ -12,6 +12,7 @@ module Batches
       @fees_template_ids = batch_params[:fees_template_ids]
       @batch_group_id = batch_group_id
       @klass = klass
+      @admin_ids = batch_params[:admin_ids]
     end
 
     def call
@@ -20,6 +21,11 @@ module Batches
 
       BatchFeesTemplate.where(batch_id: batch.id).delete_all
       batch.fees_templates << FeesTemplate.where(id: fees_template_ids)
+
+      AdminBatch.where(batch_id: batch.id).destroy_all
+      (admin_ids || []).each do |admin_id|
+        AdminBatch.create(batch_id: batch.id, admin_id: admin_id)
+      end
 
       { status: true, message: 'Batch updated successfully' }
     rescue UpdateBatchError, ActiveRecord::RecordInvalid => ex

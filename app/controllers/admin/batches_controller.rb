@@ -2,7 +2,7 @@ class Admin::BatchesController < Admin::BaseController
   before_action :check_permissions
 
   def index
-    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group, :fees_templates).all.order(:id)
+    @batches = Batch.where(org: current_org, id: current_admin.batches&.ids).includes(:batch_group, :fees_templates).order(:created_at)
   end
 
   def new
@@ -11,13 +11,14 @@ class Admin::BatchesController < Admin::BaseController
     @klasses = current_org.data['classes'] || []
     @fees_templates = FeesTemplate.where(org: current_org)
     @selected_templates = []
+    @admins = Admin.where(org: current_org)
   end
 
   def create
     @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id], params[:klass]).call
 
     if @response[:status]
-      Admin.where(org_id: current_org.id).each do |admin|
+      Admin.where(org_id: current_org.id).where(id: params[:batch][:admin_ids]).each do |admin|
         admin.batches << @response[:batch]
       end
     end
@@ -54,6 +55,7 @@ class Admin::BatchesController < Admin::BaseController
     @klasses = current_org.data['classes'] || []
     @fees_templates = FeesTemplate.where(org: current_org)
     @selected_templates = @batch.fees_templates&.ids || []
+    @admins = Admin.where(org: current_org)
   end
 
   def update
