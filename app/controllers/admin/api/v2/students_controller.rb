@@ -1,22 +1,31 @@
 class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
 
   def index
-    if params[:qr_code].present?
-      student_id = params[:qr_code].split("|")[1]
-      @students = Student.where(id: student_id)
-    elsif params[:roll_number].present? && params[:parent_mobile].present?
-      @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
-    elsif params[:roll_number].present?
-      @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number])
-    elsif params[:parent_mobile].present?
-      @students = Student.where(org_id: current_org.id, parent_mobile: params[:parent_mobile])
-    end
+    if params[:type] == 'online' && params[:ref_number].present?
+      new_admission = NewAdmission.find_by(id: params[:ref_number])
+      if new_admission.present?
+        batch_ids = Batch.where(org_id: current_org.id).joins(:batch_fees_templates).ids.uniq
+        batch_ids = current_admin.batches.ids & batch_ids
+        @students = Student.includes(:batches).where(new_admission_id: new_admission.id).where(batches: { id: batch_ids })
+      end
+    else
+      if params[:qr_code].present?
+        student_id = params[:qr_code].split("|")[1]
+        @students = Student.where(id: student_id)
+      elsif params[:roll_number].present? && params[:parent_mobile].present?
+        @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number], parent_mobile: params[:parent_mobile])
+      elsif params[:roll_number].present?
+        @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number])
+      elsif params[:parent_mobile].present?
+        @students = Student.where(org_id: current_org.id, parent_mobile: params[:parent_mobile])
+      end
 
-    if @students.present?
-      batch_ids = Batch.where(org_id: current_org.id).joins(:batch_fees_templates).ids.uniq
-      # filtering batches of the current admin only.
-      batch_ids = current_admin.batches.ids & batch_ids
-      @students = @students.joins(:fees_transactions).includes(:batches).where(batches: { id: batch_ids })
+      if @students.present?
+        batch_ids = Batch.where(org_id: current_org.id).joins(:batch_fees_templates).ids.uniq
+        # filtering batches of the current admin only.
+        batch_ids = current_admin.batches.ids & batch_ids
+        @students = @students.joins(:fees_transactions).includes(:batches).where(batches: { id: batch_ids })
+      end
     end
   end
 

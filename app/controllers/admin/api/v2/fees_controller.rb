@@ -66,6 +66,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
       :template_id,
       :next_due_date,
       :fees_transaction_token,
+      :ref,
       fees_details: {})
   end
 end

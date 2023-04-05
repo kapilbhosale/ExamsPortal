@@ -39,6 +39,15 @@ module Fees
           ft.received_by_admin_id = current_admin&.id
           ft.received_by = current_admin&.name || current_admin&.email
         end
+
+        if create_params[:ref].present?
+          na = NewAdmission.find_by(id: create_params[:ref])
+          if na.present?
+            @fees_transaction.mode = 'online'
+            @fees_transaction.created_at = na.created_at
+          end
+        end
+
         @fees_transaction.save
       end
 
