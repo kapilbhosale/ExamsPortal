@@ -6,13 +6,19 @@
       </div>
       <div class="card-body">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-2">
             <div class="form-group">
               <label class="form-label">Roll Number*</label>
               <%= form.text_field :roll_number, class: 'form-control'%>
             </div>
           </div>
-          <div class="col-sm-6 col-md-5">
+          <div class="col-sm-6 col-md-2">
+            <div class="form-group">
+              <label class="form-label">New RN</label>
+              <input type="text" value="<%= @student_data[:roll_number] %>" class="form-control">
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
             <div class="form-group">
               <label class="form-label">Name*</label>
               <%= form.text_field :name, class: 'form-control', placeholder: 'Student Name' %>
