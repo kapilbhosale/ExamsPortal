@@ -40,8 +40,8 @@ class Discount < ApplicationRecord
         status: 'valid_discount',
         roll_number: row['roll_no'],
         comment: "RCC set discount",
-        approved_by: "SET exam",
-        amount: 60_000 - row['amount_pay'].to_i,
+        approved_by: "SET exam 7 april",
+        amount: row['batch_fees'].to_i - row['amount_pay'].to_i,
         data: {
           amount_to_pay: row['amount_pay'],
           discount_percent: row['con_percent'],
