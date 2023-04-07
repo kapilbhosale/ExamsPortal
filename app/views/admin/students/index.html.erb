@@ -31,14 +31,12 @@
                   <tr>
                     <th><%= sort_link(@search, :roll_number) %></th>
                     <th><%= sort_link(@search, :name) %></th>
-                    <th>Password</th>
                     <th>Parent Mobile</th>
                     <% if ['exams', 'rcc'].include?(request.subdomain) %>
-                      <th> Pending amount <th>
+                      <th> Pending fee <th>
                       <th> Blocked <th>
                     <% end %>
-                    <th>App Login</th>
-                    <th>laptop Login</th>
+                    <th>Login</th>
                     <th>
                       <% unless @current_org.rcc? %>
                         <button class="btn btn-danger clearfix btn-sm">
@@ -70,14 +68,12 @@
                           </ul>
                         </span>
                       </td>
-                      <td><%= student.raw_password %></td>
                       <td><%= student.parent_mobile %></td>
                       <% if ['exams', 'rcc'].include?(request.subdomain) %>
                         <td><%= student.pending_amount || '-' %><td>
                         <td><%= student.block_videos? ? 'YES' : '-' %><td>
                       <% end %>
-                      <td><%= student.app_login? ? 'YES' : '-' %></td>
-                      <td><%= student.is_laptop_login? ? 'YES' : '-' %></td>
+                      <td><%= student.app_login? ? 'App' : (student.is_laptop_login? ? 'Browser' : '-') %></td>
                       <td>
                         <%= link_to '', admin_student_attendance_report_path(student), class: "fa fa-calendar" %>&nbsp;
                         <%= link_to '', admin_genres_path({student_id: student.id}), class: "fa fa-folder-open" %>&nbsp;

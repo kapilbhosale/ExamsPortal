@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-lg-8">
+  <div class="col-lg-12">
     <form class="card">
       <div class="card-header">
         <h3 class="card-title">Student Details</h3>
@@ -79,6 +79,39 @@
               </div>
             </div>
           </div>
+            <h4>Payment Information</h4>
+            <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+              <thead>
+                <tr>
+                  <th>Ref No</th>
+                  <th>Amount</th>
+                  <th>Student Name</th>
+                  <th>Parent Mob</th>
+                  <th>Batch</th>
+                  <th>Center</th>
+                  <th>RRN</th>
+                  <th>bank</th>
+                  <th>VPA</th>
+                  <th>Date & Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @transactions.each do |transaction| %>
+                  <tr>
+                    <td><%= transaction.id %></td>
+                    <td><%= transaction.fees.to_f %></td>
+                    <td><%= transaction.name %></td>
+                    <td><%= transaction.parent_mobile %></td>
+                    <td><%= transaction.batch %></td>
+                    <td><%= transaction.rcc_branch %></td>
+                    <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "acquirer_data", "rrn") %></td>
+                    <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "method") %></td>
+                    <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "vpa") %></td>
+                    <td><%= transaction.created_at&.strftime("%d-%b-%y %r") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
         </div>
       <% else %>
         <div class="card-body">

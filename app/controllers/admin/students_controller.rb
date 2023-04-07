@@ -94,6 +94,7 @@ class Admin::StudentsController < Admin::BaseController
 
   def show
     @student = Student.find_by(id: params[:id])
+    @transactions = NewAdmission.where(student_id: @student&.id, free: false).success || []
   end
 
   def edit
