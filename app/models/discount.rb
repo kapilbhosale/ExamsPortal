@@ -52,14 +52,3 @@ class Discount < ApplicationRecord
     end
   end
 end
-
-#  amount           :decimal(, )
-#  approved_by      :string
-#  comment          :string
-#  data             :jsonb
-#  parent_mobile    :string
-#  roll_number      :string
-#  status           :string
-#  student_mobile   :string
-#  student_name     :string
-#  type_of_discount :string
