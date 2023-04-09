@@ -4,9 +4,8 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     if params[:type] == 'online' && params[:ref_number].present?
       new_admission = NewAdmission.find_by(id: params[:ref_number])
       if new_admission.present?
-        batch_ids = Batch.where(org_id: current_org.id).joins(:batch_fees_templates).ids.uniq
-        batch_ids = current_admin.batches.ids & batch_ids
-        @students = Student.includes(:batches).where(new_admission_id: new_admission.id).where(batches: { id: batch_ids })
+        student_id = new_admission.student_id
+        @students = Student.where(id: student_id)
       end
     else
       if params[:qr_code].present?
