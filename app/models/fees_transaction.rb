@@ -215,7 +215,7 @@ class FeesTransaction < ApplicationRecord
 
       org = Org.find 1
       student = Student.find_by(org_id: org.id, roll_number: std[:roll_number], parent_mobile: std[:parent_mobile])
-      batch = Batch.find_by(org_id: org.id, id: row["Batch ID"]) || Batch.find(5)
+      batch = Batch.find_by(org_id: org.id, id: row["Batch ID"])
       template = batch.fees_templates.first
 
       if student.present?
@@ -237,19 +237,23 @@ class FeesTransaction < ApplicationRecord
       end
 
       if row["R1"].present?
-        create_ft(student.id, row["P1"].to_i, row["R1"], row["D1"], row["Due1"], template, row["Discount"])
+        create_ft(student.id, row["P1"].to_i, clean_number(row["R1"]), row["D1"], clean_number(row["Due1"]), template, clean_number(row["Discount"]))
       end
 
       if row["R2"].present?
-        create_ft(student.id, row["P2"].to_i, row["R2"], row["D2"], row["Due2"], template)
+        create_ft(student.id, row["P2"].to_i, clean_number(row["R2"]), row["D2"], clean_number(row["Due2"]), template)
       end
 
       if row["R3"].present?
-        create_ft(student.id, row["P3"].to_i, row["R3"], row["D3"], row["Due"], template)
+        create_ft(student.id, row["P3"].to_i, clean_number(row["R3"]), row["D3"], clean_number(row["Due"]), template)
       end
 
       putc "."
     end
+  end
+
+  def self.clean_number(num)
+    num.gsub(",", "").to_i
   end
 
 
