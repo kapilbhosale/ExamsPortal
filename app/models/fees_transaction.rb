@@ -311,7 +311,7 @@ class FeesTransaction < ApplicationRecord
       .order(:created_at)
       .last&.receipt_number
 
-    self.receipt_number = ( db_receipt_number || 0) + 1
+    self.receipt_number = (db_receipt_number || 0) + 1
   end
 
   def update_token_of_the_day

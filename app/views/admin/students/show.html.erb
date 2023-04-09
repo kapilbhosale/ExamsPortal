@@ -87,12 +87,12 @@
                   <th>Amount</th>
                   <th>Student Name</th>
                   <th>Parent Mob</th>
-                  <th>Batch</th>
                   <th>Center</th>
                   <th>RRN</th>
                   <th>bank</th>
                   <th>VPA</th>
                   <th>Date & Time</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -102,12 +102,12 @@
                     <td><%= transaction.fees.to_f %></td>
                     <td><%= transaction.name %></td>
                     <td><%= transaction.parent_mobile %></td>
-                    <td><%= transaction.batch %></td>
                     <td><%= transaction.rcc_branch %></td>
                     <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "acquirer_data", "rrn") %></td>
                     <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "method") %></td>
                     <td><%= transaction.payment_callback_data&.dig("payload", "payment", "entity", "vpa") %></td>
                     <td><%= transaction.created_at&.strftime("%d-%b-%y %r") %></td>
+                    <td><%= transaction.success? ? 'Success' : 'fail' %></td>
                   </tr>
                 <% end %>
               </tbody>
