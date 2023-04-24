@@ -58,10 +58,10 @@
               </a>
             </td>
             <td class="text-center">
-              <a href="<%= admin_video_lectures_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
+              <a href="<%= admin_study_pdfs_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-info" role="button" aria-pressed="true">
                 <%= genre.study_pdfs_count %>
               </a>
-              <a href="<%= admin_study_pdfs_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
+              <a href="<%= new_admin_study_pdf_path({q: {genre_id: genre.id}}) %>" class="btn btn-sm btn-outline-warning" role="button" aria-pressed="true">
                 +
               </a>
             </td>
@@ -98,6 +98,7 @@
         <% end %>
       </tbody>
     </table>
+    <%= paginate @genres %>
   </div>
 </div>
 

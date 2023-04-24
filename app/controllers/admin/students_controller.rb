@@ -5,7 +5,7 @@ class Admin::StudentsController < Admin::BaseController
 
   def index
     @base_url = request.host_with_port
-    @fees_host = Rails.env.production? ? "https://fees-app.eduaakar.com" : "http://localhost:3002"
+    @fees_host = "#"
 
     @batches_with_templates = BatchFeesTemplate.all.pluck(:batch_id)
     @search = Student

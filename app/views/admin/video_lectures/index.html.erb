@@ -2,15 +2,12 @@
   <div class="card-header">
     <div class="col-md-12">
       <div class="col-md-6">
-        <h5 style="margin-top: 7px">Video Lectures</h5>
+        <h5 style="margin-top: 7px">Videos : <a href="/admin/genres" style="color: blue; text-decoration: underline">All Videos</a> / <a href="<%= "/admin/genres?q[subject_id]=#{@genre&.subject&.id}"%> " style="color: blue; text-decoration: underline"><%= @genre&.subject&.name %></a><%= " / #{@genre&.name}" %></h5>
       </div>
-      <div class="col-md-2 text-right">
+      <div class="col-md-2 offset-md-2 text-right">
         <p id="btn-toggle-filter" class="btn btn-outline-light" style="color: gray">
           Filters: <span class="	glyphicon glyphicon-filter"></span>
         </p>
-      </div>
-      <div class="col-md-2 text-right">
-        <a href="<%= admin_genres_path %>" class="btn btn-warning" role="button" aria-pressed="true">+ Video Folder</a>
       </div>
       <div class="col-md-2 text-right" style="margin-top: 7px">
         <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add Video Lecture'.html_safe, new_admin_video_lecture_path %>

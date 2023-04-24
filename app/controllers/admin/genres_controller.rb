@@ -15,6 +15,7 @@ class Admin::GenresController < Admin::BaseController
 
     @search = @search.search(search_params)
     @genres = @search.result.order(created_at: :desc).includes(:subject)
+    @genres = @genres.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
     @subjects = Subject.where(org: current_org).all
 
     if params[:student_id].present?

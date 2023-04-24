@@ -91,9 +91,6 @@
               <i class="fa fa-mobile-alt"></i> Android APP
             </a>
             <div class="dropdown-menu">
-              <% if current_admin.can_manage(:pdfs) %>
-                <a class="dropdown-item" href="<%= admin_study_pdfs_path %>">PDF</a>
-              <% end %>
               <% if current_admin.can_manage(:notifications) %>
                 <a class="dropdown-item" href="<%= admin_notifications_path %>">Notifications</a>
               <% end %>

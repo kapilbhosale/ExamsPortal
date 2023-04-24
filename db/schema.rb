@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_10_111718) do
+ActiveRecord::Schema.define(version: 2023_04_24_074846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -750,6 +750,7 @@ ActiveRecord::Schema.define(version: 2023_03_10_111718) do
     t.index ["org_id"], name: "index_students_on_org_id"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
     t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile"
+    t.index ["roll_number"], name: "index_students_on_roll_number"
   end
 
   create_table "study_pdf_types", force: :cascade do |t|
@@ -772,9 +773,11 @@ ActiveRecord::Schema.define(version: 2023_03_10_111718) do
     t.datetime "updated_at", null: false
     t.integer "study_pdf_type_id"
     t.bigint "genre_id"
+    t.bigint "subject_id"
     t.index ["genre_id"], name: "index_study_pdfs_on_genre_id"
     t.index ["org_id"], name: "index_study_pdfs_on_org_id"
     t.index ["study_pdf_type_id"], name: "index_study_pdfs_on_study_pdf_type_id"
+    t.index ["subject_id"], name: "index_study_pdfs_on_subject_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -872,4 +875,5 @@ ActiveRecord::Schema.define(version: 2023_03_10_111718) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "study_pdfs", "subjects"
 end

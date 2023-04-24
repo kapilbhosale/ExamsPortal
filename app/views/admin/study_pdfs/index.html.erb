@@ -3,13 +3,10 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-8">
-          <h5 class="pt-3">PDFs</h5>
+          <h5 style="margin-top: 7px">PDFs : <a href="/admin/genres" style="color: blue; text-decoration: underline">All pdfs</a> / <a href="<%= "/admin/genres?q[subject_id]=#{@genre&.subject&.id}"%> " style="color: blue; text-decoration: underline"><%= @genre&.subject&.name %></a><%= "  / #{@genre&.name}" %></h5>
         </div>
-        <div class="col-md-3 text-right">
-          <%= link_to '+ Add New PDF Type', admin_study_pdf_types_path, method: :get, class: "btn btn-warning btn-sm" %>
-        </div>
-        <div class="col-md-1 text-right">
-          <%= link_to 'Add New PDF', new_admin_study_pdf_path, method: :get, class: "btn btn-info btn-sm" %>
+        <div class="col-md-1 offset-md-3text-right">
+          <%= link_to 'Add New PDF', new_admin_study_pdf_path(q: {genre_id: @genre.id}), method: :get, class: "btn btn-info btn-sm" %>
         </div>
       </div>
       <div class="card-body">
@@ -20,10 +17,10 @@
                 <tr>
                   <th>Id</th>
                   <th>Pdf Name</th>
-                  <th>Desc.</th>
+                  <th>Subject</th>
+                  <th>Topic</th>
                   <th>Q's Paper</th>
                   <th>A's Paper</th>
-                  <th>Type</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -41,10 +38,10 @@
                         </ul>
                       </span>
                     </td>
-                    <td><%= study_pdf.description %></td>
-                    <td><%= link_to 'link', study_pdf.question_paper&.url, target: "_blank" %></td>
+                    <td><%= study_pdf.subject&.name %></td>
+                    <td><%= study_pdf.genre&.name %></td>
+                    <td><%= study_pdf.question_paper&.url ? (link_to 'link', study_pdf.question_paper&.url, target: "_blank") : "-" %></td>
                     <td><%= link_to 'link', study_pdf.solution_paper&.url, target: "_blank" %></td>
-                    <td><%= study_pdf.study_pdf_type&.name %></td>
                     <td>
                       <%= link_to 'Edit', edit_admin_study_pdf_path(study_pdf), method: :get, class: "btn btn-warning btn-sm" %>
                       <%= link_to 'Del', admin_study_pdf_path(study_pdf), method: :delete, class: "btn btn-danger btn-sm" %>

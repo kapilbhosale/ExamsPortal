@@ -16,6 +16,7 @@ class Admin::VideoLecturesController < Admin::BaseController
       end
 
       if params[:q][:genre_id].present?
+        @genre = Genre.find_by(id: params[:q][:genre_id])
         @search = @search.where(genre_id: params[:q][:genre_id])
       end
     end
