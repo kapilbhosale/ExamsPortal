@@ -195,7 +195,7 @@ class Student < ApplicationRecord
 
   def self.random_roll_number(digits=7)
     loop do
-      number = (digits == 7 ? rand(ROLL_NUMBER_RANGE) : rand(ROLL_NUMBER_RANGE_5_DIGITS))
+      number = rand(ROLL_NUMBER_RANGE) #(digits == 7 ? rand(ROLL_NUMBER_RANGE) : rand(ROLL_NUMBER_RANGE_5_DIGITS))
       break number unless self.exists?(roll_number: number)
     end
   end
