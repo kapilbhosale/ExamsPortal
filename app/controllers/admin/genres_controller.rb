@@ -1,7 +1,17 @@
 class Admin::GenresController < Admin::BaseController
   def index
-    @genres = Genre.where(org_id: current_org.id).includes(:subject)
-    @search = Genre.where(org_id: current_org.id).order(id: :desc)
+    if params[:filter] && params[:filter].keys.length == 1
+      if params[:filter]["pdf"].present?
+        @pdf = true
+        @search = Genre.where(org_id: current_org.id).where('study_pdfs_count > 0').order(id: :desc)
+      else
+        @video = true
+        @search = Genre.where(org_id: current_org.id).where('video_lectures_count > 0').order(id: :desc)
+      end
+    else
+      @pdf, @video = true, true
+      @search = Genre.where(org_id: current_org.id).order(id: :desc)
+    end
 
     if params[:q].present?
       if params[:q][:subject_id].present?
