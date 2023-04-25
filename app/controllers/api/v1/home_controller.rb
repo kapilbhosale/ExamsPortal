@@ -79,7 +79,7 @@ class Api::V1::HomeController < Api::V1::ApiController
         end
       end
 
-      banners_data + current_org.data['top_banners']
+      banners_data + (current_org.data['top_banners'] || [])
     end
   end
 

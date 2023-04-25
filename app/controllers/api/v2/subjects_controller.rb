@@ -1,12 +1,20 @@
 class Api::V2::SubjectsController < Api::V2::ApiController
   ITEMS_PER_PAGE = 20
   def index
+    if params[:type] == 'video'
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { video_lectures_count: 1..Float::INFINITY }).all
+      topic_counts_by_subject_id = Genre.where(org_id: 1).where('video_lectures_count > 0').group(:subject_id).count
+    else
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { study_pdfs_count: 1..Float::INFINITY }).all
+      topic_counts_by_subject_id = Genre.where(org_id: 1).where('study_pdfs_count > 0').group(:subject_id).count
+    end
+
     data = []
-    Subject.where(org_id: current_org.id).includes(:genres).all.each do |subject|
+    subjects.each do |subject|
       data << {
         id: subject.id,
         name: subject.name,
-        topics_count: subject.genres.count,
+        topics_count: topic_counts_by_subject_id[subject.id] || 0,
         updated_on: subject.genres&.last&.created_at&.strftime('%d-%b-%Y %I:%M%p') || '-'
       }
     end
@@ -17,14 +25,19 @@ class Api::V2::SubjectsController < Api::V2::ApiController
   def subject_folders
     subject = Subject.find_by(id: params[:id])
     page = (params[:page] || 1).to_i
-    total = Genre.where(org_id: current_org.id).where(subject_id: subject&.id).where(hidden: false).count
 
     folders = Genre
       .where(org_id: current_org.id)
       .where(subject_id: subject&.id)
       .where(hidden: false)
-      .order(id: :desc).page(page)
-      .per(params[:limit] || ITEMS_PER_PAGE)
+
+    if params[:type] == 'pdfs'
+      folders = folders.where('study_pdfs_count > 0')
+    else
+      folders = folders.where('video_lectures_count > 0')
+    end
+    total = folders.count
+    folders = folders.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
 
     if folders.blank?
       render json: {
@@ -38,26 +51,34 @@ class Api::V2::SubjectsController < Api::V2::ApiController
 
     topics = []
 
-    fodler_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
-    videos_all_count_by_ids = fodler_videos.group(:genre_id).count
-    videos_new_count_by_ids = fodler_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
-
-    fodler_pdfs = StudyPdf.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
-    pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
-    pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+    if params[:type] == 'pdfs'
+      fodler_pdfs = StudyPdf.includes(:batches).where(batches: { id: current_student.batches.ids}).where(genre_id: folders.ids )
+      pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
+      pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+    else
+      fodler_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
+      videos_all_count_by_ids = fodler_videos.group(:genre_id).count
+      videos_new_count_by_ids = fodler_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+    end
 
     folders.each do |folder|
-      topics << {
-        id: folder.id,
-        name: folder.name,
-        videos: {
-          count: videos_all_count_by_ids[folder.id],
-          new: videos_new_count_by_ids[folder.id]
-        },
-        pdf: {
+      if params[:type] == 'pdfs'
+        pdf = {
           count: pdfs_all_count_by_ids[folder.id],
           new: pdfs_new_count_by_ids[folder.id]
         }
+      else
+        video = {
+          count: videos_all_count_by_ids[folder.id],
+          new: videos_new_count_by_ids[folder.id]
+        }
+      end
+
+      topics << {
+        id: folder.id,
+        name: folder.name,
+        videos: video,
+        pdf: pdf
       }
     end
 
@@ -66,11 +87,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       page_size: ITEMS_PER_PAGE,
       total_page: (total / ITEMS_PER_PAGE.to_f).ceil,
       count: total,
-      data: [
-        subject_id: subject&.id,
-        subject_name: subject&.name,
-        topics: topics
-      ]
+      data: topics
     }
   end
 
