@@ -3,10 +3,10 @@ class Api::V2::SubjectsController < Api::V2::ApiController
   def index
     if params[:type] == 'video'
       subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { video_lectures_count: 1..Float::INFINITY }).all
-      topic_counts_by_subject_id = Genre.where(org_id: 1).where('video_lectures_count > 0').group(:subject_id).count
+      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where('video_lectures_count > 0').group(:subject_id).count
     else
       subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { study_pdfs_count: 1..Float::INFINITY }).all
-      topic_counts_by_subject_id = Genre.where(org_id: 1).where('study_pdfs_count > 0').group(:subject_id).count
+      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where('study_pdfs_count > 0').group(:subject_id).count
     end
 
     data = []
