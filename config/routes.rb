@@ -238,9 +238,7 @@ Rails.application.routes.draw do
         post 'login', on: :collection
         get :progress_report, on: :collection
       end
-      resources :notifications, only: [:index] do
-        get :filter_types, on: :collection
-      end
+      resources :notifications
       resources :exams
       get 'subjects', to: 'subjects#index'
       get 'subjects/:id/folders', to: 'subjects#subject_folders'

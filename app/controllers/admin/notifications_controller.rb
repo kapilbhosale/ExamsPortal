@@ -43,7 +43,7 @@ class Admin::NotificationsController < Admin::BaseController
       end
     end
 
-    redirect_to "#{admin_android_apps_path}#notifications"
+    redirect_to admin_notifications_path
   end
 
   def create
@@ -66,7 +66,7 @@ class Admin::NotificationsController < Admin::BaseController
       end
     end
 
-    redirect_to "#{admin_android_apps_path}#notifications"
+    redirect_to admin_notifications_path
   end
 
   def destroy
@@ -74,7 +74,7 @@ class Admin::NotificationsController < Admin::BaseController
     notification.destroy if notification.present?
     flash[:success] = "Notification deleted, successfully"
 
-    redirect_to "#{admin_android_apps_path}#notifications"
+    redirect_to admin_notifications_path
   end
 
   def validate_notification_params
