@@ -69,7 +69,7 @@ class VideoLecture < ApplicationRecord
       .where(enabled: true)
       .where('publish_at <= ?', Time.current)
       .where('hide_at IS NULL or hide_at >= ?', Time.current)
-      .order(:created_at).limit(3).map do |lect|
+      .order(created_at: :desc).limit(3).map do |lect|
         lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
         lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
         lect_data['added_ago'] = (lect.publish_at || lect.created_at).strftime("%d-%B-%Y %I:%M%p")
