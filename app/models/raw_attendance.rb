@@ -28,7 +28,7 @@ class RawAttendance < ApplicationRecord
       logs.each do |log|
         next if log.blank?
 
-        REDIS_CACHE.set(log['device_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
+        REDIS_CACHE.set(log['machine_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
 
         student_id = students_by_roll_number[log['emp_id'].to_i]&.id
         next if student_id.blank?

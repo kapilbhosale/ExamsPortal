@@ -2,7 +2,7 @@ class Admin::Api::AttendanceController < Admin::Api::ApiController
   skip_before_action :authenticate
 
   def create
-    if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463" && params[:mac] == "66:1a:92:34:77:66"
+    if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463" && params[:mac] == "7a:0d:25:9e:8b:10"
       RawAttendance.create(org_id: current_org.id, data: params[:attendanceData])
       render json: {status: "ok"}, status: :ok and return
     else
