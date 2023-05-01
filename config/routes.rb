@@ -189,6 +189,7 @@ Rails.application.routes.draw do
         get 'payment-history', to: 'fees#payment_history'
         post 'fees-transaction', to: 'fees#create_fees_transaction'
         get  'reports/collection', to: 'fees_reports#collection'
+        get  'reports/notes', to: 'fees_reports#notes'
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
         get  'batches', to: 'batches#index'
         resources :students do

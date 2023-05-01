@@ -17,4 +17,21 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
 
     render json: collection_data
   end
+
+  def notes
+    render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('notes')
+
+    notes_data = {}
+    @notes = Note.all.index_by(&:id)
+    StudentNote.where(created_at: Time.current.all_day).group(:note_id).count.each do |key, value|
+      notes_data[key] = {
+        id:  @notes[key].id,
+        name: @notes[key].name,
+        count:  value,
+        date: Time.current.strftime('%d/%b/%Y')
+      }
+    end
+
+    render json: notes_data
+  end
 end
