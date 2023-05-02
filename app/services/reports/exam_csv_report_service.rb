@@ -109,8 +109,10 @@ module Reports
           csv << csv_row
         end
 
-        Student.where(id: exam.un_appeared_student_ids).includes(:batches).find_each do |student|
-          csv << [student.roll_number, student.name, student.parent_mobile, student.student_mobile, student.batches.pluck(:name).join(', ')]
+        exam.un_appeared_student_ids.each_slice(1000).each do |student_slice|
+          Student.where(id: student_slice).includes(:batches).find_each do |student|
+            csv << [student.roll_number, student.name, student.parent_mobile, student.student_mobile, student.batches.pluck(:name).join(', ')]
+          end
         end
 
       end
