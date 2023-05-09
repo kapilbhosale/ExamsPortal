@@ -2,11 +2,13 @@ class Api::V2::SubjectsController < Api::V2::ApiController
   ITEMS_PER_PAGE = 20
   def index
     if params[:type] == 'video'
-      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { video_lectures_count: 1..Float::INFINITY }).all
-      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where('video_lectures_count > 0').group(:subject_id).count
+      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: {id: genre_ids, video_lectures_count: 1..Float::INFINITY }).all
+      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where(id: genre_ids).where('video_lectures_count > 0').group(:subject_id).count
     else
-      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { study_pdfs_count: 1..Float::INFINITY }).all
-      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where('study_pdfs_count > 0').group(:subject_id).count
+      genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { id: genre_ids, study_pdfs_count: 1..Float::INFINITY }).all
+      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where(id: genre_ids).where('study_pdfs_count > 0').group(:subject_id).count
     end
 
     data = []
