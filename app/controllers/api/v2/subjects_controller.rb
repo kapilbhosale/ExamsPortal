@@ -34,10 +34,13 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       .where(hidden: false)
 
     if params[:type] == 'pdfs'
-      folders = folders.where('study_pdfs_count > 0')
+      genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
+      folders = folders.where(id: genre_ids).where('study_pdfs_count > 0')
     else
-      folders = folders.where('video_lectures_count > 0')
+      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
+      folders = folders.where(id: genre_ids).where('video_lectures_count > 0')
     end
+
     total = folders.count
     folders = folders.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
 
