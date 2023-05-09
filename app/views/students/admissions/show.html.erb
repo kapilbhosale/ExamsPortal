@@ -32,7 +32,7 @@
           var selectedBatch = $('#batch').find(":selected").val();
           var rccBranch = $('input[name=rcc_branch]:checked').val();
 
-          $('#neet-saarthi').text("[RCC NEET SET/SAARTHI is for PCB/PCM]");
+          $('#neet-saarthi').text("[RCC NEET SET/SAARTHI is for PCB]");
 
           if ( selectedBatch === "11th_set" ) {
             $('.11th-set-center-selection').show();
@@ -274,21 +274,19 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "11th_set", text: "** 11th RCC-SET (2 april 2023)**"},
-          {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
+          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
           {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
 
         const AUR_BATCHES = [
-          {val: "11th_set", text: "** 11th RCC-SET (2 april 2023)**"},
-          {val: "12th_set", text: "** NEET SAARTHI 2023 (rapid revision & test series) **"},
+          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
           // {val: "12th_set_1", text: "** 12th RCC-SET (non-RCC ) 2023-24 **"},
           // {val: '11th_new', text: '11th Aurangabad 2022-23'},
           {val: "12th", text: "12th Regular Batch (2023-2024)"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
-          {val: "11th_set", text: "** 11th RCC-SET (2 april 2023)**"},
+          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
         ]
 
         function adjustBatchDropdown() {
@@ -509,8 +507,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="11th_set" value="11th_set"> ** 11th RCC-SET (2 april 2023)**</option>
-                <option id="12th_set" value="12th_set"> ** NEET SAARTHI 2023 (rapid revision & test series) **</option>
+                <option id="12th_set" value="12th_set"> "** Repeater SET 2023-24 **" </option>
                 <%# <option id="12th_set_1" value="12th_set_1"> ** 12th RCC-SET (non-RCC ) 2023-24 **</option> %>
                 <%# <option id="11th_new' value="11th_new"> 11th Regular Batch (2022-2023) </option> %>
                 <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>

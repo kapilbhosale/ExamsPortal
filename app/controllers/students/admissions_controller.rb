@@ -129,7 +129,7 @@ class Students::AdmissionsController < ApplicationController
           student_mobile: new_admission_params[:student_mobile],
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
-        ).where('created_at > ?', Date.parse("06-03-2023")).order(id: :desc)&.last
+        ).where('created_at > ?', Date.parse("09-may-2023")).order(id: :desc)&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
@@ -311,12 +311,12 @@ class Students::AdmissionsController < ApplicationController
         student_mobile: @new_admission.student_mobile
       ).where('created_at > ?', Date.parse("06-03-2023")).last
 
-      batches_saarthi_23_24 = ['LTR-SAARTHI-2023-24', 'NED-SAARTHI-2023-24', 'AUR-SAARTHI-2023-24']
+      batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
       batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
 
       student_batch_names = student&.batches&.pluck(:name) || []
       if student.blank? ||
-          (@new_admission.batch == '12th_set' && (student_batch_names & batches_saarthi_23_24).blank?) ||
+          (@new_admission.batch == '12th_set' && (student_batch_names & batches_rep_set_23_24).blank?) ||
           (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_p3).blank?)
         student = Student.add_student(@new_admission) rescue nil
       end

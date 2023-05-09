@@ -37,7 +37,8 @@ class RollNumberSuggestor < ApplicationRecord
     'repeater_set' => 2_000,
     'repeater_22_23' => 10_000,
     '11th_set_3' => 50_000,
-    'neet_23_24' => 50_000
+    'neet_23_24' => 50_000,
+    'rep_set_23_24' => 10_000,
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
@@ -51,7 +52,7 @@ class RollNumberSuggestor < ApplicationRecord
       batch_name = na.rcc_branch == 'aurangabad' ? '11_aurangabad' : '11th_22_23'
     end
 
-    batch_name = "neet_23_24" if na&.free? && batch_name == '12th_set'
+    batch_name = "rep_set_23_24" if na&.free? && batch_name == '12th_set'
     batch_name = "11th_set_3" if na&.free? && batch_name == '11th_set'
     batch_name = 'repeater_22_23' if batch_name == 'repeater'
 
