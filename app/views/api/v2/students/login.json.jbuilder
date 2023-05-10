@@ -10,6 +10,7 @@ json.student do
   json.fcm_token @student.fcm_token
   json.vimeo_access_token @student.org&.vimeo_access_token
   json.exam_portal_link @exam_portal_link
+  json.batches @student.batches.pluck(:name)
 end
 
 json.otp (@otp || '111111')
