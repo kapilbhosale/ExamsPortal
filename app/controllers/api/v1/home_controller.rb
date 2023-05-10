@@ -23,7 +23,8 @@ class Api::V1::HomeController < Api::V1::ApiController
         new_pdfs: nil
       },
       'student_name' => current_student.name.split(' ').first,
-      latest_videos: VideoLecture.latest_videos(current_student, helpers.full_domain_path)
+      latest_videos: VideoLecture.latest_videos(current_student, helpers.full_domain_path),
+      batches: current_student.batches.pluck(:name)
     }
     render json: json_data, status: :ok
   end
