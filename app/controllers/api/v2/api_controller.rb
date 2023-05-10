@@ -26,6 +26,11 @@ class Api::V2::ApiController < ApplicationController
   end
 
   def set_current_org
+    if Rails.env.development?
+      @current_org = Org.first
+      return
+    end
+
     @current_org = Org.find_by(subdomain: request.subdomain) || @current_student.org
   end
 end
