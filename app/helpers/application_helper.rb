@@ -67,6 +67,8 @@ module ApplicationHelper
 
     return 'PIS, Jalna' if ['pis'].include? subdomain
 
+    return 'Infinity, Akola' if ['infinity'].include? subdomain
+
     return 'Bhargav Career Academy' if ['bhargav'].include? subdomain
 
     return 'Chate digiEdu' if ['chate'].include? subdomain
