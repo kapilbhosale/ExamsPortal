@@ -145,28 +145,32 @@ class Admin::AttendanceController < Admin::BaseController
   end
 
   def present_sms(student)
-    sms_user = "RCCLatur"
-    sms_password = URI.encode_www_form_component("RCC@123#L")
-    sender_id = "RCCLtr"
-    template_id = '1007511804251225784'
-    entity_id = '1001545918985192145'
+    if current_org.rcc?
+      sms_user = "RCCLatur"
+      sms_password = URI.encode_www_form_component("RCC@123#L")
+      sender_id = "RCCLtr"
+      template_id = '1007511804251225784'
+      entity_id = '1001545918985192145'
 
-    msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{Date.today.strftime('%d-%B-%Y')} Class,\r\nTeam RCC"
-    msg = URI.encode_www_form_component(msg)
+      msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{Date.today.strftime('%d-%B-%Y')} Class,\r\nTeam RCC"
+      msg = URI.encode_www_form_component(msg)
 
-    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+    end
   end
 
   def absent_sms(student)
-    sms_user = "RCCLatur"
-    sms_password = URI.encode_www_form_component("RCC@123#L")
-    sender_id = "RCCLtr"
-    template_id = '1007771438372665235'
-    entity_id = '1001545918985192145'
+    if current_org.rcc?
+      sms_user = "RCCLatur"
+      sms_password = URI.encode_www_form_component("RCC@123#L")
+      sender_id = "RCCLtr"
+      template_id = '1007771438372665235'
+      entity_id = '1001545918985192145'
 
-    msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{Date.today.strftime('%d-%B-%Y')}. Kindly confirm. \r\nTeam RCC"
-    msg = URI.encode_www_form_component(msg)
+      msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{Date.today.strftime('%d-%B-%Y')}. Kindly confirm. \r\nTeam RCC"
+      msg = URI.encode_www_form_component(msg)
 
-    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+    end
   end
 end
