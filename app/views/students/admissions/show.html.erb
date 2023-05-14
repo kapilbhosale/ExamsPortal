@@ -557,7 +557,7 @@
 
         <div class="payment-selection-div" style="background-color: #d0f1cd; padding: 10px; display: none">
           <table style="width: 90%;">
-            <tr>
+            <%# <tr>
               <td><p style="color: gray;">Select Payment mode :: </p> </td>
               <td colspan="2" class="text-center"><p>Total Fees:	<b><span id="total">₹60,000</span></b></p></td>
             </tr>
@@ -565,16 +565,16 @@
               <td><p style="color: gray;">If Paid OneTime</p></td>
               <td><span id="one-time-val">₹55,000</span></td>
               <td><input disabled type='radio' name="pay_type" value="one_time"> Pay One time (disabled)</input></td>
-            </tr>
+            </tr> %>
             <tr>
-              <td><p style="color: gray;">If Paid In Installments, First Installment</p></td>
+              <td><p style="color: gray;">If Paid In Installments</p></td>
               <td><span id="installment-val">₹20,000</span></td>
               <td><input type='radio' name="pay_type" value="installment" checked> Pay First Installment</input></td>
             </tr>
-            <tr>
+            <%# <tr>
               <td></td>
               <td colspan="2"><p style="color: gray;">Next Installment will be <span id="next-installment-val">₹40,000</span></p> </td>
-            </tr>
+            </tr> %>
           </table>
         </div>
 
@@ -618,11 +618,11 @@
 
         <div class="payment-selection-div-rep" style="background-color: #cdd0f1; padding: 10px; display: none">
           <table style="width: 100%;" class="table table-bordered table-condensed">
-            <tr style="padding-bottom: 0px">
+            <%# <tr style="padding-bottom: 0px">
               <td><span style="color: gray;">Pay Mode : </p> </td>
               <td colspan="2" class="text-center"><span>Total Fees:	<b><span id="total-rep">₹60,000</span></b><//span></td>
-            </tr>
-            <tr>
+            </tr> %>
+            <%# <tr>
               <td><span style="color: gray;">OneTime</span></td>
               <td><span id="one-time-val-rep">₹55,000</span></td>
               <td>
@@ -630,14 +630,14 @@
                 <br>
                 <span style="color: gray;"> Next Installment 'Nil' </span></span>
               </td>
-            </tr>
+            </tr> %>
             <tr>
               <td><span style="color: gray;">Installments</span></td>
               <td><span id="installment-val-rep">₹25,000</span></td>
               <td>
                 <input type='radio' name="pay_type" value="installment" checked> Pay First Installment</input>
                 <br>
-                <span style="color: gray;">Next Installment will be <span id="next-installment-val-rep">₹35,000</span></span>
+                <%# <span style="color: gray;">Next Installment will be <span id="next-installment-val-rep">₹35,000</span></span> %>
               </td>
             </tr>
           </table>
