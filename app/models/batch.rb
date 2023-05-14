@@ -210,39 +210,48 @@ class Batch < ApplicationRecord
 
     case rcc_branch
       when 'latur'
-        batch_name = "LTR-REP-#{course.name.upcase}-2022-23"
+        batch_name = "LTR-REP-#{course.name.upcase}-2023-24"
       when 'nanded'
-        batch_name = "NED-REP-#{course.name.upcase}-2022-23"
+        batch_name = "NED-REP-#{course.name.upcase}-2023-24"
       when 'aurangabad'
-        batch_name = "AUR-REP-#{course.name.upcase}-2022-23"
+        batch_name = "AUR-REP-#{course.name.upcase}-2023-24"
       else
-        batch_name = "LTR-REP-#{course.name.upcase}-2022-23"
+        batch_name = "LTR-REP-#{course.name.upcase}-2023-24"
     end
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      batch_group = BatchGroup.find_or_create_by(name: "REP-2023-24", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+      end
+    end
     Batch.where(org_id: org.id, name: batch_name)
   end
 
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    if rcc_branch == "aurangabad"
-      batch_name = "B1-11-AUG-2022-23"
-    else
-      return Batch.where(org_id: org.id, name: "B1-11-REG-PCM-22-23") if course.name.upcase == "PCM"
-      return Batch.where(org_id: org.id, name: "B1-11-REG-PCBM-22-23") if course.name.upcase == "PCBM"
-
-      if na&.jee?
-        batch_name = rcc_branch == "latur" ?
-          "B1-LTR-11-REG-JEE-#{course.name.upcase}-22-23" :
-          "B1-NED-11-REG-JEE-#{course.name.upcase}-22-23"
+    case rcc_branch
+      when 'latur'
+        batch_name = "LTR-11th-REG-#{course.name.upcase}-2023-24"
+      when 'nanded'
+        batch_name = "NED-11th-REG-#{course.name.upcase}-2023-24"
+      when 'aurangabad'
+        batch_name = "AUR-11th-REG-#{course.name.upcase}-2023-24"
       else
-        batch_name = rcc_branch == "latur" ?
-          "B1-LTR-11-REG-NEET-#{course.name.upcase}-22-23" :
-          "B1-NED-11-REG-NEET-#{course.name.upcase}-22-23"
-      end
+        batch_name = "LTR-11th-REG-#{course.name.upcase}-2023-24"
     end
 
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      batch_group = BatchGroup.find_or_create_by(name: "11th-REG-2023-24", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+      end
+    end
     Batch.where(org_id: org.id, name: batch_name)
   end
 

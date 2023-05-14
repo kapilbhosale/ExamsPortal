@@ -219,29 +219,21 @@ class Students::AdmissionsController < ApplicationController
 
     if batch == 'repeater'
       if new_admission.extra_data.dig('pay_type') == 'installment'
-        if ['pc'].include?(course.name)
-          return 30_000 if rcc_branch == 'nanded'
-          return 30_000 if rcc_branch == 'latur'
-          return 30_000 if rcc_branch == 'aurangabad'
-        end
+        return 25_000
+        # if ['pc'].include?(course.name)
+        #   return 25_000 if rcc_branch == 'nanded'
+        #   return 25_000 if rcc_branch == 'latur'
+        #   return 25_000 if rcc_branch == 'aurangabad'
+        # end
 
-        if ['pcb'].include?(course.name)
-          return 30_000 if rcc_branch == 'nanded'
-          return 30_000 if rcc_branch == 'latur'
-          return 30_000 if rcc_branch == 'aurangabad'
-        end
+        # if ['pcb'].include?(course.name)
+        #   return 25_000 if rcc_branch == 'nanded'
+        #   return 25_000 if rcc_branch == 'latur'
+        #   return 25_000 if rcc_branch == 'aurangabad'
+        # end
       else
-        if ['pc'].include?(course.name)
-          return 40_000 if rcc_branch == 'nanded'
-          return 45_000 if rcc_branch == 'latur'
-          return 65_000 if rcc_branch == 'aurangabad'
-        end
-
-        if ['pcb'].include?(course.name)
-          return 50_000 if rcc_branch == 'nanded'
-          return 55_000 if rcc_branch == 'latur'
-          return 60_000 if rcc_branch == 'aurangabad'
-        end
+        return 50_000 if ['pc'].include?(course.name)
+        return 60_000 if ['pcb'].include?(course.name)
       end
     end
 
@@ -267,9 +259,9 @@ class Students::AdmissionsController < ApplicationController
         # return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
 
         if ['pc'].include?(course.name)
-          return 45_000 if rcc_branch == 'nanded'
+          return 50000 if rcc_branch == 'nanded'
           return 50_000 if rcc_branch == 'latur'
-          return 75_000 if rcc_branch == 'aurangabad'
+          return 50000 if rcc_branch == 'aurangabad'
         end
 
         if ['pcb', 'pcm'].include?(course.name)
