@@ -11,6 +11,7 @@ module Students
     def call
       validate_request
       batches = student.batches
+
       student.destroy!
       batches.each do |batch|
         batch.re_count_students
@@ -25,6 +26,10 @@ module Students
     def validate_request
       raise DeleteStudentError, 'Student must exist' if student.blank?
       raise DeleteStudentError, 'Student not belongs to your org' if student.org_id != org.id
+      raise DeleteStudentError, 'cannot delete student with fees' if FeesTransaction.where(student_id: student.id).present?
+
+      # TODO::remove later
+      raise DeleteStudentError, 'cannot delte students for now'
     end
   end
 end
