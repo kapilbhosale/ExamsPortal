@@ -59,7 +59,7 @@ class AbsentMessageSenderWorker
     template_id = org.data.dig('sms_settings', 'absent_sms', 'template_id')
     entity_id = org.data.dig('sms_settings', 'absent_sms', 'entity_id')
 
-    msg = org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
+    msg = org.data.dig('sms_settings', 'absent_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
     msg = URI.encode_www_form_component(msg)
     encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
 

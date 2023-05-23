@@ -32,11 +32,11 @@ class Admin::AttendanceController < Admin::BaseController
 
       if params[:type] == "present"
         Student.where(id: present_student_ids).find_each do |student|
-          Thread.new { puts Net::HTTP.get(URI(present_sms(student))) }
+          Thread.new { send_present_sms(student) }
         end
       else
         absent_students.find_each do |student|
-          Thread.new { puts Net::HTTP.get(URI(absent_sms(student))) }
+          Thread.new { send_absent_sms(student)  }
         end
       end
 
@@ -144,33 +144,35 @@ class Admin::AttendanceController < Admin::BaseController
     { name_cont: search_term }
   end
 
-  def present_sms(student)
-    if current_org.rcc?
-      sms_user = "RCCLatur"
-      sms_password = URI.encode_www_form_component("RCC@123#L")
-      sender_id = "RCCLtr"
-      template_id = '1007511804251225784'
-      entity_id = '1001545918985192145'
+  def send_present_sms(student, current_org)
+    return if current_org.data.dig('sms_settings', 'present_sms').blank?
 
-      msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{Date.today.strftime('%d-%B-%Y')} Class,\r\nTeam RCC"
-      msg = URI.encode_www_form_component(msg)
+    sms_user = current_org.data.dig('sms_settings', 'present_sms', 'sms_user')
+    sms_password = URI.encode_www_form_component(current_org.data.dig('sms_settings', 'present_sms', 'sms_password'))
+    sender_id = current_org.data.dig('sms_settings', 'present_sms', 'sender_id')
+    template_id = current_org.data.dig('sms_settings', 'present_sms', 'template_id')
+    entity_id = current_org.data.dig('sms_settings', 'present_sms', 'entity_id')
 
-      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
-    end
+    msg = current_org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
+    msg = URI.encode_www_form_component(msg)
+    encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+
+    puts Net::HTTP.get(URI(encoded_msg))
   end
 
-  def absent_sms(student)
-    if current_org.rcc?
-      sms_user = "RCCLatur"
-      sms_password = URI.encode_www_form_component("RCC@123#L")
-      sender_id = "RCCLtr"
-      template_id = '1007771438372665235'
-      entity_id = '1001545918985192145'
+  def send_absent_sms(student)
+    return if current_org.data.dig('sms_settings', 'absent_sms').blank?
 
-      msg = "From RCC\r\nDear Parent Your ward #{student.name} is absent today, #{Date.today.strftime('%d-%B-%Y')}. Kindly confirm. \r\nTeam RCC"
-      msg = URI.encode_www_form_component(msg)
+    sms_user = current_org.data.dig('sms_settings', 'absent_sms', 'sms_user')
+    sms_password = URI.encode_www_form_component(current_org.data.dig('sms_settings', 'absent_sms', 'sms_password'))
+    sender_id = current_org.data.dig('sms_settings', 'absent_sms', 'sender_id')
+    template_id = current_org.data.dig('sms_settings', 'absent_sms', 'template_id')
+    entity_id = current_org.data.dig('sms_settings', 'absent_sms', 'entity_id')
 
-      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
-    end
+    msg = current_org.data.dig('sms_settings', 'absent_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
+    msg = URI.encode_www_form_component(msg)
+    encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+
+    puts Net::HTTP.get(URI(encoded_msg))
   end
 end

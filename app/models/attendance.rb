@@ -40,7 +40,8 @@ class Attendance < ApplicationRecord
     end
   end
 
-
+  # org.data['sms_settings'] ||= {}
+  #
   # org.data['sms_settings']['present_sms'] = {
   #   sms_user: 'RCCLatur',
   #   sms_password: 'RCC@123#L',
@@ -57,6 +58,24 @@ class Attendance < ApplicationRecord
   #   template_id: '1007771438372665235',
   #   entity_id: '1001545918985192145',
   #   msg: "From RCC\r\nDear Parent Your ward <STUDENT_NAME> is absent today, <TODAY>. Kindly confirm. \r\nTeam RCC"
+  # }
+
+  # org.data['sms_settings']['present_sms'] = {
+  #   sms_user: 'Ganesh1',
+  #   sms_password: 'Ganesh@123#',
+  #   sender_id: 'SGECLT',
+  #   template_id: '1007404577984635679',
+  #   entity_id: '1001992529630396659',
+  #   msg: "Respected Parents, \r\nYour ward <STUDENT_NAME> is PRESENT for today's <TODAY> class.\r\nFrom, Shri Ganesh English Classes"
+  # }
+
+  # org.data['sms_settings']['absent_sms'] = {
+  #   sms_user: 'Ganesh1',
+  #   sms_password: 'Ganesh@123#',
+  #   sender_id: 'SGECLT',
+  #   template_id: '1007652380983349299',
+  #   entity_id: '1001992529630396659',
+  #   msg: "Respected Parents, \r\nYour ward {#var#} is ABSENT for today's {#var#} class.\r\nFrom, Shri Ganesh English Classes"
   # }
 
   def send_present_sms
