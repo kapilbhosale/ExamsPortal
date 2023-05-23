@@ -144,7 +144,7 @@ class Admin::AttendanceController < Admin::BaseController
     { name_cont: search_term }
   end
 
-  def send_present_sms(student, current_org)
+  def send_present_sms(student)
     return if current_org.data.dig('sms_settings', 'present_sms').blank?
 
     sms_user = current_org.data.dig('sms_settings', 'present_sms', 'sms_user')
