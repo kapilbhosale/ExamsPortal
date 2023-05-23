@@ -36,26 +36,49 @@ class Attendance < ApplicationRecord
 
   def send_sms
     if org[:data]["auto_present_sms"] == true && time_entry.to_date == Date.current
-      Thread.new { puts Net::HTTP.get(URI(present_sms)) }
+      Thread.new { send_present_sms }
     end
   end
 
 
-  def present_sms
-    if current_org.rcc?
-      sms_user = "RCCLatur"
-      sms_password = URI.encode_www_form_component("RCC@123#L")
-      sender_id = "RCCLtr"
-      template_id = '1007511804251225784'
-      entity_id = '1001545918985192145'
+  # org.data['sms_settings']['present_sms'] = {
+  #   sms_user: 'RCCLatur',
+  #   sms_password: 'RCC@123#L',
+  #   sender_id: 'RCCLtr',
+  #   template_id: '1007511804251225784',
+  #   entity_id: '1001545918985192145',
+  #   msg: 'From RCC\r\nDear Parent Your ward <STUDENT_NAME> is Present for today <TODAY> Class,\r\nTeam RCC'
+  # }
 
-      msg = "From RCC\r\nDear Parent Your ward #{student.name} is Present for today #{Date.today.strftime('%d-%B-%Y')} Class,\r\nTeam RCC"
-      msg = URI.encode_www_form_component(msg)
+  # org.data['sms_settings']['absent_sms'] = {
+  #   sms_user: 'RCCLatur',
+  #   sms_password: 'RCC@123#L',
+  #   sender_id: 'RCCLtr',
+  #   template_id: '1007771438372665235',
+  #   entity_id: '1001545918985192145',
+  #   msg: "From RCC\r\nDear Parent Your ward <STUDENT_NAME> is absent today, <TODAY>. Kindly confirm. \r\nTeam RCC"
+  # }
 
-      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
-    end
+  def send_present_sms
+    return if org.data.dig('sms_settings', 'present_sms').blank?
+
+    sms_user = org.data.dig('sms_settings', 'present_sms', 'sms_user')
+    sms_password = URI.encode_www_form_component(org.data.dig('sms_settings', 'present_sms', 'sms_password'))
+    sender_id = org.data.dig('sms_settings', 'present_sms', 'sender_id')
+    template_id = org.data.dig('sms_settings', 'present_sms', 'template_id')
+    entity_id = org.data.dig('sms_settings', 'present_sms', 'entity_id')
+
+    msg = URI.encode_www_form_component(build_msg)
+    encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+
+    puts Net::HTTP.get(URI(encoded_msg))
+  end
+
+  def build_msg
+    org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
   end
 end
+
 # # script to create attendance
 # student_ids = [1,2,3,5,6,7]
 # year = 2021
