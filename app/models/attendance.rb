@@ -75,7 +75,7 @@ class Attendance < ApplicationRecord
   #   sender_id: 'SGECLT',
   #   template_id: '1007652380983349299',
   #   entity_id: '1001992529630396659',
-  #   msg: "Respected Parents, \r\nYour ward {#var#} is ABSENT for today's {#var#} class.\r\nFrom, Shri Ganesh English Classes"
+  #   msg: "Respected Parents, \r\nYour ward <STUDENT_NAME> is ABSENT for today's <TODAY> class.\r\nFrom, Shri Ganesh English Classes"
   # }
 
   def send_present_sms
