@@ -1,13 +1,12 @@
 class AbsentMessageSenderWorker
   include Sidekiq::Worker
   def perform
-    orgs = Org.where(subdomain: ['exams', 'rcc'])
-
-    Batch.where(org_id: orgs.ids).all.each do |batch|
+    Batch.all.each do |batch|
+      next if batch.org.data.dig('sms_settings', 'absent_sms').blank?
       next if batch.start_time.blank?
       next unless valid_to_send_sms?(batch)
 
-      present_student_ids = Attendance.today.where(org_id: org.id, student_id: batch.students.ids).pluck(:student_id).uniq
+      present_student_ids = Attendance.today.where(student_id: batch.students.ids).pluck(:student_id).uniq
       absent_students = batch.students.where.not(id: present_student_ids)
 
       if absent_students.count >= present_student_ids.count
@@ -22,7 +21,7 @@ class AbsentMessageSenderWorker
 
       if org[:data]["auto_absent_sms"] == true
         absent_students.find_each do |student|
-          send_absent_sms(student)
+          send_absent_sms(batch.org, student)
         end
       end
 
@@ -45,10 +44,6 @@ class AbsentMessageSenderWorker
   end
 
   BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
-
-  def send_absent_sms(student)
-    Thread.new { puts Net::HTTP.get(URI(absent_sms(student))) }
-  end
 
   def send_absent_sms(org, student)
     return if org.data.dig('sms_settings', 'absent_sms').blank?
