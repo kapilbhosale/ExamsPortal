@@ -77,6 +77,25 @@ class Attendance < ApplicationRecord
   #   entity_id: '1001992529630396659',
   #   msg: "Respected Parents, \r\nYour ward <STUDENT_NAME> is ABSENT for today's <TODAY> class.\r\nFrom, Shri Ganesh English Classes"
   # }
+  # org = Org.find_by(subdomain: 'infinity')
+  # org.data['sms_settings'] = {}
+  # org.data['sms_settings']['present_sms'] = {
+  #   sms_user: 'Infinity',
+  #   sms_password: 'Rahul@123',
+  #   sender_id: 'ICCAKL',
+  #   template_id: '1007309734427269813',
+  #   entity_id: '1001064497327818275',
+  #   msg: "From : Infinity Coaching Classes \r\nDear parent your ward <STUDENT_NAME> is Present <TODAY>\r\n-ICC Akola"
+  # }
+
+  # org.data['sms_settings']['absent_sms'] = {
+  #   sms_user: 'Infinity',
+  #   sms_password: 'Rahul@123',
+  #   sender_id: 'ICCAKL',
+  #   template_id: '1007123405179453691',
+  #   entity_id: '1001064497327818275',
+  #   msg: "From : Infinity Coaching Classes \r\nDear parent your ward <STUDENT_NAME> is Absent <TODAY>\r\n-ICC Akola"
+  # }
 
   def send_present_sms
     return if org.data.dig('sms_settings', 'present_sms').blank?

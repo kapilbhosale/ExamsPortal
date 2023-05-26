@@ -209,7 +209,7 @@ class Admin::StudentsController < Admin::BaseController
   end
 
   def destroy
-    @response = Students::DeleteStudentService.new(params[:id], current_org).call
+    @response = Students::DeleteStudentService.new(params[:id], current_org, current_admin).call
     set_flash
     redirect_to admin_students_path
   end
