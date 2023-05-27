@@ -26,7 +26,8 @@ class Students::ExamsController < Students::BaseController
               [{content: 'Date & Time', font_style: :bold}, time],
               [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
               [{content: 'Course', font_style: :bold}, current_student.data['course']],
-              [{content: 'Exam Center', font_style: :bold}, current_student.data['school_name']]
+              [{content: 'Exam Center', font_style: :bold}, current_student.data['school_name'].split[0..4]&.join(' ')],
+              [{content: '', font_style: :bold}, current_student.data['school_name'].split[5..-1]&.join(' ')]
             ]
 
       if current_student&.data['address'].present?
