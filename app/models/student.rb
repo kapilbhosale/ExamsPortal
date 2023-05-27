@@ -293,17 +293,16 @@ class Student < ApplicationRecord
   # Student.import_tsv("/home/ubuntu/data/a_nagar.tsv")
   def self.import_tsv(path)
     CSV.foreach(path, col_sep: "\t", headers: true) do |row|
-      roll_number = row[0]
-      parent_mobile = row[2]
-
-      student = Student.where(roll_number: roll_number, parent_mobile: parent_mobile)
+      student = Student.find_by(id: row[1])
       if student.present?
         student.update_all(data: {
           center: row[4],
-          course: row[5],
-          school_name: row[6],
-          address: row[7],
-          board: row[9]
+          course: "NEET",
+          school_name: row[4],
+          address: nil,
+          board: "-",
+          exam_time: row[5],
+          tag: '3104'
         })
         putc "."
       end

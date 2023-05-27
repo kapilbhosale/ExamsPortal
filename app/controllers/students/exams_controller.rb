@@ -35,7 +35,7 @@ class Students::ExamsController < Students::BaseController
       end
 
       pdf.canvas do
-        pdf.image("app/assets/images/11th_set_hallticket_1.jpg", scale: 1, at: pdf.bounds.top_left)
+        pdf.image("app/assets/images/ht-1.jpg", scale: 1, at: pdf.bounds.top_left)
         pdf.move_down 150
       end
       pdf.table table_data, row_colors: ["ffffff", "eeeeee"], cell_style: {height: 22, border_width: 0, width: 210, padding: [5, 0, 5, 20], text_color: '373737', inline_format: true} do
@@ -47,7 +47,7 @@ class Students::ExamsController < Students::BaseController
 
       pdf.start_new_page
       pdf.canvas do
-        pdf.image("app/assets/images/11th_set_hallticket_2.jpg", scale: 1, at: pdf.bounds.top_left)
+        pdf.image("app/assets/images/ht-2.jpg", scale: 1, at: pdf.bounds.top_left)
       end
       send_data pdf.render, filename: "hallticket.pdf", type: "application/pdf"
   end
