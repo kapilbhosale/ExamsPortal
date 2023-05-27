@@ -23,7 +23,7 @@ class Students::ExamsController < Students::BaseController
       table_data = [
               [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
               [{content: 'Candidate Name', font_style: :bold}, current_student.name],
-              [{content: 'Date & Time', font_style: :bold}, time],
+              [{content: 'Date & Time', font_style: :bold}, current_student.data['exam_time']],
               [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
               [{content: 'Course', font_style: :bold}, current_student.data['course']],
               [{content: 'Exam Center', font_style: :bold}, current_student.data['school_name'].split[0..4]&.join(' ')],
