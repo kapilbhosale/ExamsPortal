@@ -77,24 +77,25 @@ class Attendance < ApplicationRecord
   #   entity_id: '1001992529630396659',
   #   msg: "Respected Parents, \r\nYour ward <STUDENT_NAME> is ABSENT for today's <TODAY> class.\r\nFrom, Shri Ganesh English Classes"
   # }
-  # org = Org.find_by(subdomain: 'infinity')
+
+  # org = Org.find_by(subdomain: 'konale-exams')
   # org.data['sms_settings'] = {}
   # org.data['sms_settings']['present_sms'] = {
-  #   sms_user: 'Infinity',
-  #   sms_password: 'Rahul@123',
-  #   sender_id: 'ICCAKL',
-  #   template_id: '1007309734427269813',
-  #   entity_id: '1001064497327818275',
-  #   msg: "From : Infinity Coaching Classes \r\nDear parent your ward <STUDENT_NAME> is Present <TODAY>\r\n-ICC Akola"
+  #   sms_user: 'Konale',
+  #   sms_password: 'Konale@123#',
+  #   sender_id: 'KONLEC',
+  #   template_id: '1007269616935076579',
+  #   entity_id: '1001560309586325641',
+  #   msg: "Dear Parents,\r\nYour ward <STUDENT_NAME> was absent for class on date <TODAY>\r\nRegards:\r\nKonale Coaching Classes, Nanded"
   # }
 
   # org.data['sms_settings']['absent_sms'] = {
-  #   sms_user: 'Infinity',
-  #   sms_password: 'Rahul@123',
-  #   sender_id: 'ICCAKL',
-  #   template_id: '1007123405179453691',
-  #   entity_id: '1001064497327818275',
-  #   msg: "From : Infinity Coaching Classes \r\nDear parent your ward <STUDENT_NAME> is Absent <TODAY>\r\n-ICC Akola"
+  #   sms_user: 'Konale',
+  #   sms_password: 'Konale@123#',
+  #   sender_id: 'KONLEC',
+  #   template_id: '1007403126425412617',
+  #   entity_id: '1001560309586325641',
+  #   msg: "From : Konale Classes Nanded \r\nDear parent your ward <STUDENT_NAME> is present for today's Class. <TODAY> \r\n-KONALE\r\n \r\n"
   # }
 
   def send_present_sms
