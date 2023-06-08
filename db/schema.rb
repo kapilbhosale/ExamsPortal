@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_24_074846) do
+ActiveRecord::Schema.define(version: 2023_06_08_072528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -521,6 +521,17 @@ ActiveRecord::Schema.define(version: 2023_04_24_074846) do
     t.index ["student_id"], name: "index_pending_fees_on_student_id"
   end
 
+  create_table "photo_upload_logs", force: :cascade do |t|
+    t.string "filename"
+    t.integer "success_count"
+    t.integer "not_found_count"
+    t.jsonb "sucess_roll_numbers"
+    t.jsonb "not_found_roll_numbers"
+    t.string "uploaded_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "practice_questions", force: :cascade do |t|
     t.bigint "topic_id"
     t.bigint "question_id"
@@ -743,6 +754,7 @@ ActiveRecord::Schema.define(version: 2023_04_24_074846) do
     t.string "exam_hall"
     t.jsonb "data", default: {}
     t.integer "intel_score"
+    t.jsonb "id_card", default: []
     t.index ["api_key"], name: "index_students_on_api_key"
     t.index ["category_id"], name: "index_students_on_category_id"
     t.index ["deleted_at"], name: "index_students_on_deleted_at"

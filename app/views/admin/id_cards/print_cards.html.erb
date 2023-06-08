@@ -1,0 +1,127 @@
+<div class="container" style="background-color: white; padding: 5px">
+  <div class="col-lg-12" style="background-color: #e9ecef; border-radius: 4px; padding: 10px; margin-bottom: 20px">
+    <%= form_tag(print_cards_admin_id_cards_path, method: "post", multipart: true, role: 'form') do %>
+      <div class="col-md-5">
+        <div class="form-group">
+          <span>Select Batch</span>
+          <select class="form-control" name="batch_id" id="batch_id" >
+            <% @batches.each do |batch| %>
+              <option value="<%= batch.id %>" <%= @selected_batch&.id == batch.id ? "selected" : ""%>>
+                <%= batch.name %>
+              </option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-2 mt-1">
+        <div class="form-group">
+          <span>Form Date</span>
+          <input type="date" name="from_date" class="form-control p-2" value="<%= Date.today.strftime("%Y-%m-%d")%>">
+        </div>
+      </div>
+
+      <div class="col-md-2 mt-1">
+        <div class="form-group">
+          <span>To Date</span>
+          <input type="date" name="to_date" class="form-control p-2" value="<%= Date.today.strftime("%Y-%m-%d")%>">
+        </div>
+      </div>
+
+      <div class="col-md-1 pt-5">
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form_tag(generate_prints_admin_id_cards_path, method: "post", multipart: true, role: 'form') do %>
+      <div>
+        <div class="col-md-2">
+          <p>Student List</p>
+        </div>
+        <div class="offset-md-9 col-md-1">
+          <button type="submit" class="btn btn-danger btn-sm">Print</button>
+        </div>
+      </div>
+
+      <input type="hidden" name="all_student_ids" value="<%= @fees_transactions.pluck(:student_id) %>">
+      <input type="hidden" name="selected_batch_id" value="<%= @selected_batch&.id %>">
+
+      <table class="table table-bordered table-hover table-striped">
+        <tr>
+          <td>
+            <input type="checkbox" name="all" id="all-checkbox">
+          </td>
+          <td>Id</td>
+          <td>Roll Number</td>
+          <td>Name</td>
+          <td>Batch</td>
+          <td>Admission Date</td>
+          <td>Fees Nil Date</td>
+          <td>Prints</td>
+        </tr>
+
+        <% (@fees_transactions || []).each do |ft| %>
+          <tr>
+            <td>
+              <input type="checkbox" name="student_ids[]" value=<%= ft.student.id %>>
+            </td>
+            <td>
+              <%= ft.student.id %>
+            </td>
+            <td>
+              <%= ft.student.roll_number %>
+            </td>
+            <td>
+              <%= ft.student.name %>
+            </td>
+            <td>
+              <%= @selected_batch.name %>
+            </td>
+            <td>
+              <%= ft.student.created_at.strftime("%d-%b-%Y") %>
+            </td>
+            <td>
+              <%= ft.created_at.strftime("%d-%b-%Y") %>
+            </td>
+            <td>
+              <%= ft.student.id_card.join(", ") %>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<%# admin_genre_student_folder_access_path(12) %>
+
+<script>
+  $(document).ready(function(){
+
+    function selectAll () {
+      var ele=document.getElementsByName('student_ids[]');
+      for(var i=0; i<ele.length; i++){
+          if(ele[i].type=='checkbox')
+              ele[i].checked=true;
+      }
+    }
+
+    function deSelectAll () {
+      var ele=document.getElementsByName('student_ids[]');
+      for(var i=0; i<ele.length; i++){
+          if(ele[i].type=='checkbox')
+              ele[i].checked=false;
+      }
+    }
+
+    const allCheckbox = document.getElementById('all-checkbox')
+    allCheckbox.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        selectAll();
+      } else {
+        deSelectAll();
+      }
+    })
+  });
+</script>

@@ -176,6 +176,13 @@ Rails.application.routes.draw do
       patch :disable
     end
 
+    resources :id_cards, only: [:index] do
+      post :upload_photos, on: :collection
+      get :print_cards, on: :collection
+      post :print_cards, on: :collection
+      post :generate_prints, on: :collection
+    end
+
     namespace :api do
       resources :students
       resources :attendance
