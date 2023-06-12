@@ -36,44 +36,41 @@ class Admin::IdCardsController < Admin::BaseController
 
 
   def generate_prints
-    
+    batch = Batch.find(params[:selected_batch_id])
+    batch_display_name = batch.name.match(/\[(.*?)\]/)[1]
     pdf = Prawn::Document.new(page_size: [inches_to_points(12), inches_to_points(18)], page_layout: :landscape)
-    pdf.canvas do
-      add_id_card(pdf, Student.last, inches_to_points(0), inches_to_points(12))
-      add_id_card(pdf, Student.last, inches_to_points(3), inches_to_points(12))
-      add_id_card(pdf, Student.last, inches_to_points(6), inches_to_points(12))
-      add_id_card(pdf, Student.last, inches_to_points(9), inches_to_points(12))
-      add_id_card(pdf, Student.last, inches_to_points(12), inches_to_points(12))
-      add_id_card(pdf, Student.last, inches_to_points(15), inches_to_points(12))
 
-      add_id_card(pdf, Student.last, inches_to_points(0), inches_to_points(8))
-      add_id_card(pdf, Student.last, inches_to_points(3), inches_to_points(8))
-      add_id_card(pdf, Student.last, inches_to_points(6), inches_to_points(8))
-      add_id_card(pdf, Student.last, inches_to_points(9), inches_to_points(8))
-      add_id_card(pdf, Student.last, inches_to_points(12), inches_to_points(8))
-      add_id_card(pdf, Student.last, inches_to_points(15), inches_to_points(8))
-
-      add_id_card(pdf, Student.last, inches_to_points(0), inches_to_points(4))
-      add_id_card(pdf, Student.last, inches_to_points(3), inches_to_points(4))
-      add_id_card(pdf, Student.last, inches_to_points(6), inches_to_points(4))
-      add_id_card(pdf, Student.last, inches_to_points(9), inches_to_points(4))
-      add_id_card(pdf, Student.last, inches_to_points(12), inches_to_points(4))
-      add_id_card(pdf, Student.last, inches_to_points(15), inches_to_points(4))
+    if params[:all].present?
+      selected_students = Student.where(id: params[:all_student_ids])
+    else
+      selected_students = Student.where(id: params[:student_ids])
     end
 
-    send_data pdf.render, filename: "id-cards.pdf", type: "application/pdf"
+    selected_students.each_slice(18) do |students|
+      x, y = 0, 12
+      pdf.canvas do
+        students.each do |student|
+          add_id_card(pdf, student, batch_display_name, inches_to_points(x), inches_to_points(y))
+          x >= 15 ? (x = 0; y -= 4) : x += 3
+        end
+      end
+      pdf.start_new_page
+    end
+
+    send_data pdf.render, filename: "id-cards-#{batch_display_name}.pdf", type: "application/pdf"
   end
 
   private
 
-  def add_id_card(pdf, student, x, y)
+  def add_id_card(pdf, student, batch_display_name, x, y)
+    pdf.fill_color '000000'
     pdf.image("app/assets/images/id-bg-12.jpg", scale: 1, at: [x, y])
-    pdf.image(open("http://exams.lvh.me:3000/uploads/exams/student/photo/565/10001.jpeg"), at: [x+63, y-62], fit: [88, 150])
+    pdf.image(open(student.photo.url), at: [x + 63, y - 62], fit: [88, 150])
     pdf.text_box student.name, at: [x, y - 180], width: inches_to_points(3), align: :center, size: 16
     pdf.fill_color 'FFFFFF'
     pdf.text_box student.roll_number.to_s, at: [x, y - 205], width: inches_to_points(3), align: :center, size: 18, style: :bold
     pdf.fill_color 'FF0000'
-    pdf.text_box 'Batch: Ramanujan', at: [x, y - 230], width: inches_to_points(3), align: :center, size: 18, style: :bold
+    pdf.text_box "Batch: #{batch_display_name}", at: [x, y - 230], width: inches_to_points(3), align: :center, size: 18, style: :bold
   end
 
   def inches_to_points(inches)
