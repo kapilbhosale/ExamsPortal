@@ -72,17 +72,17 @@ class Admin::IdCardsController < Admin::BaseController
       pdf.image(open(student.photo.url), at: [x + 63, y - 62], fit: [88, 150])
     end
 
-    pdf.move_down 90
+    pdf.move_cursor_to(y - 90)
 
-    pdf.indent(7) do
+    pdf.indent(7 + x) do
       pdf.render_qr_code(qr_code, extent: 50)
     end
 
-    pdf.text_box student.name, at: [x, y - 180], width: inches_to_points(3), align: :center, size: 16
+    pdf.text_box student.name&.titlecase, at: [x, y - 180], width: inches_to_points(3), align: :center, size: 16
     pdf.fill_color 'FFFFFF'
     pdf.text_box student.roll_number.to_s, at: [x, y - 205], width: inches_to_points(3), align: :center, size: 18, style: :bold
     pdf.fill_color 'FF0000'
-    pdf.text_box "Batch: #{batch_display_name}", at: [x, y - 230], width: inches_to_points(3), align: :center, size: 18, style: :bold
+    pdf.text_box "Batch: #{batch_display_name.upcase}", at: [x, y - 230], width: inches_to_points(3), align: :center, size: 18, style: :bold
   end
 
   def inches_to_points(inches)
