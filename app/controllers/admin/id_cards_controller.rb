@@ -41,7 +41,7 @@ class Admin::IdCardsController < Admin::BaseController
     pdf = Prawn::Document.new(page_size: [inches_to_points(12), inches_to_points(18)], page_layout: :landscape)
 
     if params[:all].present?
-      selected_students = Student.where(id: params[:all_student_ids])
+      selected_students = Student.where(id: JSON.parse(params[:all_student_ids]))
     else
       selected_students = Student.where(id: params[:student_ids])
     end
@@ -63,9 +63,17 @@ class Admin::IdCardsController < Admin::BaseController
   private
 
   def add_id_card(pdf, student, batch_display_name, x, y)
+    qr_code = RQRCode::QRCode.new("#{student.id}", mode: :number)
+
     pdf.fill_color '000000'
     pdf.image("app/assets/images/id-bg-12.jpg", scale: 1, at: [x, y])
     pdf.image(open(student.photo.url), at: [x + 63, y - 62], fit: [88, 150])
+    pdf.move_down 90
+
+    pdf.indent(7) do
+      pdf.render_qr_code(qr_code, extent: 50)
+    end
+
     pdf.text_box student.name, at: [x, y - 180], width: inches_to_points(3), align: :center, size: 16
     pdf.fill_color 'FFFFFF'
     pdf.text_box student.roll_number.to_s, at: [x, y - 205], width: inches_to_points(3), align: :center, size: 18, style: :bold
