@@ -136,7 +136,7 @@
                 <%= link_to '<i class="fas fa-rupee-sign"></i> Payments'.html_safe, admin_micro_payments_path, class: "dropdown-item"%>
               <% end %>
               <% if current_admin.can_manage(:students) %>
-                <%= link_to '<i class="fas fa-rupee-sign"></i> Fees Portal'.html_safe, "#{fees_host}/fees-connector?t=#{refresh_token}&sid=#{0}&baseURL=#{base_url}", class: "dropdown-item"%>
+                <%= link_to '<i class="fas fa-user"></i> Student Id Cards'.html_safe, admin_id_cards_path, class: "dropdown-item"%>
               <% end %>
             </div>
           </li>

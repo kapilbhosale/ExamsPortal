@@ -1,0 +1,80 @@
+<div class="container" style="background-color: white; padding: 5px">
+  <div class="card-header row">
+    <div class="col-md-3">
+      <h5>Manage Student Id Cards</h5>
+    </div>
+  </div>
+
+  <div class="col-lg-12" style="background-color: #e9ecef; border-radius: 4px; padding: 10px; margin-bottom: 20px">
+    <%= form_tag(upload_photos_admin_id_cards_path, method: "post", multipart: true, role: 'form') do %>
+      <div class="col-md-9">
+        <label class="form-label">Student photos ZIP:</label>
+        <input required id="photos_zip" name="photos_zip" class="input-file" type="file" accept=".zip">
+      </div>
+      <div class="col-md-1 pt-4">
+        <button type="submit" class="btn btn-success">Submit</button>
+      </div>
+      <div class="col-md-2 pt-4">
+        <%= link_to 'Print Id Cards', print_cards_admin_id_cards_path, method: :get, class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <p>Photo Upload Logs</p>
+    <table class="table table-bordered table-hover table-striped">
+      <tr>
+        <td>Date</td>
+        <td>Success</td>
+        <td>Not Found</td>
+        <td>Upload by</td>
+      </tr>
+
+      <% @photo_upload_logs.each do |log| %>
+        <tr>
+          <td><%= log.created_at.strftime("%d-%b-%Y %I:%M %p") %></td>
+          <td>
+            <p><%= log.success_count %></p>
+            <p><%= log.sucess_roll_numbers.join(", ") %></p>
+          </td>
+          <td>
+            <p><%= log.not_found_count %></p>
+            <p><%= log.not_found_roll_numbers.join(", ") %></p>
+          </td>
+          <td><%= log.uploaded_by %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<%# admin_genre_student_folder_access_path(12) %>
+
+<script>
+  $(document).ready(function(){
+    $(".btn-change-video-access-date").on('click', function(){
+      var genreId = $(this).data("id");
+      var showTillDate = $("input[data-"+genreId+"]").val();
+
+      var formData = {
+        show_till_date: showTillDate,
+        student_id: <%= @student&.id %>
+      };
+
+      $.ajax({
+        url : "/admin/genres/"+genreId+"/student_folder_access",
+        type: "PUT",
+        data : formData,
+        success: function(data, textStatus, jqXHR) {
+          console.log("SUCCESS", data);
+          $("span[data-success-"+genreId+"]").removeClass("hidden");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("ERROR", errorThrown);
+          $("span[data-error-"+genreId+"]").removeClass("hidden");
+        }
+      });
+
+    });
+  });
+</script>

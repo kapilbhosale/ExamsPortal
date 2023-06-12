@@ -24,6 +24,7 @@ require 'csv'
 #  exam_hall              :string
 #  fcm_token              :string
 #  gender                 :integer          default(0)
+#  id_card                :jsonb
 #  intel_score            :integer
 #  is_laptop_login        :boolean          default(FALSE)
 #  last_sign_in_at        :datetime

@@ -135,6 +135,7 @@ GEM
     chromedriver-helper (1.2.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
+    chunky_png (1.4.0)
     coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
@@ -386,6 +387,10 @@ GEM
     rmagick (4.1.1)
     rollbar (2.27.0)
     rotp (6.2.0)
+    rqrcode (2.1.2)
+      chunky_png (~> 1.0)
+      rqrcode_core (~> 1.0)
+    rqrcode_core (1.2.0)
     rubocop (1.13.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
@@ -542,6 +547,7 @@ DEPENDENCIES
   rmagick
   rollbar
   rotp
+  rqrcode
   rubocop
   rubyzip (>= 1.0.0)
   sass-rails (~> 5.0)
