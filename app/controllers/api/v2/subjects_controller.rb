@@ -102,7 +102,9 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     page = (params[:page] || 1).to_i
 
     videos = VideoLecture
+      .includes(:batches)
       .where(org_id: current_org.id)
+      .where(batches: {id: current_student.batches.ids})
       .where(genre_id: folder&.id)
       .where(enabled: true)
       .where('publish_at <= ?', Time.current)
@@ -137,7 +139,11 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     folder = Genre.find_by(id: params[:folder_id])
     page = (params[:page] || 1).to_i
 
-    pdfs = StudyPdf.where(org_id: current_org.id).where(genre_id: folder&.id)
+    pdfs = StudyPdf
+      .includes(:batches)
+      .where(org_id: current_org.id)
+      .where(batches: { id: current_student.batches.ids})
+      .where(genre_id: folder&.id)
 
     if pdfs.blank?
       render json: {
