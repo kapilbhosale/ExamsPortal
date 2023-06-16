@@ -283,21 +283,18 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"}
         ]
 
         const AUR_BATCHES = [
-          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
-          {val: "12th_set", text: "** Repeater SET 2023-24 **"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"}
         ]
@@ -520,7 +517,6 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="12th_set" value="12th_set"> "** Repeater SET 2023-24 **" </option>
                 <option id="11th_new" value="11th_new"> 11th Regular Batch (2023-2024) </option>
                 <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
                 <option id="repeater" value="repeater"> REPEATER 2023-24 </option>
