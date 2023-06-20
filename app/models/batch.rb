@@ -205,7 +205,7 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
-  def get_repeater_batches(rcc_branch, course, batch, na)
+  def self.get_repeater_batches(rcc_branch, course, batch, na)
     org = Org.first
 
     case rcc_branch
