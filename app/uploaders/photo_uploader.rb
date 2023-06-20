@@ -34,9 +34,9 @@ class PhotoUploader < CarrierWave::Uploader::Base
   #   process resize_to_limit: [30, 30]
   # end
 
-  # version :profile do
-  #   process resize_to_fit: [50, 50]
-  # end
+  version :profile do
+    process resize_to_fit: [200, 250]
+  end
 
   # version :banner do
   #   process resize_to_fit: [300, 150]

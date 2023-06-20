@@ -68,8 +68,8 @@ class Admin::IdCardsController < Admin::BaseController
     pdf.fill_color '000000'
     pdf.image("app/assets/images/id-bg-12.jpg", scale: 0.2417, at: [x, y])
 
-    if student.photo.url.present?
-      pdf.image(open(student.photo.url), at: [x + 63, y - 62], fit: [88, 150])
+    if student.photo.profile.url.present?
+      pdf.image(open(student.photo.profile.url), at: [x + 63, y - 62], fit: [88, 150])
     end
 
     pdf.move_cursor_to(y - 90)

@@ -8,7 +8,7 @@
         <% if student_signed_in? %>
           <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-              <img class="avatar" src="<%=if current_student.photo? then current_student.photo.url(:thumb) else asset_path('img_avatar.png') end %>">
+              <img class="avatar" src="<%=if current_student.photo? then current_student.photo.profile.url else asset_path('img_avatar.png') end %>">
               <span class="ml-2 d-none d-lg-block">
                 <span class="text-default"><%= current_student.name%></span>
                 <small class="text-muted d-block mt-1">Student</small>
