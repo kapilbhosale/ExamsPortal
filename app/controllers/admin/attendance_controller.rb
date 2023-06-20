@@ -34,10 +34,12 @@ class Admin::AttendanceController < Admin::BaseController
         Student.where(id: present_student_ids).find_each do |student|
           Thread.new { send_present_sms(student) }
         end
+        REDIS_CACHE.set("att-#{Date.today.to_s}-#{batch.id}-pr", true, { ex: 24.hours })
       else
         absent_students.find_each do |student|
           Thread.new { send_absent_sms(student)  }
         end
+        REDIS_CACHE.set("att-#{Date.today.to_s}-#{batch.id}-ab", true, { ex: 24.hours })
       end
 
       AttSmsLog.create({
@@ -59,7 +61,7 @@ class Admin::AttendanceController < Admin::BaseController
     @to_date = params[:to_date].present? ? Date.parse(params[:to_date]) : Date.today
     @from_date = params[:from_date].present? ? Date.parse(params[:from_date]) : Date.today
 
-    @batches = Batch.where(org: current_org).where.not(start_time: nil).all_batches.order(:id)
+    @batches = Batch.where(org: current_org).where(id: current_admin.batches.ids).where.not(start_time: nil).all_batches.order(:id)
     filtered_batch_ids = params.dig(:q, 'batch_id').present? ? params[:q]['batch_id'] : @batches.ids
 
     @sms_settings = {
