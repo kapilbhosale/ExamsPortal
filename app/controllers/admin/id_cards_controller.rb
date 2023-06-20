@@ -66,7 +66,7 @@ class Admin::IdCardsController < Admin::BaseController
     qr_code = RQRCode::QRCode.new("#{student.id}", mode: :number)
 
     pdf.fill_color '000000'
-    pdf.image("app/assets/images/id-bg-12.jpg", scale: 1, at: [x, y])
+    pdf.image("app/assets/images/id-bg-12.jpg", scale: 0.2417, at: [x, y])
 
     if student.photo.url.present?
       pdf.image(open(student.photo.url), at: [x + 63, y - 62], fit: [88, 150])
@@ -78,7 +78,12 @@ class Admin::IdCardsController < Admin::BaseController
       pdf.render_qr_code(qr_code, extent: 50)
     end
 
-    pdf.text_box student.name&.titlecase, at: [x, y - 180], width: inches_to_points(3), align: :center, size: 16
+    if student.name.length >= 26
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 172], width: inches_to_points(3) - 10, align: :center, size: 15
+    else
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 180], width: inches_to_points(3) - 10, align: :center, size: 15
+    end
+
     pdf.fill_color 'FFFFFF'
     pdf.text_box student.roll_number.to_s, at: [x, y - 205], width: inches_to_points(3), align: :center, size: 18, style: :bold
     pdf.fill_color 'FF0000'
