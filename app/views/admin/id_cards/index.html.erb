@@ -14,9 +14,11 @@
       <div class="col-md-1 pt-4">
         <button type="submit" class="btn btn-success">Submit</button>
       </div>
-      <div class="col-md-2 pt-4">
-        <%= link_to 'Print Id Cards', print_cards_admin_id_cards_path, method: :get, class: "btn btn-primary" %>
-      </div>
+      <% if @current_org.rcc? %>
+        <div class="col-md-2 pt-4">
+          <%= link_to 'Print Id Cards', print_cards_admin_id_cards_path, method: :get, class: "btn btn-primary" %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
