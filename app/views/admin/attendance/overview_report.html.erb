@@ -30,7 +30,7 @@
         </td>
         <td>
           <%= link_to 'Send Now', send_batch_sms_admin_attendance_index_path(batch_id: sd[:batch].id, type: 'absent'), method: :post, class: "btn btn-primary btn-sm" %>
-          <%= REDIS_CACHE.get("att-#{Date.today.to_s}-#{sd[:batch].id}-ab") ? "✓" : "✓" %>
+          <%= REDIS_CACHE.get("att-#{Date.today.to_s}-#{sd[:batch].id}-ab") ? "✓" : "" %>
         </td>
         <td>
         </td>
