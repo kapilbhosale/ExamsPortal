@@ -11,7 +11,9 @@ module Fees
     end
 
     def call
-      return today_transactions unless current_admin.roles.include?('ff')
+      if current_org.rcc? && !current_admin.roles.include?('ff')
+        return today_transactions
+      end
 
       return today_transactions if from_date == to_date && to_date == Date.today
 
