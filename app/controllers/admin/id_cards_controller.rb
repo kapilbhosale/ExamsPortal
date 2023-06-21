@@ -63,14 +63,14 @@ class Admin::IdCardsController < Admin::BaseController
   private
 
   def add_id_card(pdf, student, batch_display_name, x, y)
-    qr_code = RQRCode::QRCode.new("#{student.id}", mode: :number)
+    qr_code = RQRCode::QRCode.new("#{student.id}|#{student.roll_number}")
     profile_photo = open(student.photo.profile.url) rescue false
 
     pdf.fill_color '000000'
     pdf.image("app/assets/images/id-bg-12.jpg", scale: 0.2417, at: [x, y])
 
     if profile_photo != false
-      pdf.image(profile_photo, at: [x + 63, y - 62], fit: [88, 150])
+      pdf.image(profile_photo, at: [x + 65, y - 64], width: 83, height: 97)
     end
 
     pdf.move_cursor_to(y - 90)
@@ -80,13 +80,13 @@ class Admin::IdCardsController < Admin::BaseController
     end
 
     if student.name.length >= 26
-      pdf.text_box student.name&.titlecase, at: [x + 5, y - 172], width: inches_to_points(3) - 10, align: :center, size: 15
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 172], width: inches_to_points(3) - 10, align: :center, size: 16
     else
-      pdf.text_box student.name&.titlecase, at: [x + 5, y - 180], width: inches_to_points(3) - 10, align: :center, size: 15
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 180], width: inches_to_points(3) - 10, align: :center, size: 16
     end
 
     pdf.fill_color 'FFFFFF'
-    pdf.text_box student.roll_number.to_s, at: [x, y - 205], width: inches_to_points(3), align: :center, size: 18, style: :bold
+    pdf.text_box student.roll_number.to_s, at: [x, y - 207], width: inches_to_points(3), align: :center, size: 18, style: :bold
     pdf.fill_color 'FF0000'
     pdf.text_box "Batch: #{batch_display_name.upcase}", at: [x, y - 230], width: inches_to_points(3), align: :center, size: 18, style: :bold
   end
