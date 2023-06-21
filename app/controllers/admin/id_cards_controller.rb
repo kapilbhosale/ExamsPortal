@@ -64,12 +64,13 @@ class Admin::IdCardsController < Admin::BaseController
 
   def add_id_card(pdf, student, batch_display_name, x, y)
     qr_code = RQRCode::QRCode.new("#{student.id}", mode: :number)
+    profile_photo = open(student.photo.profile.url) rescue false
 
     pdf.fill_color '000000'
     pdf.image("app/assets/images/id-bg-12.jpg", scale: 0.2417, at: [x, y])
 
-    if student.photo.profile.url.present?
-      pdf.image(open(student.photo.profile.url), at: [x + 63, y - 62], fit: [88, 150])
+    if profile_photo != false
+      pdf.image(profile_photo, at: [x + 63, y - 62], fit: [88, 150])
     end
 
     pdf.move_cursor_to(y - 90)
