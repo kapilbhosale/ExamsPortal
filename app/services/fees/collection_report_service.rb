@@ -11,7 +11,7 @@ module Fees
     end
 
     def call
-      return today_transactions unless current_admin.roles.include?('ff')
+      return today_transactions if current_admin.roles.exclude?('ff')
 
       return today_transactions if from_date == to_date && to_date == Date.today
 
@@ -47,8 +47,8 @@ module Fees
 
       fees_transactions = fees_transactions.current_year
         .where(org_id: current_org.id)
-        .where('created_at >= ?', date1)
-        .where('created_at <= ?', date2)
+        .where('fees_transactions.created_at >= ?', date1)
+        .where('fees_transactions.created_at <= ?', date2)
         .where(students: { student_batches: { batch_id: current_admin.batches.joins(:fees_templates).ids }})
       return fees_transactions unless nil_fees_only
 
