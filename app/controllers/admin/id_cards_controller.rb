@@ -80,9 +80,9 @@ class Admin::IdCardsController < Admin::BaseController
     end
 
     if student.name.length >= 25
-      pdf.text_box student.name&.titlecase, at: [x + 5, y - 168], width: inches_to_points(3) - 10, align: :center, size: 16
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 168], width: inches_to_points(3) - 10, align: :center, size: 16, style: :bold
     else
-      pdf.text_box student.name&.titlecase, at: [x + 5, y - 180], width: inches_to_points(3) - 10, align: :center, size: 16
+      pdf.text_box student.name&.titlecase, at: [x + 5, y - 180], width: inches_to_points(3) - 10, align: :center, size: 16, style: :bold
     end
 
     pdf.fill_color 'FFFFFF'
