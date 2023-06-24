@@ -116,7 +116,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
     return true if student.roll_number == 100 && student.parent_mobile == '1234567890'
     return true if student.roll_number == 1001 && student.parent_mobile == '999999'
 
-    return true if student.roll_number == 1001 && student.parent_mobile == '9876543210'
+    return true if student.parent_mobile == '9876543210'
     return true if student.roll_number == 3003 && student.parent_mobile == '9876543200'
 
     false
