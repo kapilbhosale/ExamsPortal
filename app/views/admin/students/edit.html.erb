@@ -163,6 +163,11 @@
       </div>
       <div class="card-footer">
         <p>Admission Date: <b><%= @student.created_at.strftime("%d-%B-%Y %I:%M %p") %></b></p>
+          Id Card Prints:
+          <% @student.id_card.each do |print_log| %>
+            <li><%= print_log %></li>
+          <% end %>
+        <br/>
         <% if @student.app_login? || @student.is_laptop_login? %>
           <div class="col-md-2">
             <%= link_to "Reset App logins", admin_student_reset_login_path(@student), class: 'btn btn-danger' %>
