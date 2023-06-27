@@ -58,6 +58,7 @@
           <td>Batch</td>
           <td>Admission Date</td>
           <td>Fees Nil Date</td>
+          <td>Photo</td>
           <td>Prints</td>
         </tr>
 
@@ -85,7 +86,12 @@
               <%= ft.created_at.strftime("%d-%b-%Y") %>
             </td>
             <td>
-              <%= ft.student.id_card.join(", ") %>
+              <%= ft.student.photo.present? ? "YES" : "-" %>
+            </td>
+            <td>
+              <% ft.student.id_card.each do |print_log| %>
+                <li><%= print_log %></li>
+              <% end %>
             </td>
           </tr>
         <% end %>

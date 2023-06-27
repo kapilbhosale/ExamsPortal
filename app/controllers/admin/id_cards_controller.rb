@@ -50,6 +50,11 @@ class Admin::IdCardsController < Admin::BaseController
       x, y = 0, 12
       pdf.canvas do
         students.each do |student|
+          ids_data = student.id_card || []
+
+          ids_data << "#{Time.current.strftime("%d-%B %I:%M%p")} by #{current_admin.email.split('@')[0]}"
+          student.update(id_card: ids_data)
+
           add_id_card(pdf, student, batch_display_name, inches_to_points(x), inches_to_points(y))
           x >= 15 ? (x = 0; y -= 4) : x += 3
         end
