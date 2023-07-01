@@ -61,7 +61,7 @@ module Students
           new_template = FeesTemplate.find(new_template_id)
           FeesTransaction.where(student_id: student.id).order(:created_at).each do |ft|
             ft.payment_details['template'] = new_template.slice("id", "name", "heads")
-            ft.remaining_amount = new_template.total_amount - ft.payment_details["totals"]["paid"]
+            ft.remaining_amount = new_template.total_amount - (ft.payment_details["totals"]["paid"] + ft.discount_amount)
             ft.save
           end
         end
