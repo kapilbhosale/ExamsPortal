@@ -234,6 +234,7 @@ Rails.application.routes.draw do
         post  :set_yt_url
         get   :need_url
         get   :get_ytdlp_url
+        get   :get_ytdlp_url_from_youtube
       end
       resources :study_pdfs, only: [:index]
       resources :meetings, only: [:index]

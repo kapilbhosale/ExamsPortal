@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::VideosController < Api::V1::ApiController
-  skip_before_action :verify_authenticity_token, only: [:set_yt_url]
+  skip_before_action :authenticate, only: [:set_yt_url, :get_ytdlp_url_from_youtube]
 
   def index
     lectures = VideoLecture.includes(:batches, :subject)
@@ -67,6 +67,13 @@ class Api::V1::VideosController < Api::V1::ApiController
     # IMP:: Remove later, VAA fix.
     # VideoLinkFetchWorker.perform_async(lecture.id)
     render json: { url_hd: nil, url_sd: nil }, status: :ok
+  end
+
+  def get_ytdlp_url_from_youtube
+    binding.pry
+    video_data = `yt-dlp --get-url --format 18/22 '#{params[:video_id]}' --proxy #{PROXIES[Random.rand(999)]}`
+
+    render json: {url: video_data&.squish }
   end
 
   # deprecated, remote it.
