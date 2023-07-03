@@ -59,9 +59,11 @@ module Students
         if tempalte_bid_to_delete.present? && template_bid_to_add.present?
           new_template_id = BatchFeesTemplate.find_by(batch_id: template_bid_to_add.first).fees_template_id
           new_template = FeesTemplate.find(new_template_id)
+          paid = 0
           FeesTransaction.where(student_id: student.id).order(:created_at).each do |ft|
+            paid += ft.payment_details["totals"]["paid"]
             ft.payment_details['template'] = new_template.slice("id", "name", "heads")
-            ft.remaining_amount = new_template.total_amount - (ft.payment_details["totals"]["paid"] + ft.discount_amount)
+            ft.remaining_amount = new_template.total_amount - (paid + ft.discount_amount)
             ft.save
           end
         end
