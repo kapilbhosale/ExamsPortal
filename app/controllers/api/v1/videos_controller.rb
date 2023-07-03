@@ -70,7 +70,6 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def get_ytdlp_url_from_youtube
-    binding.pry
     video_data = `yt-dlp --get-url --format 18/22 '#{params[:video_id]}' --proxy #{PROXIES[Random.rand(999)]}`
 
     render json: {url: video_data&.squish }
