@@ -122,6 +122,7 @@ class Admin::OmrController < Admin::BaseController
     create_pr_params = []
     student_counts_by_rn = Student.where(org_id: current_org.id).group(:roll_number).count
     students_by_rn = Student.where(org_id: current_org.id).index_by(&:roll_number)
+    @test_names_for_ranks = {}
     CSV.foreach(csv_file, headers: true).each do |csv_row|
       student_id = csv_row['Student_ID'].to_i
       test_id = csv_row['Test_ID'].to_i
@@ -139,12 +140,14 @@ class Admin::OmrController < Admin::BaseController
         student = students_by_rn[roll_number.to_i]
       end
 
+      puts "--- #{csv_row}"
       next if student.blank?
 
       @student_roll_numbers[student_id] = roll_number
 
       score = csv_row['Student_Marks'].to_i
       test = @test_master_data[test_id]
+
       @test_names_for_ranks["#{test[:test_date]}-#{test[:test_name]}"] ||= {
         exam_date: test[:test_date],
         exam_name: "#{test[:test_name]} (OMR)"
