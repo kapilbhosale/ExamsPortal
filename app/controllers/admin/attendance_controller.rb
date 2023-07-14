@@ -11,7 +11,11 @@ class Admin::AttendanceController < Admin::BaseController
   end
 
   def sms_logs
-    @sms_logs = AttSmsLog.includes(:batch).where('created_at > ?', Time.now - 7.days)
+    batch_ids = Batch.where(org_id: current_org.id).ids
+    @sms_logs = AttSmsLog
+      .includes(:batch)
+      .where('created_at > ?', Time.now - 7.days)
+      .where(batch_id: batch_ids)
   end
 
   def change_auto_sms_settings
