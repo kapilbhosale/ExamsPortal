@@ -140,13 +140,14 @@ class Admin::OmrController < Admin::BaseController
         student = students_by_rn[roll_number.to_i]
       end
 
-      puts "--- #{csv_row}"
       next if student.blank?
 
       @student_roll_numbers[student_id] = roll_number
 
       score = csv_row['Student_Marks'].to_i
       test = @test_master_data[test_id]
+
+      next if test.blank?
 
       @test_names_for_ranks["#{test[:test_date]}-#{test[:test_name]}"] ||= {
         exam_date: test[:test_date],
