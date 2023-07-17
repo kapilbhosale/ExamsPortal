@@ -19,4 +19,8 @@
 class StudentNote < ApplicationRecord
   belongs_to :student
   belongs_to :note
+
+  def batches
+    student&.batches&.pluck(:name)
+  end
 end

@@ -168,7 +168,7 @@ class FeesTransaction < ApplicationRecord
 
       paid_data = {
         "paid" => paid,
-        "discount" => row["discount"].to_i || 0,
+        "discount" => 0,
         "cgst" => cgst,
         "sgst" => sgst,
         "fees" => fees,
@@ -322,4 +322,28 @@ class FeesTransaction < ApplicationRecord
 
     self.token_of_the_day = student.intel_score
   end
+end
+
+
+
+
+
+def make_entry(dt, ft, paid)
+  fees = (paid * 100) / 118.0
+  cgst = (paid - fees) / 2.0
+  sgst = (paid - fees) / 2.0
+
+
+  paid_data = {
+    "paid" => paid,
+    "discount" => 0,
+    "cgst" => cgst,
+    "sgst" => sgst,
+    "fees" => fees,
+  }
+
+  ft.payment_details[:paid] = { "Tution Fees"=> paid_data}
+  ft.payment_details[:totals] = paid_data
+  ft.created_at = dt
+  ft.save
 end
