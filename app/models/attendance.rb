@@ -78,25 +78,25 @@ class Attendance < ApplicationRecord
   #   msg: "Respected Parents, \r\nYour ward <STUDENT_NAME> is ABSENT for today's <TODAY> class.\r\nFrom, Shri Ganesh English Classes"
   # }
 
-  org = Org.find_by(subdomain: 'lbs')
-  org.data['sms_settings'] = {}
-  org.data['sms_settings']['present_sms'] = {
-    sms_user: 'LBS',
-    sms_password: 'LBS@123#',
-    sender_id: 'LBSBMT',
-    template_id: '1007680264902240438',
-    entity_id: '1001298244990130034',
-    msg: "From : LBS School Basmath \r\nDear Parent, \r\nYour ward <STUDENT_NAME> is PRESENT on Date; <TODAY>\r\n-LBSBMT"
-  }
+  # org = Org.find_by(subdomain: 'lbs')
+  # org.data['sms_settings'] = {}
+  # org.data['sms_settings']['present_sms'] = {
+  #   sms_user: 'LBS',
+  #   sms_password: 'LBS@123#',
+  #   sender_id: 'LBSBMT',
+  #   template_id: '1007680264902240438',
+  #   entity_id: '1001298244990130034',
+  #   msg: "From : LBS School Basmath \r\nDear Parent, \r\nYour ward <STUDENT_NAME> is PRESENT on Date; <TODAY>\r\n-LBSBMT"
+  # }
 
-  org.data['sms_settings']['absent_sms'] = {
-    sms_user: 'LBS',
-    sms_password: 'LBS@123#',
-    sender_id: 'LBSBMT',
-    template_id: '1007500949929358876',
-    entity_id: '1001298244990130034',
-    msg: "From: LBS School, Basmath \r\nDear Parent, Your ward <STUDENT_NAME> is ABSENT <TODAY>.\r\n-LBSBMT"
-  }
+  # org.data['sms_settings']['absent_sms'] = {
+  #   sms_user: 'LBS',
+  #   sms_password: 'LBS@123#',
+  #   sender_id: 'LBSBMT',
+  #   template_id: '1007500949929358876',
+  #   entity_id: '1001298244990130034',
+  #   msg: "From: LBS School, Basmath \r\nDear Parent, Your ward <STUDENT_NAME> is ABSENT <TODAY>.\r\n-LBSBMT"
+  # }
 
   def send_present_sms
     return if org.data.dig('sms_settings', 'present_sms').blank?
