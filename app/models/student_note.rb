@@ -24,3 +24,23 @@ class StudentNote < ApplicationRecord
     student&.batches&.pluck(:name)
   end
 end
+
+
+# require 'csv'
+# file = "#{Rails.root}/public/student_notes.csv"
+# student_notes = StudentNote.includes(:note, student: [:batches]).all
+# headers = ['Id', 'notes', 'Student Name', 'Roll Number', 'Parent Mobile', 'Batches', 'Date']
+# CSV.open(file, 'w', write_headers: true, headers: headers) do |writer|
+#   student_notes.each do |sn|
+#     writer << [
+#       sn.id,
+#       sn.note.name,
+#       sn.student.name,
+#       sn.student.roll_number,
+#       sn.student.parent_mobile,
+#       sn.student.batches.pluck(:name).join(' | '),
+#       sn.created_at.strftime("%d-%b-%y %I:%M%p")
+#     ]
+#     putc "."
+#   end
+# end

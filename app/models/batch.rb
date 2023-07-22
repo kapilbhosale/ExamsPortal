@@ -4,6 +4,7 @@
 #
 #  id             :bigint(8)        not null, primary key
 #  config         :jsonb
+#  device_ids     :string
 #  disable_count  :integer          default(0)
 #  end_time       :datetime
 #  klass          :string

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_08_072528) do
+ActiveRecord::Schema.define(version: 2023_07_22_070925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -205,6 +205,7 @@ ActiveRecord::Schema.define(version: 2023_06_08_072528) do
     t.datetime "end_time"
     t.jsonb "config"
     t.string "klass"
+    t.string "device_ids"
     t.index ["batch_group_id"], name: "index_batches_on_batch_group_id"
     t.index ["org_id"], name: "index_batches_on_org_id"
   end

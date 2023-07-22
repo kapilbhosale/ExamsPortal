@@ -30,6 +30,7 @@
                   <th>Disabled Students</th>
                 <% end %>
                 <th>Batch Timming</th>
+                <th>Devices</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -64,6 +65,9 @@
                   <% end %>
                   <td>
                     <%= "#{batch.start_time&.strftime("%I:%M %p") || '-'} -  #{batch.end_time&.strftime("%I:%M %p") || '-'}" %>
+                  </td>
+                  <td>
+                    <%= "#{batch.device_ids || '-'}" %>
                   </td>
                   <td>
                     <%= link_to '<i class="glyphicon glyphicon-th-list"></i>'.html_safe, admin_batch_path(batch), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
