@@ -2,33 +2,6 @@ class PaymentWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'critical', retry: 1
 
-  MAPPING = {
-    209 => 237,
-    210 => 237,
-    214 => 237,
-    216 => 237,
-    208 => 227,
-    211 => 227,
-    212 => 227,
-    217 => 227,
-    218 => 227,
-    223 => 227,
-    220 => 238,
-    221 => 238,
-    219 => 246,
-    222 => 246
-  }
-
-  def batch_mapping(batch_ids)
-    return [] if batch_ids.blank?
-
-    new_batch_ids = []
-    batch_ids.each do |batch_id|
-      new_batch_ids << MAPPING[batch_id]
-    end
-    new_batch_ids.uniq
-  end
-
   def perform(new_admission_id)
     new_admission = NewAdmission.find_by(id: new_admission_id)
     if new_admission.student_id.present?
@@ -52,9 +25,6 @@ class PaymentWorker
         if new_admission.extra_data['is_set'] == true || new_admission.extra_data['is_set'] == 'true'
           student.new_admission_id = new_admission.id
           student.save
-          new_batches = Batch.where(id: batch_mapping(student.batches.ids))
-          student.batches.destroy_all if new_batches.present?
-          student.batches << new_batches
           student.send_sms
         else
           batches = Batch.get_batches(new_admission.rcc_branch, new_admission.course, new_admission.batch, new_admission)
@@ -88,11 +58,11 @@ class PaymentWorker
 
       if pay_transaction.blank? && new_admission.default?
         new_admission.started!
-        std = Student.add_student(new_admission)
-        new_admission.student_id = std.id
+        student = Student.add_student(new_admission)
+        new_admission.student_id = student.id
         new_admission.save
         PaymentTransaction.create(
-          student_id: std.id,
+          student_id: student.id,
           amount: new_admission.fees.to_f,
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
@@ -101,6 +71,32 @@ class PaymentWorker
       end
     end
 
-    Batch.re_count_students_all_batches
+    #  create fees transaction entry
+    fee_transaction_params =  get_fee_transaction_params(student, new_admission)
+    response = Fees::CreateFeesTransaction.new(org, admin, ).create
+
+
+
+    # Batch.re_count_students_all_batches
+  end
+
+  def org
+    Org.find(1)
+  end
+
+  def admin
+    Admin.find(1)
+  end
+
+  def get_fee_transaction_params(student, new_admission)
+    {
+      student_id: student.id,
+      comment: "Online admission (Auto)",
+      mode_of_payment: "online",
+      template_id: ,
+      next_due_date: Time.now + 1.month,
+      ref: new_admission.id,
+      fees_details: {}
+    }
   end
 end

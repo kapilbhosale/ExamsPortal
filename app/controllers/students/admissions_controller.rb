@@ -119,6 +119,10 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
+    unless ['11th_new' , '12th', 'repeater'].include?(params[:batch])
+      errors << "Invalid Admission data, please try agian."
+    end
+
     if errors.blank?
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
@@ -277,47 +281,47 @@ class Students::AdmissionsController < ApplicationController
     1_00_000
   end
 
-  def admission_done_set
-    @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
-    @errors = []
+  # def admission_done_set
+  #   @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
+  #   @errors = []
 
-    if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.default?)
-      @new_admission.started!
-      @new_admission.success!
+  #   if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.default?)
+  #     @new_admission.started!
+  #     @new_admission.success!
 
-      # TODO:: student registered in old batch, fails to avoid duplicates in set
-      student = Student.where(
-        parent_mobile: @new_admission.parent_mobile,
-        student_mobile: @new_admission.student_mobile
-      ).where('created_at > ?', Date.parse("06-03-2023")).last
+  #     # TODO:: student registered in old batch, fails to avoid duplicates in set
+  #     student = Student.where(
+  #       parent_mobile: @new_admission.parent_mobile,
+  #       student_mobile: @new_admission.student_mobile
+  #     ).where('created_at > ?', Date.parse("06-03-2023")).last
 
-      batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
-      batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
+  #     batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
+  #     batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
 
-      student_batch_names = student&.batches&.pluck(:name) || []
-      if student.blank? ||
-          (@new_admission.batch == '12th_set' && (student_batch_names & batches_rep_set_23_24).blank?) ||
-          (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_p3).blank?)
-        student = Student.add_student(@new_admission) rescue nil
-      end
+  #     student_batch_names = student&.batches&.pluck(:name) || []
+  #     if student.blank? ||
+  #         (@new_admission.batch == '12th_set' && (student_batch_names & batches_rep_set_23_24).blank?) ||
+  #         (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_p3).blank?)
+  #       student = Student.add_student(@new_admission) rescue nil
+  #     end
 
-      if student.blank?
-        flash[:errors] = "Error 102, please try agian later"
-        @errors << "Error 102, please try agian later"
-      else
-        @student = student
-        student.new_admission_id = @new_admission.id
-        @new_admission.done!
-        student.save
-      end
-    elsif @new_admission.started?
-      @errors << "Admission already confirmed, Please check SMS for details"
-    elsif @new_admission.done?
-      @errors << "Admission already confirmed, Please check SMS for details"
-    else
-      @errors << "Error 101, please try agian later"
-    end
-  end
+  #     if student.blank?
+  #       flash[:errors] = "Error 102, please try agian later"
+  #       @errors << "Error 102, please try agian later"
+  #     else
+  #       @student = student
+  #       student.new_admission_id = @new_admission.id
+  #       @new_admission.done!
+  #       student.save
+  #     end
+  #   elsif @new_admission.started?
+  #     @errors << "Admission already confirmed, Please check SMS for details"
+  #   elsif @new_admission.done?
+  #     @errors << "Admission already confirmed, Please check SMS for details"
+  #   else
+  #     @errors << "Error 101, please try agian later"
+  #   end
+  # end
 
   def admission_done
     Rails.logger.info "PAYMENT**********"
