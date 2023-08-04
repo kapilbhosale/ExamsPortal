@@ -318,6 +318,7 @@ class Batch < ApplicationRecord
     #   get_set_aug_batches(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       get_repeater_batches(rcc_branch, course, batch, na)
+    end
     # elsif batch == 'test_series'
     #   org = Org.first
     #   batch_name = rcc_branch == "latur" ?
