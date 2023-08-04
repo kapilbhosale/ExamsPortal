@@ -58,11 +58,11 @@ class PaymentWorker
 
       if pay_transaction.blank? && new_admission.default?
         new_admission.started!
-        student = Student.add_student(new_admission)
-        new_admission.student_id = student.id
+        std = Student.add_student(new_admission)
+        new_admission.student_id = std.id
         new_admission.save
         PaymentTransaction.create(
-          student_id: student.id,
+          student_id: std.id,
           amount: new_admission.fees.to_f,
           reference_number: new_admission.payment_id,
           new_admission_id: new_admission.id
@@ -71,32 +71,6 @@ class PaymentWorker
       end
     end
 
-    #  create fees transaction entry
-    fee_transaction_params =  get_fee_transaction_params(student, new_admission)
-    response = Fees::CreateFeesTransaction.new(org, admin, ).create
-
-
-
-    # Batch.re_count_students_all_batches
-  end
-
-  def org
-    Org.find(1)
-  end
-
-  def admin
-    Admin.find(1)
-  end
-
-  def get_fee_transaction_params(student, new_admission)
-    {
-      student_id: student.id,
-      comment: "Online admission (Auto)",
-      mode_of_payment: "online",
-      template_id: ,
-      next_due_date: Time.now + 1.month,
-      ref: new_admission.id,
-      fees_details: {}
-    }
+    Batch.re_count_students_all_batches
   end
 end
