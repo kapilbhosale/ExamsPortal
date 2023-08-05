@@ -78,6 +78,8 @@ class VideoLecture < ApplicationRecord
         else
           lect_data['play_url'] = lect.url
         end
+        lect_data['player'] = {use_first: 'custom', on_error: 'youtube'}
+
         lect_data['play_url_from_server'] = nil if lect.play_url_expired?
         lect_data
     end

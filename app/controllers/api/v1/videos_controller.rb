@@ -298,6 +298,8 @@ class Api::V1::VideosController < Api::V1::ApiController
         lect_data['play_url_from_server'] = nil
       end
 
+      lect_data['player'] = {use_first: 'custom', on_error: 'youtube'}
+
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data
     end
