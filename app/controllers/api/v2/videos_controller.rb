@@ -25,7 +25,8 @@ class Api::V2::VideosController < Api::V2::ApiController
     page = (params[:page] || 1).to_i
     video = VideoLecture.find_by(org_id: current_org.id, id: params[:video_id])
     total = video.messages.count
-    comments  = video.messages.order(id: :desc).page(page).per(ITEMS_PER_PAGE)
+
+    comments = video.messages.where(sender_type: "Student", sender_id: current_student&.id).order(id: :desc).page(page).per(ITEMS_PER_PAGE)
 
     render json: {
       page: page,
