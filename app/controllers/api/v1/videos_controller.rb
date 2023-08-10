@@ -70,8 +70,8 @@ class Api::V1::VideosController < Api::V1::ApiController
   end
 
   def get_ytdlp_url_from_youtube
-    video_data = `yt-dlp --get-url --format 18/22 '#{params[:video_id]}' --proxy #{PROXIES[Random.rand(999)]}`
-
+    video_data = `yt-dlp --get-url --format 18/22 '#{params[:video_id]}' --proxy #{Proxy.random}`
+    # video_data = `yt-dlp --get-url --format 18/22 '#{params[:video_id]}' --proxy #{PROXIES[Random.rand(999)]}`
     render json: {url: video_data&.squish }
   end
 
@@ -276,7 +276,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     video_data = `youtube-dl -j --format 18/22 '#{lecture.url}'`
     return JSON.parse(video_data) if video_data.present?
 
-    video_data_from_proxy = `youtube-dl -j --format 18/22 '#{lecture.url}' --proxy #{PROXIES[Random.rand(999)]}`
+    video_data_from_proxy = `youtube-dl -j --format 18/22 '#{lecture.url}' --proxy #{Proxy.random}`
     JSON.parse(video_data_from_proxy) if video_data_from_proxy.present?
   end
 

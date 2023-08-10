@@ -12,4 +12,9 @@
 #
 
 class Proxy < ApplicationRecord
+  validates :ip_and_port, uniqueness: true
+
+  def self.random
+    order("RANDOM()").first.conn_string
+  end
 end
