@@ -2,19 +2,22 @@
 class Students::VideosController < Students::BaseController
   before_action :authenticate_student!
   layout 'student_exam_layout', only: [:show_lecture]
-
+  TP_STREAM_ORG_ID = 'tknatp'
   before_action :check_valid_rcc_request, only: [:category_videos, :lectures, :show_lecture]
 
   def index
   end
 
   def category_videos
-    all_vls = VideoLecture.includes(:batches)
+    vls = VideoLecture
+    .includes(:genre, :subject, :batches)
     .where(org_id: current_org.id)
-    .where(batches: {id: current_student.batches.ids})
-    .where(genre_id: params[:id].to_i)
-    .where.not(laptop_vimeo_id: nil)
+    .where(batches: { id: current_student.batches.ids })
 
+    ids1 = vls.where.not(laptop_vimeo_id: nil).ids
+    ids2 = vls.where.not(tp_streams_id: nil).ids
+
+    all_vls = VideoLecture.where(id: ids1 + ids2)
     lectures = all_vls.where(enabled: true).order(id: :desc)
 
     @lectures_data = {}
@@ -50,11 +53,15 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    all_vls = VideoLecture
-      .includes(:genre, :subject, :batches)
-      .where(org_id: current_org.id)
-      .where(batches: { id: current_student.batches.ids })
-      .where.not(laptop_vimeo_id: nil)
+    vls = VideoLecture
+    .includes(:genre, :subject, :batches)
+    .where(org_id: current_org.id)
+    .where(batches: { id: current_student.batches.ids })
+
+    ids1 = vls.where.not(laptop_vimeo_id: nil).ids
+    ids2 = vls.where.not(tp_streams_id: nil).ids
+
+    all_vls = VideoLecture.where(id: ids1 + ids2)
 
     video_lectures = all_vls.where(enabled: true)
     @categories_data = {}
@@ -131,7 +138,7 @@ class Students::VideosController < Students::BaseController
     # @student = current_student
     # @video_lecture = VideoLecture.find_by(laptop_vimeo_id: params[:video_id])
     # @messages = Message.where(messageable: @video_lecture)
-    
+
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
 
@@ -139,6 +146,27 @@ class Students::VideosController < Students::BaseController
     #   lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
     #   @yt_playable_link = lecture.play_url_from_server if lecture.present? && lecture.play_url_live?
     # end
+  end
+
+  def show_lecture_tp
+    vl = VideoLecture
+      .includes(:batches)
+      .where(org_id: current_org.id)
+      .where(batches: { id: current_student.batches.ids })
+      .where(tp_streams_id: params[:tp_streams_id]).last
+
+    if vl.present?
+      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{vl.tp_streams_id}/access_tokens/"
+      resp = Faraday.get(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+      end
+      if resp.status == 200
+        parsed_resp = JSON.parse(resp.body)
+        @playback_url = parsed_resp["results"].first["playback_url"]
+        @access_token = parsed_resp["results"].first["code"]
+      end
+    end
   end
 
   def pay_vimeo
@@ -163,7 +191,7 @@ class Students::VideosController < Students::BaseController
   def lectures_json(lectures)
     lectures_data = {}
     lectures.each do |lect|
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "tp_streams_id")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.created_at)
       if lect.vimeo?

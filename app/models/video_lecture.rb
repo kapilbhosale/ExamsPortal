@@ -66,7 +66,7 @@ class VideoLecture < ApplicationRecord
   after_save :flush_videos_cache
   after_save :update_tp_stream_details
 
-  def self.latest_videos(student, domain="")
+  def self.latest_videos(student, domain="", build_number)
     VideoLecture
       .includes(:batches, :subject)
       .where(batches: {id: student.batches})
@@ -75,7 +75,7 @@ class VideoLecture < ApplicationRecord
       .where('publish_at <= ?', Time.current)
       .where('hide_at IS NULL or hide_at >= ?', Time.current)
       .order(created_at: :desc).limit(3).map do |lect|
-        lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
+        lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server", "tp_streams_id")
         lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
         lect_data['added_ago'] = (lect.publish_at || lect.created_at).strftime("%d-%B-%Y %I:%M%p")
         if lect.vimeo?
@@ -86,7 +86,7 @@ class VideoLecture < ApplicationRecord
 
         lect_data['player'] = {
           use_first: 'custom',
-          on_error: (request.headers['buildNumber'].to_i >= 87 ? 'youtube' : nil)
+          on_error: (build_number >= 87 ? 'youtube' : nil)
         }
 
         lect_data['play_url_from_server'] = nil if lect.play_url_expired?

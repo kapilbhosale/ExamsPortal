@@ -169,7 +169,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
 
   def videos_json(lectures)
     lectures.map do |lect|
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server", "tp_streams_id")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
       if lect.vimeo?

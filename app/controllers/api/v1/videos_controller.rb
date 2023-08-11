@@ -14,7 +14,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     lectures.each do |lect|
       next if lect.publish_at.present? && lect.publish_at > Time.current
 
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "tp_streams_id")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
       if lect.vimeo?
@@ -25,6 +25,7 @@ class Api::V1::VideosController < Api::V1::ApiController
 
       lect_data['views_count'] = tracker_by_id[lect.id].present? ? tracker_by_id[lect.id].data['view_count'] : 0
       lect_data['total_views_count'] = tracker_by_id[lect.id].present? ? tracker_by_id[lect.id].data['allocated_views'] || lect.view_limit : lect.view_limit || 10000
+      lect_data['tp_streams_data'] = lect.tp_streams_json
 
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data
@@ -255,7 +256,7 @@ class Api::V1::VideosController < Api::V1::ApiController
 
       next unless include_flag
       lect = vl
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "tp_streams_id")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
       if lect.vimeo?
@@ -285,7 +286,7 @@ class Api::V1::VideosController < Api::V1::ApiController
     lectures.each do |lect|
       next if lect.publish_at.present? && lect.publish_at > Time.current
 
-      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server")
+      lect_data = lect.attributes.slice("id" ,"title", "url", "video_id", "description", "by", "tag", "subject_id", "video_type", "play_url_from_server", "tp_streams_id")
       lect_data['thumbnail_url'] = lect.vimeo? ? lect.thumbnail : lect.uploaded_thumbnail.url
       lect_data['added_ago'] = helpers.time_ago_in_words(lect.publish_at || lect.created_at)
       if lect.vimeo?
