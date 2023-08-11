@@ -134,10 +134,10 @@ class Students::VideosController < Students::BaseController
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
 
-    if current_org.rcc?
-      lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
-      @yt_playable_link = lecture.play_url_from_server if lecture.present? && lecture.play_url_live?
-    end
+    # if current_org.rcc?
+    #   lecture = VideoLecture.where('video_id = ? OR laptop_vimeo_id = ?', params[:video_id].to_s, params[:video_id].to_s).last
+    #   @yt_playable_link = lecture.play_url_from_server if lecture.present? && lecture.play_url_live?
+    # end
   end
 
   def pay_vimeo
