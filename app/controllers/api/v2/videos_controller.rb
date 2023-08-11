@@ -92,7 +92,7 @@ class Api::V2::VideosController < Api::V2::ApiController
         render json: {
           playback_url: parsed_resp["playback_url"],
           access_token: parsed_resp["code"],
-          video_data: video.present? ? video.tp_streams_data : nil
+          video_data: video.present? ? video.tp_streams_json : nil
         } and return
       end
     end
