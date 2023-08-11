@@ -113,30 +113,31 @@ class Admin::VideoLecturesController < Admin::BaseController
   end
 
   def show
+    headers = {
+      'Content-Type' => 'application/json',
+      'Authorization' => "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+    }
+    conn = Faraday.new(
+      url: "https://app.tpstreams.com/api/v1/",
+      headers: headers
+    )
+
     video_lecture = VideoLecture.find_by(org: current_org, id: params[:id])
     if video_lecture&.tp_streams_id.present?
-      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{video_lecture.tp_streams_id}/access_tokens/"
-      resp = Faraday.get(url) do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
-      end
-      if resp.status == 200
-        parsed_resp = JSON.parse(resp.body)
-        @playback_url = parsed_resp["results"].first["playback_url"]
-        @access_token = parsed_resp["results"].first["code"]
-      end
+      tp_streams_id = video_lecture.tp_streams_id
+    elsif params[:tp_streams_id].present?
+      tp_streams_id = params[:tp_streams_id]
     end
 
-    if params[:tp_streams_id].present?
-      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{params[:tp_streams_id]}/access_tokens/"
-      resp = Faraday.get(url) do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+    if tp_streams_id.present?
+      resp = conn.post("#{TP_STREAM_ORG_ID}/assets/#{tp_streams_id}/access_tokens/") do |req|
+        req.body = {"expires_after_first_usage": true}.to_json
       end
-      if resp.status == 200
+
+      if resp.status == 201
         parsed_resp = JSON.parse(resp.body)
-        @playback_url = parsed_resp["results"].first["playback_url"]
-        @access_token = parsed_resp["results"].first["code"]
+        @playback_url = parsed_resp["playback_url"]
+        @access_token = parsed_resp["code"]
       end
     end
   end

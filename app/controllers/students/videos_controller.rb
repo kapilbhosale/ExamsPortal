@@ -156,15 +156,22 @@ class Students::VideosController < Students::BaseController
       .where(tp_streams_id: params[:tp_streams_id]).last
 
     if vl.present?
-      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{vl.tp_streams_id}/access_tokens/"
-      resp = Faraday.get(url) do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+      conn = Faraday.new(
+        url: "https://app.tpstreams.com/api/v1/",
+        headers: {
+          'Content-Type' => 'application/json',
+          'Authorization' => "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+        }
+      )
+
+      resp = conn.post("#{TP_STREAM_ORG_ID}/assets/#{vl.tp_streams_id}/access_tokens/") do |req|
+        req.body = {"expires_after_first_usage": true}.to_json
       end
-      if resp.status == 200
+
+      if resp.status == 201
         parsed_resp = JSON.parse(resp.body)
-        @playback_url = parsed_resp["results"].first["playback_url"]
-        @access_token = parsed_resp["results"].first["code"]
+        @playback_url = parsed_resp["playback_url"]
+        @access_token = parsed_resp["code"]
       end
     end
   end
