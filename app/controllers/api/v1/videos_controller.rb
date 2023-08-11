@@ -299,8 +299,8 @@ class Api::V1::VideosController < Api::V1::ApiController
       end
 
       lect_data['player'] = {
-        use_first: request.headers['buildNumber'].to_i >= 86 ? 'youtube' : 'custom',
-        on_error: request.headers['buildNumber'].to_i >= 86 ? 'youtube' : nil
+        use_first: 'custom',
+        on_error: (request.headers['buildNumber'].to_i >= 86 ? 'youtube' : nil)
       }
 
       lectures_data[lect.subject&.name] ||= []
