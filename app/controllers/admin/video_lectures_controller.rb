@@ -2,6 +2,8 @@ class Admin::VideoLecturesController < Admin::BaseController
   before_action :check_permissions
 
   ITEMS_PER_PAGE = 20
+  TP_STREAM_ORG_ID = 'tknatp'
+
   require 'ostruct'
   def index
     @search = VideoLecture.includes(:subject, :genre, :batches, :batches).where(org: current_org).where(batches: {id: current_admin.batches&.ids}).all.order(id: :desc)
@@ -110,6 +112,35 @@ class Admin::VideoLecturesController < Admin::BaseController
     redirect_to admin_video_lectures_path
   end
 
+  def show
+    video_lecture = VideoLecture.find_by(org: current_org, id: params[:id])
+    if video_lecture&.tp_streams_id.present?
+      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{video_lecture.tp_streams_id}/access_tokens/"
+      resp = Faraday.get(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+      end
+      if resp.status == 200
+        parsed_resp = JSON.parse(resp.body)
+        @playback_url = parsed_resp["results"].first["playback_url"]
+        @access_token = parsed_resp["results"].first["code"]
+      end
+    end
+
+    if params[:tp_streams_id].present?
+      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{params[:tp_streams_id]}/access_tokens/"
+      resp = Faraday.get(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+      end
+      if resp.status == 200
+        parsed_resp = JSON.parse(resp.body)
+        @playback_url = parsed_resp["results"].first["playback_url"]
+        @access_token = parsed_resp["results"].first["code"]
+      end
+    end
+  end
+
   def student_video_views
     @vieo_lecture = VideoLecture.find_by(org: current_org, id: params[:video_lecture_id])
 
@@ -166,7 +197,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       publish_at: params[:publish_at],
       hide_at: params[:hide_at],
       view_limit: params[:view_limit],
-      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
+      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube']),
+      tp_streams_id: params[:tp_streams_id]
     }
   end
 
@@ -186,7 +218,8 @@ class Admin::VideoLecturesController < Admin::BaseController
       publish_at: params[:publish_at],
       view_limit: params[:view_limit],
       hide_at: params[:hide_at],
-      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube'])
+      video_type: (params[:video_type] == 'vimeo' ? VideoLecture.video_types['vimeo'] : VideoLecture.video_types['youtube']),
+      tp_streams_id: params[:tp_streams_id]
     }
   end
 

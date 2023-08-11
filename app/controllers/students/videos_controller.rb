@@ -131,6 +131,7 @@ class Students::VideosController < Students::BaseController
     # @student = current_student
     # @video_lecture = VideoLecture.find_by(laptop_vimeo_id: params[:video_id])
     # @messages = Message.where(messageable: @video_lecture)
+    
     @video_url = "https://player.vimeo.com/video/#{params[:video_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
     @yt_playable_link = nil
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_22_070925) do
+ActiveRecord::Schema.define(version: 2023_08_11_095953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -867,6 +867,8 @@ ActiveRecord::Schema.define(version: 2023_07_22_070925) do
     t.datetime "link_udpated_at"
     t.datetime "hide_at"
     t.string "yt_video_id"
+    t.string "tp_streams_id"
+    t.jsonb "tp_streams_data", default: {}
     t.index ["genre_id"], name: "index_video_lectures_on_genre_id"
     t.index ["org_id"], name: "index_video_lectures_on_org_id"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"

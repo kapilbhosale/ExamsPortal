@@ -14,6 +14,7 @@
 #  tag                  :string
 #  thumbnail            :string
 #  title                :string
+#  tp_streams_data      :jsonb
 #  uploaded_thumbnail   :string
 #  url                  :string
 #  video_type           :integer          default("vimeo")
@@ -24,6 +25,7 @@
 #  laptop_vimeo_id      :integer
 #  org_id               :integer          default(0)
 #  subject_id           :integer
+#  tp_streams_id        :string
 #  video_id             :string
 #  yt_video_id          :string
 #
@@ -39,6 +41,8 @@ class VideoLecture < ApplicationRecord
   # validates :thumbnail, presence: true
   validates :title, presence: true
   validates :subject_name, presence: true
+
+  TP_STREAM_ORG_ID = 'tknatp'
 
   enum subject_name: { chem: 0, phy: 1, bio: 2, maths: 3, other: 4,
     english: 5, econonics: 6, 'bk & a/c': 7,  's.p': 8, 'o.c.m.': 9, 'maths(com)': 10,
@@ -60,6 +64,7 @@ class VideoLecture < ApplicationRecord
   # after_create :send_push_notifications
   after_save :flush_video_folders_cache
   after_save :flush_videos_cache
+  after_save :update_tp_stream_details
 
   def self.latest_videos(student, domain="")
     VideoLecture
@@ -197,5 +202,29 @@ class VideoLecture < ApplicationRecord
     end
   end
 
-end
+  def tp_streams_json
+    {
+      id: tp_streams_data["id"],
+      title: tp_streams_data["title"],
+      dash_url: tp_streams_data.dig("video", "dash_url"),
+      playback_url: tp_streams_data.dig("video", "playback_url"),
+    }
+  end
 
+  def update_tp_stream_details
+    if need_tp_streams_update?
+      url = "https://app.tpstreams.com/api/v1/#{TP_STREAM_ORG_ID}/assets/#{tp_streams_id}/"
+      resp = Faraday.get(url) do |req|
+        req.headers['Content-Type'] = 'application/json'
+        req.headers['Authorization'] = "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+      end
+      if resp.status == 200
+        self.update(tp_streams_data: JSON.parse(resp.body))
+      end
+    end
+  end
+
+  def need_tp_streams_update?
+    tp_streams_id.present? && (tp_streams_data.blank? || tp_streams_data["id"] != tp_streams_id)
+  end
+end
