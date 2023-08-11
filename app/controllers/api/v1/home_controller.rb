@@ -25,7 +25,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       'student_name' => current_student.name.split(' ').first,
       latest_videos: VideoLecture.latest_videos(current_student, helpers.full_domain_path),
       batches: current_student.batches.pluck(:name),
-      build_number: 85
+      build_number: 86
     }
     render json: json_data, status: :ok
   end
