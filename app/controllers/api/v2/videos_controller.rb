@@ -68,4 +68,34 @@ class Api::V2::VideosController < Api::V2::ApiController
     end
     render json: 'ok'
   end
+
+  def tp_streams_details
+    tp_streams_id = params[:tpStreamsId]
+    video = Video.find_by(id: params[:video_id]) if (params[:video_id].present?)
+
+    if tp_streams_id.present?
+      conn = Faraday.new(
+        url: "https://app.tpstreams.com/api/v1/",
+        headers: {
+          'Content-Type' => 'application/json',
+          'Authorization' => "Token #{ENV.fetch('TP_STREAMS_TOKEN')}"
+        }
+      )
+
+      resp = conn.post("#{TP_STREAM_ORG_ID}/assets/#{tp_streams_id}/access_tokens/") do |req|
+        req.body = {"expires_after_first_usage": true}.to_json
+      end
+
+      if resp.status == 201
+        parsed_resp = JSON.parse(resp.body)
+        render json: {
+          playback_url: parsed_resp["playback_url"],
+          access_token: parsed_resp["code"],
+          video_data: video.present? ? video.tp_streams_data : nil
+        } and return
+      end
+    end
+
+    render json: {message: "Unable to get TP Stream details"}, status: :unprocessable_entity
+  end
 end

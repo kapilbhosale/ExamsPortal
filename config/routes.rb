@@ -261,6 +261,7 @@ Rails.application.routes.draw do
         get :comments
         post :add_comment
         post :remove_comment
+        get :tp_streams_details
       end
     end
   end
