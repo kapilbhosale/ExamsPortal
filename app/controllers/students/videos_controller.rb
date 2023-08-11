@@ -165,7 +165,7 @@ class Students::VideosController < Students::BaseController
       )
 
       resp = conn.post("#{TP_STREAM_ORG_ID}/assets/#{vl.tp_streams_id}/access_tokens/") do |req|
-        req.body = {"expires_after_first_usage": true}.to_json
+        req.body = { "expires_after_first_usage": true }.to_json
       end
 
       if resp.status == 201
