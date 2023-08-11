@@ -79,6 +79,9 @@
               <input type="checkbox" <%= vl.enabled ? "checked" : ""%> >
             </td>
             <td>
+              <% if vl.tp_streams_id.present? %>
+                <%= link_to '<i class="glyphicon glyphicon-eye-open"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
+              <% end %>
               <%= link_to '<i class="glyphicon glyphicon-envelope"></i>'.html_safe, admin_video_lecture_chats_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
               <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
               <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
