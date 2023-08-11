@@ -2,6 +2,7 @@
 class Api::V2::VideosController < Api::V2::ApiController
   before_action :authenticate
   ITEMS_PER_PAGE = 20
+  TP_STREAM_ORG_ID = 'tknatp'
 
   def like
     video = VideoLecture.find_by(id: params[:video_id])
@@ -71,7 +72,7 @@ class Api::V2::VideosController < Api::V2::ApiController
 
   def tp_streams_details
     tp_streams_id = params[:tpStreamsId]
-    video = Video.find_by(id: params[:video_id]) if (params[:video_id].present?)
+    video = Video.find_by(id: params[:video_id])
 
     if tp_streams_id.present?
       conn = Faraday.new(
@@ -83,7 +84,7 @@ class Api::V2::VideosController < Api::V2::ApiController
       )
 
       resp = conn.post("#{TP_STREAM_ORG_ID}/assets/#{tp_streams_id}/access_tokens/") do |req|
-        req.body = {"expires_after_first_usage": true}.to_json
+        req.body = { "expires_after_first_usage": true }.to_json
       end
 
       if resp.status == 201

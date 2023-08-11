@@ -85,7 +85,7 @@ class VideoLecture < ApplicationRecord
         end
 
         lect_data['player'] = {
-          use_first: 'tp_streams',
+          use_first: 'custom',
           on_error: (build_number >= 87 ? 'youtube' : nil)
         }
 

@@ -300,7 +300,7 @@ class Api::V1::VideosController < Api::V1::ApiController
       end
 
       lect_data['player'] = {
-        use_first: 'tp_streams',
+        use_first: 'custom',
         on_error: (request.headers['buildNumber'].to_i >= 87 ? 'youtube' : nil)
       }
 
