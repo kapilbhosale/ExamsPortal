@@ -72,7 +72,7 @@ class Api::V2::VideosController < Api::V2::ApiController
 
   def tp_streams_details
     tp_streams_id = params[:tpStreamsId]
-    video = Video.find_by(id: params[:video_id])
+    video = VideoLecture.find_by(id: params[:video_id])
 
     if tp_streams_id.present?
       conn = Faraday.new(
