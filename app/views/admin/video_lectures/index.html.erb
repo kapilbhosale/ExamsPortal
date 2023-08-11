@@ -75,16 +75,16 @@
               <%= vl&.publish_at&.strftime("%d-%b %I:%M %p") || '-' %>
             </td>
             <td>
-              <%= time_ago_in_words(vl.created_at) %> | 
+              <%= time_ago_in_words(vl.created_at) %> |
               <input type="checkbox" <%= vl.enabled ? "checked" : ""%> >
             </td>
             <td>
-              <% if vl.tp_streams_id.present? %>
-                <%= link_to '<i class="glyphicon glyphicon-eye-open"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
+            <% if vl.tp_streams_id.present? %>
+                <%= link_to '<i class="fa fa-eye"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Show' %>&nbsp;
               <% end %>
-              <%= link_to '<i class="glyphicon glyphicon-envelope"></i>'.html_safe, admin_video_lecture_chats_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
+              <%= link_to '<i class="fas fa-envelope"></i>'.html_safe, admin_video_lecture_chats_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
               <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe, edit_admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Edit' %>&nbsp;
-              <%= link_to '<i class="glyphicon glyphicon-trash"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
+              <%= link_to '<i class="fa fa-trash"></i>'.html_safe, admin_video_lecture_path(vl), 'data-toggle': 'tooltip', title: 'Delete', method: :delete, data: {confirm: 'Are you sure?'} %>
             </td>
           </tr>
         <% end %>
