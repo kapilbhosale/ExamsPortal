@@ -298,7 +298,10 @@ class Api::V1::VideosController < Api::V1::ApiController
         lect_data['play_url_from_server'] = nil
       end
 
-      lect_data['player'] = {use_first: 'custom', on_error: nil}
+      lect_data['player'] = {
+        use_first: 'custom',
+        on_error: (request.headers['buildNumber'].to_i >= 86 ? 'youtube' : nil)
+      }
 
       lectures_data[lect.subject&.name] ||= []
       lectures_data[lect.subject&.name] << lect_data
