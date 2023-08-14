@@ -65,10 +65,11 @@ class RawAttendance < ApplicationRecord
         next if student_id.blank?
         # need to keep track of students those are not found.
 
-        time_entry = log['punch_time'].to_datetime
+        # time_entry = log['punch_time'].to_datetime
+        time_entry = Time.zone.parse(log['punch_time'])
         time_in_seconds = time_entry.to_i
 
-        sampled_time = (time_in_seconds / 120) * 120
+        sampled_time = (time_in_seconds / 1.hour.seconds) * 1.hour.seconds
         att_params["#{student_id}-#{sampled_time}"] = {
           org_id: org_id,
           student_id: student_id,
