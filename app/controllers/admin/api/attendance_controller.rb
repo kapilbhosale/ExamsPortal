@@ -3,8 +3,8 @@ class Admin::Api::AttendanceController < Admin::Api::ApiController
 
   def create
     if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463" && params[:mac] == "c6:f0:5d:04:19:f8"
-      RawAttendance.create(org_id: current_org.id, data: params[:attendanceData])
-      render json: {status: "ok"}, status: :ok and return
+      ra = RawAttendance.create(org_id: current_org.id, data: params[:attendanceData])
+      render json: {status: "ok", id: ra.id}, status: :ok and return
     else
       render json: {status: "not-accepted"}, status: :unprocessable_entity and return
     end
