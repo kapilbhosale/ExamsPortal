@@ -9,15 +9,12 @@ class Students::VideosController < Students::BaseController
   end
 
   def category_videos
-    vls = VideoLecture
-    .includes(:genre, :subject, :batches)
-    .where(org_id: current_org.id)
-    .where(batches: { id: current_student.batches.ids })
+    all_vls = VideoLecture
+      .includes(:genre, :subject, :batches)
+      .where(org_id: current_org.id)
+      .where(batches: { id: current_student.batches.ids })
+      .where.not(laptop_vimeo_id: nil)
 
-    ids1 = vls.where.not(laptop_vimeo_id: nil).ids
-    ids2 = vls.where.not(tp_streams_id: nil).ids
-
-    all_vls = VideoLecture.where(id: ids1 + ids2)
     lectures = all_vls.where(enabled: true).order(id: :desc)
 
     @lectures_data = {}
@@ -53,15 +50,11 @@ class Students::VideosController < Students::BaseController
   end
 
   def lectures
-    vls = VideoLecture
-    .includes(:genre, :subject, :batches)
-    .where(org_id: current_org.id)
-    .where(batches: { id: current_student.batches.ids })
-
-    ids1 = vls.where.not(laptop_vimeo_id: nil).ids
-    ids2 = vls.where.not(tp_streams_id: nil).ids
-
-    all_vls = VideoLecture.where(id: ids1 + ids2)
+    all_vls = VideoLecture
+      .includes(:genre, :subject, :batches)
+      .where(org_id: current_org.id)
+      .where(batches: { id: current_student.batches.ids })
+      .where.not(laptop_vimeo_id: nil)
 
     video_lectures = all_vls.where(enabled: true)
     @categories_data = {}
