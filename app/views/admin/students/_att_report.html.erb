@@ -1,34 +1,64 @@
-<div class="col-12 mt-4">
-  <div class="card border-0">
-    <div class="card-headerborder-0">
-      <div style="text-align: center">
-        Attendance Report
-      </div>
-      <div>
-        Student Roll Number: <%= @student.roll_number %>
-      </div>
-      <div>
-        Student Name: <%= @student.name %>
-      </div>
-      <div>
-        Batch: <%= @student.batches.pluck(:name).join(', ') %>
-      </div>
-      <div>
-        <% batch = @student.batches.where.not(start_time: nil)&.first %>
-        Batch Timming: <%= "#{batch.start_time.strftime('%I:%M%p')} - #{batch.end_time.strftime('%I:%M%p')}" %>
-      </div>
-    </div>
-      <table class="table table-striped table-vcenter text-nowrap">
-        <thead>
-          <tr>
-            <th>Sr. NO</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-  </div>
+<% att_table_data = [] %>
+<% total = 0 %>
+<% pr_count, ab_count = 0, 0 %>
+
+<% @from_date.upto(@to_date).each_with_index do |att_date, index| %>
+  <% total += 1 %>
+  <% @attendances[att_date].present? ? pr_count += 1 : ab_count +=1 %>
+
+  <% att_table_data << {
+    idx: index + 1,
+    date: att_date.strftime('%d %b %Y'),
+    status: @attendances[att_date].present? ? 'Present' : 'AB',
+    time: @attendances[att_date].present? ? @attendances[att_date].map {|att| att.time_entry.strftime('%I:%M%p') }.join(', ') : '-'
+  } %>
+<% end %>
+
+<div style="background-color: white; padding: 10px; margin-top: 10px">
+  <p class="text-center" style="font-size: 20px"> <%= @current_org.name %></p>
+  <p class="text-center" style="font-size: 18px">Attendance Report </p>
+  <table class="table table-bordered">
+    <tr>
+      <td>Student Name</td>
+      <td><%= @student.name %></td>
+      <td>Roll Number</td>
+      <td><%= @student.roll_number %></td>
+    </tr>
+    <tr>
+      <td>Batch</td>
+      <td><%= @student.batches.pluck(:name).join(', ') %></td>
+      <% batch = @student.batches.where.not(start_time: nil)&.first %>
+      <td>Batch Time</td>
+      <td><%= "#{batch&.start_time&.strftime('%I:%M%p')} - #{batch&.end_time&.strftime('%I:%M%p')}" %></td>
+    </tr>
+    <tr>
+      <td>Total Absent</td>
+      <td><%= "#{ab_count}/#{total}" %></td>
+      <td>Total Present</td>
+      <td><%= "#{pr_count}/#{total}" %></td>
+    </tr>
+  </table>
+</div>
+
+<div style="background-color: white; padding: 10px; margin-top: 10px">
+  <table class="table table-bordered table-striped table-vcenter text-nowrap">
+    <thead>
+      <tr>
+        <th>Sr. NO</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% att_table_data.each do |att_table| %>
+        <tr>
+          <td><%= att_table[:index] %></td>
+          <td><%= att_table[:date] %></td>
+          <td><%= att_table[:status] %></td>
+          <td><%= att_table[:time] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>

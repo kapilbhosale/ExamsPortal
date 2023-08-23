@@ -1,15 +1,18 @@
-<div style="background-color: #e0e0e0; padding: 5px">
+<div style="background-color: #e0e0e0; padding: 5px; position: relative">
   <%= form_tag "#", class:"form-inline" do %>
     <span class="p-1">From</span>
     <input type="date" class="from-date" name="from_date" value="<%= @from_date.strftime("%Y-%m-%d")%>" max="<%= Date.today.strftime("%Y-%m-%d")%>" >
     <span class="p-1">To</span>
     <input type="date" class="to-date" name="to_date" value="<%= @to_date.strftime("%Y-%m-%d")%>" max="<%= Date.today.strftime("%Y-%m-%d")%>" >
-    <div class="offset-md-2 ">
-      <input type="submit" class="btn btn-primary" value="Search">
+    <div class="ml-4">
+      <input type="submit" class="btn btn-primary pl-6 pr-6" value="Search">
     </div>
-    <div class="offset-md-2 ">
+  <% end %>
+
+  <%= form_tag admin_student_attendance_report_pdf_path, class:"form-inline" do %>
+    <div class="offset-md-5" style="position: absolute; top: 8px; right: 10px">
       <input type="submit" class="btn btn-success" value="Download PDF Report">
     </div>
   <% end %>
-  <%= render partial: 'att_report', locals: {} %>
+  <%= render partial: 'att_report'%>
 </div>

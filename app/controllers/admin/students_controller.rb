@@ -157,8 +157,31 @@ class Admin::StudentsController < Admin::BaseController
 
   def attendance_report
     @student = Student.find_by(id: params[:student_id])
-    @from_date = Date.today - 7.days
-    @to_date = Date.today
+    @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.today.beginning_of_month
+    @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
+
+    @attendances = {}
+    Attendance.where(student_id: @student.id).where(time_entry: @from_date..@to_date).order(:time_entry).each do |att|
+      @attendances[att.time_entry.to_date] ||= []
+      @attendances[att.time_entry.to_date] << att
+    end
+  end
+
+  def attendance_report_pdf
+    @student = Student.find_by(id: params[:student_id])
+    @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.today.beginning_of_month
+    @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
+
+    @attendances = {}
+    Attendance.where(student_id: @student.id).where(time_entry: @from_date..@to_date).order(:time_entry).each do |att|
+      @attendances[att.time_entry.to_date] ||= []
+      @attendances[att.time_entry.to_date] << att
+    end
+    @rcc = current_org.rcc?
+
+    render pdf: "Student Attendance Report.pdf",
+            template: "admin/students/attendance_report.pdf.erb",
+            footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
   end
 
   def reset_login

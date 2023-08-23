@@ -117,14 +117,16 @@ Rails.application.routes.draw do
     resources :practice_questions
     resources :students do
       root to: 'students#index'
-      get :import, on: :collection
-      post :process_import, on: :collection
-      post :process_import_fees_due, on: :collection
-      get :reset_login
-      get :disable
-      get :enable
-      get :progress_report
-      get :attendance_report
+      get   :import, on: :collection
+      post  :process_import, on: :collection
+      post  :process_import_fees_due, on: :collection
+      get   :reset_login
+      get   :disable
+      get   :enable
+      get   :progress_report
+      get   :attendance_report
+      post  :attendance_report
+      post  :attendance_report_pdf
     end
     resources :batches do
       root to: 'batches#index'
