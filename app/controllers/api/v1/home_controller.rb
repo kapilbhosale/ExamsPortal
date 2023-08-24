@@ -25,7 +25,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       'student_name' => current_student.name.split(' ').first,
       latest_videos: VideoLecture.latest_videos(current_student, helpers.full_domain_path, request.headers['buildNumber'].to_i),
       batches: current_student.batches.pluck(:name),
-      build_number: 86
+      build_number: current_org&.data&.dig('build_number') || 0
     }
     render json: json_data, status: :ok
   end
