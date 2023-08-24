@@ -179,7 +179,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       end
 
       lect_data['player'] = {
-        use_first: 'tp_streams', #'custom|tp_streams'
+        use_first: current_org&.data.dig('player', 'use_first'), #'custom|tp_streams'
         on_error: (request.headers['buildNumber'].to_i >= 87 ? 'youtube' : nil)
       }
 

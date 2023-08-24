@@ -85,7 +85,7 @@ class VideoLecture < ApplicationRecord
         end
 
         lect_data['player'] = {
-          use_first: 'tp_streams', #'custom|tp_streams'
+          use_first: org&.data.dig('player', 'use_first'), #'custom|tp_streams'
           on_error: (build_number >= 87 ? 'youtube' : nil)
         }
 
