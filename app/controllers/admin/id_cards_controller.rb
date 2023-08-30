@@ -46,23 +46,38 @@ class Admin::IdCardsController < Admin::BaseController
       selected_students = Student.where(id: params[:student_ids])
     end
 
-    selected_students.each_slice(18) do |students|
-      x, y = 0, 12
-      pdf.canvas do
-        students.each do |student|
-          ids_data = student.id_card || []
+    if params[:commit] == "pdf"
+      selected_students.each_slice(18) do |students|
+        x, y = 0, 12
+        pdf.canvas do
+          students.each do |student|
+            ids_data = student.id_card || []
 
+            ids_data << "#{Time.current.strftime("%d-%B %I:%M%p")} by #{current_admin.email.split('@')[0]}"
+            student.update(id_card: ids_data)
+
+            add_id_card(pdf, student, batch_display_name, inches_to_points(x), inches_to_points(y))
+            x >= 15 ? (x = 0; y -= 4) : x += 3
+          end
+        end
+        pdf.start_new_page
+      end
+      send_data pdf.render, filename: "id-cards-#{batch_display_name}.pdf", type: "application/pdf"
+    else
+      id_cards_csv = CSV.generate(headers: true) do |csv|
+        header_row = ['ID', 'Roll No', 'Name', 'Parent Mobile', 'Student Mobile', 'Batch Name']
+        csv << header_row
+        selected_students.each do |student|
+          ids_data = student.id_card || []
           ids_data << "#{Time.current.strftime("%d-%B %I:%M%p")} by #{current_admin.email.split('@')[0]}"
           student.update(id_card: ids_data)
 
-          add_id_card(pdf, student, batch_display_name, inches_to_points(x), inches_to_points(y))
-          x >= 15 ? (x = 0; y -= 4) : x += 3
+          csv << [student.id, student.roll_number, student.name, student.parent_mobile, student.student_mobile, batch_display_name]
         end
       end
-      pdf.start_new_page
-    end
 
-    send_data pdf.render, filename: "id-cards-#{batch_display_name}.pdf", type: "application/pdf"
+      send_data id_cards_csv, filename: "id-cards-#{Date.today}-#{batch_display_name}.csv"
+    end
   end
 
   private
