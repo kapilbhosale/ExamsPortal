@@ -21,49 +21,47 @@ class RawAttendance < ApplicationRecord
 
   # need to refactor this. loaidng all students of an org is bad idea.
   def process_raw_attendance
-    ActiveRecord::Base.transaction do
-      data.each_slice(500) do |logs|
-        att_params = {}
-        batch_ids = Batch.where(org_id: org_id).where.not(start_time: nil).ids
+    data.each_slice(500) do |logs|
+      att_params = {}
+      batch_ids = Batch.where(org_id: org_id).where.not(start_time: nil).ids
 
-        batches_by_device_ids = get_batches_by_device_ids
+      batches_by_device_ids = get_batches_by_device_ids
 
-        logs.each do |log|
-          next if log.blank?
+      logs.each do |log|
+        next if log.blank?
 
-          REDIS_CACHE.set(log['machine_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
-          roll_number = log['emp_id'].to_i
+        REDIS_CACHE.set(log['machine_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
+        roll_number = log['emp_id'].to_i
 
-          students = Student.includes(:student_batches, :batches).where(roll_number: roll_number)
-          student = nil
+        students = Student.includes(:student_batches, :batches).where(roll_number: roll_number)
+        student = nil
 
-          if batches_by_device_ids[log['machine_id'].to_i].blank?
-            student = students.where(batches: { id: batch_ids }).last
-          else
-            student = students.where(batches: { id: batches_by_device_ids[log['machine_id'].to_i] }).last
-          end
-
-          next if student.blank?
-
-          # need to keep track of students those are not found.
-          # time_entry = log['punch_time'].to_datetime
-          time_entry = Time.zone.parse(log['punch_time'])
-          time_in_seconds = time_entry.to_i
-
-          sampled_time = (time_in_seconds / 1.hour.seconds) * 1.hour.seconds
-          att_params["#{student.id}-#{sampled_time}"] = {
-            org_id: org_id,
-            student_id: student.id,
-            time_entry: time_entry,
-            time_stamp: time_entry
-          }
+        if batches_by_device_ids[log['machine_id'].to_i].blank?
+          student = students.where(batches: { id: batch_ids }).last
+        else
+          student = students.where(batches: { id: batches_by_device_ids[log['machine_id'].to_i] }).last
         end
 
-        Attendance.create!(att_params.values)
+        next if student.blank?
+
+        # need to keep track of students those are not found.
+        # time_entry = log['punch_time'].to_datetime
+        time_entry = Time.zone.parse(log['punch_time'])
+        time_in_seconds = time_entry.to_i
+
+        sampled_time = (time_in_seconds / 1.hour.seconds) * 1.hour.seconds
+        att_params["#{student.id}-#{sampled_time}"] = {
+          org_id: org_id,
+          student_id: student.id,
+          time_entry: time_entry,
+          time_stamp: time_entry
+        }
       end
-      self.processed = true
-      save
+
+      Attendance.create(att_params.values)
     end
+    self.processed = true
+    save
   end
 
   def get_batches_by_device_ids
