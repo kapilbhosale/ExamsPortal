@@ -55,7 +55,7 @@ class RawAttendance < ApplicationRecord
           org_id: org_id,
           student_id: student.id,
           time_entry: time_entry,
-          time_stamp: time_entry
+          time_stamp: 123
         }
       end
 
