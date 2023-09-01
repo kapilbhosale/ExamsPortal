@@ -16,7 +16,7 @@
 
 class RawAttendance < ApplicationRecord
   belongs_to :org
-  # after_create :process_raw_attendance
+  after_create :process_raw_attendance
 
 
   # need to refactor this. loaidng all students of an org is bad idea.
@@ -29,6 +29,8 @@ class RawAttendance < ApplicationRecord
 
       logs.each do |log|
         next if log.blank?
+        next if log['emp_id'].length > 7
+
 
         REDIS_CACHE.set(log['machine_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
         roll_number = log['emp_id'].to_i
@@ -55,7 +57,7 @@ class RawAttendance < ApplicationRecord
           org_id: org_id,
           student_id: student.id,
           time_entry: time_entry,
-          time_stamp: 123
+          time_stamp: time_entry
         }
       end
 
