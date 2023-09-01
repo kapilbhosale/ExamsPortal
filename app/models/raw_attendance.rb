@@ -43,6 +43,7 @@ class RawAttendance < ApplicationRecord
         end
 
         next if student.blank?
+        next if student.roll_number.to_s.length > 7
 
         # need to keep track of students those are not found.
         # time_entry = log['punch_time'].to_datetime
@@ -77,5 +78,4 @@ class RawAttendance < ApplicationRecord
 
     batches_by_device
   end
-
 end
