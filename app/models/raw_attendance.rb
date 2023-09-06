@@ -78,4 +78,49 @@ class RawAttendance < ApplicationRecord
 
     batches_by_device
   end
+
+
+  def data_mismatch?
+    att_params = {}
+    data.each_slice(500) do |logs|
+      batch_ids = Batch.where(org_id: org_id).where.not(start_time: nil).ids
+
+      batches_by_device_ids = get_batches_by_device_ids
+
+      logs.each do |log|
+        next if log.blank?
+        next if log['emp_id'].length > 7
+
+        REDIS_CACHE.set(log['machine_id'], DateTime.now.strftime("%d-%B-%Y %I:%M%p"), { ex: 60.minutes });
+        roll_number = log['emp_id'].to_i
+
+        students = Student.includes(:student_batches, :batches).where(roll_number: roll_number)
+        student = nil
+
+        if batches_by_device_ids[log['machine_id'].to_i].blank?
+          student = students.where(batches: { id: batch_ids }).last
+        else
+          student = students.where(batches: { id: batches_by_device_ids[log['machine_id'].to_i] }).last
+        end
+
+        next if student.blank?
+        next if student.roll_number.to_s.length > 7
+
+        # need to keep track of students those are not found.
+        # time_entry = log['punch_time'].to_datetime
+        time_entry = Time.zone.parse(log['punch_time'])
+        time_in_seconds = time_entry.to_i
+
+        sampled_time = (time_in_seconds / 1.hour.seconds) * 1.hour.seconds
+        att_params["#{student.id}-#{sampled_time}"] = {
+          org_id: org_id,
+          student_id: student.id,
+          time_entry: time_entry,
+          time_stamp: time_entry
+        }
+      end
+    end
+
+    att_params.keys.count != Attendance.where(org_id: org_id, created_at: self.created_at.beginning_of_day..self.created_at.end_of_day).count
+  end
 end
