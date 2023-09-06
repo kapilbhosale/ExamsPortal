@@ -121,12 +121,19 @@ class RawAttendance < ApplicationRecord
       end
     end
 
-    if att_params.keys.count != Attendance.where(org_id: org_id, created_at: self.created_at.beginning_of_day..self.created_at.end_of_day).count
+    input_student_ids = att_params.map { |k, v| v[:student_id] }.uniq
+    att_students = Attendance.where(
+      org_id: org_id,
+      created_at: self.created_at.beginning_of_day..self.created_at.end_of_day,
+      student_id: input_student_ids
+    )
+
+    if input_student_ids.count != att_students.count
       return {
-        input_count: att_params.keys.count,
-        att_count: Attendance.where(org_id: org_id, created_at: self.created_at.beginning_of_day..self.created_at.end_of_day).count,
-        input_student_ids: att_params.map { |k, v| v[:student_id] }.uniq.sort,
-        created_student_ids: Attendance.where(org_id: org_id, created_at: self.created_at.beginning_of_day..self.created_at.end_of_day).pluck(:student_id).uniq.sort
+        input_count: input_student_ids.count,
+        att_count: att_students.count,
+        input_student_ids: input_student_ids.uniq.sort,
+        created_student_ids: att_students.pluck(:student_id).uniq.sort
       }
     end
 
