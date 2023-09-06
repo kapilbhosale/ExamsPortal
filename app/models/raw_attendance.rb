@@ -140,3 +140,23 @@ class RawAttendance < ApplicationRecord
     false
   end
 end
+
+
+# ra_mis_ids = []
+# RawAttendance.where(created_at: (Time.now - 1.day).beginning_of_day..(Time.now - 1.day).end_of_day).each do |ra|
+#   putc "."
+#   ra_data = ra.data_mismatch?
+#   if ra_data != false
+#     ra_mis_ids << ra.id if ra_data[:input_count] > ra_data[:att_count]
+#   end
+# end
+
+
+# roll_number = "8571245"
+# target_ra_ids = []
+# RawAttendance.where(created_at: (Time.now).beginning_of_day..(Time.now).end_of_day).each do |ra|
+#   putc "."
+#   ra.data.each do |log|
+#     target_ra_ids << ra.id if log['emp_id'] == roll_number
+#   end
+# end

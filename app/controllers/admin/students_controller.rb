@@ -161,7 +161,7 @@ class Admin::StudentsController < Admin::BaseController
     @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
 
     @attendances = {}
-    Attendance.where(student_id: @student.id).where(time_entry: @from_date..@to_date).order(:time_entry).each do |att|
+    Attendance.where(student_id: @student.id).where(time_entry: @from_date.beginning_of_day..@to_date.end_of_day).order(:time_entry).each do |att|
       @attendances[att.time_entry.to_date] ||= []
       @attendances[att.time_entry.to_date] << att
     end
@@ -173,7 +173,7 @@ class Admin::StudentsController < Admin::BaseController
     @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
 
     @attendances = {}
-    Attendance.where(student_id: @student.id).where(time_entry: @from_date..@to_date).order(:time_entry).each do |att|
+    Attendance.where(student_id: @student.id).where(time_entry: @from_date.beginning_of_day..@to_date.end_of_day).order(:time_entry).each do |att|
       @attendances[att.time_entry.to_date] ||= []
       @attendances[att.time_entry.to_date] << att
     end
