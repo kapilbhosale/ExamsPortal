@@ -35,6 +35,9 @@ class Attendance < ApplicationRecord
   BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
 
   def send_sms
+    return if REDIS_CACHE.get("oid_#{org_id}_sid_#{student_id}_sms") == 'true'
+
+    REDIS_CACHE.set("oid_#{org_id}_sid_#{student_id}_sms", 'true', { ex: 12.hours })
     if org[:data]["auto_present_sms"] == true && time_entry.to_date == Date.current
       Thread.new { send_present_sms }
     end
@@ -81,9 +84,9 @@ class Attendance < ApplicationRecord
   # org = Org.find_by(subdomain: 'lbs')
   # org.data['sms_settings'] = {}
   # org.data['sms_settings']['present_sms'] = {
-  #   sms_user: 'LBS',
-  #   sms_password: 'LBS@123#',
-  #   sender_id: 'LBSBMT',
+  #   sms_user: 'BBHBeed',
+  #   sms_password: 'BBH@123',
+  #   sender_id: 'BBHBid',
   #   template_id: '1007680264902240438',
   #   entity_id: '1001298244990130034',
   #   msg: "From : LBS School Basmath \r\nDear Parent, \r\nYour ward <STUDENT_NAME> is PRESENT on Date; <TODAY>\r\n-LBSBMT"
