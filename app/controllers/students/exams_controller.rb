@@ -124,7 +124,7 @@ class Students::ExamsController < Students::BaseController
       exam_type: exam.exam_type,
       student_ans: {},
       time_data: time_data,
-      s3_url: "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/json-data/#{Rails.env}-#{current_org.subdomain}-#{exam.id}.json"
+      s3_url: "#{ENV.fetch('AWS_CLOUDFRONT_URL')}/json-data/#{Rails.env}-#{current_org.subdomain}-#{exam.id}.json",
       shuffle: current_org.data.dig("exam", "shuffle") || false
     }
   end
