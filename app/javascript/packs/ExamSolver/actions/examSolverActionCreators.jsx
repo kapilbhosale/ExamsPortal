@@ -435,7 +435,6 @@ export function initialize() {
         student_ans = data.student_ans
         time_data = data.time_data
         s3_url = data.s3_url
-        shuffle = data.shuffle
 
         $.ajax({
           type: 'GET',
