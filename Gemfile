@@ -49,6 +49,7 @@ gem 'rollbar'
 
 gem 'webpacker'
 gem 'foreman'
+gem "audited"
 
 gem "twitter-bootstrap-rails"
 

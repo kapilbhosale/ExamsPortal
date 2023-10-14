@@ -93,7 +93,8 @@ class Admin < ApplicationRecord
     :batch_edit,
     :download_students,
     :delete_student,
-    :ff
+    :ff,
+    :online_pay
   ]
 
   def login

@@ -52,6 +52,8 @@
 # }
 
 class FeesTransaction < ApplicationRecord
+  audited
+
   CURRENT_ACADEMIC_YEAR = "2023-24"
   scope :current_year, ->() { where(academic_year: CURRENT_ACADEMIC_YEAR) }
   # avaialbe to all devs, less is always good

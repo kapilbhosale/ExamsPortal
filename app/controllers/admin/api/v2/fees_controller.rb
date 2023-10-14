@@ -50,7 +50,12 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   end
 
   def create_fees_transaction
-    response = Fees::CreateFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
+    if params[:ref].present?
+      response = Fees::CreatePastOnlineFees.new(current_org, current_admin, create_fee_transaction_params).create
+    else
+      response = Fees::CreateFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
+    end
+
     render json: response[:data] and return if response[:status]
 
     render json: response[:message], status: :unprocessable_entity

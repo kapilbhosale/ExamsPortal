@@ -1,11 +1,16 @@
 class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
 
   def index
-    if params[:type] == 'online' && params[:ref_number].present?
-      new_admission = NewAdmission.find_by(id: params[:ref_number])
-      if new_admission.present?
-        student_id = new_admission.student_id
-        @students = Student.where(id: student_id)
+    if params[:type] == 'online' && params[:roll_number].present?
+      # new_admission = NewAdmission.find_by(id: params[:ref_number])
+      # if new_admission.present?
+      #   student_id = new_admission.student_id
+      #   @students = Student.where(id: student_id)
+      # end
+      if current_admin.roles.include?('online_pay')
+        @students = Student.where(org_id: current_org.id, roll_number: params[:roll_number])
+      else
+        @students = []
       end
     else
       if params[:qr_code].present?

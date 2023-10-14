@@ -65,6 +65,7 @@ require 'csv'
 class Student < ApplicationRecord
   require 'net/http'
   acts_as_paranoid
+  audited
 
   belongs_to :category, optional: true
   has_many   :student_batches, dependent: :destroy

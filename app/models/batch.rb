@@ -23,6 +23,8 @@
 #
 
 class Batch < ApplicationRecord
+  audited
+
   has_many  :student_batches, dependent: :destroy
   has_many  :students, through: :student_batches, dependent: :destroy
 
