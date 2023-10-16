@@ -41,6 +41,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
     end
 
     sign_in(@student)
+
     @student.update(
       app_login: true,
       deviceUniqueId: device_params[:deviceUniqueId],
