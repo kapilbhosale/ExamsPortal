@@ -39,6 +39,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
       @student.reset_apps
       @student.generate_and_send_otp
     end
+
     sign_in(@student)
     @student.update(
       app_login: true,
@@ -47,6 +48,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
       manufacturer: device_params[:manufacturer],
       brand: device_params[:brand]
     )
+
     @exam_portal_link = "#{helpers.full_domain_path}/students/auto-auth"
     @exam_portal_link += "?r=#{@student&.roll_number}&m=#{@student&.parent_mobile}"
   end
@@ -112,7 +114,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
 
     false
   end
-  
+
   def demo_account?(student)
     return true if student.roll_number == 101 && student.parent_mobile == '999999'
     return true if student.roll_number == 1001 && student.parent_mobile == '999999'
@@ -122,10 +124,10 @@ class Api::V2::StudentsController < Api::V2::ApiController
 
   def device_params
     {
-      deviceUniqueId: params[:deviceUniqueId],
-      deviceName: params[:deviceName],
-      manufacturer: params[:manufacturer],
-      brand: params[:brand]
+      deviceUniqueId: params[:deviceUniqueId] || request.headers['deviceUniqueId'],
+      deviceName: params[:deviceName] || request.headers['deviceName'],
+      manufacturer: params[:manufacturer] || request.headers['manufacturer'],
+      brand: params[:brand] || request.headers['brand']
     }
   end
 end
