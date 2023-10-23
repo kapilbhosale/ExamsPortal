@@ -445,13 +445,10 @@ export function initialize() {
           dataType: 'json',
           crossDomain: true,
           success: (data) => {
-            console.log("---------------------------------------------")
-            console.log("---------------------------------------------", data.questions)
-            console.log("---------------------------------------------")
             const preparedData = {
               student_ans: student_ans,
               time_data: time_data,
-              questions: data.questions,
+              questions: (shuffle ? shuffleQuestions(data.questions) : data.questions),
               model_ans: data.model_ans,
               exam_type: data.exam_type,
             }
@@ -488,9 +485,11 @@ function shuffleArray(array) {
   return shuffledArray; // Return the shuffled copy
 }
 
-function shuffleQuestions(examData) {
-  const data = JSON.parse(examData.questions);
-  const questionsBySections = data.questionsBySections;
+function shuffleQuestions(questionsData) {
+  console.log("---------------------------------------------", typeof(questionsData))
+  console.log("---------------------------------------------", Object.keys(questionsData))
+
+  const questionsBySections = questionsData.questionsBySections;
   const shuffledQuestionsBySections = {}
 
   Object.keys(questionsBySections).forEach(section => {
