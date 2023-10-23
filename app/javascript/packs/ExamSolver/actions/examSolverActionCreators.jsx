@@ -485,7 +485,8 @@ function shuffleArray(array) {
   return shuffledArray; // Return the shuffled copy
 }
 
-function shuffleQuestions(questionsData) {
+function shuffleQuestions(dt) {
+  const questionsData = JSON.parse(dt);
   console.log("---------------------------------------------", typeof(questionsData))
   console.log("---------------------------------------------", Object.keys(questionsData))
 
