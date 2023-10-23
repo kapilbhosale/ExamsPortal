@@ -445,11 +445,13 @@ export function initialize() {
           dataType: 'json',
           crossDomain: true,
           success: (data) => {
-            debugger;
+            console.log("---------------------------------------------")
+            console.log("---------------------------------------------", data.questions)
+            console.log("---------------------------------------------")
             const preparedData = {
               student_ans: student_ans,
               time_data: time_data,
-              questions: (shuffle ? shuffleQuestions(data.questions) : data.questions),
+              questions: data.questions,
               model_ans: data.model_ans,
               exam_type: data.exam_type,
             }
