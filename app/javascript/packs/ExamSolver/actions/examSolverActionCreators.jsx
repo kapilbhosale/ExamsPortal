@@ -497,9 +497,9 @@ function shuffleQuestions(dt) {
     shuffledQuestionsBySections[section] = shuffleArray(questionsBySections[section]);
   });
 
-  data.shuffleQuestions = shuffledQuestionsBySections
+  questionsData.questionsBySections = shuffledQuestionsBySections
 
-  return JSON.stringify(data);
+  return JSON.stringify(questionsData);
 }
 
 function processExamData(data, store, dispatch) {
