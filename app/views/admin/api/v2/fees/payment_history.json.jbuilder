@@ -9,4 +9,5 @@ json.array! @transactions do |transaction|
   json.remaining_amount transaction.remaining_amount
   json.next_due_date transaction.next_due_date
   json.mode_of_payment transaction.mode
+  json.admin transaction.admin.name
 end
