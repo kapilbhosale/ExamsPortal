@@ -35,7 +35,7 @@ class AbsentMessageSenderWorker
   end
 
   def valid_to_send_sms?(batch)
-    return false if already_sent_batch_ids.include?(batch.id)\
+    return false if already_sent_batch_ids.include?(batch.id)
     return false if BatchHoliday.where(batch_id: batch.id, holiday_date: Date.today).present?
 
     Time.current.strftime('%H:%M') > (batch.end_time + 10.minutes).strftime('%H:%M')
