@@ -170,6 +170,9 @@ Rails.application.routes.draw do
       post :change_auto_sms_settings, on: :collection
       post :send_batch_sms, on: :collection
       get :download_xls_report, on: :collection
+      collection do
+        resources :holidays
+      end
     end
 
     resources :micro_payments

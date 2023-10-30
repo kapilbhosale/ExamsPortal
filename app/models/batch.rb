@@ -56,6 +56,8 @@ class Batch < ApplicationRecord
   has_many :batch_fees_templates
   has_many :fees_templates, through: :batch_fees_templates
 
+  has_many :batch_holidays
+
   # after_create :create_push_notif_topic
 
   # def create_push_notif_topic

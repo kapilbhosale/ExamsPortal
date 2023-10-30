@@ -1,0 +1,47 @@
+
+<%= form_tag admin_holidays_path,  multipart: true, html: {class: 'video-input-form form-horizontal card'} do  |form| %>
+  <div class="row" style="background-color: #ffffff; padding: 10px; border-radius: 5px">
+    <div class="alert alert-danger full-width hidden" id="error-div" tabindex='1'>
+      <strong>Invalid Form!</strong> Please address errors below.
+    </div>
+    <div class="col-lg-12">
+        <div class="card-body">
+          <h3 class="card-title text-center">
+            Add Batch Holiday
+          </h3>
+
+          <div class="form-group">
+            <div class="col-sm-8" style="margin-left: -10px;">
+              <span style="color: gray">Holiday Comment</span>
+            </div>
+
+            <div class="col-sm-2" style="margin-left: 10px;">
+              <span style="color: gray">Holiday Date</span>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-sm-8">
+              <input type="text" class="form-control" placeholder="Enter Holiday Comment" name="comment" required>
+            </div>
+            <div class="col-sm-2">
+              <input value="<%= Time.current&.strftime('%Y-%m-%d') %>" type="date" class="form-control" id="holiday_date" name="holiday_date" required>
+            </div>
+          </div>
+
+          <%= render partial: 'admin/select_batches', locals: {var_name: 'batch_ids[]', selected_batches: []} %>
+
+        </div>
+        <div class="card-footer text-right" style="width: 100%">
+          <%= link_to "Cancel", admin_holidays_path, class: 'btn btn-primary' %> &nbsp;&nbsp;
+          <button type="submit" class="btn btn-success">Submit</button>
+        </div>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+  $(document).ready(function(){
+  });
+</script>

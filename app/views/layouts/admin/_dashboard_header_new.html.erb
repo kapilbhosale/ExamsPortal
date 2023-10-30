@@ -120,7 +120,7 @@
                 <%= link_to '<i class="fa fa-envelope"></i> SMS Log'.html_safe, sms_logs_admin_attendance_index_path, class: "dropdown-item"%>
               <% end %>
               <% if current_admin.can_manage(:attendance) %>
-                <% link_to '<i class="fas fa-tools"></i> Attendance Settings'.html_safe, settings_admin_attendance_index_path, class: "dropdown-item"%>
+                <%= link_to '<i class="fas fa-tools"></i> Holidays'.html_safe, admin_holidays_path, class: "dropdown-item"%>
               <% end %>
             </div>
           </li>

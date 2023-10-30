@@ -159,6 +159,7 @@ class Admin::StudentsController < Admin::BaseController
     @student = Student.find_by(id: params[:student_id])
     @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.today.beginning_of_month
     @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
+    @batch_holidays = BatchHoliday.where(org_id: current_org.id, batch_id: @student.batches.ids).index_by(&:holiday_date)
 
     @attendances = {}
     Attendance.where(student_id: @student.id).where(time_entry: @from_date.beginning_of_day..@to_date.end_of_day).order(:time_entry).each do |att|
@@ -171,6 +172,7 @@ class Admin::StudentsController < Admin::BaseController
     @student = Student.find_by(id: params[:student_id])
     @from_date = params[:from_date] ? Date.parse(params[:from_date]) : Date.today.beginning_of_month
     @to_date = params[:to_date] ? Date.parse(params[:to_date]) : Date.today
+    @batch_holidays = BatchHoliday.where(org_id: current_org.id, batch_id: @student.batches.ids).index_by(&:holiday_date)
 
     @attendances = {}
     Attendance.where(student_id: @student.id).where(time_entry: @from_date.beginning_of_day..@to_date.end_of_day).order(:time_entry).each do |att|

@@ -9,6 +9,7 @@
           <button class="btn btn-link <%= collapsed ? 'collapsed' : '' %>" type="button" data-toggle="collapse" data-target="#collapse-<%=batch_group_id %>" aria-expanded="<%= collapsed %>" aria-controls="collapse-<%=batch_group_id%>">
             <%= @batch_groups[batch_group_id]&.name || 'NO GROUP' %>
           </button>
+          <input type="checkbox" class="pull-right" style="margin: 8px" name="<%= @batch_groups[batch_group_id]&.name %>">
         </h2>
       </div>
 
@@ -16,7 +17,8 @@
         <div>
           <% batches.each do |batch| %>
             <div class="col-md-3" style="padding: 0">
-              <label class="checkbox-inline"><input type="checkbox" name="<%= var_name || 'batch_ids[]' %>" value=<%= batch.id %> <%= selected_batches.include?(batch.id) ? 'checked' : '' %> >
+              <label class="checkbox-inline">
+                <input type="checkbox" name="<%= var_name || 'batch_ids[]' %>" value=<%= batch.id %> <%= selected_batches.include?(batch.id) ? 'checked' : '' %> >
                 <%= batch.name %>
               </label>
             </div>
@@ -27,3 +29,12 @@
     <% collapsed = false %>
   <% end %>
 </div>
+
+<script>
+  $(document).ready(function(){
+    $(".pull-right").change(function() {
+      var checkboxes = $(this).closest('.card').find('input[type="checkbox"]:not(.pull-right)');
+      checkboxes.prop('checked', this.checked);
+    });
+  });
+</script>

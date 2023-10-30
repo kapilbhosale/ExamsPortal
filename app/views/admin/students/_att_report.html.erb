@@ -1,16 +1,20 @@
 <% att_table_data = [] %>
 <% total = 0 %>
-<% pr_count, ab_count = 0, 0 %>
+<% pr_count, ab_count, holiday_count = 0, 0, 0 %>
+
 
 <% @from_date.upto(@to_date).each_with_index do |att_date, index| %>
   <% total += 1 %>
-  <% @attendances[att_date].present? ? pr_count += 1 : ab_count +=1 %>
+  <% holiday = @batch_holidays[att_date] ? @batch_holidays[att_date].comment : nil %>
+  <% unless holiday.present? %>
+    <% @attendances[att_date].present? ? pr_count += 1 : ab_count +=1 %>
+  <% end %>
 
   <% att_table_data << {
     idx: index + 1,
     date: att_date.strftime('%d %b %Y'),
-    status: @attendances[att_date].present? ? 'Present' : 'AB',
-    time: @attendances[att_date].present? ? @attendances[att_date].map {|att| att.time_entry.strftime('%I:%M%p') }.join(', ') : '-'
+    status: holiday.present? ? "HOLIDAY - #{holiday}" : (@attendances[att_date].present? ? 'Present' : 'AB'),
+    time: holiday.present? ? "HOLIDAY - #{holiday}" : @attendances[att_date].present? ? @attendances[att_date].map {|att| att.time_entry.strftime('%I:%M%p') }.join(', ') : '-'
   } %>
 <% end %>
 
@@ -53,7 +57,7 @@
     <tbody>
       <% att_table_data.each do |att_table| %>
         <tr>
-          <td><%= att_table[:index] %></td>
+          <td><%= att_table[:idx] %></td>
           <td><%= att_table[:date] %></td>
           <td><%= att_table[:status] %></td>
           <td><%= att_table[:time] %></td>
