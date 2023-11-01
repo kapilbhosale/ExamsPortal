@@ -15,9 +15,11 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def create
-    @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id], params[:klass]).call
+    @response = Batches::AddBatchService.new(params[:batch], current_org, params[:batch_group_id], params[:klass], params[:branch]).call
 
     if @response[:status]
+      current_admin.batches << @response[:batch]
+
       Admin.where(org_id: current_org.id).where(id: params[:batch][:admin_ids]).each do |admin|
         admin.batches << @response[:batch]
       end
@@ -60,7 +62,7 @@ class Admin::BatchesController < Admin::BaseController
 
   def update
     if current_admin.roles.include? 'batch_edit'
-      @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id], params[:klass]).call
+      @response = Batches::UpdateBatchService.new(params[:id], params[:batch], params[:batch_group_id], params[:klass], params[:branch]).call
     else
       @response = {
         status: false,

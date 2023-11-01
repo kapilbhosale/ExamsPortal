@@ -10,25 +10,37 @@
               <%= form.text_field :name, class: 'form-control', placeholder: 'Name', required: true %>
             </div>
           </div>
-          <div class="col-sm-12 col-md-12">
+          <div class="col-sm-6 col-md-6">
             <div class="form-group">
-              <label class="form-label">Group:</label>
-              <select class="form-control" name="batch_group_id" id="batch_group_id" >
-                <% @batch_groups.each do |batch_group| %>
-                  <option value="<%= batch_group.id %>">
-                    <%= batch_group.name %>
+              <label class="form-label">Branch:</label>
+              <select class="form-control" name="branch" id="branch" >
+                <% (@current_org.data['branches'] || []).each do |branch| %>
+                  <option value="<%= branch %>">
+                    <%= branch %>
                   </option>
                 <% end %>
               </select>
             </div>
           </div>
-          <div class="col-sm-12 col-md-12">
+          <div class="col-sm-6 col-md-6">
             <div class="form-group">
               <label class="form-label">Class:</label>
               <select class="form-control" name="klass" id="klass" >
                 <% @klasses.each do |klass| %>
                   <option value="<%= klass %>">
                     <%= klass %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-12 col-md-8">
+            <div class="form-group">
+              <label class="form-label">Group:</label>
+              <select class="form-control" name="batch_group_id" id="batch_group_id" >
+                <% @batch_groups.each do |batch_group| %>
+                  <option value="<%= batch_group.id %>">
+                    <%= batch_group.name %>
                   </option>
                 <% end %>
               </select>

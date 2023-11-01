@@ -3,6 +3,7 @@
 # Table name: batches
 #
 #  id             :bigint(8)        not null, primary key
+#  branch         :string           default("home")
 #  config         :jsonb
 #  device_ids     :string
 #  disable_count  :integer          default(0)
@@ -21,6 +22,8 @@
 #  index_batches_on_batch_group_id  (batch_group_id)
 #  index_batches_on_org_id          (org_id)
 #
+# org.data['branches'] = ['home', 'latur', 'nanded', 'akola', 'chat. sambhaji nagar', 'kolhapur', 'pune', 'pimpri']
+# org.save
 
 class Batch < ApplicationRecord
   audited

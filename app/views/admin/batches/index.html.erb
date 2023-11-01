@@ -22,6 +22,7 @@
               <tr>
                 <th class="w-1">No.</th>
                 <th>Name</th>
+                <th>Branch</th>
                 <th>Created</th>
                 <th>Group</th>
                 <th>Class</th>
@@ -47,7 +48,10 @@
                     <% end %>
                   </td>
                   <td>
-                    <%= batch.created_at.strftime("%d-%B-%Y") %>
+                    <%= batch.branch %>
+                  </td>
+                  <td>
+                    <%= batch.created_at.strftime("%d-%b-%Y") %>
                   </td>
                   <td>
                     <%= batch.batch_group&.name || '-' %>

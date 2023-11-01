@@ -2,9 +2,9 @@ class AddBatchError < StandardError; end
 
 module Batches
   class AddBatchService
-    attr_reader :name, :org, :batch_group_id, :start_time, :end_time, :device_ids, :fees_template_ids, :klass
+    attr_reader :name, :org, :batch_group_id, :start_time, :end_time, :device_ids, :fees_template_ids, :klass, :branch
 
-    def initialize(batch_params, org, batch_group_id, klass)
+    def initialize(batch_params, org, batch_group_id, klass, branch)
       @name = batch_params[:name]
       @start_time = batch_params[:start_time]
       @end_time = batch_params[:end_time]
@@ -13,6 +13,7 @@ module Batches
       @org = org
       @batch_group_id = batch_group_id
       @klass = klass
+      @branch = branch
     end
 
     def call
@@ -24,7 +25,8 @@ module Batches
         device_ids: device_ids,
         org: org,
         batch_group_id: batch_group_id,
-        klass: klass
+        klass: klass,
+        branch: branch
       )
       batch.fees_templates << FeesTemplate.where(id: fees_template_ids)
 

@@ -3,6 +3,7 @@
 # Table name: batches
 #
 #  id             :bigint(8)        not null, primary key
+#  branch         :string           default("home")
 #  config         :jsonb
 #  device_ids     :string
 #  disable_count  :integer          default(0)
