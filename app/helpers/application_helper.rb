@@ -42,6 +42,8 @@ module ApplicationHelper
       return { logo: 'bansal-logo', height: 50}
     elsif %w[annapurnaacademy].include? subdomain
       return { logo: 'anna-logo', height: 50}
+    elsif %w[sstl].include? subdomain
+      return { logo: 'sstl-logo', height: 50}
     end
 
     { logo: 'exams-logo', width: 30 }
@@ -75,6 +77,7 @@ module ApplicationHelper
 
     return 'Vidya Aradhana Academy, Latur.' if ['vaa'].include? subdomain
 
+    return 'Shahu Screening Test' if ['sstl'].include? subdomain
     return '' if ['jmc'].include? subdomain
     return '' if ['bansalclasses'].include? subdomain
 

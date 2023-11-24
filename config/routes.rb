@@ -252,6 +252,7 @@ Rails.application.routes.draw do
       resources :students, only: [:index] do
         post 'login', on: :collection
         get :progress_report, on: :collection
+        post :register, on: :collection
       end
       resources :notifications
       resources :exams

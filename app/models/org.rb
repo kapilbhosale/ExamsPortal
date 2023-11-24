@@ -25,6 +25,10 @@ class Org < ApplicationRecord
     subdomain == 'bhargav'
   end
 
+  def sstl?
+    subdomain == 'sstl'
+  end
+
   def rcc?
     subdomain == 'exams' || subdomain == 'rcc'
   end

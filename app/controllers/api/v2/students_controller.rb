@@ -1,5 +1,5 @@
 class Api::V2::StudentsController < Api::V2::ApiController
-  skip_before_action :authenticate, only: [:login]
+  skip_before_action :authenticate, only: [:login, :register]
   skip_before_action :verify_authenticity_token
 
   def login
@@ -35,7 +35,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
       render json: { message: message }, status: :unauthorized and return
     end
 
-    if current_org.bhargav?
+    if current_org.sstl?
       @student.reset_apps
       @student.generate_and_send_otp
     end
@@ -101,11 +101,31 @@ class Api::V2::StudentsController < Api::V2::ApiController
     render json: {data: @data}
   end
 
+  def register
+    student = Student.create({
+      roll_number: 10_000,
+      org_id: current_org.id,
+      parent_mobile: params[:parentMobileNumber],
+      student_mobile: params[:mobileNumber],
+      name: params[:fullName],
+      address: "#{params[:education]}|#{params[:city]}",
+      email: params[:email],
+      password: params[:parentMobileNumber],
+      raw_password: params[:parentMobileNumber]
+    })
+
+    if student.errors.blank?
+      render json: student, status: :ok
+    else
+      render json: {message: student.errors.full_messages.join(', ')}, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def login_allowed?
     # add OPT config based condition for org.
-    return true if current_org.bhargav?
+    return true if current_org.sstl?
     return true if demo_account?(@student)
     return false if @student.is_laptop_login
     return true unless @student.app_login?

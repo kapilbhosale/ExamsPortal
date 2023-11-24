@@ -273,18 +273,29 @@ class Student < ApplicationRecord
     end
   end
 
+
   def generate_and_send_otp
-    _SMS_USER_NAME = "kalpakbhosale@hotmail.com"
-    _SMS_PASSWORD = "k@lpak@2020"
-    _TEMPLATE_ID = "1007674069396942106"
+    sms_user = "KALPAK01"
+    sms_password = URI.encode_www_form_component("gjax3187GJ")
+    sender_id = "ATASMS"
+    template_id = '1007674069396942106'
+    entity_id = '1001047216797018207'
 
     # what to send
     @otp = ROTP::TOTP.new(Base32.encode(parent_mobile), {interval: 1.day}).now
-    require 'net/http'
-    strUrl = "https://www.businesssms.co.in/SMS.aspx"; # Base URL
-    strUrl += "?ID=#{_SMS_USER_NAME}&Pwd=#{_SMS_PASSWORD}&PhNo=+91#{parent_mobile}&TemplateID=#{_TEMPLATE_ID}&Text=#{otp_sms_text(@otp)}"
-    uri = URI(strUrl)
-    puts Net::HTTP.get(uri)
+    msg = "Dear Student, your OTP for login (valid for 10 minutes) is - #{@otp} From ATASMS"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+    encoded_uri = URI(msg_url)
+    puts Net::HTTP.get(encoded_uri)
+
+    if (parent_mobile != student_mobile)
+      msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+      encoded_uri = URI(msg_url)
+      puts Net::HTTP.get(encoded_uri)
+    end
+
     return @otp
   end
 
