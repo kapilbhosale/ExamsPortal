@@ -44,7 +44,7 @@ class RollNumberSuggestor < ApplicationRecord
     end
 
     batch_name = 'repeater_22_23' if batch_name == 'repeater'
-    batch_name = 'test_series' if batch_name == 'test-series'
+    return Student.random_roll_number if batch_name == 'test-series'
 
     rns = self.find_by(batch_name: batch_name)
 
