@@ -48,10 +48,11 @@ class Api::V1::StudentsController < Api::V1::ApiController
       render json: { message: message }, status: :unauthorized and return
     end
 
-    if request.subdomain == 'bhargav'
+    if request.subdomain == 'sstl'
       student.reset_apps
       @otp = student.generate_and_send_otp
     end
+
     sign_in(student)
     student.update(
       app_login: true,

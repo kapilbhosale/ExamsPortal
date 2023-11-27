@@ -37,7 +37,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
 
     if current_org.sstl?
       @student.reset_apps
-      @student.generate_and_send_otp
+      @otp = @student.generate_and_send_otp
     end
 
     sign_in(@student)
@@ -114,8 +114,8 @@ class Api::V2::StudentsController < Api::V2::ApiController
       raw_password: params[:parentMobileNumber]
     })
 
-    # student.batches << Batch.find(775)
-    # student.save
+    student.batches << Batch.find(775)
+    student.save
 
     if student.errors.blank?
       render json: student, status: :ok
