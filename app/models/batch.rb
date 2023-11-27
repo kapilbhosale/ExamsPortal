@@ -303,10 +303,14 @@ class Batch < ApplicationRecord
     return Batch.where(name: '9th-A') if batch == '9th'
     return Batch.where(name: '10th-A') if batch == '10th'
 
-    # if batch == '12th' && na&.jee? && (course.name == 'phy' || course.name == 'chem' || course.name == 'pc')
-    #   return get_jee_batches(rcc_branch, course, batch, na)
-    # end
-    
+    if batch == 'test-series'
+      if course.name == 'pcb'
+        return Batch.where(id: 972)
+      else
+        return Batch.where(id: 977)
+      end
+    end
+
     # '11th_new' , '12th', 'repeater'
     # if batch == '11th'
     #   get_11th_batches(rcc_branch, course, batch, na)

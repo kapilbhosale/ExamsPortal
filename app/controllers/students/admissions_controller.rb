@@ -119,7 +119,7 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    unless ['11th_new' , '12th', 'repeater'].include?(params[:batch])
+    unless ['test-series', '11th_new' , '12th', 'repeater', 'test-series'].include?(params[:batch])
       errors << "Invalid Admission data, please try agian."
     end
 
@@ -127,13 +127,13 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include?(new_admission_params[:batch])
+      if ['test-series', '11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include?(new_admission_params[:batch])
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
-        ).where('created_at > ?', Date.parse("09-may-2023")).order(id: :desc)&.last
+        ).where('created_at > ?', Date.parse("27-nov-2023")).order(id: :desc)&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
@@ -160,7 +160,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include? new_admission.batch
+        if ['test-series', '11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include? new_admission.batch
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -281,47 +281,47 @@ class Students::AdmissionsController < ApplicationController
     1_00_000
   end
 
-  # def admission_done_set
-  #   @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
-  #   @errors = []
+  def admission_done_set
+    @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
+    @errors = []
 
-  #   if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.default?)
-  #     @new_admission.started!
-  #     @new_admission.success!
+    if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.batch == 'test-series' || @new_admission.default?)
+      @new_admission.started!
+      @new_admission.success!
 
-  #     # TODO:: student registered in old batch, fails to avoid duplicates in set
-  #     student = Student.where(
-  #       parent_mobile: @new_admission.parent_mobile,
-  #       student_mobile: @new_admission.student_mobile
-  #     ).where('created_at > ?', Date.parse("06-03-2023")).last
+      # TODO:: student registered in old batch, fails to avoid duplicates in set
+      student = Student.where(
+        parent_mobile: @new_admission.parent_mobile,
+        student_mobile: @new_admission.student_mobile
+      ).where('created_at > ?', Date.parse("25-11-2023")).last
 
-  #     batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
-  #     batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
+      # batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
+      # batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
+      test_series_batch_ids = [972, 977]
 
-  #     student_batch_names = student&.batches&.pluck(:name) || []
-  #     if student.blank? ||
-  #         (@new_admission.batch == '12th_set' && (student_batch_names & batches_rep_set_23_24).blank?) ||
-  #         (@new_admission.batch == '11th_set' && (student_batch_names & batches_set_11_p3).blank?)
-  #       student = Student.add_student(@new_admission) rescue nil
-  #     end
+      student_batch_ids = student&.batches&.ids || []
+      if student.blank? ||
+          @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank?
+        student = Student.add_student(@new_admission) rescue nil
+      end
 
-  #     if student.blank?
-  #       flash[:errors] = "Error 102, please try agian later"
-  #       @errors << "Error 102, please try agian later"
-  #     else
-  #       @student = student
-  #       student.new_admission_id = @new_admission.id
-  #       @new_admission.done!
-  #       student.save
-  #     end
-  #   elsif @new_admission.started?
-  #     @errors << "Admission already confirmed, Please check SMS for details"
-  #   elsif @new_admission.done?
-  #     @errors << "Admission already confirmed, Please check SMS for details"
-  #   else
-  #     @errors << "Error 101, please try agian later"
-  #   end
-  # end
+      if student.blank?
+        flash[:errors] = "Error 102, please try agian later"
+        @errors << "Error 102, please try agian later"
+      else
+        @student = student
+        student.new_admission_id = @new_admission.id
+        @new_admission.done!
+        student.save
+      end
+    elsif @new_admission.started?
+      @errors << "Admission already confirmed, Please check SMS for details"
+    elsif @new_admission.done?
+      @errors << "Admission already confirmed, Please check SMS for details"
+    else
+      @errors << "Error 101, please try agian later"
+    end
+  end
 
   def admission_done
     Rails.logger.info "PAYMENT**********"

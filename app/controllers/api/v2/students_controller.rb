@@ -114,6 +114,9 @@ class Api::V2::StudentsController < Api::V2::ApiController
       raw_password: params[:parentMobileNumber]
     })
 
+    # student.batches << Batch.find(775)
+    # student.save
+
     if student.errors.blank?
       render json: student, status: :ok
     else
