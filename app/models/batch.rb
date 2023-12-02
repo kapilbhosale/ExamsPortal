@@ -295,6 +295,25 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_test_series_batches_23_24(rcc_branch, course, batch, na=nil)
+    org = Org.first
+
+    course_type = na.course_type&.upcase || 'NEET'
+    course_name = course.name == 'pcm' ? 'PCM' : 'PCB'
+
+    batch_name = "Test-Series-#{course_type}-#{course_name}-23-24"
+
+    _batch = Batch.find_by(org_id: org.id, name: batch_name)
+    if _batch.blank?
+      batch_group = BatchGroup.find_or_create_by(name: "TestSeries-2023-24", org_id: org.id)
+      _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
+      Admin.where(org_id: org.id).each do |admin|
+        AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
+      end
+    end
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
@@ -303,55 +322,15 @@ class Batch < ApplicationRecord
     return Batch.where(name: '9th-A') if batch == '9th'
     return Batch.where(name: '10th-A') if batch == '10th'
 
-    if batch == 'test-series'
-      if course.name == 'pcb'
-        return Batch.where(id: 972)
-      else
-        return Batch.where(id: 977)
-      end
-    end
-
-    # '11th_new' , '12th', 'repeater'
-    # if batch == '11th'
-    #   get_11th_batches(rcc_branch, course, batch, na)
     if batch == '12th'
       get_12th_batches_23_24(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
-    # elsif batch == '12th_set' # 12th set is used neet saarthi 2023 for now
-    #   get_rep_set_batches_23_24(rcc_branch, course, batch, na)
-    #   # get_saarthi_batches_23_24(rcc_branch, course, batch, na)
-    # elsif batch == '12th_set_1' # 12th set is used neet saarthi 2023 for now
-    #   get_12th_set_batches_23_24(rcc_branch, course, batch, na)
-    # elsif batch == '11th_set' # 12th set is used for repeaters set
-    #   get_11th_set_batches(rcc_branch, course, batch, na)
-    # elsif batch == 'set_aurangabad'
-    #   get_set_aug_batches(rcc_branch, course, batch, na)
+    elsif batch == 'test-series'
+      get_test_series_batches_23_24(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       get_repeater_batches(rcc_branch, course, batch, na)
     end
-    # elsif batch == 'test_series'
-    #   org = Org.first
-    #   batch_name = rcc_branch == "latur" ?
-    #     "Ltr-TS-#{course.name.upcase}-2020" :
-    #     "Ned-TS-#{course.name.upcase}-2020"
-    #   Batch.find_or_create_by(org_id: org.id, name: batch_name)
-    #   Batch.where(org_id: org.id, name: batch_name)
-    # elsif batch == 'crash_course'
-    #   org = Org.first
-    #   batch_name = rcc_branch == "latur" ?
-    #     "Ltr-CC-#{course.name.upcase}-2021" :
-    #     "Ned-CC-#{course.name.upcase}-2021"
-    #   Batch.find_or_create_by(org_id: org.id, name: batch_name)
-    #   Batch.where(org_id: org.id, name: batch_name)
-    # else
-    #   org = Org.first
-    #   batch_name = rcc_branch == "latur" ?
-    #     "New12-Ltr-#{course.name.upcase}-2021-2022" :
-    #     "New12-Ned-#{course.name.upcase}-2021-2022"
-    #   Batch.find_or_create_by(org_id: org.id, name: batch_name)
-    #   Batch.where(org_id: org.id, name: batch_name)
-    # end
   end
 
   def delete_batch_and_associated_data

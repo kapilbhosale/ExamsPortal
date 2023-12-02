@@ -51,7 +51,7 @@
               $('#rcc-set-exam-11').show();
               $('#neet-saarthi').show();
             }
-            if (selectedBatch === '12th_set_1' || selectedBatch === '12th_set' || selectedBatch === '11th_set') {
+            if (selectedBatch === 'test-series' || selectedBatch === '12th_set' || selectedBatch === '11th_set') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
@@ -94,6 +94,7 @@
         function hidePaymentDivs() {
           $('.payment-selection-div').animate( { "opacity": "hide", top:"100"} , 1000 );
           $('.payment-selection-div-rep').animate( { "opacity": "hide", top:"100"} , 1000 );
+          $('.payment-selection-div-ts').animate( { "opacity": "hide", top:"100"} , 1000 );
         }
 
         function resetPaymentModeSelection() {
@@ -126,6 +127,10 @@
 
           if (batch === "repeater" && courseSelected) {
             $('.payment-selection-div-rep').animate( { "opacity": "show", top:"100"} , 1000 );
+          }
+
+          if (batch === "test-series" && courseSelected) {
+            $('.payment-selection-div-ts').animate( { "opacity": "show", top:"100"} , 1000 );
           }
 
           var subjectCount = 0
@@ -267,11 +272,23 @@
             // }
           }
 
+          if (batch === "test-series") {
+            totalFees = '₹5,000';
+            oneTimeFees = '₹5,000';
+            installmentFees = '₹5,000';
+            nextInstallmentFees = '₹0';
+          }
+
           if (batch === "11th_new" || batch === "12th") {
             $('#total').text(totalFees);
             $('#one-time-val').text(oneTimeFees);
             $('#installment-val').text(installmentFees)
             $('#next-installment-val').text(nextInstallmentFees)
+          } else if (batch === "test-series") {
+            $('#total-ts').text(totalFees);
+            $('#one-time-val-ts').text(oneTimeFees);
+            $('#installment-val-ts').text(installmentFees)
+            $('#next-installment-val-ts').text(nextInstallmentFees)
           } else {
             $('#total-rep').text(totalFees);
             $('#one-time-val-rep').text(oneTimeFees);
@@ -285,19 +302,21 @@
         const BATCHES = [
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"}
-          // {val: "test-series", text: "Free Test Series (2023-2024)"}
+          {val: "repeater", text: "REPEATER 2023-24"},
+          {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
 
         const AUR_BATCHES = [
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"}
+          {val: "repeater", text: "REPEATER 2023-24"},
+          {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"}
+          {val: "repeater", text: "REPEATER 2023-24"},
+          {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
 
         function adjustBatchDropdown() {
@@ -521,7 +540,7 @@
                 <option id="11th_new" value="11th_new"> 11th Regular Batch (2023-2024) </option>
                 <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
                 <option id="repeater" value="repeater"> REPEATER 2023-24 </option>
-                <%# <option id="test-series" value="test-series"> Free Test Series 2023-24 </option> %>
+                <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
               <% end %>
             </select>
           </div>
@@ -573,6 +592,16 @@
               <td></td>
               <td colspan="2"><p style="color: gray;">Next Installment will be <span id="next-installment-val">₹40,000</span></p> </td>
             </tr> %>
+          </table>
+        </div>
+
+        <div class="payment-selection-div-ts" style="background-color: #d0f1cd; padding: 10px; display: none">
+          <table style="width: 90%;">
+            <tr>
+              <td><p style="color: gray;">Final Amount</p></td>
+              <td><span id="installment-val-ts">₹20,000</span></td>
+              <td> This fee structure is applicable only for Online Test Series Batch</td>
+            </tr>
           </table>
         </div>
 

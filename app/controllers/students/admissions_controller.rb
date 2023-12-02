@@ -119,7 +119,7 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    unless ['test-series', '11th_new' , '12th', 'repeater', 'test-series'].include?(params[:batch])
+    unless ['test-series', '11th_new' , '12th', 'repeater'].include?(params[:batch])
       errors << "Invalid Admission data, please try agian."
     end
 
@@ -127,7 +127,7 @@ class Students::AdmissionsController < ApplicationController
       selected_courses = new_admission_params.delete(:course)
       course = Course.get_course(selected_courses)
 
-      if ['test-series', '11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include?(new_admission_params[:batch])
+      if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include?(new_admission_params[:batch])
         new_admission = NewAdmission.where(
           parent_mobile: new_admission_params[:parent_mobile],
           student_mobile: new_admission_params[:student_mobile],
@@ -160,7 +160,7 @@ class Students::AdmissionsController < ApplicationController
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
 
       if new_admission.save
-        if ['test-series', '11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include? new_admission.batch
+        if ['11th_set', '11th', 'neet_saarthi', '12th_set', '12th_set_1', 'set_aurangabad'].include? new_admission.batch
           new_admission.free = true
           new_admission.in_progress!
           new_admission.save
@@ -220,6 +220,7 @@ class Students::AdmissionsController < ApplicationController
     return 10_000 if batch == '8th'
     return 12_000 if batch == '9th'
     return 12_000 if batch == '10th'
+    return 5_000 if batch == 'test-series'
 
     if batch == 'repeater'
       if new_admission.extra_data.dig('pay_type') == 'installment'
@@ -285,7 +286,7 @@ class Students::AdmissionsController < ApplicationController
     @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
 
-    if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.batch == 'test-series' || @new_admission.default?)
+    if @new_admission.present? && (@new_admission.batch == '11th_set' || @new_admission.default?)
       @new_admission.started!
       @new_admission.success!
 
