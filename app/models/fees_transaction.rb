@@ -310,6 +310,7 @@ class FeesTransaction < ApplicationRecord
     db_receipt_number = fees_transactions
       .where(org_id: org_id)
       .where(imported: false)
+      .where('created_at >= ?', Date.parse("03-Dec-2023"))
       .order(:created_at)
       .last&.receipt_number
 

@@ -80,6 +80,7 @@ module Fees
           ft.payment_details[:totals] = totals
           ft.payment_details[:paid] = @fees_data
           ft.received_by_admin_id = current_admin&.id
+          ft.imported = true
           ft.received_by = current_admin&.name || current_admin&.email
           ft.created_at = created_at
         end
