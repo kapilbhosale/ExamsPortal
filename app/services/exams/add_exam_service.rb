@@ -12,8 +12,9 @@ module Exams
     def create
       validate_request
       @batch_ids = params[:exam][:batches]
+      shuffle_questions = params[:shuffle_questions] == 'on'
       ActiveRecord::Base.transaction do
-        @exam = Exam.new(exam_params)
+        @exam = Exam.new(exam_params.merge!(shuffle_questions: shuffle_questions))
 
         # set org id to exams
         @exam.org_id = current_org.id

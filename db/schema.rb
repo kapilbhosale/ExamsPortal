@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_01_064015) do
+ActiveRecord::Schema.define(version: 2023_12_07_081523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -359,6 +359,7 @@ ActiveRecord::Schema.define(version: 2023_11_01_064015) do
     t.datetime "exam_available_till"
     t.boolean "is_pr_generated", default: false
     t.datetime "show_result_at"
+    t.boolean "shuffle_questions", default: false, null: false
     t.index ["name"], name: "index_exams_on_name"
     t.index ["org_id"], name: "index_exams_on_org_id"
   end

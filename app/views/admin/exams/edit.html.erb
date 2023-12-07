@@ -54,6 +54,13 @@
             <span>Keep Blank if you want to show result immedialty</span>
           </div>
 
+          <div class="form-group">
+            <label class="control-label col-sm-2" for="shuffle_questions">Shuffle Questions</label>
+            <div class="col-sm-3" style="padding-top: 8px">
+              <input id="shuffle_questions" name="shuffle_questions" type="checkbox" <%= @exam.shuffle_questions ? 'checked' : '' %> /> &nbsp; Yes, Shuffle
+            </div>
+          </div>
+
           <div class="hidden form-group">
             <label class="control-label col-sm-2" for="exam_type">Exam Type:</label>
             <div class="custom-controls-stacked" style="padding-top: 8px;">

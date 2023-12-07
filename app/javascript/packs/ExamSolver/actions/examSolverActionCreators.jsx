@@ -487,8 +487,6 @@ function shuffleArray(array) {
 
 function shuffleQuestions(dt) {
   const questionsData = JSON.parse(dt);
-  console.log("---------------------------------------------", typeof(questionsData))
-  console.log("---------------------------------------------", Object.keys(questionsData))
 
   const questionsBySections = questionsData.questionsBySections;
   const shuffledQuestionsBySections = {}

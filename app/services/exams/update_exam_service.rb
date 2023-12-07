@@ -33,7 +33,10 @@ module Exams
         :time_in_minutes,
         :show_exam_at,
         :show_result_at,
-        :exam_available_till).merge!(publish_result: exam_params[:publish_result] == 'Yes')
+        :exam_available_till).merge!(
+          publish_result: exam_params[:publish_result] == 'Yes',
+          shuffle_questions: exam_params[:shuffle_questions] == 'on'
+        )
     end
 
     def build_batches
