@@ -426,6 +426,8 @@ export function initialize() {
     let student_ans = null;
     let time_data = null;
     let s3_url = null;
+    let shuffle = false;
+
     $.ajax({
       type: 'GET',
       url: '/students/exam_data_s3',
@@ -435,6 +437,7 @@ export function initialize() {
         student_ans = data.student_ans
         time_data = data.time_data
         s3_url = data.s3_url
+        shuffle = data.shuffle
 
         $.ajax({
           type: 'GET',
@@ -442,11 +445,10 @@ export function initialize() {
           dataType: 'json',
           crossDomain: true,
           success: (data) => {
-            debugger;
             const preparedData = {
               student_ans: student_ans,
               time_data: time_data,
-              questions: data.questions,
+              questions: (shuffle ? shuffleQuestions(data.questions) : data.questions),
               model_ans: data.model_ans,
               exam_type: data.exam_type,
             }
@@ -467,6 +469,37 @@ export function initialize() {
       }
     })
   };
+}
+
+function shuffleArray(array) {
+  const shuffledArray = [...array]; // Create a copy of the original array
+
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    // Generate a random index between 0 and i (inclusive)
+    const j = Math.floor(Math.random() * (i + 1));
+
+    // Swap elements at i and j
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+
+  return shuffledArray; // Return the shuffled copy
+}
+
+function shuffleQuestions(dt) {
+  const questionsData = JSON.parse(dt);
+  console.log("---------------------------------------------", typeof(questionsData))
+  console.log("---------------------------------------------", Object.keys(questionsData))
+
+  const questionsBySections = questionsData.questionsBySections;
+  const shuffledQuestionsBySections = {}
+
+  Object.keys(questionsBySections).forEach(section => {
+    shuffledQuestionsBySections[section] = shuffleArray(questionsBySections[section]);
+  });
+
+  questionsData.questionsBySections = shuffledQuestionsBySections
+
+  return JSON.stringify(questionsData);
 }
 
 function processExamData(data, store, dispatch) {
