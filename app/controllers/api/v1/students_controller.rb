@@ -50,7 +50,11 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
     if request.subdomain == 'sstl'
       student.reset_apps
-      @otp = student.generate_and_send_otp
+      if demo_account?(student)
+        @otp = '111111'
+      else
+        @otp = student.generate_and_send_otp
+      end
     end
 
     sign_in(student)
