@@ -142,6 +142,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
   def demo_account?(student)
     return true if student.roll_number == 101 && student.parent_mobile == '999999'
     return true if student.roll_number == 1001 && student.parent_mobile == '999999'
+    return true if student.parent_mobile == '9876543210'
 
     false
   end
