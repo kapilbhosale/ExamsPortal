@@ -33,17 +33,16 @@ class RollNumberSuggestor < ApplicationRecord
     'set-aur' => 5_000,
     'repeater_22_23' => 10_000,
     'neet_23_24' => 50_000,
-    'test_series' => 1_000_000
+    'test_series' => 1_000_000,
+    '11th_SET_23_24' => 1_000_000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
     batch_name = '12th_22_23' if batch_name == '12th'
 
-    if batch_name == '11th_new'
-      batch_name = na.rcc_branch == 'aurangabad' ? '11_aurangabad' : '11th_22_23'
-    end
-
     batch_name = 'repeater_22_23' if batch_name == 'repeater'
+    batch_name = '11th_SET_23_24' if batch_name == '11th_set'
+
     return Student.random_roll_number if batch_name == 'test-series'
 
     rns = self.find_by(batch_name: batch_name)

@@ -119,7 +119,7 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    unless ['test-series', '11th_new' , '12th', 'repeater'].include?(params[:batch])
+    unless ['test-series', '11th_new' , '12th', 'repeater', '11th_set'].include?(params[:batch])
       errors << "Invalid Admission data, please try agian."
     end
 
@@ -133,7 +133,7 @@ class Students::AdmissionsController < ApplicationController
           student_mobile: new_admission_params[:student_mobile],
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
-        ).where('created_at > ?', Date.parse("27-nov-2023")).order(id: :desc)&.last
+        ).where('created_at > ?', Date.parse("10-dec-2023")).order(id: :desc)&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
@@ -155,6 +155,9 @@ class Students::AdmissionsController < ApplicationController
         pay_type: params[:pay_type],
         is_set: params[:is_set],
         set_center_11th: params[:set_center_11th],
+        set_sub_center_11th: params[:set_sub_center_11th],
+        taluka: params[:taluka],
+        district: params[:district],
         board: params[:board]
       }
       new_admission.fees = get_fees(new_admission_params[:batch], course, new_admission.student_id.present?, new_admission.rcc_branch, new_admission)
@@ -283,6 +286,7 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def admission_done_set
+    ref_id = '7c0a5337-61db-4055-a2c3-8f3b21438012'
     @new_admission = NewAdmission.find_by(reference_id: params[:id], free: true)
     @errors = []
 
@@ -294,15 +298,17 @@ class Students::AdmissionsController < ApplicationController
       student = Student.where(
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
-      ).where('created_at > ?', Date.parse("25-11-2023")).last
+      ).where('created_at > ?', Date.parse("10-dec-2023")).last
 
       # batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
       # batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
       test_series_batch_ids = [972, 977]
+      set_batch_ids_11th_23_24 = [986, 987]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
-          @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank?
+          @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank? ||
+          @new_admission.batch == '11th_set' && (student_batch_ids & set_batch_ids_11th_23_24).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 
