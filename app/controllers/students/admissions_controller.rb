@@ -119,7 +119,7 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    unless ['test-series', '11th_new' , '12th', 'repeater', '11th_set'].include?(params[:batch])
+    unless ['test-series', '11th_new' , '12th', 'repeater', '11th_set', '12th_set'].include?(params[:batch])
       errors << "Invalid Admission data, please try agian."
     end
 
@@ -304,11 +304,13 @@ class Students::AdmissionsController < ApplicationController
       # batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
       test_series_batch_ids = [972, 977]
       set_batch_ids_11th_23_24 = [986, 987]
+      set_batch_ids_12th_23_24 = [988, 989]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
           @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank? ||
-          @new_admission.batch == '11th_set' && (student_batch_ids & set_batch_ids_11th_23_24).blank?
+          @new_admission.batch == '11th_set' && (student_batch_ids & set_batch_ids_11th_23_24).blank? ||
+          @new_admission.batch == '12th_set' && (student_batch_ids & set_batch_ids_12th_23_24).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 

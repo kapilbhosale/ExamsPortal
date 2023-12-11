@@ -235,6 +235,14 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
+  def self.get_12th_set_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+    course_type = na.course_type&.upcase || 'NEET'
+    course_name = course.name == 'pcm' ? 'PCM' : 'PCB'
+    batch_name = "12-SET-#{course_name}-23-24"
+    Batch.where(org_id: org.id, name: batch_name)
+  end
+
   def self.get_batches(rcc_branch, course, batch, na=nil)
     return nil if rcc_branch.nil? || course.nil? || batch.nil?
 
@@ -253,6 +261,8 @@ class Batch < ApplicationRecord
       get_repeater_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_set'
       get_11th_set_batches(rcc_branch, course, batch, na)
+    elsif batch == '12th_set'
+      get_12th_set_batches(rcc_branch, course, batch, na)
     end
   end
 

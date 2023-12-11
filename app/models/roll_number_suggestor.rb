@@ -67,6 +67,7 @@ class RollNumberSuggestor < ApplicationRecord
     batch_name = "11th_set_24_#{na.extra_data['set_center_11th']}" if batch_name == '11th_set'
 
     return Student.random_roll_number if batch_name == 'test-series'
+    return Student.random_roll_number if batch_name == '12th_set'
 
     rns = self.find_by(batch_name: batch_name)
 
