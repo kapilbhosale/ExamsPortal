@@ -34,13 +34,6 @@
 
           $('#neet-saarthi').text("[RCC NEET SET PCB/PCM, depending on selected Course Type]");
 
-
-          if ( selectedBatch === "11th_set" ) {
-            $('.11th-set-center-selection').show();
-          } else {
-            $('.11th-set-center-selection').hide();
-          }
-
           if( rccBranch == 'aurangabad' || selectedBatch === 'repeater') {
             $('.course-pc').hide()
           } else {
@@ -92,8 +85,14 @@
         $('#batch').on('change', function (e) {
           const selectedBatch = e.target.value;
           if ( selectedBatch === "11th_set" ) {
+            $('#set_center').attr('required', 'required');
+            $('#set_sub_center').attr('required', 'required');
+            $('#board').attr('required', 'required');
             $('.11th-set-center-selection').show();
           } else {
+            $('#set_center').removeAttr('required');
+            $('#set_sub_center').removeAttr('required');
+            $('#board').removeAttr('required');
             $('.11th-set-center-selection').hide();
           }
         });
@@ -102,6 +101,9 @@
           const selectedSetCenter = e.target.value;
           const sub_centers = SET_SUB_CENTERS[selectedSetCenter]
           $('#set_sub_center option').remove();
+
+          $('#set_sub_center').append($("<option disabled selected value></option>")
+                .text("Select Exam Sub Center"));
 
           sub_centers.forEach((item) => {
             $('#set_sub_center').append($("<option></option>")
@@ -322,7 +324,7 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "11th_set", text: "11th RCC SET (2023-2024)"},
+          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"},
@@ -330,7 +332,7 @@
         ]
 
         const AUR_BATCHES = [
-          {val: "11th_set", text: "11th RCC SET (2023-2024)"},
+          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th", text: "12th Regular Batch (2023-2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"},
@@ -338,7 +340,7 @@
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
-          {val: "11th_set", text: "11th RCC SET (2023-2024)"},
+          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
           {val: "repeater", text: "REPEATER 2023-24"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
@@ -580,7 +582,7 @@
             <% if @student.present? %>
               <p style="color: gray;">Your Existing Batch: </p>
             <% else %>
-              <p style="color: gray;">Batch Selection: </p>
+              <p style="color: gray;">Course Selection: </p>
             <% end %>
           </div>
           <div class="form-group">
@@ -588,7 +590,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="11th_set" value="11th_set">11th RCC SET (2023-2024)</option>
+                <option id="11th_set" value="11th_set">11th RCC SET (Scholarship Exam 2024)</option>
                 <option id="11th_new" value="11th_new"> 11th Regular Batch (2023-2024) </option>
                 <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
                 <option id="repeater" value="repeater"> REPEATER 2023-24 </option>
@@ -658,9 +660,10 @@
         </div>
 
         <div class="11th-set-center-selection" style="padding: 10px; display: none">
-          <p style="color: gray;">11 SET Exam Center selection: </p>
+          <p style="color: gray;">11th SET Exam Center selection: </p>
           <div class="form-group">
-            <select id="set_center" class="form-control" name="set_center_11th">
+            <select required id="set_center" class="form-control" name="set_center_11th">
+              <option disabled selected value>Select Exam Center</option>
               <option id="latur" value="latur">Latur (लातूर)</option>
               <option id="nanded" value="nanded">Nanded (नांदेड)</option>
               <option id="beed" value="beed">Beed (बीड)</option>
@@ -687,9 +690,10 @@
             </select>
           </div>
 
-          <p style="color: gray;">11 SET Exam Sub Center selection: </p>
+          <p style="color: gray;">11th SET Exam Sub Center selection: </p>
           <div class="form-group">
-            <select id="set_sub_center" class="form-control" name="set_sub_center_11th">
+            <select required id="set_sub_center" class="form-control" name="set_sub_center_11th">
+              <option disabled selected value>Select Exam Sub Center</option>
               <option id="latur" value="latur">Latur</option>
               <option id="udgir" value="udgir">Udgir</option>
               <option id="ahamadpur" value="ahamadpur">Ahmadpur</option>
@@ -698,7 +702,7 @@
 
           <div class="form-group">
             <p style="color: gray;">Select Board of Education</p>
-            <select id="board" class="form-control" name="board">
+            <select required id="board" class="form-control" name="board">
               <option id="state_board_marathi" value="state_board_marathi">State Board (Marathi)</option>
               <option id="state_board_semi" value="state_board_semi">State Board (Semi)</option>
               <option id="cbse" value="cbse">CBSE</option>
