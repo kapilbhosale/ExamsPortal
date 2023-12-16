@@ -116,7 +116,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def downoload_cet
-    headers = ["id", "Roll Number", "Name", "Parent mobile", "Student mobile", "email", "gender", "center", "course", "rcc branch", "Board"]
+    headers = ["id", "Roll Number", "Name", "Parent mobile", "Student mobile", "email", "gender", "center", "sub-center", "taluka", "Dist", "course", "rcc branch", "Board", "Reg Date"]
 
     map_ids = {}
     batch_ids = [params[:batch_id]]
@@ -140,9 +140,13 @@ class Admin::BatchesController < Admin::BaseController
           na.email,
           na.gender,
           na.extra_data["set_center_11th"],
+          na.extra_data["set_sub_center_11th"],
+          na.extra_data["taluka"],
+          na.extra_data["district"],
           na.course_type,
           na.rcc_branch,
-          na.extra_data["board"]
+          na.extra_data["board"],
+          na.created_at.strftime('%Y-%m-%d')
         ]
       end
     end
