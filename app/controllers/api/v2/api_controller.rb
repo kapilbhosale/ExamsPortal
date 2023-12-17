@@ -49,7 +49,9 @@ class Api::V2::ApiController < ApplicationController
   end
 
   def check_disabled_student
-    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
-    render json: { message:"Authorization failed" }, status: :unauthorized and return
+    if @current_student && @current_student.disable?
+      self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+      render json: { message:"Authorization failed" }, status: :unauthorized and return
+    end
   end
 end
