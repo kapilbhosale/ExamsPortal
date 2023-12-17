@@ -4,6 +4,7 @@ class Api::V1::ApiController < ApplicationController
   before_action :set_default_response_format
   protect_from_forgery with: :null_session
   before_action :update_device_info
+  before_action :check_disabled_student
 
   attr_reader :current_org
 
@@ -42,4 +43,8 @@ class Api::V1::ApiController < ApplicationController
     @current_org = Org.find_by(subdomain: request.subdomain) || @current_student.org
   end
 
+  def check_disabled_student
+    self.headers['WWW-Authenticate'] = 'Token realm="Application"'
+    render json: { message:"Authorization failed" }, status: :unauthorized and return
+  end
 end
