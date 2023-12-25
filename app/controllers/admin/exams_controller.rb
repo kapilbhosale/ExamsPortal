@@ -79,10 +79,17 @@ class Admin::ExamsController < Admin::BaseController
       redirect_back(fallback_location: admin_exams_path) and return
     end
     question = Question.find_by(id: params[:question_id])
+
     if question.exams.pluck(:org_id).first == current_org.id
-      question.options.pluck(:id, :is_answer)
-      question.options.update_all(is_answer: false)
-      question.options.where(id: params[:option_ids]).update_all(is_answer: true)
+      if params[:is_input].present?
+        option = question.options.first
+        option.data = params[:option_ids][params[:is_input]]
+        option.save
+      else
+        question.options.pluck(:id, :is_answer)
+        question.options.update_all(is_answer: false)
+        question.options.where(id: params[:option_ids]).update_all(is_answer: true)
+      end
       flash[:success] = 'Options updated successfully..!'
       redirect_back(fallback_location: admin_exams_path)
     else
