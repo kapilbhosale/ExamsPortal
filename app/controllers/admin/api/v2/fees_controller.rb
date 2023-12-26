@@ -47,6 +47,16 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   def payment_history
     student = Student.find_by(org_id: current_org.id, id: params[:student_id])
     @transactions = FeesTransaction.current_year.includes(:admin).where(org_id: current_org.id, student_id: student.id).order(created_at: :desc)
+    @discounts = {}
+    Discount.used_discount.where(roll_number: student.roll_number, parent_mobile: student.parent_mobile).each do |discount|
+      @discounts[discount.amount.to_f] = {
+        type: discount.type_of_discount,
+        comment: discount.comment,
+        amount: discount.amount.to_f,
+        approved_by: discount.approved_by,
+        date: discount.updated_at.strftime("%d-%b-%Y")
+      }
+    end
   end
 
   def create_fees_transaction
