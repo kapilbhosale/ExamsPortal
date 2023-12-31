@@ -251,8 +251,9 @@ Rails.application.routes.draw do
     namespace :v2 do
       resources :students, only: [:index] do
         post 'login', on: :collection
-        get :progress_report, on: :collection
+        get  :progress_report, on: :collection
         post :register, on: :collection
+        get  :de_active, on: :collection
       end
       resources :notifications
       resources :exams
