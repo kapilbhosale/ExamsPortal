@@ -7,6 +7,7 @@
 #  config         :jsonb
 #  device_ids     :string
 #  disable_count  :integer          default(0)
+#  edu_year       :string           default("2024-24")
 #  end_time       :datetime
 #  klass          :string
 #  name           :string
@@ -22,8 +23,6 @@
 #  index_batches_on_batch_group_id  (batch_group_id)
 #  index_batches_on_org_id          (org_id)
 #
-# org.data['branches'] = ['home', 'latur', 'nanded', 'akola', 'chat. sambhaji nagar', 'kolhapur', 'pune', 'pimpri']
-# org.save
 
 class Batch < ApplicationRecord
   audited

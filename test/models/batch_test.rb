@@ -7,6 +7,7 @@
 #  config         :jsonb
 #  device_ids     :string
 #  disable_count  :integer          default(0)
+#  edu_year       :string           default("2024-24")
 #  end_time       :datetime
 #  klass          :string
 #  name           :string
