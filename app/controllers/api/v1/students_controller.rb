@@ -36,7 +36,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
 
     unless login_allowed?(student)
       if student.is_laptop_login
-        message = "You are using Laptop for access, please continue using latop only."
+        message = "You are using Laptop for access, please continue using laptop only."
       else
         message = "You are ALREADY logged in some other mobile. \n"
         message += "#{student.manufacturer}, #{student.brand}, #{student.deviceName}.\n"
@@ -49,12 +49,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
     end
 
     if request.subdomain == 'sstl'
-      student.reset_apps
-      if demo_account?(student)
-        @otp = '111111'
-      else
-        @otp = student.generate_and_send_otp
-      end
+      @otp = demo_account?(student) ? '111111' : student.generate_and_send_otp
     end
 
     sign_in(student)

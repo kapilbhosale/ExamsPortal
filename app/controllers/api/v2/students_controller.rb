@@ -36,8 +36,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
     end
 
     if current_org.sstl?
-      @student.reset_apps
-      @otp = @student.generate_and_send_otp
+      @otp = demo_account?(@student) ? '111111' : @student.generate_and_send_otp
     end
 
     sign_in(@student)
