@@ -19,6 +19,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
     # todo::kalpak, how if discount is present but not applied.
     discount = Discount.valid_discount.find_by(id: student.data['discount_id'])
+    academic_year = student.batches.joins(:fees_templates).first&.edu_year || FeesTransaction::CURRENT_ACADEMIC_YEAR
 
     data = {
       student: {
@@ -29,7 +30,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
         student_mobile: student.student_mobile,
         parent_mobile: student.parent_mobile,
         record_book: "Yes",
-        academic_year: FeesTransaction::CURRENT_ACADEMIC_YEAR,
+        academic_year: academic_year,
         current_template_id: current_template_id,
         fees_transaction_token: fees_transaction_token,
         rcc_batch: student.data["rcc_batch"],
