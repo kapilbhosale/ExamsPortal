@@ -5,6 +5,7 @@
 #  id                   :uuid             not null, primary key
 #  academic_year        :string
 #  comment              :string
+#  deleted_at           :datetime
 #  discount_amount      :decimal(, )      default(0.0)
 #  imported             :boolean          default(FALSE)
 #  mode                 :string
@@ -23,6 +24,7 @@
 #
 # Indexes
 #
+#  index_fees_transactions_on_deleted_at  (deleted_at)
 #  index_fees_transactions_on_org_id      (org_id)
 #  index_fees_transactions_on_student_id  (student_id)
 #
@@ -52,6 +54,7 @@
 # }
 
 class FeesTransaction < ApplicationRecord
+  acts_as_paranoid
   audited
 
   CURRENT_ACADEMIC_YEAR = "2023-24"
@@ -70,6 +73,18 @@ class FeesTransaction < ApplicationRecord
   before_create :update_token_of_the_day
   before_create :update_receipt_number
 
+
+  def self.student_pending_fees(student_id)
+    student = Student.find_by(id: student_id)
+    student_trans = FeesTransaction.where(student_id: student_id)
+    if student_trans.present?
+      return student_trans.order(:created_at).last.remaining_amount.to_f
+    end
+    template_id = BatchFeesTemplate.where(batch_id: student.batches.ids).pluck(:fees_template_id).last
+    fees_template = FeesTemplate.find_by(id: template_id)
+    return fees_template.total_amount if fees_template
+    2_00_000
+  end
 
   def self.student_fees_template_data(org_id, student_id)
     fees_transactions = FeesTransaction.current_year.where(org_id: org_id, student_id: student_id)

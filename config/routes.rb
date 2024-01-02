@@ -211,6 +211,7 @@ Rails.application.routes.draw do
           post  :issue_notes
           post  :apply_discount
           get   :suggested_roll_number, on: :collection
+          post  :change_course
 
           collection do
             resources :discounts, only: [:index, :create]

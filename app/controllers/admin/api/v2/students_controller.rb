@@ -106,18 +106,9 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
 
     render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
 
-    fees_transaction = FeesTransaction.where(student_id: @student.id).order(:created_at).last
-    if fees_transaction
-      @pending_amount = FeesTransaction.where(student_id: @student.id).order(:created_at).last.remaining_amount.to_f
-    else
-      @message = ''
-      batch_templates = BatchFeesTemplate.where(batch_id: @student.batches.ids)
-      if batch_templates.present?
-        @pending_amount = batch_templates.last.total_amount
-      else
-        @pending_amount = 60_000
-        @message = "No Template assigned to student batch"
-      end
+    @pending_amount = FeesTransaction.student_pending_fees(@student.id)
+    if @pending_amount >= 2_00_000
+      @message = "No Template assigned to student batch"
     end
   end
 
@@ -137,6 +128,30 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     end
 
     render json: {message: "Can not create student notes"}, status: :unprocessable_entity
+  end
+
+  def change_course
+    student = Student.find_by(org_id: current_org.id, id: params[:student_id])
+    batch = Batch.find_by(id: params[:new_batch_id])
+
+    if student && batch
+      CourseChangeEntry.create({
+        student: student,
+        old_batch_id: student.batches.joins(:batch_fees_templates).ids.uniq.first,
+        new_batch_id: batch.id,
+        pending_amount: FeesTransaction.student_pending_fees(student.id),
+        fees_paid_data: student.fees_transactions&.as_json
+      })
+      student.batches.destroy_all
+      student.batches << batch
+
+      # soft deleting fees tranactions with paranoid gem, so that we can refer them.
+      student.fees_transactions.destroy_all
+
+      render json: {message: "successful."}
+    else
+      render json: {message: "Can not change course"}, status: :unprocessable_entity
+    end
   end
 
   def apply_discount

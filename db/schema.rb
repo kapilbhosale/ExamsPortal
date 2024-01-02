@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_01_072043) do
+ActiveRecord::Schema.define(version: 2024_01_01_143839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -271,6 +271,17 @@ ActiveRecord::Schema.define(version: 2024_01_01_072043) do
     t.index ["subject_id"], name: "index_concepts_on_subject_id"
   end
 
+  create_table "course_change_entries", force: :cascade do |t|
+    t.bigint "student_id"
+    t.integer "old_batch_id", null: false
+    t.integer "new_batch_id", null: false
+    t.jsonb "fees_paid_data", null: false
+    t.float "pending_amount", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_course_change_entries_on_student_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -393,6 +404,8 @@ ActiveRecord::Schema.define(version: 2024_01_01_072043) do
     t.integer "token_of_the_day"
     t.integer "received_by_admin_id"
     t.boolean "imported", default: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_fees_transactions_on_deleted_at"
     t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"
   end
