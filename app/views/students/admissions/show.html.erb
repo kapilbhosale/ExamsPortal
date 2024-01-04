@@ -326,26 +326,22 @@
         const BATCHES = [
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
-          {val: "12th", text: "12th Regular Batch (2023-2024)"},
-          {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
+
+        // {val: "12th", text: "12th Regular Batch (2023-2024)"},
+        // {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
+        // {val: "repeater", text: "REPEATER 2023-24"},
 
         const AUR_BATCHES = [
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
-          {val: "12th", text: "12th Regular Batch (2023-2024)"},
-          {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
-          {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-          {val: "repeater", text: "REPEATER 2023-24"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"}
         ]
 
@@ -595,9 +591,6 @@
               <% else %>
                 <option id="11th_set" value="11th_set">11th RCC SET (Scholarship Exam 2024)</option>
                 <option id="12th_set" value="12th_set">11th moving 12th (Non-RCC) Scholarship Exam 2024</option>
-                <option id="11th_new" value="11th_new"> 11th Regular Batch (2023-2024) </option>
-                <option id="12th" value="12th"> 12th Regular Batch (2023-2024) </option>
-                <option id="repeater" value="repeater"> REPEATER 2023-24 </option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
               <% end %>
             </select>
@@ -664,7 +657,7 @@
         </div>
 
         <div class="11th-set-center-selection" style="padding: 10px; display: none">
-          <p style="color: gray;">11th SET Exam Center selection: </p>
+          <p style="color: gray;">11th SET Exam center selection: </p>
           <div class="form-group">
             <select required id="set_center" class="form-control" name="set_center_11th">
               <option disabled selected value>Select Exam Center</option>
@@ -694,7 +687,7 @@
             </select>
           </div>
 
-          <p style="color: gray;">11th SET Exam Sub Center selection: </p>
+          <p style="color: gray;">11th SET Exam sub center selection: </p>
           <div class="form-group">
             <select required id="set_sub_center" class="form-control" name="set_sub_center_11th">
               <option disabled selected value>Select Exam Sub Center</option>

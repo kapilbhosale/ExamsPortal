@@ -39,13 +39,13 @@ class Discount < ApplicationRecord
         parent_mobile: row['parent_mobile'],
         status: 'valid_discount',
         roll_number: row['roll_no'],
-        comment: "RCC set discount",
-        approved_by: "SET exam 7 april",
+        comment: "RCC set discount, import 3 jan",
+        approved_by: "SET exam 31/12/2023",
         amount: row['batch_fees'].to_i - row['amount_pay'].to_i,
         data: {
           amount_to_pay: row['amount_pay'],
           discount_percent: row['con_percent'],
-          discount_amount: row['con_amount']
+          discount_amount: row['rcc_consession']
         }
       })
       putc "."
