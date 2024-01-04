@@ -20,26 +20,24 @@
       }
     </style>
 </head>
-
 <div style="text-align: center;">
   <div>
-    <%= image_tag 'success', height: '120px' %>
+    <%= image_tag 'thumbs_up', height: '200px' %>
     <% if @errors.blank? %>
       <h3 style="color: green;">
         Congratulations, Your Application is processed Successfully.
       </h3>
       <p>
-        RCC team will Activate Your account.
-        Please write down the Reference Number for futher communication.
-      </p>
-      <p style="color: green;">
-        Also, take screenshot for reference.
-        Your login details are sent via SMS as well.
+        Please note down "Student Id" for futher communication.
       </p>
       <table class="table" style="text-align: left;">
         <tr>
           <td>status: </td>
           <td>Success</td>
+        </tr>
+        <tr>
+          <td>Student Id </td>
+          <td><%= @student&.id %></td>
         </tr>
         <tr>
           <td>Roll Number </td>
@@ -60,18 +58,6 @@
       </h3>
     <% end %>
   </div>
-
-  <a href="https://www.youtube.com/playlist?list=PLtwG3QSf_0Tb-_jqx0295OLYiimiJ7i5t">
-    <p style="color: green; padding-top: 12px; font-size: 24px">
-      Click here for RCC PCB Demo Lecture.
-    </p>
-  </a>
-
-  <p style="color: peru; padding-top: 20px;">
-    Note: Do not Panic, in case of failure. We will figure it out.
-    Contact numbers: 9075402222, 9075392222.
-  </p>
-
   <p style="color: red; padding-top: 10px;">
     Warning: Do not press back button or go back to payment page.
     Close browser or app after you take screenshot..

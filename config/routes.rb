@@ -32,6 +32,9 @@ Rails.application.routes.draw do
   post 'process-gform', to: 'students/google_forms#register'
 
   get 'new-admission', to: 'students/admissions#show'
+  get 'registration', to: 'students/admissions#registration_form'
+  post 'register', to: 'students/admissions#register'
+  get 'registration-confirmation', to: 'students/admissions#registration_confirmation'
   get 'foundation-admission', to: 'students/admissions#foundation_show'
   get 'admission-done', to: 'students/admissions#admission_done'
   post 'admission-done', to: 'students/admissions#admission_done'

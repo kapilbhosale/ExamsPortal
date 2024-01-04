@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Registration Form</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <style>
+      body {
+        width: 96%;
+        margin: 0 auto;
+      }
+
+      @media (min-width: 768px) {
+        body {
+          width: 60%;
+        }
+      }
+    </style>
+  </head>
+
+  <body style="background-color: #f1f1f1;">
+    <div class="container">
+      <div style="padding-top: 20px;">
+          <p class="text-center" style="font-size: large">STARK Group of Institutes</p>
+          <p class="text-center">Registration Form</p>
+        </div>
+      </div>
+      <div style="padding-top: 20px;">
+      </div>
+      <% if flash[:error] %>
+        <div style="color: red;">
+          <p style="text-align: center">Plaese correct all the errors, and try again</p>
+          <ul>
+            <% flash[:error].each do |error| %>
+              <li>
+                <%= error %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_tag register_path, id: 'student-form', method: :post, class: 'form-horizontal' do %>
+        <div class="form-group">
+          <input type="text" class="form-control" id="name" placeholder="Student's Full name" name="name" required>
+        </div>
+        <div class="form-group <%= @student.blank? ? '' : 'd-none' %>">
+          <input type="text" class="form-control" id="email" placeholder="Enter your Email" name="email" required >
+        </div>
+        <div class="form-group">
+          <input type="number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"  class="form-control" id="parent_mobile" placeholder="Parent Mobile" name="parent_mobile" required>
+        </div>
+        <div class="form-group">
+          <input type="number" maxlength="10" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" class="form-control" id="student_mobile" placeholder="Student Mobile" name="student_mobile" required >
+        </div>
+
+        <div class="form-group" style="text-align: center; background-color:rgb(239, 239, 239); padding: 10px; border-radius: 5px;">
+          <div class="form-check form-check-inline">
+            <label class="form-check-label" for="a">Gender: </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" checked>
+            <label class="form-check-label" for="inlineRadio1">Male</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female">
+            <label class="form-check-label" for="inlineRadio2">Female</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <p style="color: gray;">Please select course: </p>
+          <select id="batch" class="form-control" name="batch">
+            <option id="11th_set" value="11th_set">11th to 12th Moving Entrance Test</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <p style="color: gray;">Please select course Type: </p>
+          <select id="course_type" class="form-control" name="course_type">
+            <option id="pcb" value="pcb">PCB</option>
+            <option id="pcm" value="pcm">PCM</option>
+          </select>
+        </div>
+
+        <div class="form-group form-check" style="background-color: #eda8ed; padding: 10px 10px 10px 30px;">
+          <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" name="remember" required>
+              I agree, to the Stark Institute's terms and conditions, Please proceed with my admission.
+          </label>
+        </div>
+
+        <div class="text-center" >
+          <button type="submit" class="btn btn-warning" style="padding-left: 50px; padding-right: 50px;">Submit</button>
+        </div>
+      <% end %>
+    </div>
+  </body>
+</html>

@@ -3,9 +3,10 @@ require 'base64'
 require 'razorpay'
 
 class Students::AdmissionsController < ApplicationController
-  layout false, only: [:show, :foundation_show, :pay_installment, :create_installment]
+  layout false, only: [:show, :foundation_show, :pay_installment, :create_installment, :registration_form, :registration_confirmation, :register]
   MERCHANT_ID = "3300260987"
   skip_before_action :verify_authenticity_token, only: [:admission_done, :create]
+  before_action :set_org
 
   # PAYMENT_MODE = "icici-bank"
   PAYMENT_MODE = "razor-pay"
@@ -16,6 +17,46 @@ class Students::AdmissionsController < ApplicationController
     @is_set = params[:set] == 'true'
     @student_id = params[:student_id]
     # @url = eazy_pay_url
+  end
+
+  def register
+    @errors = []
+    @student = Student.where(org_id: @org.id, parent_mobile: registration_params[:parent_mobile], student_mobile: registration_params[:student_mobile]).first
+    batch_id = registration_params[:course_type] == 'pcb' ? 781 : 782
+    @batch = Rails.env.production? ? Batch.find(batch_id) : Batch.last
+
+
+    if @student.present?
+      unless @student.batches.ids.include?(@batch.id)
+        student.batches << @batch
+      end
+
+      render 'registration_confirmation' and return
+    end
+
+    last_roll_num = Student.where(org_id: @org.id).includes(:batches).where(batches: {id: @batch.id}).maximum(:roll_number) || 10_000
+    if @errors.empty?
+      @student = Student.create({
+        org_id: @org.id,
+        roll_number: last_roll_num + 1,
+        name: registration_params[:name],
+        gender: registration_params[:gender] == 'male' ? 0 : 1,
+        student_mobile: registration_params[:student_mobile],
+        parent_mobile: registration_params[:parent_mobile],
+        email: registration_params[:email],
+        password: registration_params[:parent_mobile],
+        raw_password: registration_params[:parent_mobile],
+        email: "#{@org.id}-#{registration_params[:student_mobile]}-#{registration_params[:parent_mobile]}@#{@org.subdomain}.eduaakar.com"
+      })
+      if @student.errors.blank?
+        @student.batches << @batch
+      else
+        flash[:error] = @student.errors.full_messages
+        render 'registration_form' and return
+      end
+    end
+
+    render 'registration_confirmation'
   end
 
   def foundation_show
@@ -410,6 +451,14 @@ class Students::AdmissionsController < ApplicationController
   end
 
   private
+
+    def set_org
+      @org = Org.find_by(subdomain: request.subdomain)
+    end
+
+    def registration_params
+      params.permit(:name, :email, :parent_mobile, :student_mobile, :gender, :batch, :course_type)
+    end
 
     def is_number? string
       true if Float(string) rescue false
