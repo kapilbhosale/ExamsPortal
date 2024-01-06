@@ -141,7 +141,7 @@ class Students::AdmissionsController < ApplicationController
     params[:course] = ['pcb'] if params[:batch] == '12th_set'
     params[:course] = ['pcb'] if params[:batch] == '12th_set_1'
 
-    must_have_params = [:name, :email, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
+    must_have_params = [:name, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
       errors << "#{key.to_s.humanize} cannot be blank." if new_admission_params[key].blank?
     end
@@ -182,7 +182,7 @@ class Students::AdmissionsController < ApplicationController
 
       new_admission = NewAdmission.new
       new_admission.name = new_admission_params[:name]
-      new_admission.email = new_admission_params[:email]
+      new_admission.email = "#{new_admission_params[:parent_mobile]}_new_admission_params[:student_mobile]_#{Time.now}@rccpattern.com"
       new_admission.parent_mobile = new_admission_params[:parent_mobile]
       new_admission.student_mobile = new_admission_params[:student_mobile]
       new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
