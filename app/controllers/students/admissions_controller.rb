@@ -363,6 +363,13 @@ class Students::AdmissionsController < ApplicationController
         student.new_admission_id = @new_admission.id
         @new_admission.done!
         student.save
+        if student.parent_mobile.present?
+          student.set_confirmation_sms(student.parent_mobile)
+        end
+
+        if student.student_mobile.present?
+          student.set_confirmation_sms(student.student_mobile)
+        end
       end
     elsif @new_admission.started?
       @errors << "Admission already confirmed, Please check SMS for details"

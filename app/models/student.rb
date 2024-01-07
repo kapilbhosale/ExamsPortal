@@ -233,6 +233,21 @@ class Student < ApplicationRecord
 
   BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
 
+  def set_confirmation_sms(mobile_number)
+    sms_user = "RCCLatur"
+    sms_password = URI.encode_www_form_component("RCC@123#L")
+    sender_id = "RCCLtr"
+    template_id = '1007665462650104735'
+    entity_id = '1001545918985192145'
+
+    msg = "Dear Students/ Parents, \nFrom RCC Welcome in the world of Motegaonkar Sirs RCC. Your RCC-SET Scholarship Entrance Test Registration is Confirmed Roll No - #{roll_number} Parent Mobile No - #{parent_mobile} \nDownload App from Below link- https://shorturl.at/dgKTY For Any Assistance Call - 9075 40 2222, 9075 39 2222 Team RCC"
+    msg = URI.encode_www_form_component(msg)
+
+    msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{mobile_number}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+    encoded_uri = URI(msg_url)
+    puts Net::HTTP.get(encoded_uri)
+  end
+
   def rcc_admission_confirm_sms(mobile_number)
     sms_user = "RCCLatur"
     sms_password = URI.encode_www_form_component("RCC@123#L")
@@ -264,15 +279,19 @@ class Student < ApplicationRecord
   end
 
   def send_sms(is_installment=false)
-    if is_installment
-      rcc_installment_sms(parent_mobile.to_s) if parent_mobile.present?
-      rcc_installment_sms(student_mobile.to_s) if student_mobile.present?
+    if (student.batches.ids & [986, 987, 988, 989]).present?
+      set_confirmation_sms(parent_mobile.to_s) if parent_mobile.present?
+      set_confirmation_sms(student_mobile.to_s) if student_mobile.present?
     else
-      rcc_admission_confirm_sms(parent_mobile.to_s) if parent_mobile.present?
-      rcc_admission_confirm_sms(student_mobile.to_s) if student_mobile.present?
+      if is_installment
+        rcc_installment_sms(parent_mobile.to_s) if parent_mobile.present?
+        rcc_installment_sms(student_mobile.to_s) if student_mobile.present?
+      else
+        rcc_admission_confirm_sms(parent_mobile.to_s) if parent_mobile.present?
+        rcc_admission_confirm_sms(student_mobile.to_s) if student_mobile.present?
+      end
     end
   end
-
 
   def generate_and_send_otp
     sms_user = "KALPAK01"
