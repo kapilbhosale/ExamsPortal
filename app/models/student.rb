@@ -279,6 +279,8 @@ class Student < ApplicationRecord
   end
 
   def send_sms(is_installment=false)
+    return if batches.blank?
+
     if (batches.ids & [986, 987, 988, 989]).present?
       set_confirmation_sms(parent_mobile.to_s) if parent_mobile.present?
       set_confirmation_sms(student_mobile.to_s) if student_mobile.present?

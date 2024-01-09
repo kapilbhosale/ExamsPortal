@@ -19,7 +19,7 @@ if Rails.env.production?
       aws_secret_access_key: ENV.fetch('AWS_SECRET'),
       region: 'ap-south-1'
     }
-    config.fog_directory = 'smart-exams-production'
+    config.fog_directory = 'smart-exams-production-v2'
     config.storage = :fog
   end
 else
