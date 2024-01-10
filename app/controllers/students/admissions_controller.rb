@@ -182,7 +182,7 @@ class Students::AdmissionsController < ApplicationController
 
       new_admission = NewAdmission.new
       new_admission.name = new_admission_params[:name]
-      new_admission.email = "#{new_admission_params[:parent_mobile]}_new_admission_params[:student_mobile]_#{Time.now}@rccpattern.com"
+      new_admission.email = "#{new_admission_params[:parent_mobile]}_#{new_admission_params[:student_mobile]}_#{Time.now.to_i}@rccpattern.com"
       new_admission.parent_mobile = new_admission_params[:parent_mobile]
       new_admission.student_mobile = new_admission_params[:student_mobile]
       new_admission.batch = NewAdmission.batches[new_admission_params[:batch]]
