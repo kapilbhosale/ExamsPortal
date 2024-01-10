@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if true || Rails.env.production?
+if Rails.env.production?
   CarrierWave.configure do |config|
     # config.storage    = :aws
     # config.aws_bucket = 'smart-exams-production'
