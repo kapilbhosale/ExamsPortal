@@ -1,6 +1,7 @@
-set :application, "SmartExamsV2"
+set :application, "SmartExamsV3"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
+set :deploy_to,   "/home/#{fetch(:user)}/app/#{fetch(:application)}"
 
 set :rails_env, :production
 # Don't change these unless you know what you're doing
@@ -69,7 +70,7 @@ namespace :deploy do
   task :puma_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service puma_v2 restart")
+        execute("sudo service puma_v3 restart")
       end
     end
   end
@@ -78,7 +79,7 @@ namespace :deploy do
   task :sidekiq_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service sidekiq_v2 restart")
+        execute("sudo service sidekiq_v3 restart")
       end
     end
   end
@@ -100,8 +101,8 @@ namespace :deploy do
   after  :finishing,    :compile_assets
   after  :finishing,    :cleanup
   after  :finishing,    :restart
-  after  :restart,      :sidekiq_restart
-  after  :restart,      :puma_restart
+  # after  :restart,      :sidekiq_restart
+  # after  :restart,      :puma_restart
 
 end
 
