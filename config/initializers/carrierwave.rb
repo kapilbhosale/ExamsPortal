@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if Rails.env.production?
+if true || Rails.env.production?
   CarrierWave.configure do |config|
     # config.storage    = :aws
     # config.aws_bucket = 'smart-exams-production'
@@ -19,7 +19,7 @@ if Rails.env.production?
       aws_secret_access_key: ENV.fetch('AWS_SECRET'),
       region: 'ap-south-1'
     }
-    config.fog_directory = 'aws-se-test-bucket'
+    config.fog_directory = 'smart-exams-production-v1'
     config.storage = :fog
   end
 else
