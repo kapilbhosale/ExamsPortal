@@ -45,8 +45,6 @@ gem 'jbuilder', '~> 2.5'
 gem 'sidekiq'
 gem "sidekiq-cron", "~> 1.1"
 
-gem 'rollbar'
-
 gem 'webpacker'
 gem 'foreman'
 gem "audited"
@@ -84,8 +82,8 @@ gem 'redis-store'
 gem 'activerecord-import'
 
 #monitoring gems
-gem 'scout_apm'
-gem 'newrelic_rpm'
+# gem 'scout_apm'
+# gem 'newrelic_rpm'
 
 group :production do
   gem 'rmagick'
