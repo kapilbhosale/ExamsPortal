@@ -18,7 +18,8 @@ class ApplicationController < ActionController::Base
       'bhosale' => 'smart_exams_v3',
       'scholars' => 'smart_exams_v3',
       'ganesh' => 'smart_exams_v3',
-      'wagaj' => 'smart_exams_v3'
+      'wagaj' => 'smart_exams_v3',
+      'chate' => 'smart_exams_v3'
     }[request.subdomain]
   end
 
