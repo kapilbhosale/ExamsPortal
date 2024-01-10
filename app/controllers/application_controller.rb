@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
 
   def db_config
     @default_config ||= ActiveRecord::Base.connection.instance_variable_get("@config").dup
+    puts "----------------"
+    puts "database_name: #{database_name}"
+    puts "----------------"
     return @default_config.dup.update(:database => database_name) if database_name.present?
     return @default_config
   end
