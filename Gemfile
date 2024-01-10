@@ -79,7 +79,7 @@ gem 'jquery-rails'
 # redis added for caching
 gem 'redis'
 gem 'redis-rails'
-gem 'hiredis'
+# gem 'hiredis'
 gem 'redis-store'
 gem 'activerecord-import'
 

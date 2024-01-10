@@ -41,48 +41,7 @@ class Api::V1::HomeController < Api::V1::ApiController
       }
     end
 
-    return (banners_data + (current_org.data['top_banners'] || [])) unless current_org.rcc?
-
-    banners_data << {
-      "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/default-banner.jpg",
-      "on_click"=>"https://rccpattern.com"
-    }
-
-    set_batch_ids = [208, 209, 210, 211, 212, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223]
-    if (current_student.batches&.ids & [192, 196, 197, 198]).present?
-      banners_data << {
-        "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/foundation-banner.jpg",
-        "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
-      }
-    else
-      if current_student.pending_amount.present?
-        if (current_student.batches&.ids & set_batch_ids).present?
-          banners_data <<
-          {
-            "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/set-banner.jpg",
-            "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}&set=true"
-          }
-          return banners_data
-        else
-          banners_data <<
-          {
-            "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/rcc_fees_reminder-1.jpg",
-            "on_click"=>"https://exams.smartclassapp.in/pay_due_fees?student_id=#{current_student.id}"
-          }
-        end
-      else
-        if (current_student.batches&.ids & set_batch_ids).present?
-          banners_data <<
-          {
-            "img_url"=>"#{ENV.fetch('AWS_CLOUDFRONT_URL')}/apks/rcc/set-all-reminder.jpg",
-            "on_click"=>"https://exams.smartclassapp.in/new-admission?student_id=#{current_student.id}"
-          }
-          return banners_data
-        end
-      end
-
-      banners_data + (current_org.data['top_banners'] || [])
-    end
+    return (banners_data + (current_org.data['top_banners'] || []))
   end
 
   def gallery
