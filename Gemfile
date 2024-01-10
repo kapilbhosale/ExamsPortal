@@ -84,8 +84,8 @@ gem 'redis-store'
 gem 'activerecord-import'
 
 #monitoring gems
-gem 'scout_apm'
-gem 'newrelic_rpm'
+# gem 'scout_apm'
+# gem 'newrelic_rpm'
 
 group :production do
   gem 'rmagick'
