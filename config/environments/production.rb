@@ -29,7 +29,7 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = true
+  config.assets.compile = false
 
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
@@ -37,7 +37,7 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # asset url only for RCC
   # config.action_controller.asset_host = ENV.fetch('ASSETS_AWS_CLOUDFRONT_URL')
-  config.serve_static_assets = true
+  # config.serve_static_assets = true
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
