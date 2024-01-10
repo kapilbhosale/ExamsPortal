@@ -37,6 +37,7 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # asset url only for RCC
   # config.action_controller.asset_host = ENV.fetch('ASSETS_AWS_CLOUDFRONT_URL')
+  config.serve_static_assets = true
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
