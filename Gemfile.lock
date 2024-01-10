@@ -393,7 +393,6 @@ GEM
       railties (>= 4.2.0, < 5.3)
     rexml (3.2.5)
     rmagick (4.1.1)
-    rollbar (2.27.0)
     rotp (6.2.0)
     rqrcode (2.1.2)
       chunky_png (~> 1.0)
@@ -555,7 +554,6 @@ DEPENDENCIES
   redis-rails
   redis-store
   rmagick
-  rollbar
   rotp
   rqrcode
   rubocop
