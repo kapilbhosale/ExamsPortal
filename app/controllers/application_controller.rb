@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :switch_databse
+  # before_action :switch_databse
 
   def switch_databse
     ActiveRecord::Base.establish_connection(db_config)
