@@ -62,9 +62,9 @@ class VideoLecture < ApplicationRecord
   belongs_to :genre, optional: true, counter_cache: true
   mount_uploader :uploaded_thumbnail, PhotoUploader
   # after_create :send_push_notifications
-  # disabled for now, pls enable it.
-  # after_save :flush_video_folders_cache
-  # after_save :flush_videos_cache
+
+  after_save :flush_video_folders_cache
+  after_save :flush_videos_cache
   after_save :update_tp_stream_details
 
   def self.latest_videos(student, domain="", build_number)
