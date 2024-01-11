@@ -55,7 +55,7 @@ module Exams
       # s3.client.put_bucket_acl(acl: "public-read",bucket: 'smart-exams-production')
       # bucket = s3.bucket('smart-exams-production')
       s3.client.put_object(
-        bucket: 'smart-exams-production',
+        bucket: 'smart-exams-production-v2',
         key: file_name,
         body: exam_json_data.to_json,
         acl: "public-read"
