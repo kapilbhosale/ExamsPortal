@@ -37,6 +37,10 @@ class Students::HomeController < Students::BaseController
     @student_exams = StudentExam.includes(:exam).where(student: current_student)&.index_by(&:exam_id) || {}
   end
 
+  def hallticket
+    @name = current_student.name
+  end
+
   def progress_report
     @student = current_student
     exams = Exam.includes(:batches).where(batches: { id: @student.batches.ids }).where(is_pr_generated: true)

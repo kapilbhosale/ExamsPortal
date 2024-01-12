@@ -70,6 +70,8 @@ Rails.application.routes.draw do
     get "auto-auth", to: 'home#auto_auth'
     root to: 'home#index'
     get :tests, to: 'home#tests', as: :tests
+    get :hallticket, to: 'home#hallticket', as: :hallticket
+
     get :progress_report, to: 'home#progress_report', as: :progress_report
     get :instructions, to: 'home#instructions', as: :exam_instructions
     get :confirmation, to: 'home#confirmation', as: :exam_confirmation
@@ -223,6 +225,8 @@ Rails.application.routes.draw do
         resources :notes
       end
     end
+    get :halltickets, to: 'dashboard#halltickets'
+    post :import_halltickets, to: 'dashboard#import_halltickets', as: :import_halltickets
   end
 
   get 'current-server-time', to: 'home#current_server_time'

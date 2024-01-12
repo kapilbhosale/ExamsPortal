@@ -1,0 +1,37 @@
+<p>Import hallticets CSV </p>
+
+<div class="col-lg-8">
+  <%= form_tag(admin_import_halltickets_path, method: :post, multipart: true, class: 'card') do %>
+    <div class="card-body">
+      <h3 class="card-title">Import Hall ticket data Data</h3>
+      <hr>
+      <div class="col-sm-12 col-md-8">
+        <div class="form-group">
+          <div class="form-label">TSV File</div>
+          <div class="custom-file">
+            <input type="file" name="hallticket_csv" accept=".tsv" required>
+          </div>
+          <p>Columns must be -
+          ["Roll Number",
+            "Name",
+            "Exam Date & Time",
+            "Parent mobile",
+            "Student mobile",
+            "course",
+            "Board",
+            "Exam Center",
+            "Adress"]
+          </p>
+          <p>
+            Note: CSV file with defined format will only be accepted.
+          </p>
+          <p>
+        </div>
+      </div>
+
+    </div>
+    <div class="card-footer text-right">
+      <button type="submit" class="btn btn-warning">Import Hallticket Data</button>
+    </div>
+  <% end %>
+</div>

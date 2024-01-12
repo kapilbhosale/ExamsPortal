@@ -13,6 +13,10 @@ class Admin::DashboardController < Admin::BaseController
     redirect_to admin_dashboard_profile_path
   end
 
+  def import_halltickets
+    render json: Student.import_hallticket_csv(params[:hallticket_csv].path)
+  end
+
   private
 
   def set_flash

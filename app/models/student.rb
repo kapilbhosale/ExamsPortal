@@ -322,22 +322,37 @@ class Student < ApplicationRecord
     "Dear Student, your OTP for login (valid for 10 minutes) is - #{otp} From ATASMS"
   end
 
-  # Student.import_tsv("/home/ubuntu/data/a_nagar.tsv")
-  def self.import_tsv(path)
+  def self.import_hallticket_csv(path)
+    if CSV.foreach(path, col_sep: "\t", headers: true).first.headers != ["Roll Number",
+      "Name",
+      "Exam Date & Time",
+      "Parent mobile",
+      "Student mobile",
+      "course",
+      "Board",
+      "Exam Center",
+      "Adress"]
+      return {error: "Invalid CSV Headers"}
+    end
+
+    imported_count = 0
     CSV.foreach(path, col_sep: "\t", headers: true) do |row|
-      student = Student.where(parent_mobile: row[0], roll_number: row[2])
+      student = Student.where(parent_mobile: row["Parent mobile"], roll_number: row["Roll Number"])
       if student.present?
         student.update_all(data: {
-          center: row[4],
+          center: row["Exam Center"],
           course: "NEET",
-          school_name: row[4],
-          address: nil,
-          board: "-",
-          exam_time: row[5],
-          tag: '3104'
+          school_name: row["course"]&.upcase,
+          address: row["Adress"],
+          board: row["Board"]&.upcase,
+          exam_time: row["Exam Date & Time"],
+          tag: '2023-24'
         })
         putc "."
+        imported_count += 1
       end
     end
+
+    return {imported_count: imported_count}
   end
 end

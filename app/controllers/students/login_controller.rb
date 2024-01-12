@@ -19,6 +19,10 @@ class Students::LoginController < Students::BaseController
     if student&.valid_password?(login_params[:password])
       student.remember_me = login_params[:remember_me]
 
+      if (student.batches.ids & [986, 987]).present?
+        sign_in_and_redirect(student, event: :authentication) and return
+      end
+
       if student.disable?
         if current_org.rcc?
           flash[:error] = 'Dear student, If you have taken admission for 12th kindly login using your new 12th Roll number. If not then kindly confirm your admission as soon as possible. 11th App has been closed. \n https://exams.smartclassapp.in/new-admission'
