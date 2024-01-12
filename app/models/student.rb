@@ -341,8 +341,8 @@ class Student < ApplicationRecord
       if student.present?
         student.update_all(data: {
           center: row["Exam Center"],
-          course: "NEET",
-          school_name: row["course"]&.upcase,
+          course: row["course"]&.upcase,
+          school_name: "-",
           address: row["Adress"],
           board: row["Board"]&.upcase,
           exam_time: row["Exam Date & Time"],
