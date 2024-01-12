@@ -142,6 +142,7 @@ class Api::V2::StudentsController < Api::V2::ApiController
     return true unless @student.app_login?
     return true if device_params[:deviceUniqueId].present? && @student.deviceUniqueId.blank?
     return true if @student.deviceUniqueId == device_params[:deviceUniqueId]
+    return true if (@student.batches.ids & [986, 987]).present?
     return false if @student.app_login? && @student.deviceUniqueId != device_params[:deviceUniqueId]
 
     false
