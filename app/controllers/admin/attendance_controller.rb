@@ -75,8 +75,17 @@ class Admin::AttendanceController < Admin::BaseController
 
     @summary_data = []
     @batches.each do |batch|
+      start_time = Time.zone.parse(batch.start_time.strftime('%H:%M:%S'))
+      end_time = Time.zone.parse(batch.end_time.strftime('%H:%M:%S'))
+
       student_ids = Student.includes(:student_batches, :batches,).where(batches: { id: batch.id })
-      pr_count = Attendance.today.where(org: current_org).where(student_id: student_ids).count
+      pr_count = Attendance
+        .select(:student_id).distinct
+        .today
+        .where(org: current_org)
+        .where(student_id: student_ids)
+        .where(time_entry: start_time..end_time)
+        .count
 
       std_count = student_ids.count
       next if std_count == 0
