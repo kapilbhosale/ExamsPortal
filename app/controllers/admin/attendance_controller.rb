@@ -31,7 +31,17 @@ class Admin::AttendanceController < Admin::BaseController
   def send_batch_sms
     batch = Batch.find_by(id: params[:batch_id])
     if batch.present?
-      present_student_ids = Attendance.today.where(org_id: current_org.id, student_id: batch.students.ids).pluck(:student_id).uniq
+      start_time = Time.zone.parse(batch.start_time.strftime('%H:%M:%S'))
+      end_time = Time.zone.parse(batch.end_time.strftime('%H:%M:%S'))
+
+      present_student_ids = Attendance
+        .select(:student_id).distinct
+        .today
+        .where(org: current_org)
+        .where(student_id: batch.students.ids)
+        .where(time_entry: start_time..end_time)
+        .pluck(:student_id)
+
       absent_students = batch.students.where.not(id: present_student_ids)
 
       if params[:type] == "present"
