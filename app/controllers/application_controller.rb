@@ -14,11 +14,10 @@ class ApplicationController < ActionController::Base
     elsif request.subdomain&.include?('videos')
       '/students/videos'
     else
-      if (student.batches.ids & [986, 987]).present?
-        '/students/hallticket'
-      else
-        '/students/tests'
-      end
+      '/students/tests'
+      # if (student.batches.ids & [986, 987]).present?
+      #   '/students/hallticket'
+      # end
     end
   end
 end
