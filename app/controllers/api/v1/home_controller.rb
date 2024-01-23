@@ -35,9 +35,10 @@ class Api::V1::HomeController < Api::V1::ApiController
     banners = Banner.includes(:org).where(active: true).where(org: current_org).includes(:batches, :batch_banners).where(batches: {id: current_student.batches&.ids}).all.order(id: :desc) || []
 
     banners.each do |banner|
+      on_click_url = banner.on_click_url.gsub("STUDENT_ID", current_student.id.to_s)
       banners_data << {
         "img_url"=> banner.image.url,
-        "on_click"=> banner.on_click_url
+        "on_click"=> on_click_url
       }
     end
 
