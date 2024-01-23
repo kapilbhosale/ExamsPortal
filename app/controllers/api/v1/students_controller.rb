@@ -99,7 +99,7 @@ class Api::V1::StudentsController < Api::V1::ApiController
     return false if student.is_laptop_login
 
     return true if !student.app_login?
-    return true if (@student.batches.ids & [986, 987]).present?
+    return true if (student.batches.ids & [986, 987]).present?
 
     if device_params[:deviceUniqueId].present? && student.deviceUniqueId.blank?
       return true
