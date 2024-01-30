@@ -22,9 +22,8 @@ class Students::AdmissionsController < ApplicationController
   def register
     @errors = []
     @student = Student.where(org_id: @org.id, parent_mobile: registration_params[:parent_mobile], student_mobile: registration_params[:student_mobile]).first
-    batch_id = registration_params[:course_type] == 'pcb' ? 781 : 782
-    @batch = Rails.env.production? ? Batch.find(batch_id) : Batch.last
-
+    batch_id = params[:batch] || registration_params[:course_type] == 'pcb' ? 781 : 782
+    @batch = Batch.find(batch_id)
 
     if @student.present?
       unless @student.batches.ids.include?(@batch.id)
