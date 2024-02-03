@@ -116,7 +116,7 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def downoload_cet
-    headers = ["id", "Roll Number", "Name", "Parent mobile", "Student mobile", "email", "gender", "center", "sub-center", "taluka", "Dist", "course", "rcc branch", "Board", "Reg Date"]
+    headers = ["id", "Roll Number", "Name", "Parent mobile", "Student mobile", "email", "gender", "center", "sub-center", "taluka", "Dist", "course", "rcc branch", "Board", "Reg Date", "App login"]
 
     map_ids = {}
     batch_ids = [params[:batch_id]]
@@ -125,15 +125,16 @@ class Admin::BatchesController < Admin::BaseController
     valid_na_ids = Student.where(id: valid_student_ids).pluck(:new_admission_id).uniq
 
     Student.where(new_admission_id: valid_na_ids).find_each do |s|
-      map_ids[s.new_admission_id] = s.roll_number
+      map_ids[s.new_admission_id] = { roll_number: s.roll_number, app_login: s.app_login || s.is_laptop_login }
     end
 
     att_csv = CSV.generate(headers: true) do |writer|
       writer << headers
+      Student.where(new_admission_id: valid_na_ids)
       NewAdmission.where(id: valid_na_ids).each do |na|
         writer << [
           na.id,
-          map_ids[na.id],
+          map_ids[na.id][:roll_number],
           na.name,
           na.parent_mobile,
           na.student_mobile,
@@ -146,7 +147,8 @@ class Admin::BatchesController < Admin::BaseController
           na.course_type,
           na.rcc_branch,
           na.extra_data["board"],
-          na.created_at.strftime('%Y-%m-%d')
+          na.created_at.strftime('%Y-%m-%d'),
+          map_ids[na.id][:app_login] ? "YES" : "-",
         ]
       end
     end
