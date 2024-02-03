@@ -260,11 +260,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil, new_admission = nil)
-    return 10_000 if batch == '7th'
-    return 10_000 if batch == '8th'
-    return 12_000 if batch == '9th'
-    return 12_000 if batch == '10th'
-    return 5_000 if batch == 'test-series'
 
     if batch == 'repeater'
       if new_admission.extra_data.dig('pay_type') == 'installment'
@@ -277,39 +272,24 @@ class Students::AdmissionsController < ApplicationController
 
     if batch == '11th_new' || batch == '12th'
       if new_admission.extra_data.dig('pay_type') == 'installment'
-        # return 15_000 if ['phy', 'chem', 'bio'].include?(course.name)
-
-        if ['pc', 'pb', 'cb'].include?(course.name)
-          return 25_000
-        end
-
-        if ['pcb', 'pcm'].include?(course.name)
-          return 25_000 if rcc_branch == 'nanded'
-          return 25_000 if rcc_branch == 'latur'
-          return 30_000 if rcc_branch == 'aurangabad'
-          return 25_000
-        end
-
-        return 40_000 if ['pcbm'].include?(course.name)
-        return 25_000
+        return 30_000
       else
-        # return 25_000 if ['phy', 'chem', 'bio'].include?(course.name)
+        return 55_000
+        # if ['pc'].include?(course.name)
+        #   return 50_000
+        # end
 
-        if ['pc'].include?(course.name)
-          return 50_000
-        end
+        # if ['pcb', 'pcm'].include?(course.name)
+        #   if rcc_branch == 'nanded'
+        #     return(course.name == 'pcm' ? 60_000 : 55_000)
+        #   end
+        #   return 60_000 if rcc_branch == 'latur'
+        #   return 75_000 if rcc_branch == 'aurangabad'
+        #   return 60_000
+        # end
 
-        if ['pcb', 'pcm'].include?(course.name)
-          if rcc_branch == 'nanded'
-            return(course.name == 'pcm' ? 60_000 : 55_000)
-          end
-          return 60_000 if rcc_branch == 'latur'
-          return 75_000 if rcc_branch == 'aurangabad'
-          return 60_000
-        end
-
-        return 80_000 if ['pcbm'].include?(course.name)
-        return 60_000
+        # return 80_000 if ['pcbm'].include?(course.name)
+        # return 60_000
       end
     end
 
