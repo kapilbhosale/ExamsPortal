@@ -260,7 +260,6 @@ class Students::AdmissionsController < ApplicationController
   end
 
   def get_fees(batch, course, is_installment = false, rcc_branch = nil, new_admission = nil)
-
     if batch == 'repeater'
       if new_admission.extra_data.dig('pay_type') == 'installment'
         return 25_000
@@ -269,6 +268,8 @@ class Students::AdmissionsController < ApplicationController
         return 60_000 if ['pcb'].include?(course.name)
       end
     end
+
+    return 5_000 if batch == "test-series"
 
     if batch == '11th_new' || batch == '12th'
       if new_admission.extra_data.dig('pay_type') == 'installment'
