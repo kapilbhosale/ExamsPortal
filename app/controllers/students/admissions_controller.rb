@@ -33,7 +33,7 @@ class Students::AdmissionsController < ApplicationController
       render 'registration_confirmation' and return
     end
 
-    last_roll_num = Student.where(org_id: @org.id).includes(:batches).where(batches: {id: @batch.id}).maximum(:roll_number) || 10_000
+    last_roll_num = Student.where(org_id: @org.id).maximum(:roll_number) || 10_000
     if @errors.empty?
       @student = Student.create({
         org_id: @org.id,
