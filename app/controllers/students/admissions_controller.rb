@@ -45,7 +45,8 @@ class Students::AdmissionsController < ApplicationController
         email: registration_params[:email],
         password: registration_params[:parent_mobile],
         raw_password: registration_params[:parent_mobile],
-        email: "#{@org.id}-#{registration_params[:student_mobile]}-#{registration_params[:parent_mobile]}@#{@org.subdomain}.eduaakar.com"
+        email: "#{@org.id}-#{registration_params[:student_mobile]}-#{registration_params[:parent_mobile]}@#{@org.subdomain}.eduaakar.com",
+        data: { registration: params }
       })
       if @student.errors.blank?
         @student.batches << @batch
