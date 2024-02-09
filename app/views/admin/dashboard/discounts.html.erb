@@ -1,0 +1,30 @@
+<p>Import SET Discounts CSV </p>
+
+<div class="col-lg-12">
+  <%= form_tag(admin_import_discounts_path, method: :post, multipart: true, class: 'card') do %>
+    <div class="card-body">
+      <h3 class="card-title">Import Discounts Data (Be careful for what you are doing..)</h3>
+      <hr>
+      <div class="col-sm-12 col-md-12">
+        <div class="form-group">
+          <div class="form-label">CSV File</div>
+          <div class="custom-file">
+            <input type="file" name="discounts_csv" accept=".csv" required>
+          </div>
+          <p>Columns must be -
+          [sr_no, roll_no, name, student_mobile, parent_mobile, stud_class, batch_fees, con_percent, con_amount, amount_pay]
+          </p>
+          <p>
+            Note: CSV file with defined format will only be accepted.
+          </p>
+          <p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-right">
+      <input type="text" name="note" placeholder="Import Note" class="form-control" style="margin-bottom: 10px" required />
+      <input type="checkbox" name="overwrite" value="true" checked /> Overwrite Existing Data
+      <button type="submit" class="btn btn-danger">Import Discounts Data</button>
+    </div>
+  <% end %>
+</div>

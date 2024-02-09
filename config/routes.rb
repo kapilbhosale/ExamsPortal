@@ -227,6 +227,8 @@ Rails.application.routes.draw do
     end
     get :halltickets, to: 'dashboard#halltickets'
     post :import_halltickets, to: 'dashboard#import_halltickets', as: :import_halltickets
+    get :discounts, to: 'dashboard#discounts'
+    post :import_discounts, to: 'dashboard#import_discounts', as: :import_discounts
   end
 
   get 'current-server-time', to: 'home#current_server_time'

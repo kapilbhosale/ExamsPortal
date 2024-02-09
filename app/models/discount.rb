@@ -27,11 +27,11 @@ class Discount < ApplicationRecord
   enum type_of_discount: { rcc_set: 'RCC_SET', fees_req: 'FEES_REQ', notes_req: 'NOTES_REQ', onetime: "ONETIME", special: "SPECIAL", other: 'OTHER' }
   enum status: { valid_discount: 'valid_discount', used_discount: 'used_discount', expired_discount: 'expired_discount' }
 
-  def self.import_csv(csv_file_path)
+  def self.import_csv(csv_file_path, note, admin_id, overwrite=true)
     csv_text = File.read(csv_file_path)
     csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
     csv.each do |row|
-      Discount.find_or_create_by({
+      data = {
         org_id: 1,
         type_of_discount: 'RCC_SET',
         student_name: row['name'],
@@ -39,15 +39,25 @@ class Discount < ApplicationRecord
         parent_mobile: row['parent_mobile'],
         status: 'valid_discount',
         roll_number: row['roll_no'],
-        comment: "RCC set discount, import 3 jan",
-        approved_by: "SET exam 31/12/2023",
+        comment: note,
+        approved_by: "SET import #{Date.today}:#{admin_id}",
         amount: row['batch_fees'].to_i - row['amount_pay'].to_i,
         data: {
           amount_to_pay: row['amount_pay'],
           discount_percent: row['con_percent'],
           discount_amount: row['rcc_consession']
         }
-      })
+      }
+      if overwrite
+        discount = Discount.valid_discount.find_by(roll_number: row['roll_no'], parent_mobile: row['parent_mobile'])
+        if discount
+          discount.update!(data)
+        else
+          Discount.create(data)
+        end
+      else
+        Discount.find_or_create_by(data)
+      end
       putc "."
     end
   end
