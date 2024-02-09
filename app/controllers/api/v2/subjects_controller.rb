@@ -101,6 +101,16 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     folder = Genre.find_by(id: params[:folder_id])
     page = (params[:page] || 1).to_i
 
+    if current_student.block_videos?
+      render json: {
+        page: page,
+        page_size: ITEMS_PER_PAGE,
+        total_page: 0,
+        count: 0,
+        data: []
+      } and return
+    end
+
     videos = VideoLecture
       .includes(:batches)
       .where(org_id: current_org.id)

@@ -227,7 +227,7 @@ Rails.application.routes.draw do
     end
     get :halltickets, to: 'dashboard#halltickets'
     post :import_halltickets, to: 'dashboard#import_halltickets', as: :import_halltickets
-    get :discounts, to: 'dashboard#discounts'
+    get :discounts, to: 'dashboard#discounts', as: :discounts
     post :import_discounts, to: 'dashboard#import_discounts', as: :import_discounts
   end
 

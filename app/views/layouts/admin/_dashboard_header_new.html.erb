@@ -138,6 +138,9 @@
               <% if current_admin.can_manage(:students) %>
                 <%= link_to '<i class="fas fa-user"></i> Student Id Cards'.html_safe, admin_id_cards_path, class: "dropdown-item"%>
               <% end %>
+              <% if current_admin.can_manage(:discounts) %>
+                <%= link_to '<i class="fas fa-user"></i> Import Discounts'.html_safe, admin_discounts_path, class: "dropdown-item"%>
+              <% end %>
             </div>
           </li>
         </ul>
