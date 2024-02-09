@@ -1,4 +1,4 @@
-set :application, "SmartExamsV3"
+set :application, "SmartExamsV2"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
 set :deploy_to,   "/home/#{fetch(:user)}/app/#{fetch(:application)}"
