@@ -129,7 +129,8 @@ class VideoLecture < ApplicationRecord
   end
 
   def update_play_url
-    video_data = `yt-dlp --get-url --format 18/22 '#{url}' --proxy #{Proxy.random}`
+    # video_data = `yt-dlp --get-url --format 18/22 '#{url}' --proxy #{Proxy.random}`
+    video_data = `yt-dlp --get-url --format 18/22 '#{url}'`
     if video_data.blank?
       yt_dlp_errors = REDIS_CACHE.get('yt-dlp-errors') || '{}'
       yt_dlp_errors = JSON.parse(yt_dlp_errors)
