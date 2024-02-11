@@ -356,3 +356,10 @@ class Student < ApplicationRecord
     return {imported_count: imported_count}
   end
 end
+
+# code to revemo duplicates.
+# duplicates = Student.group(:roll_number, :parent_mobile).having('count(*) > 1').pluck(:roll_number, :parent_mobile)
+
+# duplicates.each do |roll_number, parent_mobile|
+#   Student.where(roll_number: roll_number, parent_mobile: parent_mobile).offset(1).delete_all
+# end

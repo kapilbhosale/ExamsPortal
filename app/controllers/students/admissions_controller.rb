@@ -271,7 +271,12 @@ class Students::AdmissionsController < ApplicationController
 
     return 5_000 if batch == "test-series"
 
-    if batch == '11th_new' || batch == '12th'
+    if batch == '12th'
+      return 25_000 if new_admission.extra_data.dig('pay_type') == 'installment'
+      return 55_000
+    end
+
+    if batch == '11th_new'
       if new_admission.extra_data.dig('pay_type') == 'installment'
         return 30_000
       else

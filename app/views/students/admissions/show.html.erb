@@ -204,9 +204,9 @@
               installmentFees = '₹25,000';
               nextInstallmentFees = '₹25,000';
             } else {
-              totalFees = '₹65,000';
+              totalFees = batch === "11th_new" ? '₹65,000' : '₹60,000' ;
               oneTimeFees = '₹55,000';
-              installmentFees = '₹30,000';
+              installmentFees = batch === "11th_new" ? '₹30,000' : '₹25,000';
               nextInstallmentFees = '₹35,000';
             }
 
@@ -327,7 +327,8 @@
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
-          {val: "11th_new", text: "11th Regular Online (2024-25)"}
+          {val: "11th_new", text: "11th Regular Online (2024-25)"},
+          {val: "12th", text: "12th Regular Online (2024-25)"}
         ]
 
         // {val: "12th", text: "12th Regular Batch (2023-2024)"},
@@ -338,14 +339,16 @@
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
-          {val: "11th_new", text: "11th Regular Online (2024-25)"}
+          {val: "11th_new", text: "11th Regular Online (2024-25)"},
+          {val: "12th", text: "12th Regular Online (2024-25)"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
-          {val: "11th_new", text: "11th Regular Online (2024-25)"}
+          {val: "11th_new", text: "11th Regular Online (2024-25)"},
+          {val: "12th", text: "12th Regular Online (2024-25)"}
         ]
 
         const SET_SUB_CENTERS = {
@@ -591,6 +594,7 @@
                 <option id="12th_set" value="12th_set">11th moving 12th (Non-RCC) Scholarship Exam 2024</option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
                 <option id="11th_new" value="11th_new">11th Regular Online (2024-25)</option>
+                <option id="12th" value="12th">12th Regular Online (2024-25)</option>
               <% end %>
             </select>
           </div>
