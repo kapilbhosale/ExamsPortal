@@ -70,7 +70,7 @@ namespace :deploy do
   task :puma_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service puma_v3 restart")
+        execute("sudo service puma_v2 restart")
       end
     end
   end
@@ -79,7 +79,7 @@ namespace :deploy do
   task :sidekiq_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service sidekiq_v3 restart")
+        execute("sudo service sidekiq_v2 restart")
       end
     end
   end
