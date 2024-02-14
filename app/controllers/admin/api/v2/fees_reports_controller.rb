@@ -7,9 +7,10 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
     to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date
     nil_fees_only = params[:nilFees] == 'true'
     branch = params[:branch]
+    payment_type = params[:paymentType]
     collection_data = {}
 
-    @fees_transactions = Fees::CollectionReportService.new(current_org, current_admin, from_date, to_date, nil_fees_only, branch).call
+    @fees_transactions = Fees::CollectionReportService.new(current_org, current_admin, from_date, to_date, nil_fees_only, branch, payment_type).call
     @fees_transactions.each do |ft|
       key = ft.created_at.strftime('%Y-%m-%d')
       collection_data[key] ||= []

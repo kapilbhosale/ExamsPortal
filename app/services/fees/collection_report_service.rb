@@ -1,14 +1,15 @@
 module Fees
   class CollectionReportService
-    attr_reader :current_org, :from_date, :to_date, :current_admin, :nil_fees_only, :branch
+    attr_reader :current_org, :from_date, :to_date, :current_admin, :nil_fees_only, :branch, :payment_type
 
-    def initialize(current_org, current_admin, from_date, to_date, nil_fees_only, branch)
+    def initialize(current_org, current_admin, from_date, to_date, nil_fees_only, branch, payment_type)
       @current_org = current_org
       @current_admin = current_admin
       @from_date = from_date
       @to_date = to_date
       @nil_fees_only = nil_fees_only
       @branch = branch
+      @payment_type = payment_type
     end
 
     def call
@@ -41,6 +42,12 @@ module Fees
         .where(org_id: current_org.id)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
 
+      if payment_type == 'online'
+        transactions = transactions.where(mode: 'online')
+      elsif payment_type == 'offline'
+        transactions = transactions.where.not(mode: 'online')
+      end
+
       return transactions unless nil_fees_only
 
       transactions.where(remaining_amount: 0)
@@ -57,6 +64,13 @@ module Fees
         .where('fees_transactions.created_at >= ?', date1)
         .where('fees_transactions.created_at <= ?', date2)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
+
+      if payment_type == 'online'
+        fees_transactions = fees_transactions.where(mode: 'online')
+      elsif payment_type == 'offline'
+        fees_transactions = fees_transactions.where.not(mode: 'online')
+      end
+
       return fees_transactions unless nil_fees_only
 
       fees_transactions.where(remaining_amount: 0)
