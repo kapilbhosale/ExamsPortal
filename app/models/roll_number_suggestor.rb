@@ -25,7 +25,6 @@ class RollNumberSuggestor < ApplicationRecord
     'free' => 1_00_000,
     'pay_adm' => 1000,
     '11th_new' => 2_00_000,
-    'neet_saarthi' => 1_00_001,
     '11th_22_23' => 40_000,
     "12th_22_23" => 60_000,
     'set_aurangabad' => 1_000,
@@ -57,7 +56,8 @@ class RollNumberSuggestor < ApplicationRecord
     '11th_set_24_nagpur' => 12_20_000,
     '11th_set_24_washim' => 12_30_000,
     '11th_set_24_dharashiv' => 12_40_000,
-    '11th_set_24_mumbai' => 12_50_000
+    '11th_set_24_mumbai' => 12_50_000,
+    'neet_saarthi_24_25' => 1_00_001
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
@@ -68,6 +68,7 @@ class RollNumberSuggestor < ApplicationRecord
 
     return Student.random_roll_number if batch_name == 'test-series'
     return Student.random_roll_number if batch_name == '12th_set'
+    batch_name = 'neet_saarthi_24_25' if batch_name == 'neet_saarthi'
 
     rns = self.find_by(batch_name: batch_name)
 

@@ -139,7 +139,7 @@ class Students::AdmissionsController < ApplicationController
     params[:course] = ['pcb'] if params[:batch] == 'set_aurangabad'
     params[:course] = ['pcb'] if params[:batch] == '11th_set'
     params[:course] = ['pcb'] if params[:batch] == '12th_set'
-    params[:course] = ['pcb'] if params[:batch] == '12th_set_1'
+    params[:course] = ['pcb'] if params[:batch] == 'neet_saarthi'
 
     must_have_params = [:name, :parent_mobile, :student_mobile, :batch, :course, :gender, :rcc_branch]
     must_have_params.each do |key|
@@ -160,7 +160,7 @@ class Students::AdmissionsController < ApplicationController
       errors << "Please enter valid email."
     end
 
-    unless ['test-series', '11th_new' , '12th', 'repeater', '11th_set', '12th_set'].include?(params[:batch])
+    unless ['neet_saarthi', 'test-series', '11th_new' , '12th', 'repeater', '11th_set', '12th_set'].include?(params[:batch])
       errors << "Invalid Admission data, please try agian."
     end
 
@@ -332,12 +332,14 @@ class Students::AdmissionsController < ApplicationController
       test_series_batch_ids = [972, 977]
       set_batch_ids_11th_23_24 = [986, 987]
       set_batch_ids_12th_23_24 = [988, 989]
+      neet_saarthi_batch_ids = [1094]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
           @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank? ||
           @new_admission.batch == '11th_set' && (student_batch_ids & set_batch_ids_11th_23_24).blank? ||
-          @new_admission.batch == '12th_set' && (student_batch_ids & set_batch_ids_12th_23_24).blank?
+          @new_admission.batch == '12th_set' && (student_batch_ids & set_batch_ids_12th_23_24).blank? ||
+          @new_admission.batch == 'neet_saarthi' && (student_batch_ids & neet_saarthi_batch_ids).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 

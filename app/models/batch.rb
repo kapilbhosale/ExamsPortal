@@ -191,7 +191,12 @@ class Batch < ApplicationRecord
   def self.get_12th_batches_23_24(rcc_branch, course, batch, na=nil)
     org = Org.first
     batch_id = course.name == 'pcm' ? 1086 : 1085
-    Batch.where(org_id: org.id, name: batch_id)
+    Batch.where(org_id: org.id, id: batch_id)
+  end
+
+  def self.get_neet_saarthi_batches(rcc_branch, course, batch, na=nil)
+    org = Org.first
+    Batch.where(org_id: org.id, id: 1094)
   end
 
   def self.get_test_series_batches_23_24(rcc_branch, course, batch, na=nil)
@@ -249,6 +254,8 @@ class Batch < ApplicationRecord
       get_11th_set_batches(rcc_branch, course, batch, na)
     elsif batch == '12th_set'
       get_12th_set_batches(rcc_branch, course, batch, na)
+    elsif batch == 'neet_saarthi'
+      get_neet_saarthi_batches(rcc_branch, course, batch, na)
     end
   end
 

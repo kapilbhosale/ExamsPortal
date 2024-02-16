@@ -32,8 +32,6 @@
           var selectedBatch = $('#batch').find(":selected").val();
           var rccBranch = $('input[name=rcc_branch]:checked').val();
 
-          $('#neet-saarthi').text("[RCC NEET SET PCB/PCM, depending on selected Course Type]");
-
           if( rccBranch == 'aurangabad' || selectedBatch === 'repeater') {
             $('.course-pc').hide()
           } else {
@@ -45,13 +43,13 @@
               $('#rcc-set-exam-11').show();
               $('#neet-saarthi').show();
             }
-            if (selectedBatch === 'test-series' || selectedBatch === '12th_set' || selectedBatch === '11th_set') {
+            if (selectedBatch == 'neet_saarthi' || selectedBatch === 'test-series' || selectedBatch === '12th_set' || selectedBatch === '11th_set') {
               $('input[value=phy]').prop('checked', true);
               $('input[value=chem]').prop('checked', true);
               $('input[value=bio]').prop('checked', true);
               $('input[value=pcb]').prop('checked', true);
               $('#rcc-set-exam-11').hide();
-              $('#neet-saarthi').show(); // to show green heper text.
+              $('#neet-saarthi').show(); // to show green helper text.
             }
             $('#course-selection').hide();
           } else {
@@ -209,54 +207,6 @@
               installmentFees = batch === "11th_new" ? '₹30,000' : '₹25,000';
               nextInstallmentFees = '₹35,000';
             }
-
-            // if (rccBranch === "nanded") {
-            //   if (subjectCount === 3) {
-            //     if (isPcm) {
-            //       totalFees = '₹60,000';
-            //       oneTimeFees = '₹60,000';
-            //       installmentFees = '₹25,000';
-            //       nextInstallmentFees = '₹35,000';
-            //     } else {
-            //       totalFees = '₹55,000';
-            //       oneTimeFees = '₹55,000';
-            //       installmentFees = '₹25,000';
-            //       nextInstallmentFees = '₹30,000';
-            //     }
-            //   } else if (subjectCount === 2) {
-            //     totalFees = '₹45,000';
-            //     oneTimeFees = '₹45,000';
-            //     installmentFees = '₹25,000';
-            //     nextInstallmentFees = '₹20,000';
-            //   } else if (subjectCount === 1) {
-            //     totalFees = '₹25,000';
-            //     oneTimeFees = '₹25,000';
-            //     installmentFees = '₹15,000';
-            //     nextInstallmentFees = '₹10,000';
-            //   }
-            // } else if(rccBranch === "latur") {
-            //   if (subjectCount === 3) {
-            //     totalFees = '₹60,000';
-            //     oneTimeFees = '₹60,000';
-            //     installmentFees = '₹25,000';
-            //     nextInstallmentFees = '₹35,000';
-            //   } else if (subjectCount === 2) {
-            //     totalFees = '₹50,000';
-            //     oneTimeFees = '₹50,000';
-            //     installmentFees = '₹25,000';
-            //     nextInstallmentFees = '₹25,0000';
-            //   } else if (subjectCount === 1) {
-            //     totalFees = '₹25,000';
-            //     oneTimeFees = '₹25,000';
-            //     installmentFees = '₹15,000';
-            //     nextInstallmentFees = '₹10,000';
-            //   }
-            // } else {
-            //   totalFees = '₹75,000';
-            //   oneTimeFees = '₹75,000';
-            //   installmentFees = '₹30,000';
-            //   nextInstallmentFees = '₹45,000';
-            // }
           }
 
           if (batch === "repeater") {
@@ -264,36 +214,6 @@
             oneTimeFees = '₹60,000';
             installmentFees = '₹25,000';
             nextInstallmentFees = '₹35,000';
-            // if (rccBranch === "nanded") {
-            //   if (subjectCount === 3) {
-            //     totalFees = '₹55,000';
-            //     oneTimeFees = '₹50,000';
-            //     installmentFees = '₹30,000';
-            //     nextInstallmentFees = '₹25,000';
-            //   } else {
-            //     totalFees = '₹40,000';
-            //     oneTimeFees = '₹40,000';
-            //     installmentFees = '₹30,000';
-            //     nextInstallmentFees = '₹10,000';
-            //   }
-            // } else if (rccBranch === "aurangabad") {
-            //   totalFees = '₹65,000';
-            //   oneTimeFees = '₹60,000';
-            //   installmentFees = '₹30,000';
-            //   nextInstallmentFees = '₹35,000';
-            // } else { // for latur
-            //   if (subjectCount === 3) {
-            //     totalFees = '₹60,000';
-            //     oneTimeFees = '₹55,000';
-            //     installmentFees = '₹30,000';
-            //     nextInstallmentFees = '₹30,000';
-            //   } else {
-            //     totalFees = '₹45,000';
-            //     oneTimeFees = '₹45,000';
-            //     installmentFees = '₹30,000';
-            //     nextInstallmentFees = '₹15,000';
-            //   }
-            // }
           }
 
           if (batch === "test-series") {
@@ -324,6 +244,7 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
+          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
@@ -331,11 +252,8 @@
           {val: "12th", text: "12th Regular Online (2024-25)"}
         ]
 
-        // {val: "12th", text: "12th Regular Batch (2023-2024)"},
-        // {val: "11th_new", text: "11th Regular Batch (2023-2024)"},
-        // {val: "repeater", text: "REPEATER 2023-24"},
-
         const AUR_BATCHES = [
+          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
@@ -344,6 +262,7 @@
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
+          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
@@ -590,6 +509,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
+                <option id="neet_saarthi" value="neet_saarthi">NEET SAARTHI 2024 (Rapid revision cum test series)</option>
                 <option id="11th_set" value="11th_set">11th RCC SET (Scholarship Exam 2024)</option>
                 <option id="12th_set" value="12th_set">11th moving 12th (Non-RCC) Scholarship Exam 2024</option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
@@ -606,7 +526,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC REPEATER NEET SET is for PCB]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[NEET SAARTHI is for PCB]</span>
               </p>
             <% end %>
           </div>
