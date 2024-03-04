@@ -244,8 +244,8 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
-          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
+          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
@@ -253,8 +253,8 @@
         ]
 
         const AUR_BATCHES = [
-          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
-          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
+          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
@@ -262,12 +262,16 @@
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
-          {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2024)"},
-          {val: "11th_set", text: "11th RCC SET (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
+          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
           {val: "12th", text: "12th Regular Online (2024-25)"}
+        ]
+
+        const NASHIK_HADAPSAR_BATCHES = [
+          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"}
         ]
 
         const SET_SUB_CENTERS = {
@@ -308,6 +312,12 @@
             })
           } else if (rccBranch === 'akola' || rccBranch === 'pune' || rccBranch === 'kolhapur' || rccBranch === 'pimpri') {
             AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES.forEach((item) => {
+              $('#batch').append($("<option></option>")
+                  .attr("value", item.val)
+                  .text(item.text));
+            })
+          } else if (rccBranch === 'nashik' || rccBranch === 'hadapsar') {
+            NASHIK_HADAPSAR_BATCHES.forEach((item) => {
               $('#batch').append($("<option></option>")
                   .attr("value", item.val)
                   .text(item.text));
@@ -435,7 +445,7 @@
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="rcc_branch" id="radio-aurangabad" value="aurangabad" required />
-            <label class="form-check-label" for="inlineRadio2">Aurangabad</label>
+            <label class="form-check-label" for="inlineRadio2">Ch. SambhajiNagar</label>
           </div>
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="rcc_branch" id="radio-akola" value="akola" required />
@@ -459,6 +469,18 @@
             <input class="form-check-input" type="radio" name="rcc_branch" id="radio-pimpri" value="pimpri" required />
             <label class="form-check-label" for="inlineRadio2">
               <span style="color: #007bff; font-size: 18px;">Pimpri</span>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-hadapsar" value="hadapsar" required />
+            <label class="form-check-label" for="inlineRadio2">
+              <span style="color: #007bff; font-size: 18px;">Hadapsar</span>
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-nashik" value="nashik" required />
+            <label class="form-check-label" for="inlineRadio2">
+              <span style="color: #007bff; font-size: 18px;">Nashik</span>
             </label>
           </div>
         </div>
@@ -510,7 +532,7 @@
                 <option value="12th">12th</option>
               <% else %>
                 <option id="neet_saarthi" value="neet_saarthi">NEET SAARTHI 2024 (Rapid revision cum test series)</option>
-                <option id="11th_set" value="11th_set">11th RCC SET (Scholarship Exam 2024)</option>
+                <option id="11th_set" value="11th_set">11th RCC SET - Phase-2 (Scholarship Exam 2024)</option>
                 <option id="12th_set" value="12th_set">11th moving 12th (Non-RCC) Scholarship Exam 2024</option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
                 <option id="11th_new" value="11th_new">11th Regular Online (2024-25)</option>
@@ -526,7 +548,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[NEET SAARTHI is for PCB]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[NEET SAARTHI is for PCB/PCM]</span>
               </p>
             <% end %>
           </div>
@@ -555,7 +577,7 @@
             <tr>
               <td><p style="color: gray;">If Paid OneTime</p></td>
               <td><span id="one-time-val">₹55,000</span></td>
-              <td><input disabled type='radio' name="pay_type" value="one_time"> Pay One time</input></td>
+              <td><input type='radio' name="pay_type" value="one_time"> Pay One time</input></td>
             </tr>
             <tr>
               <td><p style="color: gray;">If Paid In Installments</p></td>
@@ -600,6 +622,7 @@
               <option id="sambhaji_nagar" value="sambhaji_nagar">Chhatrapati Sambhaji Nagar (छ. संभाजीनगर)</option>
               <%# <option id="jalgaon" value="jalgaon">Jalgaon (जळगाव)</option> %>
               <option id="nashik" value="nashik">Nashik (नाशिक)</option>
+              <option id="hadapsar" value="hadapsar">Hadapsar (हडपसर)</option>
               <%# <option id="satara" value="satara">Satara (सातारा)</option> %>
               <%# <option id="ahmadnagar" value="ahmadnagar">Ahmadnagar (अहमदनगर)</option> %>
               <%# <option id="amravati" value="amravati">amravati (अमरावती)</option> %>

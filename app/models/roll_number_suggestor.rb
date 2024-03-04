@@ -57,6 +57,7 @@ class RollNumberSuggestor < ApplicationRecord
     '11th_set_24_washim' => 12_30_000,
     '11th_set_24_dharashiv' => 12_40_000,
     '11th_set_24_mumbai' => 12_50_000,
+    '11th_set_24_hadapsar' => 13_00_000,
     'neet_saarthi_24_25' => 1_00_001
   }
 
