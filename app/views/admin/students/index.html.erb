@@ -39,10 +39,12 @@
                     <th>Login</th>
                     <th>
                       <% unless @current_org.rcc? %>
-                        <button class="btn btn-danger clearfix btn-sm">
-                          <span class="fa fa-file-pdf-o"></span>
-                          <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
-                        </button>
+                        <% if @current_admin.roles.include?('download_students') %>
+                          <button class="btn btn-danger clearfix btn-sm">
+                            <span class="fa fa-file-pdf-o"></span>
+                            <%= link_to ' PDF'.html_safe, admin_students_path(request.parameters.merge({format: :pdf})), target: '_blank', class: 'text-white no-underline'%>
+                          </button>
+                        <% end %>
                       <% end %>
 
                       <% if @current_admin.roles.include?('download_students') %>

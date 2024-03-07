@@ -19,7 +19,7 @@ class AbsentMessageSenderWorker
         next
       end
 
-      if org[:data]["auto_absent_sms"] == true
+      if batch.org[:data]["auto_absent_sms"] == true
         absent_students.find_each do |student|
           send_absent_sms(batch.org, student)
         end

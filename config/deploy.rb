@@ -1,4 +1,4 @@
-set :application, "SmartExamsV2"
+set :application, "SmartExamsV5"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
 set :deploy_to,   "/home/#{fetch(:user)}/app/#{fetch(:application)}"
@@ -70,7 +70,7 @@ namespace :deploy do
   task :puma_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service puma_v2 restart")
+        execute("sudo service puma_v5 restart")
       end
     end
   end
@@ -79,7 +79,7 @@ namespace :deploy do
   task :sidekiq_restart do
     on roles(:app) do
       within release_path do
-        execute("sudo service sidekiq_v2 restart")
+        execute("sudo service sidekiq_v5 restart")
       end
     end
   end
