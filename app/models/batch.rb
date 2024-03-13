@@ -221,7 +221,7 @@ class Batch < ApplicationRecord
   def self.get_11th_set_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
     course_type = na.course_type&.upcase || 'NEET'
-    course_name = course.name == 'pcm' ? 'PCM' : 'PCB'
+    course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
     batch_name = "11-SET-#{course_name}-phase2-(23-24)"
     Batch.where(org_id: org.id, name: batch_name)
   end
@@ -229,7 +229,7 @@ class Batch < ApplicationRecord
   def self.get_12th_set_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
     course_type = na.course_type&.upcase || 'NEET'
-    course_name = course.name == 'pcm' ? 'PCM' : 'PCB'
+    course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
     batch_name = "12-SET-#{course_name}-23-24"
     Batch.where(org_id: org.id, name: batch_name)
   end
