@@ -218,7 +218,7 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, name: batch_name)
   end
 
-  def self.get_11th_set_batches(rcc_branch, course, batch, na=nil)
+  def self.get_11th_set_batches(course, batch, na=nil)
     org = Org.first
     course_type = na.course_type&.upcase || 'NEET'
     course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
@@ -235,7 +235,7 @@ class Batch < ApplicationRecord
   end
 
   def self.get_batches(rcc_branch, course, batch, na=nil)
-    return nil if rcc_branch.nil? || course.nil? || batch.nil?
+    return nil if course.nil? || batch.nil?
 
     return Batch.where(name: '7th-A') if batch == '7th'
     return Batch.where(name: '8th-A') if batch == '8th'
@@ -251,7 +251,7 @@ class Batch < ApplicationRecord
     elsif batch == 'repeater'
       get_repeater_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_set'
-      get_11th_set_batches(rcc_branch, course, batch, na)
+      get_11th_set_batches(course, batch, na)
     elsif batch == '12th_set'
       get_12th_set_batches(rcc_branch, course, batch, na)
     elsif batch == 'neet_saarthi'
