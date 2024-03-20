@@ -27,7 +27,7 @@ class Admin::StudentsController < Admin::BaseController
 
     @batches = Batch.where(org: current_org).all_batches.order(id: :desc)
 
-    @students_data = @students.includes(:batches, :pending_fees).order(created_at: :desc).map do |student|
+    @students_data = @students.includes(:batches, :pending_fees, :category).order(created_at: :desc).map do |student|
       {
           id: student.id,
           roll_number: student.roll_number,
@@ -38,7 +38,12 @@ class Admin::StudentsController < Admin::BaseController
           parent_mobile: student.parent_mobile,
           student_mobile: student.student_mobile,
           pending_amount: student&.pending_fees.where(paid: false).last&.amount,
-          admission_date: student.created_at.strftime("%d-%B-%Y %I:%M%p")
+          admission_date: student.created_at.strftime("%d-%B-%Y %I:%M%p"),
+          dob: student.date_of_birth&.strftime("%d-%B-%Y"),
+          gender: student.gender == 0 ? 'Male' : 'Female',
+          ssc_marks: student.ssc_marks,
+          category: student.category&.name || "-",
+          college: student.college
       }
     end
 
@@ -55,7 +60,7 @@ class Admin::StudentsController < Admin::BaseController
       end
       format.csv do
         students_csv = CSV.generate(headers: true) do |csv|
-          csv << ['Id', 'Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Batch', "Admission date"]
+          csv << ['Id', 'Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Batch', "Admission date", "DOB", "gender", "ssc marks", "Category", "College"]
 
           @students_data.each do |student|
             csv << [
@@ -65,7 +70,12 @@ class Admin::StudentsController < Admin::BaseController
               student[:student_mobile],
               student[:parent_mobile],
               student[:batches],
-              student[:admission_date]
+              student[:admission_date],
+              student[:dob],
+              student[:gender],
+              student[:ssc_marks],
+              student[:category],
+              student[:college]
             ]
           end
         end
