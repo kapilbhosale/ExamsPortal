@@ -20,6 +20,25 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
     render json: collection_data
   end
 
+  def due_fees
+    # todo add payments-due permission.
+    render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('payments')
+
+    from_date = DateTime.parse(params[:dates][0]).in_time_zone.to_date
+    to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date
+    branch = params[:branch]
+    due_fees_data = {}
+
+    @fees_transactions = Fees::DueFeesReportService.new(current_org, current_admin, from_date, to_date, branch).call
+    @fees_transactions.each do |ft|
+      key = ft.next_due_date.strftime('%Y-%m-%d')
+      due_fees_data[key] ||= []
+      due_fees_data[key] << ft.as_json
+    end
+
+    render json: due_fees_data
+  end
+
   def notes
     render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('notes')
 
