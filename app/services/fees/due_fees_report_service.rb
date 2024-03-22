@@ -11,7 +11,6 @@ module Fees
     end
 
     def call
-      return today_transactions if current_admin.roles.exclude?('ff')
       transactions_between_dates(from_date, to_date)
     end
 
