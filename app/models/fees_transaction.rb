@@ -112,6 +112,7 @@ class FeesTransaction < ApplicationRecord
       date: created_at.strftime('%Y-%m-%d'),
       roll_number: student.roll_number,
       name: student.name,
+      parent_mobile: student.parent_mobile,
       gender: student.gender == 0 ? 'Male' : 'Female' ,
       batch: student.batches.joins(:fees_templates).pluck(:name).join(', '),
       receipt_number: receipt_number,
@@ -123,7 +124,8 @@ class FeesTransaction < ApplicationRecord
       collected_by: admin.name,
       remaining_amount: remaining_amount.to_f,
       discount_amount: discount_amount.to_f,
-      discount_comment: comment
+      discount_comment: comment,
+      next_due_date: next_due_date.strftime('%Y-%m-%d')
     }
   end
 
