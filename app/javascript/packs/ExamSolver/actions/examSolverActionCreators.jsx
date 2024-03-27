@@ -461,7 +461,14 @@ export function initialize() {
             dataType: 'json',
             data: { id: store.get('examId') },
             success: (data) => {
-              processExamData(data, store, dispatch);
+              const preparedData = {
+                student_ans: data.student_ans,
+                time_data: data.time_data,
+                questions: (shuffle? shuffleQuestions(data.questions) : data.questions),
+                model_ans: data.model_ans,
+                exam_type: data.exam_type,
+              }
+              processExamData(preparedData, store, dispatch);
             }
           })
         });
