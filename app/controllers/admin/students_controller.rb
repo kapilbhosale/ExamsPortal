@@ -43,7 +43,8 @@ class Admin::StudentsController < Admin::BaseController
           gender: student.gender == 0 ? 'Male' : 'Female',
           ssc_marks: student.ssc_marks,
           category: student.category&.name || "-",
-          college: student.college
+          college: student.college,
+          login: student.app_login? ? 'App' : (student.is_laptop_login? ? 'Browser' : '-')
       }
     end
 
@@ -60,7 +61,7 @@ class Admin::StudentsController < Admin::BaseController
       end
       format.csv do
         students_csv = CSV.generate(headers: true) do |csv|
-          csv << ['Id', 'Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Batch', "Admission date", "DOB", "gender", "ssc marks", "Category", "College"]
+          csv << ['Id', 'Roll Number', 'Student Name', 'Student mobile', 'Parent mobile', 'Batch', "Admission date", "DOB", "gender", "ssc marks", "Category", "College", "Login"]
 
           @students_data.each do |student|
             csv << [
@@ -75,7 +76,8 @@ class Admin::StudentsController < Admin::BaseController
               student[:gender],
               student[:ssc_marks],
               student[:category],
-              student[:college]
+              student[:college],
+              student[:login]
             ]
           end
         end
