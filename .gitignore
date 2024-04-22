@@ -49,3 +49,6 @@ app/.DS_Store
 
 TAGS
 dump.rdb
+
+# ignore zip_data folder
+zip_data/*

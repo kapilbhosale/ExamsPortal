@@ -1,0 +1,29 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+<canvas id="myChart" style="width:100%"></canvas>
+
+
+<script>
+
+  const xValues = <%= raw @graph_data[:exam_names].to_json %>;
+  const yValues = <%= @graph_data[:percent_score] %>;
+  const barColors = <%= raw @graph_data[:colors].to_json %>;
+
+  new Chart("myChart", {
+    type: "bar",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      legend: {display: false},
+      title: {
+        display: true,
+        text: "Student Progress Per Test (Percentage)"
+      }
+    }
+  });
+</script>

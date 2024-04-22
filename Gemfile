@@ -64,6 +64,7 @@ gem 'fog-aws'
 gem 'mini_magick'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary', '= 0.12.3'
+gem 'chartkick'
 gem 'prawn'
 gem 'prawn-table'
 

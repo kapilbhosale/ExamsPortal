@@ -1,0 +1,21 @@
+
+
+<table style="width: 100%;">
+  <tr>
+    <td style="padding-bottom: 10px">
+      <%= wicked_pdf_image_tag("rcc-logo.png", alt: "Logo", width: "150", height: "80") %>
+    </td>
+    <td class="text-center" style="padding-top: 20px">
+      <h3><%= org.name %> </h3>
+      <p>
+        Latur, 413 512
+      </p>
+    </td>
+    <td style="text-align: right; padding-top: 24px">
+      <p>.</p>
+      <p>
+        <%= Date.today.strftime("%d-%b-%Y") %>
+      </p>
+    </td>
+  </tr>
+</table>

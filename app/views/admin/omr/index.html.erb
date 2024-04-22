@@ -12,6 +12,17 @@
               </td>
             </tr>
             <tr>
+              <td><label class="form-label">Select Branch</label></td>
+              <td>
+                <%= select_tag :branch, options_for_select(@branches.map { |b| [b, b] }), class: 'form-control' %>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <p style="color: red">Please select proper branch while importing OMR data.</p>
+              </td>
+            </tr>
+            <tr>
               <td colspan="2" class=" text-right"><button type="submit" class="btn btn-success">Submit</button></td>
             </tr>
           </table>

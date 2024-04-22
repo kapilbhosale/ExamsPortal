@@ -74,6 +74,7 @@ class Student < ApplicationRecord
   has_many   :pending_fees
   has_many   :form_data
   has_many   :fees_transactions
+  has_one    :omr_student, class_name: 'Omr::Student'
 
   validates  :roll_number, :name, :parent_mobile, presence: true
   validates  :gender, numericality: {only_integer: true}

@@ -167,7 +167,11 @@ Rails.application.routes.draw do
       get :chats
     end
     resources :subjects
-    resources :omr
+    resources :omr do
+      get 'reports', on: :collection
+      get 'students_list', on: :collection
+      get 'progress_report', on: :collection
+    end
     resources :attendance do
       get :overview_report, on: :collection
       get :settings, on: :collection

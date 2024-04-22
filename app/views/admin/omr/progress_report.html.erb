@@ -1,0 +1,7 @@
+<%= render partial: 'class_header', locals: { org: @student.org } %>
+<%= render partial: 'student', locals: { student: @student } %>
+<%= render partial: 'graph', locals: { student: @student } %>
+<%= render partial: 'table', locals: { student: @student } %>
+<%= render partial: 'footer', locals: { student: @student } %>
+<%= link_to "Print as Wieckedf PDF", {format: :pdf, student_id: @student.id}, target: "_blank" %>
+<%= link_to "Chrome Print", '#', onclick: 'window.print();return false;' %>

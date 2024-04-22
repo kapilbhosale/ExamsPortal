@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_01_143839) do
+ActiveRecord::Schema.define(version: 2024_04_12_112939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -528,6 +528,77 @@ ActiveRecord::Schema.define(version: 2024_01_01_143839) do
     t.index ["org_id"], name: "index_notifications_on_org_id"
   end
 
+  create_table "omr_batch_tests", force: :cascade do |t|
+    t.bigint "omr_batch_id"
+    t.bigint "omr_test_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["omr_batch_id"], name: "index_omr_batch_tests_on_omr_batch_id"
+    t.index ["omr_test_id"], name: "index_omr_batch_tests_on_omr_test_id"
+  end
+
+  create_table "omr_batches", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name"
+    t.string "db_modified_date"
+    t.string "branch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_omr_batches_on_org_id"
+  end
+
+  create_table "omr_student_batches", force: :cascade do |t|
+    t.bigint "omr_student_id"
+    t.bigint "omr_batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["omr_batch_id"], name: "index_omr_student_batches_on_omr_batch_id"
+    t.index ["omr_student_id"], name: "index_omr_student_batches_on_omr_student_id"
+  end
+
+  create_table "omr_student_tests", force: :cascade do |t|
+    t.bigint "omr_student_id"
+    t.bigint "omr_test_id"
+    t.integer "score", default: 0
+    t.jsonb "student_ans", default: []
+    t.integer "rank"
+    t.integer "child_test_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["omr_student_id"], name: "index_omr_student_tests_on_omr_student_id"
+    t.index ["omr_test_id"], name: "index_omr_student_tests_on_omr_test_id"
+  end
+
+  create_table "omr_students", force: :cascade do |t|
+    t.bigint "org_id"
+    t.integer "student_id"
+    t.integer "roll_number"
+    t.string "parent_contact"
+    t.string "student_contact"
+    t.string "name"
+    t.string "branch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_omr_students_on_org_id"
+  end
+
+  create_table "omr_tests", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "test_name", null: false
+    t.string "description"
+    t.integer "no_of_questions", default: 0
+    t.integer "total_marks", default: 0
+    t.datetime "test_date"
+    t.jsonb "answer_key", default: {}
+    t.integer "parent_id"
+    t.string "db_modified_date"
+    t.boolean "is_booket", default: false
+    t.string "branch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_omr_tests_on_org_id"
+  end
+
   create_table "options", force: :cascade do |t|
     t.bigint "question_id"
     t.text "data"
@@ -939,5 +1010,14 @@ ActiveRecord::Schema.define(version: 2024_01_01_143839) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "omr_batch_tests", "omr_batches"
+  add_foreign_key "omr_batch_tests", "omr_tests"
+  add_foreign_key "omr_batches", "orgs"
+  add_foreign_key "omr_student_batches", "omr_batches"
+  add_foreign_key "omr_student_batches", "omr_students"
+  add_foreign_key "omr_student_tests", "omr_students"
+  add_foreign_key "omr_student_tests", "omr_tests"
+  add_foreign_key "omr_students", "orgs"
+  add_foreign_key "omr_tests", "orgs"
   add_foreign_key "study_pdfs", "subjects"
 end

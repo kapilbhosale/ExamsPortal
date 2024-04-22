@@ -1,0 +1,5 @@
+<%= wicked_pdf_javascript_include_tag 'charts' %>
+
+<%= render partial: 'class_header', locals: { org: @student.org } %>
+<%= render partial: 'student', locals: { student: @student } %>
+<%= render partial: 'graph', locals: { student: @student } %>

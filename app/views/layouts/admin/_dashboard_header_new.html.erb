@@ -105,8 +105,18 @@
           </li>
           <% if current_admin.can_manage(:omr) %>
             <li class="nav-item">
-              <%= link_to '<i class="fa fa-address-card"></i> OMR'.html_safe, admin_omr_index_path, class: current_page?(admin_omr_index_path) ? "nav-link active" : "nav-link" %>
-            </li>
+            <a class="<%= current_page?(admin_omr_index_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">
+              <i class="fa fa-address-card"></i> OMR
+            </a>
+            <div class="dropdown-menu">
+              <% if current_admin.can_manage(:omr) %>
+                <%= link_to '<i class="fa fa-list"></i> Import'.html_safe, admin_omr_index_path, class: "dropdown-item"%>
+              <% end %>
+              <% if current_admin.can_manage(:omr) %>
+                <%= link_to '<i class="fa fa-file"></i> Reports'.html_safe, reports_admin_omr_index_path, class: "dropdown-item"%>
+              <% end %>
+            </div>
+          </li>
           <% end %>
           <li class="nav-item">
             <a class="<%= current_page?(admin_attendance_index_path) ? 'dropdown-toggle nav-link active' : 'dropdown-toggle nav-link' %>" type="button" id="dropdownMenu1" data-toggle="dropdown">

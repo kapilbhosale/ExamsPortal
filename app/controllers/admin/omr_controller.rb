@@ -1,9 +1,58 @@
 class Admin::OmrController < Admin::BaseController
   before_action :check_permissions
 
+  def index
+    @branches = current_org.data['branches']
+  end
+
+  def students_list
+    @search = Omr::Student.where(org: current_org)
+    @search = @search.search(search_params)
+    @students = @search.result.order(created_at: :desc)
+    @students = @students.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+  end
+
+  def progress_report
+    @student = Omr::Student.find(params[:student_id])
+    @attempted_tests = @student.omr_student_tests.index_by(&:omr_test_id)
+
+    @all_tests, exam_names, percent_score, colors = [], [], [], []
+
+    @student.omr_batches.each do |batch|
+      batch.omr_tests.order(id: :desc).each do |test|
+        @all_tests << {id: test.id, name: test.test_name, qcount: test.no_of_questions, total_marks: test.total_marks, date: test.test_date.strftime("%d-%b-%Y")}
+        exam_names << "Test-#{test.id}"
+        student_test = @attempted_tests[test.id]
+        if student_test.present?
+          percent = student_test.score.to_i * 100 / test.total_marks
+          percent_score << percent
+          colors << get_color(percent)
+        else
+          percent_score << 0
+          colors << 'gray'
+        end
+      end
+    end
+    @graph_data = {
+      exam_names: exam_names,
+      percent_score: percent_score,
+      colors: colors
+    }
+
+    respond_to do |format|
+      format.html do
+      end
+      format.pdf do
+        render pdf: "Student-#{@student.roll_number}.pdf",
+               footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
+      end
+    end
+  end
+
   def create
     @test_names_for_ranks = {}
     temp_file = params["omr_zip"].tempfile rescue nil
+
     extract_zip(temp_file)
 
     destroy_omr_pr_data
@@ -276,5 +325,38 @@ class Admin::OmrController < Admin::BaseController
 
   def check_permissions
     redirect_to '/404' unless current_admin.can_manage(:omr)
+  end
+
+  def search_params
+    return {} if params[:q].blank?
+
+    search_term = params[:q][:name_and_roll_number]&.strip
+
+    # to check if input is number or string
+    if search_term.to_i.to_s == search_term
+      return { roll_number_eq: search_term } if search_term.length <= 7
+      return { parent_contact_cont: search_term }
+    end
+
+    { name_cont: search_term }
+  end
+
+  def get_color(percent)
+    case percent
+    when 0..19
+      "#ff0000"
+    when 20..39
+      "#ca3433"
+    when 40..59
+      "#FF8000"
+    when 60..69
+      "#77fc7c"
+    when 70..79
+      "#4af950"
+    when 80..89
+      "#29fb30"
+    else
+      "#00ff09"
+    end
   end
 end
