@@ -43,7 +43,7 @@
         </tr>
         <tr>
           <td>Roll Number </td>
-          <td><%= @student&.roll_number %></td>
+          <td><%= @student&.roll_number.to_s.rjust(7, '0') %></td>
         </tr>
         <tr>
           <td>Parent Mobile </td>

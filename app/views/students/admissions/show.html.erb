@@ -244,8 +244,7 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
-          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
-          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
@@ -253,8 +252,7 @@
         ]
 
         const AUR_BATCHES = [
-          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
-          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
@@ -262,8 +260,7 @@
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
-          {val: "neet_saarthi", text: "NEET SAARTHI 2024 (Rapid revision cum test series)"},
-          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"},
+          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"},
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
@@ -271,7 +268,7 @@
         ]
 
         const NASHIK_HADAPSAR_BATCHES = [
-          {val: "11th_set", text: "11th RCC SET - Phase-2 (Scholarship Exam 2024)"}
+          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"}
         ]
 
         const SET_SUB_CENTERS = {
@@ -316,7 +313,7 @@
                   .attr("value", item.val)
                   .text(item.text));
             })
-          } else if (rccBranch === 'nashik' || rccBranch === 'hadapsar') {
+          } else if (rccBranch === 'nashik' || rccBranch === 'hadapsar' || rccBranch === 'solapur') {
             NASHIK_HADAPSAR_BATCHES.forEach((item) => {
               $('#batch').append($("<option></option>")
                   .attr("value", item.val)
@@ -483,6 +480,12 @@
               <span style="color: #007bff; font-size: 18px;">Nashik</span>
             </label>
           </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="rcc_branch" id="radio-solapur" value="solapur" required />
+            <label class="form-check-label" for="inlineRadio2">
+              <span style="color: #007bff; font-size: 18px;">Solapur</span>
+            </label>
+          </div>
         </div>
 
         <div class="form-group">
@@ -531,8 +534,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
-                <option id="neet_saarthi" value="neet_saarthi">NEET SAARTHI 2024 (Rapid revision cum test series)</option>
-                <option id="11th_set" value="11th_set">11th RCC SET - Phase-2 (Scholarship Exam 2024)</option>
+                <option id="neet_saarthi" value="neet_saarthi">Repeater RCC SET (Scholarship Exam 2024-25)</option>
                 <option id="12th_set" value="12th_set">11th moving 12th (Non-RCC) Scholarship Exam 2024</option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
                 <option id="11th_new" value="11th_new">11th Regular Online (2024-25)</option>
@@ -548,7 +550,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[NEET SAARTHI is for PCB/PCM]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC SET is for PCB/PCM]</span>
               </p>
             <% end %>
           </div>

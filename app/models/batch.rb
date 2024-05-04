@@ -196,7 +196,7 @@ class Batch < ApplicationRecord
 
   def self.get_neet_saarthi_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
-    Batch.where(org_id: org.id, id: 1094)
+    Batch.where(org_id: org.id, id: 1119)
   end
 
   def self.get_test_series_batches_23_24(rcc_branch, course, batch, na=nil)
