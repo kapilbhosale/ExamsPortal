@@ -241,7 +241,7 @@ class Student < ApplicationRecord
     template_id = '1007665462650104735'
     entity_id = '1001545918985192145'
 
-    msg = "Dear Students/ Parents, \nFrom RCC Welcome in the world of Motegaonkar Sirs RCC. Your RCC-SET Scholarship Entrance Test Registration is Confirmed Roll No - #{roll_number} Parent Mobile No - #{parent_mobile} \nDownload App from Below link- https://shorturl.at/dgKTY For Any Assistance Call - 9075 40 2222, 9075 39 2222 Team RCC"
+    msg = "Dear Students/ Parents, \nFrom RCC Welcome in the world of Motegaonkar Sirs RCC. Your RCC-SET Scholarship Entrance Test Registration is Confirmed Roll No - #{roll_number.to_s.rjust(7, '0')} Parent Mobile No - #{parent_mobile} \nDownload App from Below link- https://shorturl.at/dgKTY For Any Assistance Call - 9075 40 2222, 9075 39 2222 Team RCC"
     msg = URI.encode_www_form_component(msg)
 
     msg_url = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{mobile_number}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
