@@ -33,14 +33,14 @@ class Admin::OmrController < Admin::BaseController
   def test_report_print
     @test = Omr::Test.find(params[:test_id])
     selected_batches = Omr::Batch.find(params[:batches])
-    if (params["commit"] == "detailed_report")
+    # if (params["commit"] == "detailed_report")
       exclude_absents = params[:exclude_absents].present?
       report_type = params[:report_type]
       report_format = params[:report_format]
       @report_data = Omr::TestReportService.new(@test, selected_batches.pluck(:id), exclude_absents, report_type).call
-    else
-      Omr::TestSummaryReportService.new(@test, @selected_batches.pluck(:id)).call
-    end
+    # else
+    #   Omr::TestSummaryReportService.new(@test, @selected_batches.pluck(:id)).call
+    # end
   end
 
   def progress_report

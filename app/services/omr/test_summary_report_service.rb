@@ -1,9 +1,8 @@
 class Omr::TestSummaryReportService
-  attr_reader :test, batch_ids
+  attr_reader :test
 
-  def initialize(test, batch_ids)
+  def initialize(test)
     @test = test
-    @batch_ids = batch_ids
   end
 
   def call
