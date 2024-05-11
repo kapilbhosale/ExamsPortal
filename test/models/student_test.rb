@@ -58,7 +58,7 @@
 #  index_students_on_org_id                         (org_id)
 #  index_students_on_parent_mobile                  (parent_mobile)
 #  index_students_on_roll_number                    (roll_number)
-#  index_students_on_roll_number_and_parent_mobile  (roll_number,parent_mobile)
+#  index_students_on_roll_number_and_parent_mobile  (roll_number,parent_mobile) UNIQUE
 #
 
 require 'test_helper'

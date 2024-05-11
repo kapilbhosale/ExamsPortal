@@ -13,11 +13,6 @@
 #  index_omr_student_batches_on_omr_batch_id    (omr_batch_id)
 #  index_omr_student_batches_on_omr_student_id  (omr_student_id)
 #
-# Foreign Keys
-#
-#  fk_rails_...  (omr_batch_id => omr_batches.id)
-#  fk_rails_...  (omr_student_id => omr_students.id)
-#
 
 class Omr::StudentBatch < ApplicationRecord
   belongs_to :omr_student, class_name: 'Omr::Student'

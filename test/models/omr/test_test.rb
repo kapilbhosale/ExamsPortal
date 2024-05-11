@@ -5,12 +5,15 @@
 #  id               :bigint(8)        not null, primary key
 #  answer_key       :jsonb
 #  branch           :string
+#  data             :jsonb
 #  db_modified_date :string
 #  description      :string
-#  is_booket        :boolean          default(FALSE)
+#  is_booklet       :boolean          default(FALSE)
+#  is_combine       :boolean          default(FALSE)
 #  no_of_questions  :integer          default(0)
 #  test_date        :datetime
 #  test_name        :string           not null
+#  toppers          :jsonb
 #  total_marks      :integer          default(0)
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

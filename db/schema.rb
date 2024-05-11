@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_12_112939) do
+ActiveRecord::Schema.define(version: 2024_05_06_113243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -565,6 +565,7 @@ ActiveRecord::Schema.define(version: 2024_04_12_112939) do
     t.integer "child_test_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "data", default: {}
     t.index ["omr_student_id"], name: "index_omr_student_tests_on_omr_student_id"
     t.index ["omr_test_id"], name: "index_omr_student_tests_on_omr_test_id"
   end
@@ -592,10 +593,13 @@ ActiveRecord::Schema.define(version: 2024_04_12_112939) do
     t.jsonb "answer_key", default: {}
     t.integer "parent_id"
     t.string "db_modified_date"
-    t.boolean "is_booket", default: false
+    t.boolean "is_booklet", default: false
+    t.boolean "is_combine", default: false
     t.string "branch"
+    t.jsonb "data", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "toppers", default: {}
     t.index ["org_id"], name: "index_omr_tests_on_org_id"
   end
 
@@ -882,7 +886,7 @@ ActiveRecord::Schema.define(version: 2024_04_12_112939) do
     t.index ["name"], name: "index_students_on_name"
     t.index ["org_id"], name: "index_students_on_org_id"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
-    t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile"
+    t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile", unique: true
     t.index ["roll_number"], name: "index_students_on_roll_number"
   end
 
@@ -1010,13 +1014,7 @@ ActiveRecord::Schema.define(version: 2024_04_12_112939) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
-  add_foreign_key "omr_batch_tests", "omr_batches"
-  add_foreign_key "omr_batch_tests", "omr_tests"
   add_foreign_key "omr_batches", "orgs"
-  add_foreign_key "omr_student_batches", "omr_batches"
-  add_foreign_key "omr_student_batches", "omr_students"
-  add_foreign_key "omr_student_tests", "omr_students"
-  add_foreign_key "omr_student_tests", "omr_tests"
   add_foreign_key "omr_students", "orgs"
   add_foreign_key "omr_tests", "orgs"
   add_foreign_key "study_pdfs", "subjects"

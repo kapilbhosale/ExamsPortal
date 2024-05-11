@@ -3,6 +3,7 @@
 # Table name: omr_student_tests
 #
 #  id             :bigint(8)        not null, primary key
+#  data           :jsonb
 #  rank           :integer
 #  score          :integer          default(0)
 #  student_ans    :jsonb
@@ -16,11 +17,6 @@
 #
 #  index_omr_student_tests_on_omr_student_id  (omr_student_id)
 #  index_omr_student_tests_on_omr_test_id     (omr_test_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (omr_student_id => omr_students.id)
-#  fk_rails_...  (omr_test_id => omr_tests.id)
 #
 
 require 'test_helper'
