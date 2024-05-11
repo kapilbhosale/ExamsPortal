@@ -10,8 +10,10 @@ class CreateOmrTests < ActiveRecord::Migration[5.2]
       t.jsonb     :answer_key, default: {}
       t.integer   :parent_id
       t.string    :db_modified_date
-      t.boolean   :is_booket, default: false
+      t.boolean   :is_booklet, default: false
+      t.boolean   :is_combine, default: false
       t.string    :branch
+      t.jsonb     :data, default: {}
       t.timestamps
     end
   end

@@ -1,13 +1,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
 <canvas id="myChart" style="width:100%"></canvas>
 
-
 <script>
-
   const xValues = <%= raw @graph_data[:exam_names].to_json %>;
   const yValues = <%= @graph_data[:percent_score] %>;
   const barColors = <%= raw @graph_data[:colors].to_json %>;
+  const toppers = <%= @graph_data[:toppers].to_json %>;
 
   new Chart("myChart", {
     type: "bar",
@@ -16,6 +14,24 @@
       datasets: [{
         backgroundColor: barColors,
         data: yValues
+      },
+      {
+        label: 'Average',
+        data: Array(yValues.length).fill(<%= @graph_data[:average] %>),
+        type: 'line',
+        borderColor: '#1DA1F2',
+        fill: false,
+        pointRadius: 0
+      },
+      {
+        label: 'Toppers',
+        data: toppers,
+        type: 'line',
+        borderColor: '#FF0000', // Change this to the color you want for the toppers
+        fill: false,
+        pointRadius: 3, // Change this to the size you want for the toppers
+        pointStyle: 'circle',
+        showLine: false // This will only show the points (toppers), not the line
       }]
     },
     options: {
@@ -23,6 +39,14 @@
       title: {
         display: true,
         text: "Student Progress Per Test (Percentage)"
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            min: 0,
+            max: 100
+          }
+        }]
       }
     }
   });

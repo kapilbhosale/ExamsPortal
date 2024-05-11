@@ -170,6 +170,8 @@ Rails.application.routes.draw do
     resources :omr do
       get 'reports', on: :collection
       get 'students_list', on: :collection
+      get 'tests_list', on: :collection
+      get 'test_report', on: :collection
       get 'progress_report', on: :collection
     end
     resources :attendance do

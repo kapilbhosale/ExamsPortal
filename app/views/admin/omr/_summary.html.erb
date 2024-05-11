@@ -1,0 +1,114 @@
+<div style="border: 1px solid black; background-color: #F0F0F0; border-radius: 10px; margin-bottom: 10px; margin-top: 10px">
+  <h5 style="text-align: center; padding: 4px">RCC Smart Summary Report</h5>
+  <table class="table table-bordered">
+    <thead style="padding: 10px">
+      <tr>
+        <th></th>
+        <% if @student_summary_per_subject['Phy'].present? %>
+          <th>Phy</th>
+        <% end %>
+        <% if @student_summary_per_subject['Chem'].present? %>
+          <th>Chem</th>
+        <% end %>
+        <% if @student_summary_per_subject['Bot'].present? %>
+          <th>Bot</th>
+        <% end %>
+        <% if @student_summary_per_subject['Zoo'].present? %>
+          <th>Zoo</th>
+        <% end %>
+        <% if @student_summary_per_subject['Bio'].present? %>
+          <th>Bio</th>
+        <% end %>
+        <th>Total</th>
+        <th>Rank</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Average Score</td>
+        <% if @student_summary_per_subject['Phy'].present? %>
+          <td><%= @student_summary_per_subject['Phy'][:avg_score] %></td>
+        <% end %>
+        <% if @student_summary_per_subject['Chem'].present? %>
+          <td><%= @student_summary_per_subject['Chem'][:avg_score] %></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bot'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_score] %></td>
+        <% end %>
+        <% if @student_summary_per_subject['Zoo'].present? %>
+          <td><%= @student_summary_per_subject['Zoo'][:avg_score] %></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bio'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score] %></td>
+        <% end %>
+        <td><%= @graph_data[:average]/100.0 * 720%> (<%=(@graph_data[:average])%> %)</td>
+        <td><%= @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %></td>
+      </tr>
+      <tr>
+        <td>Avg. Accuracy</td>
+        <% if @student_summary_per_subject['Phy'].present? %>
+          <td><%= @student_summary_per_subject['Phy'][:avg_accuracy].round(2)%>%</td>
+        <% end %>
+        <% if @student_summary_per_subject['Chem'].present? %>
+          <td><%= @student_summary_per_subject['Chem'][:avg_accuracy].round(2)%>%</td>
+        <% end %>
+        <% if @student_summary_per_subject['Bot'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_accuracy].round(2)%>%</td>
+        <% end %>
+        <% if @student_summary_per_subject['Zoo'].present? %>
+          <td><%= @student_summary_per_subject['Zoo'][:avg_accuracy].round(2)%>%</td>
+        <% end %>
+        <% if @student_summary_per_subject['Bio'].present? %>
+          <td><%= ((@student_summary_per_subject['Bot'][:avg_accuracy] +  @student_summary_per_subject['Zoo'][:avg_accuracy])/2.0).round(2)%>%</td>
+        <% end %>
+        <td><%= @student_summary_per_subject[:accuracy].round(2)%>%</td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Avg. Wrong Per test </td>
+        <% if @student_summary_per_subject['Phy'].present? %>
+          <td><%= @student_summary_per_subject['Phy'][:avg_wrong].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Chem'].present? %>
+          <td><%= @student_summary_per_subject['Chem'][:avg_wrong].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bot'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_wrong].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Zoo'].present? %>
+          <td><%= @student_summary_per_subject['Zoo'][:avg_wrong].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bio'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_wrong].round(2) + @student_summary_per_subject['Zoo'][:avg_wrong].round(2) %></td>
+        <% end %>
+        <td><%= @student_summary_per_subject[:wrong].round(2)%></td>
+        <td>-</td>
+      </tr>
+      <tr>
+        <td>Avg. Skip Per test </td>
+        <% if @student_summary_per_subject['Phy'].present? %>
+          <td><%= @student_summary_per_subject['Phy'][:avg_skip].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Chem'].present? %>
+          <td><%= @student_summary_per_subject['Chem'][:avg_skip].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bot'].present? %>
+          <td><%= @student_summary_per_subject['Bot'][:avg_skip].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Zoo'].present? %>
+          <td><%= @student_summary_per_subject['Zoo'][:avg_skip].round(2)%></td>
+        <% end %>
+        <% if @student_summary_per_subject['Bio'].present? %>
+          <td><%= (@student_summary_per_subject['Bot'][:avg_skip] + @student_summary_per_subject['Zoo'][:avg_skip]).round(2)%></td>
+        <% end %>
+        <td><%= @student_summary_per_subject[:skip].round(2)%></td>
+        <td>-</td>
+      </tr>
+
+      <tr>
+        <td colspan="2"> Attendance Summary:  <%= (@attempted_tests.count * 100 / @all_tests.count.to_f).round(2) %> %</td>
+        <td colspan="3"> <%= "Present: #{@attempted_tests.count} / Total: #{@all_tests.count}" %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

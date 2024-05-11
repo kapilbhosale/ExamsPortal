@@ -5,10 +5,24 @@
       <th>Exam name</th>
       <th>Date</th>
       <th>Marks</th>
-      <th>P</th>
-      <th>C</th>
-      <th>B</th>
-      <th>M</th>
+      <% if @subjects.include?("Phy") %>
+        <th>Phy</th>
+      <% end %>
+      <% if @subjects.include?("Chem") %>
+        <th>Chem</th>
+      <% end %>
+      <% if @subjects.include?("Bot") %>
+        <th>Bot</th>
+      <% end %>
+      <% if @subjects.include?("Zoo") %>
+        <th>Zoo</th>
+      <% end %>
+      <% if @subjects.include?("Bio") %>
+        <th>Bio</th>
+      <% end %>
+      <% if @subjects.include?("Math") %>
+        <th>Math</th>
+      <% end %>
       <th>Rank</th>
     </tr>
   </thead>
@@ -17,16 +31,24 @@
       <% @all_tests.each_with_index do |test, index| %>
         <% test_id = test[:id] %>
         <% student_marks = @attempted_tests[test_id] %>
-        <tr>
+        <% if student_marks.present? %>
+          <% if @subject_scores_per_test[test_id]['Bio'].present? %>
+            <% bio = @subject_scores_per_test[test_id]['Bio'] %>
+          <% elsif @subject_scores_per_test[test_id]['Bot'].present? %>
+            <% bio = @subject_scores_per_test[test_id]['Bot'] + @subject_scores_per_test[test_id]['Zoo'] %>
+          <% end %>
+        <% end %>
+        <tr style="<%= 'background-color: #FFCCCC;' if student_marks.blank? %>">
           <td><%= "Test-#{test_id}" %></td>
           <td><%= test[:name] %></td>
           <td><%= test[:date] %></td>
           <td><%= student_marks.present? ? "#{student_marks.score}/#{test[:total_marks]}" : "-" %></td>
-          <td><%= rand(100) %></td>
-          <td><%= rand(100) %></td>
-          <td><%= rand(100) %></td>
-          <td><%= rand(100) %></td>
-          <td><%= rand(1..10) %></td>
+          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Phy'] : "-" %></td>
+          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Chem'] : "-" %></td>
+          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Bot'] : "-"%></td>
+          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Zoo'] : "-"%></td>
+          <td><%= student_marks.present? ? bio : "-"%></td>
+          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['rank'] : "AB"%></td>
         </tr>
       <% end %>
     </tbody>

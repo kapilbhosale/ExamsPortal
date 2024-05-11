@@ -1,7 +1,17 @@
+<div style="text-align: right;" class="print-link">
+  <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, '#', onclick: 'window.print();return false;', class: 'btn btn-primary' %>
+</div>
 <%= render partial: 'class_header', locals: { org: @student.org } %>
 <%= render partial: 'student', locals: { student: @student } %>
 <%= render partial: 'graph', locals: { student: @student } %>
+<%= render partial: 'summary', locals: { student: @student } %>
 <%= render partial: 'table', locals: { student: @student } %>
 <%= render partial: 'footer', locals: { student: @student } %>
-<%= link_to "Print as Wieckedf PDF", {format: :pdf, student_id: @student.id}, target: "_blank" %>
-<%= link_to "Chrome Print", '#', onclick: 'window.print();return false;' %>
+
+<style>
+  @media print {
+    .print-link {
+      display: none;
+    }
+  }
+</style>

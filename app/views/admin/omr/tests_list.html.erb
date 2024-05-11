@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5 class="pt-3">OMR Tests List</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="padding: 10px 0; border: 1px solid #ccc; background-color: #f8f9fa; height: 60px; margin-bottom: 10px">
+          <%= search_form_for @search, url: tests_list_admin_omr_index_path, class:"form-inline my-2 my-lg-0 col-md-12" do |f| %>
+            <%= f.text_field :test_name, value: params&.[](:q)&.[](:test_name), placeholder: 'Search Test Name', class: 'form-control mr-sm-2 col-md-6', style: 'font-size: 1em; padding: 18px' %>
+            <%= select_tag :branch, options_for_select(@branches.map { |b| [b, b] }, @branch), class: 'form-control col-md-3' %>
+            <%= f.submit "Search", class: 'ml-4 btn btn-outline-success col-md-2', style: 'font-size: 0.75em;'%>
+          <% end %>
+        </div>
+
+        <div class="table-responsive">
+          <% if @tests.present? %>
+            <%= form_for :student, url: tests_list_admin_omr_index_path, method: :get, id: 'tests_form' do |form| %>
+              <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Test Date</th>
+                    <th>Students</th>
+                    <th>Branch</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @tests.each do |test| %>
+                    <tr>
+                      <td><%= test.id %></td>
+                      <td><%= test.test_name %></td>
+                      <td><%= test.description %></td>
+                      <td><%= test.test_date.strftime("%d-%b-%y") %></td>
+                      <td><%= test.omr_students.count %></td>
+                      <td><%= test.branch %></td>
+                      <td>
+                        <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, test_report_admin_omr_index_path({test_id: test.id}), class: 'btn btn-primary btn-sm' %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+            <%= paginate @tests %>
+          <% else %>
+            <div class="alert alert-info">No Tests were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" >
+  $(function(){
+    $('#limit').change(
+      function() {
+        $('#limit_form').submit();
+      });
+  });
+</script>
