@@ -171,7 +171,8 @@ Rails.application.routes.draw do
       get 'reports', on: :collection
       get 'students_list', on: :collection
       get 'tests_list', on: :collection
-      get 'test_report', on: :collection
+      get 'test_report_batch_selection', on: :collection
+      post 'test_report_print', on: :collection
       get 'progress_report', on: :collection
     end
     resources :attendance do

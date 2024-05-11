@@ -40,7 +40,7 @@
                       <td><%= test.omr_students.count %></td>
                       <td><%= test.branch %></td>
                       <td>
-                        <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, test_report_admin_omr_index_path({test_id: test.id}), class: 'btn btn-primary btn-sm' %>
+                        <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, test_report_batch_selection_admin_omr_index_path({test_id: test.id}), class: 'btn btn-primary btn-sm' %>
                       </td>
                     </tr>
                   <% end %>

@@ -1,0 +1,61 @@
+<div style="text-align: right;" class="print-link">
+  <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, '#', onclick: 'window.print();return false;', class: 'btn btn-primary' %>
+</div>
+
+<%= render partial: 'class_header', locals: { org: @test.org } %>
+
+<table class="table table-bordered">
+  <tr>
+    <td>Exam Name</th>
+    <td colspan="3"><%= @test.test_name%></th>
+  </tr>
+  <tr>
+    <td>Exam Date</th>
+    <td><%= @test.test_date.strftime("%d-%b-%Y")%></th>
+  </tr>
+</table>
+
+<h4 style="text-align: center">Test Report</h4>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Sr.No</th>
+      <th>Roll No</th>
+      <th>Name</th>
+      <th>Phy</th>
+      <th>Chem</th>
+      <th>Bot</th>
+      <th>Zoo</th>
+      <th>Total</th>
+      <th>Rank</th>
+    </tr>
+  </thead>
+
+
+  <tbody>
+    <% @report_data[:test_data].each do |test_data| %>
+      <tr>
+        <td><%= test_data[:sr_no] %></td>
+        <td><%= test_data[:roll_number] %></td>
+        <td><%= test_data[:name] %></td>
+        <td><%= test_data[:data]["Phy"]["score"] %></td>
+        <td><%= test_data[:data]["Chem"]["score"] %></td>
+        <td><%= test_data[:data]["Bot"]["score"] %></td>
+        <td><%= test_data[:data]["Zoo"]["score"] %></td>
+        <td><%= test_data[:score] %></td>
+        <td><%= test_data[:rank] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= render partial: 'footer', locals: { student: nil } %>
+
+<style>
+  @media print {
+    .print-link {
+      display: none;
+    }
+    thead {display: table-header-group;}
+  }
+</style>

@@ -1,0 +1,115 @@
+<h4 style="text-align: center">Test Report - Batch & Format Selection</h4>
+<table class="table table-bordered">
+  <tr>
+    <td>Exam Name</th>
+    <td colspan="3"><%= @test.test_name%></th>
+  </tr>
+  <tr>
+    <td>Exam Date</th>
+    <td><%= @test.test_date.strftime("%d-%b-%Y")%></th>
+  </tr>
+</table>
+
+<%= form_tag test_report_print_admin_omr_index_path, method: :post do %>
+  <input type="hidden" name="test_id" value="<%= @test.id %>">
+  <div style="border: 1px solid black; border-radius: 10px; background-color: #E8F5FD; padding: 10px; margin-top: 10px" >
+    <div style="display: flex; justify-content: flex-end;">
+      <h5 style="flex-grow: 1; text-align: left;">Select Batches</h5>
+      <button type="button" id="select-all" class="btn btn-warning btn-sm" style="margin-right: 10px;">Select All</button>
+      <button type="button" id="deselect-all" class="btn btn-danger btn-sm">Remove All</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+      <% @batches.each do |batch| %>
+        <div class="checkbox-div" style="flex: 0 0 30%; margin-bottom: 0px;">
+          <%= check_box_tag 'batches[]', batch.id %>
+          <%= label_tag "batches_#{batch.id}", "#{batch.name}", style: "font-weight: normal;" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div style="border: 1px solid black; border-radius: 10px; background-color: #e8f6da; padding: 10px; margin-top: 10px" >
+
+    <div style="display: flex; justify-content: space-around">
+      <div style="background-color: #e0e0e0; padding: 10px 20px 5px 20px; border-radius: 10px; margin-bottom: 10px">
+        <h5 style="flex-grow: 1; text-align: left;">Report Sorting By</h5>
+        <div style="display: flex; justify-content: flex-start;">
+          <div>
+            <%= radio_button_tag 'report_type', 'roll_number', true %>
+            <%= label_tag 'report_type_roll_number', 'Roll Number', style: "font-weight: normal;" %>
+          </div>
+
+          <div class="ml-4">
+            <%= radio_button_tag 'report_type', 'name' %>
+            <%= label_tag 'report_type_name', 'Name', style: "font-weight: normal;" %>
+          </div>
+
+          <div class="ml-4">
+            <%= radio_button_tag 'report_type', 'rank' %>
+            <%= label_tag 'report_type_rank', 'Rank', style: "font-weight: normal;" %>
+          </div>
+        </div>
+      </div>
+
+      <div style="background-color: #e0e0e0; padding: 10px 20px 5px 20px; border-radius: 10px; margin-bottom: 10px">
+        <h5 style="flex-grow: 1; text-align: left;">Report Format</h5>
+        <div style="display: flex; justify-content: flex-start;">
+          <div>
+            <%= radio_button_tag 'report_format', 'pdf', true %>
+            <%= label_tag 'report_format_pdf', 'PDF Report', style: "font-weight: normal;" %>
+          </div>
+
+          <div class="ml-4">
+            <%= radio_button_tag 'report_format', 'xls' %>
+            <%= label_tag 'report_format_xls', 'XLS Report', style: "font-weight: normal;" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-2 pt-3" style="background-color: #fac9c9; border-radius: 10px">
+      <div>
+        <%= check_box_tag 'exclude_absents' %>
+        <%= label_tag 'exclude_absents', 'Exclude Absents', style: "font-weight: normal;" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4" style="display: flex; justify-content: flex-end">
+    <div style="text-align: right;" class="print-link">
+      <button type="submit" name="commit" value="summary_report" class="btn btn-danger">Print Test Summary</button>
+    </div>
+
+    <div style="text-align: right;" class="print-link ml-4">
+      <button type="submit" name="commit" value="detailed_report" class="btn btn-primary">Generate Report</button>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+  $(document).ready(function() {
+    $('#select-all').click(function() {
+      $('.checkbox-div input[type="checkbox"]').prop('checked', true);
+    });
+
+    $('#deselect-all').click(function() {
+      $('.checkbox-div input[type="checkbox"]').prop('checked', false);
+    });
+
+    $('.checkbox-div').click(function(event) {
+      var checkbox = $(this).find('input[type="checkbox"]');
+      if (event.target !== checkbox[0]) {
+        checkbox.prop('checked', !checkbox.prop('checked'));
+      }
+    });
+
+    $('form').on('submit', function(e) {
+      if ($('input[name="batches[]"]:checked').length === 0) {
+        alert('Please select at least one batch.');
+        e.preventDefault();
+      }
+    });
+  });
+</script>
