@@ -82,7 +82,7 @@
 
         $('#batch').on('change', function (e) {
           const selectedBatch = e.target.value;
-          if ( selectedBatch === "11th_set" ) {
+          if ( selectedBatch === "11th_set" || selectedBatch === "neet_saarthi" ) {
             $('#set_center').attr('required', 'required');
             $('#set_sub_center').attr('required', 'required');
             $('#board').attr('required', 'required');
@@ -137,7 +137,7 @@
           hidePaymentDivs();
           resetPaymentModeSelection();
 
-          if ( batch === "11th_set" ) {
+          if ( batch === "11th_set" || batch === "neet_saarthi" ) {
             $('.11th-set-center-selection').show();
           } else {
             $('.11th-set-center-selection').hide();
@@ -354,7 +354,7 @@
             $('.course-ned-ltr').hide();
           }
 
-          if ( selectedBatch === "11th_set" ) {
+          if ( selectedBatch === "11th_set" || selectedBatch === "neet_saarthi" ) {
             $('.11th-set-center-selection').show();
           } else {
             $('.11th-set-center-selection').hide();
@@ -604,7 +604,7 @@
         </div>
 
         <div class="11th-set-center-selection" style="padding: 10px; display: none">
-          <p style="color: gray;">11th SET Exam center selection: </p>
+          <p style="color: gray;">SET Exam center selection: </p>
           <div class="form-group">
             <select required id="set_center" class="form-control" name="set_center_11th">
               <option disabled selected value>Select Exam Center</option>
@@ -614,7 +614,7 @@
               <%# <option id="parbhani" value="parbhani">Parbhani (परभणी)</option> %>
               <%# <option id="hingoli" value="hingoli">Hingoli (हिंगोली)</option> %>
               <%# <option id="yavatmal" value="yavatmal">Yavatmal (यवतमाळ)</option> %>
-              <%# <option id="solapur" value="solapur">Solapur (सोलापूर)</option> %>
+              <option id="solapur" value="solapur">Solapur (सोलापूर)</option>
               <option id="kolhapur" value="kolhapur">Kolhapur (कोल्हापूर)</option>
               <%# <option id="buldhana" value="buldhana">Buldhana (बुलढाणा)</option> %>
               <%# <option id="jalna" value="jalna">Jalna (जालना)</option> %>
@@ -634,8 +634,8 @@
               <%# <option id="mumbai" value="mumbai">Mumbai (मुंबई)</option> %>
             </select>
           </div>
-
-          <%# <p style="color: gray;">11th SET Exam sub center selection: </p>
+          <%#
+          <p style="color: gray;">11th SET Exam sub center selection: </p>
           <div class="form-group">
             <select required id="set_sub_center" class="form-control" name="set_sub_center_11th">
               <option disabled selected value>Select Exam Sub Center</option>
@@ -643,7 +643,7 @@
               <option id="udgir" value="udgir">Udgir</option>
               <option id="ahamadpur" value="ahamadpur">Ahmadpur</option>
             </select>
-          </div> %>
+          </div>
 
           <div class="form-group">
             <p style="color: gray;">Select Board of Education</p>
@@ -662,7 +662,7 @@
           <div class="form-group">
             <input type="text" class="form-control" id="district" placeholder="Enter District" name="district" >
           </div>
-
+          %>
         </div>
 
         <div class="payment-selection-div-rep" style="background-color: #cdd0f1; padding: 10px; display: none">
