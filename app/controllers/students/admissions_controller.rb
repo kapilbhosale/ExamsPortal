@@ -332,7 +332,7 @@ class Students::AdmissionsController < ApplicationController
       test_series_batch_ids = [972, 977]
       set_batch_ids_11th_23_24 = [986, 987]
       set_batch_ids_12th_23_24 = [988, 989]
-      neet_saarthi_batch_ids = [1094]
+      neet_saarthi_batch_ids = [1119]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
@@ -344,8 +344,8 @@ class Students::AdmissionsController < ApplicationController
       end
 
       if student.blank?
-        flash[:errors] = "Error 102, please try agian later"
-        @errors << "Error 102, please try agian later"
+        flash[:errors] = "Error 102, please try again later"
+        @errors << "Error 102, please try again later"
       else
         @student = student
         student.new_admission_id = @new_admission.id

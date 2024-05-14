@@ -85,7 +85,7 @@ class NewAdmission < ApplicationRecord
     'test-series': 16
   }
   enum course_type: { neet: 0, jee: 1 }
-  enum rcc_branch: { latur: 0, nanded: 1, aurangabad: 2, akola: 3, pune: 4, kolhapur: 5, pimpri: 6 }
+  enum rcc_branch: { latur: 0, nanded: 1, aurangabad: 2, akola: 3, pune: 4, kolhapur: 5, pimpri: 6, hadapsar: 7, solapur: 8, nashik: 9 }
 
   after_create :create_unique_payment_id
   after_create :create_unique_reference_id
