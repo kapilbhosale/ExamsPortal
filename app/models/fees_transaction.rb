@@ -75,6 +75,8 @@ class FeesTransaction < ApplicationRecord
 
   after_create :send_fees_sms
 
+  BASE_URL = "http://servermsg.com/api/SmsApi/SendSingleApi"
+
   def send_fees_sms
     return if org.data.dig('sms_settings', 'fees_sms').blank?
 
