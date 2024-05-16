@@ -46,6 +46,7 @@ yarn-debug.log*
 .DS_Store
 Result.csv
 app/.DS_Store
+/zip_data/
 
 TAGS
 dump.rdb
