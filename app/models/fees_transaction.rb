@@ -73,6 +73,24 @@ class FeesTransaction < ApplicationRecord
   before_create :update_token_of_the_day
   before_create :update_receipt_number
 
+  after_create :send_fees_sms
+
+  def send_fees_sms
+    return if org.data.dig('sms_settings', 'fees_sms').blank?
+
+    sms_user = org.data.dig('sms_settings', 'fees_sms', 'sms_user')
+    sms_password = URI.encode_www_form_component(org.data.dig('sms_settings', 'fees_sms', 'sms_password'))
+    sender_id = org.data.dig('sms_settings', 'fees_sms', 'sender_id')
+    template_id = org.data.dig('sms_settings', 'fees_sms', 'template_id')
+    entity_id = org.data.dig('sms_settings', 'fees_sms', 'entity_id')
+
+    msg = org.data.dig('sms_settings', 'fees_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y')).gsub('<AMOUNT>', paid_amount.to_f.to_s)
+
+    msg = URI.encode_www_form_component(msg)
+    encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
+
+    puts Net::HTTP.get(URI(encoded_msg))
+  end
 
   def self.student_pending_fees(student_id)
     student = Student.find_by(id: student_id)
