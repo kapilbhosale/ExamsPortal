@@ -91,7 +91,7 @@ class Admin::OmrController < Admin::BaseController
       percent_score: percent_score,
       colors: colors,
       toppers: toppers,
-      average: average_scores.sum / average_scores.size
+      average: average_scores.present? (average_scores.sum / average_scores.size) : 0
     }
 
     @student_summary_per_subject = Omr::StudentTest.get_student_summary(@student.id)
