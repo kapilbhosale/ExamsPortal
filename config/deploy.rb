@@ -22,7 +22,7 @@ set :rvm_ruby_version, 'ruby-2.5.1@smart-exams'
 
 set :keep_releases, 5
 
-set :linked_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads')
+set :linked_dirs, fetch(:shared_dirs, []).push('log', 'tmp/pids', 'tmp/sockets', 'public/uploads', 'zip_data')
 set :linked_files, fetch(:shared_files, []).push(
   'config/database.yml',
   'config/sidekiq.yml',

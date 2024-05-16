@@ -11,7 +11,7 @@ class Omr::ImportService
   end
 
   def call
-    # extract_zip(file_path)
+    extract_zip(file_path)
     # destroy_omr_pr_data
     initialize_subjects
 
