@@ -143,12 +143,8 @@
             $('.11th-set-center-selection').hide();
           }
 
-          if ((batch === "11th_new" || batch === "12th") && courseSelected) {
+          if ((batch === "11th_new" || batch === "12th" || batch === "repeater") && courseSelected) {
             $('.payment-selection-div').animate( { "opacity": "show", top:"100"} , 1000 );
-          }
-
-          if (batch === "repeater" && courseSelected) {
-            $('.payment-selection-div-rep').animate( { "opacity": "show", top:"100"} , 1000 );
           }
 
           if (batch === "test-series" && courseSelected) {
@@ -211,7 +207,7 @@
 
           if (batch === "repeater") {
             totalFees = '₹60,000';
-            oneTimeFees = '₹60,000';
+            oneTimeFees = '₹55,000';
             installmentFees = '₹25,000';
             nextInstallmentFees = '₹35,000';
           }
@@ -223,7 +219,7 @@
             nextInstallmentFees = '₹0';
           }
 
-          if (batch === "11th_new" || batch === "12th") {
+          if (batch === "11th_new" || batch === "12th" || batch === "repeater") {
             $('#total').text(totalFees);
             $('#one-time-val').text(oneTimeFees);
             $('#installment-val').text(installmentFees)
@@ -248,7 +244,8 @@
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
-          {val: "12th", text: "12th Regular Online (2024-25)"}
+          {val: "12th", text: "12th Regular Online (2024-25)"},
+          {val: "repeater", text: "Rept Online Batch (2024-25)"}
         ]
 
         const AUR_BATCHES = [
@@ -256,7 +253,8 @@
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
-          {val: "12th", text: "12th Regular Online (2024-25)"}
+          {val: "12th", text: "12th Regular Online (2024-25)"},
+          {val: "repeater", text: "Rept Online Batch (2024-25)"}
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
@@ -264,11 +262,13 @@
           {val: "12th_set", text: "11th moving 12th (Non-RCC) Scholarship Exam 2024"},
           {val: "test-series", text: "Vijaypath Test Series (Only For Online)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
-          {val: "12th", text: "12th Regular Online (2024-25)"}
+          {val: "12th", text: "12th Regular Online (2024-25)"},
+          {val: "repeater", text: "Rept Online Batch (2024-25)"}
         ]
 
         const NASHIK_HADAPSAR_BATCHES = [
-          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"}
+          {val: "neet_saarthi", text: "Repeater RCC SET (Scholarship Exam 2024-25)"},
+          {val: "repeater", text: "Rept Online Batch (2024-25)"}
         ]
 
         const SET_SUB_CENTERS = {
@@ -539,6 +539,7 @@
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only For Online)</option>
                 <option id="11th_new" value="11th_new">11th Regular Online (2024-25)</option>
                 <option id="12th" value="12th">12th Regular Online (2024-25)</option>
+                <option id="repeater" value="repeater">Rept Online Batch (2024-25)</option>
               <% end %>
             </select>
           </div>

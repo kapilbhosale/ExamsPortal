@@ -63,12 +63,12 @@ class RollNumberSuggestor < ApplicationRecord
 
   def self.suggest_roll_number(batch_name, na=nil)
     batch_name = '12th_22_23' if batch_name == '12th'
-
-    batch_name = 'repeater_22_23' if batch_name == 'repeater'
     batch_name = "11th_set_24_#{na.extra_data['set_center_11th']}" if batch_name == '11th_set'
 
     return Student.random_roll_number if batch_name == 'test-series'
     return Student.random_roll_number if batch_name == '12th_set'
+    return Student.random_roll_number if batch_name == 'repeater'
+
     batch_name = 'neet_saarthi_new' if batch_name == 'neet_saarthi'
 
     rns = self.find_by(batch_name: batch_name)

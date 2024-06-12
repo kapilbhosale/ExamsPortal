@@ -265,7 +265,8 @@ class Students::AdmissionsController < ApplicationController
         return 25_000
       else
         return 50_000 if ['pc'].include?(course.name)
-        return 60_000 if ['pcb'].include?(course.name)
+        return 55_000 if ['pcb'].include?(course.name)
+        return 55_000 if ['pcm'].include?(course.name)
       end
     end
 

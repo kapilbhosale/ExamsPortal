@@ -28,6 +28,7 @@
 #
 
 class StudyPdf < ApplicationRecord
+  acts_as_paranoid
   mount_uploader :question_paper, PdfUploader
   mount_uploader :solution_paper, PdfUploader
 
