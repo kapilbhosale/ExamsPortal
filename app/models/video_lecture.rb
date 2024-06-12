@@ -38,7 +38,7 @@
 
 class VideoLecture < ApplicationRecord
   require 'carrierwave/orm/activerecord'
-  acts_as_paranoid
+  # acts_as_paranoid
   # validates :thumbnail, presence: true
   validates :title, presence: true
   validates :subject_name, presence: true
