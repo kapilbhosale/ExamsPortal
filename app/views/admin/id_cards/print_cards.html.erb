@@ -92,8 +92,15 @@
               <%= ft.student.photo.present? ? "YES" : "-" %>
             </td>
             <td>
-              <% ft.student.id_card.each do |print_log| %>
-                <li><%= print_log %></li>
+              <% ft.student.id_card.each_with_index do |print_log, index| %>
+                <li style="<%= case index
+                              when 0 then 'background-color: lightgreen;'
+                               when 1 then 'background-color: yellow;'
+                               when 2 then 'background-color: #FF7F7F;'
+                               else 'background-color: cyan;'
+                               end %>; border: 1px solid black; border-radius: 5px; padding-left: 10px; margin: 4px 0;">
+                  <%= print_log %>
+                </li>
               <% end %>
             </td>
           </tr>
