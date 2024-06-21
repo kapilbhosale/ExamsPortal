@@ -100,6 +100,26 @@ class Student < ApplicationRecord
 
   enum access_types: { not_set: 0, mobile: 1, laptop: 2 }
 
+  # Override the destroy method
+  def destroy
+    raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a record of YourModel"
+  end
+
+  # Override the delete method
+  def delete
+    raise ActiveRecord::ReadOnlyRecord, "Cannot delete a record of YourModel"
+  end
+
+  # Prevents the record from being deleted by delete_all
+  def self.delete_all
+    raise ActiveRecord::ReadOnlyRecord, "Cannot delete records of YourModel"
+  end
+
+  # Prevents the record from being destroyed by destroy_all
+  def self.destroy_all
+    raise ActiveRecord::ReadOnlyRecord, "Cannot destroy records of YourModel"
+  end
+
   def login
     @login || self.roll_number || self.email
   end

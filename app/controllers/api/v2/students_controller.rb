@@ -123,14 +123,14 @@ class Api::V2::StudentsController < Api::V2::ApiController
     end
   end
 
-  def de_active
-    if current_student
-      student.delete
-      render json: { message: 'Student de-activated successfully' }, status: :ok and return
-    else
-      render json: { message: 'Invalid student' }, status: :unauthorized and return
-    end
-  end
+  # def de_active
+  #   if current_student
+  #     student.delete
+  #     render json: { message: 'Student de-activated successfully' }, status: :ok and return
+  #   else
+  #     render json: { message: 'Invalid student' }, status: :unauthorized and return
+  #   end
+  # end
 
   private
 
