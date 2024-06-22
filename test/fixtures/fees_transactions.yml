@@ -8,6 +8,7 @@
 #  deleted_at           :datetime
 #  discount_amount      :decimal(, )      default(0.0)
 #  imported             :boolean          default(FALSE)
+#  is_headless          :boolean          default(FALSE)
 #  mode                 :string
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)

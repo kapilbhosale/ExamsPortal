@@ -8,6 +8,7 @@
 #  deleted_at           :datetime
 #  discount_amount      :decimal(, )      default(0.0)
 #  imported             :boolean          default(FALSE)
+#  is_headless          :boolean          default(FALSE)
 #  mode                 :string
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)
@@ -117,7 +118,7 @@ class FeesTransaction < ApplicationRecord
         paid_by_heads[head] += details['paid'] + details['discount']
       end
     end
-    current_template_id = fees_transactions.order(:created_at).last.payment_details.dig('template', 'id')
+    current_template_id = fees_transactions.where(is_headless: false).order(:created_at).last.payment_details.dig('template', 'id')
     fees_template = FeesTemplate.find_by(id: current_template_id).attributes
 
     fees_template['heads'].each do |head|
@@ -137,7 +138,7 @@ class FeesTransaction < ApplicationRecord
       batch: student.batches.joins(:fees_templates).pluck(:name).join(', '),
       receipt_number: receipt_number,
       paid_amount: paid_amount.to_f,
-      base_fee: paid_amount + remaining_amount,
+      base_fee: is_headless ? 0 : paid_amount + remaining_amount,
       cgst: payment_details.dig('totals', 'cgst').to_f,
       sgst: payment_details.dig('totals', 'sgst').to_f,
       tax: payment_details.dig('totals', 'cgst').to_f + payment_details.dig('totals', 'sgst').to_f,
@@ -363,6 +364,33 @@ class FeesTransaction < ApplicationRecord
 
     self.token_of_the_day = student.intel_score
   end
+
+  def remove_discount(student)
+    transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
+    # total_discount = 0
+    transactions.each do |transaction|
+      discount = transaction.discount_amount.to_f
+      # total_discount = total_discount + discount
+      transaction.remaining_amount = transaction.remaining_amount + discount
+      transaction.discount_amount = 0
+
+      paid = transaction.payment_details['paid']['Tution Fees']
+      paid['discount'] = 0
+      transaction.payment_details['paid']['Tution Fees'] = paid
+
+      totals = transaction.payment_details['totals']
+      totals['discount'] = 0
+      transaction.payment_details['totals']= totals
+
+      transaction.save
+    end
+  end
+
+  # student = Student.find 630763
+  # remove_discount(student)
+  # ft = FeesTransaction.where(student: student).order(:created_at).last
+  # ft.remaining_amount = 120000
+  # ft.save
 end
 
 
