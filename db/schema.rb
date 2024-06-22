@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_16_111641) do
+ActiveRecord::Schema.define(version: 2024_06_22_115159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -405,6 +405,7 @@ ActiveRecord::Schema.define(version: 2024_05_16_111641) do
     t.integer "received_by_admin_id"
     t.boolean "imported", default: false
     t.datetime "deleted_at"
+    t.boolean "is_headless", default: false
     t.index ["deleted_at"], name: "index_fees_transactions_on_deleted_at"
     t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"

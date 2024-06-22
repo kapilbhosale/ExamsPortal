@@ -43,9 +43,11 @@ module Fees
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
 
       if payment_type == 'online'
-        transactions = transactions.where(mode: 'online')
+        transactions = transactions.where(is_headless: false).where(mode: 'online')
       elsif payment_type == 'offline'
-        transactions = transactions.where.not(mode: 'online')
+        transactions = transactions.where(is_headless: false).where.not(mode: 'online')
+      elsif payment_type == 'HeadLess'
+        transactions = transactions.where(is_headless: true)
       end
 
       return transactions unless nil_fees_only

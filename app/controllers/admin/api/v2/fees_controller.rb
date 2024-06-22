@@ -66,7 +66,11 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
     if params[:ref].present?
       response = Fees::CreatePastOnlineFees.new(current_org, current_admin, create_fee_transaction_params).create
     else
-      response = Fees::CreateFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
+      if params[:fees_details][:headless] == true
+        response = Fees::CreateHeadlessFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
+      else
+        response = Fees::CreateFeesTransaction.new(current_org, current_admin, create_fee_transaction_params).create
+      end
     end
 
     render json: response[:data] and return if response[:status]
