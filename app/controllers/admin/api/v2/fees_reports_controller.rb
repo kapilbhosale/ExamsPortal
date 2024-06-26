@@ -61,7 +61,7 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
 
   def due_fees
     # todo add payments-due permission.
-    render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('payments')
+    render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('payments')
 
     from_date = DateTime.parse(params[:dates][0]).in_time_zone.to_date
     to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date

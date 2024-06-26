@@ -33,6 +33,7 @@ module Fees
         .where('fees_transactions.next_due_date >= ?', date1)
         .where('fees_transactions.next_due_date <= ?', date2)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
+        .where('remaining_amount > 0')
 
       return fees_transactions
     end
