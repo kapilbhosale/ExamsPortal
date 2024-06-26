@@ -34,8 +34,14 @@ module Fees
         .where('fees_transactions.next_due_date <= ?', date2)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
         .where('remaining_amount > 0')
+        .order(:created_at)
 
-      return fees_transactions
+      fees_transactions_by_students = {}
+      fees_transactions.each do |ft|
+        fees_transactions_by_students[ft.student_id] = ft
+      end
+
+      return fees_transactions_by_students.values
     end
   end
 end
