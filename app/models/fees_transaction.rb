@@ -325,10 +325,16 @@ class FeesTransaction < ApplicationRecord
       fees_transactions = FeesTransaction.gt_hundred
     end
 
+    if org.rcc?
+      # resetting RCC receipt numbers from 2nd July 2024
+      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
+    else
+      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
+    end
+
     db_receipt_number = fees_transactions
       .where(org_id: org_id)
       .where(imported: false)
-      .where('created_at >= ?', Date.parse("03-Dec-2023"))
       .where('created_at <= ?', Time.now)
       .order(:created_at)
       .last&.receipt_number
