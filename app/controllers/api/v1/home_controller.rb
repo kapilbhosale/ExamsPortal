@@ -42,6 +42,14 @@ class Api::V1::HomeController < Api::V1::ApiController
       }
     end
 
+    # if student have pending fees
+    if current_student.pending_amount.present?
+      banners_data << {
+        "img_url"=> "https://smart-exams-production-v2.s3.amazonaws.com/uploads/exams/banner/image/122/REP.jpg",
+        "on_click"=> "https://exams.smartclassapp.in/pay-due-fees?student_id=#{current_student.id}"
+      }
+    end
+
     return (banners_data + (current_org.data['top_banners'] || []))
   end
 
