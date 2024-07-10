@@ -1,5 +1,5 @@
 ActiveAdmin.register Discount do
-  permit_params :amount, :student_name, :parent_mobile, :student_mobile, :status, :data
+  permit_params :amount, :student_name, :parent_mobile, :student_mobile, :status, :data, :comment
 
 
   filter :amount
@@ -7,6 +7,7 @@ ActiveAdmin.register Discount do
   filter :parent_mobile
   filter :approved_by
   filter :type_of_discount
+  filter :status
   filter :created_at
 
 
@@ -20,6 +21,7 @@ ActiveAdmin.register Discount do
     column :student_mobile
     column :type_of_discount
     column :status
+    column :comment
     column :data
     column :created_at
   end

@@ -377,6 +377,39 @@ class FeesTransaction < ApplicationRecord
   # ft = FeesTransaction.where(student: student).order(:created_at).last
   # ft.remaining_amount = 120000
   # ft.save
+
+  def get_student_fees_with_discount
+    batch_ids = [990, 991, 992, 993]
+    students = Student.includes(:batches).where(batches: {id: batch_ids})
+    final_data = []
+    students.each do |student|
+      transactions = FeesTransaction.where(student_id: student.id)
+      next if transactions.blank?
+
+      total_paid = transactions.order(:created_at).sum(:paid_amount).to_f
+      total_discounts = transactions.order(:created_at).sum(:discount_amount).to_f
+
+      ft = transactions.order(:created_at).last
+      remaining_amount = ft.remaining_amount.to_f
+
+      discounts = Discount.used_discount.where(parent_mobile: student.parent_mobile).pluck(:comment, :approved_by)
+      discount_text = discounts.map { |item| item.join(", By: ") }
+      putc "."
+      final_data << [student.id, student.roll_number, student.name, student.parent_mobile, student.student_mobile, total_paid, total_discounts, remaining_amount, discount_text]
+    end
+
+    # Specify your file path here
+    file_path = Rails.root.join('public', 'students_fees_with_discounts.csv')
+
+    CSV.open(file_path, 'wb') do |csv|
+      # Adding a header row (optional)
+      csv << ['Student ID', 'Roll Number', 'Name', 'Parent Mobile', 'Student Mobile', 'Total Paid', 'Total Discounts', 'Remaining Amount', 'Discounts']
+      # Adding data
+      final_data.each do |row|
+        csv << row
+      end
+    end
+  end
 end
 
 
