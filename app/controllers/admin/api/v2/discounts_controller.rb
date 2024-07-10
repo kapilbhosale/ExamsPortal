@@ -2,6 +2,10 @@ class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
   before_action :authorize_request, only: [:create]
 
   def index
+    if current_admin.roles.exclude?('discounts')
+      render json: {message: 'not permitted'}, status: :unauthorized and return
+    end
+
     if params[:student_id].present?
       student = Student.find_by(id: params[:student_id])
       @discounts = Discount.where(org_id: current_org.id).valid_discount.where(
@@ -29,6 +33,10 @@ class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
   end
 
   def create
+    if current_admin.roles.exclude?('discounts')
+      render json: {message: 'not permitted'}, status: :unauthorized and return
+    end
+
     discount = Discount.find_or_create_by({
       org_id: 1,
       type_of_discount: discount_type,
