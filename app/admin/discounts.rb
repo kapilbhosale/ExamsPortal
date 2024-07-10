@@ -12,7 +12,7 @@ ActiveAdmin.register Discount do
   filter :created_at
 
 
-  index row_class: ->(element) { 'highlight' if element.amount > 20 } do
+  index do
     selectable_column
     id_column
     column :amount
