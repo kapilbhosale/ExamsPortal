@@ -2,7 +2,7 @@ class Admin::Api::AttendanceController < Admin::Api::ApiController
   skip_before_action :authenticate
 
   def create
-    if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463" && params[:mac] == "c6:f0:5d:04:19:f8"
+    if params[:username] == "RCC@attendance" && params[:password] == "RandomPassword@758463" && params[:mac] == "a2:32:28:10:09:ec"
       ra = RawAttendance.create(org_id: current_org.id, data: params[:attendanceData])
       RawAttendanceWorker.perform_async(ra.id)
 
