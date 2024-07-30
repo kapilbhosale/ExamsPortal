@@ -69,7 +69,7 @@ class Admin::IdCardsController < Admin::BaseController
         csv << header_row
         selected_students.each do |student|
           ids_data = student.id_card || []
-          ids_data << "#{Time.current.strftime("%d-%B %I:%M%p")} by #{current_admin.email.split('@')[0]}"
+          ids_data << "#{Time.current.strftime("%d-%B-%Y %I:%M%p")} by #{current_admin.email.split('@')[0]}"
           student.update(id_card: ids_data)
 
           csv << [student.id, student.roll_number, student.name, student.parent_mobile, student.student_mobile, batch_display_name]

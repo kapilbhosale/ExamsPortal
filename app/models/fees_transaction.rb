@@ -353,11 +353,15 @@ class FeesTransaction < ApplicationRecord
 
   def remove_discount(student)
     transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
-    # total_discount = 0
+
+    last_remaining_amount = nil
     transactions.each do |transaction|
       discount = transaction.discount_amount.to_f
-      # total_discount = total_discount + discount
-      transaction.remaining_amount = transaction.remaining_amount + discount
+      if last_remaining_amount.nil?
+        transaction.remaining_amount = transaction.remaining_amount + discount
+      else
+        transaction.remaining_amount = last_remaining_amount - (transaction.paid_amount.to_f + discount)
+      end
       transaction.discount_amount = 0
 
       paid = transaction.payment_details['paid']['Tution Fees']
@@ -368,11 +372,12 @@ class FeesTransaction < ApplicationRecord
       totals['discount'] = 0
       transaction.payment_details['totals']= totals
 
+      last_remaining_amount = transaction.remaining_amount
       transaction.save
     end
   end
 
-  # student = Student.find 630763
+  # student = Student.find 701016
   # remove_discount(student)
   # ft = FeesTransaction.where(student: student).order(:created_at).last
   # ft.remaining_amount = 120000
