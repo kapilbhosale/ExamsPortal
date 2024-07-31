@@ -51,6 +51,10 @@ class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
   end
 
   def remove_discount
+    if current_org.rcc? && current_admin.roles.exclude?('remove_discounts')
+      render json: {message: 'not permitted'}, status: :unauthorized and return
+    end
+
     student = Student.find_by(id: params[:student_id])
     if student
       FeesTransaction.remove_discount(student)

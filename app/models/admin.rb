@@ -87,6 +87,7 @@ class Admin < ApplicationRecord
     :payments,
     :notes,
     :discounts,
+    :remove_discounts,
 
 
     :batch_delete,
