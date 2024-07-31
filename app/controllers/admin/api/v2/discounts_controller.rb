@@ -46,6 +46,16 @@ class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
     render json: {message: discount.errors.full_messages}, status: :unprocessable_entity
   end
 
+  def remove_discount
+    student = Student.find_by(id: params[:student_id])
+    if student
+      FeesTransaction.remove_discount(student)
+      render json: {message: "Discounts removed Successfully."} and return
+    else
+      render json: {message: 'Student not found'}, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def discount_type

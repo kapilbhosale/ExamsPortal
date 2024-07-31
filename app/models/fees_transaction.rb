@@ -365,24 +365,33 @@ class FeesTransaction < ApplicationRecord
     self.token_of_the_day = student.intel_score
   end
 
-  def remove_discount(student)
-    transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
-    # total_discount = 0
-    transactions.each do |transaction|
-      discount = transaction.discount_amount.to_f
-      # total_discount = total_discount + discount
-      transaction.remaining_amount = transaction.remaining_amount + discount
-      transaction.discount_amount = 0
+  def self.remove_discount(student)
+    ActiveRecord::Base.transaction do
+      transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
 
-      paid = transaction.payment_details['paid']['Tution Fees']
-      paid['discount'] = 0
-      transaction.payment_details['paid']['Tution Fees'] = paid
+      last_remaining_amount = nil
+      transactions.each do |transaction|
+        next if transaction.is_headless
 
-      totals = transaction.payment_details['totals']
-      totals['discount'] = 0
-      transaction.payment_details['totals']= totals
+        discount = transaction.discount_amount.to_f
+        if last_remaining_amount.nil?
+          transaction.remaining_amount = transaction.remaining_amount + discount
+        else
+          transaction.remaining_amount = last_remaining_amount - (transaction.paid_amount.to_f + discount)
+        end
+        transaction.discount_amount = 0
 
-      transaction.save
+        paid = transaction.payment_details['paid']['Tution Fees']
+        paid['discount'] = 0
+        transaction.payment_details['paid']['Tution Fees'] = paid
+
+        totals = transaction.payment_details['totals']
+        totals['discount'] = 0
+        transaction.payment_details['totals'] = totals
+
+        last_remaining_amount = transaction.remaining_amount
+        transaction.save!
+      end
     end
   end
 
