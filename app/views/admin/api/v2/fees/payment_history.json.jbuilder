@@ -10,6 +10,7 @@ json.array! @transactions do |transaction|
   json.next_due_date transaction.next_due_date
   json.mode_of_payment transaction.mode
   json.admin transaction.admin.name
+  json.isHeadless transaction.is_headless
 
   discount = nil
 

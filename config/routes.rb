@@ -228,7 +228,9 @@ Rails.application.routes.draw do
           post  :change_course
 
           collection do
-            resources :discounts, only: [:index, :create]
+            resources :discounts, only: [:index, :create] do
+              post :remove_discount, on: :collection
+            end
           end
         end
         resources :notes

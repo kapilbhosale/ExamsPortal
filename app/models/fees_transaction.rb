@@ -351,29 +351,33 @@ class FeesTransaction < ApplicationRecord
     self.token_of_the_day = student.intel_score
   end
 
-  def remove_discount(student)
-    transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
+  def self.remove_discount(student)
+    ActiveRecord::Base.transaction do
+      transactions = FeesTransaction.where(student_id: student.id).order(:created_at)
 
-    last_remaining_amount = nil
-    transactions.each do |transaction|
-      discount = transaction.discount_amount.to_f
-      if last_remaining_amount.nil?
-        transaction.remaining_amount = transaction.remaining_amount + discount
-      else
-        transaction.remaining_amount = last_remaining_amount - (transaction.paid_amount.to_f + discount)
+      last_remaining_amount = nil
+      transactions.each do |transaction|
+        next if transaction.is_headless
+
+        discount = transaction.discount_amount.to_f
+        if last_remaining_amount.nil?
+          transaction.remaining_amount = transaction.remaining_amount + discount
+        else
+          transaction.remaining_amount = last_remaining_amount - (transaction.paid_amount.to_f + discount)
+        end
+        transaction.discount_amount = 0
+
+        paid = transaction.payment_details['paid']['Tution Fees']
+        paid['discount'] = 0
+        transaction.payment_details['paid']['Tution Fees'] = paid
+
+        totals = transaction.payment_details['totals']
+        totals['discount'] = 0
+        transaction.payment_details['totals'] = totals
+
+        last_remaining_amount = transaction.remaining_amount
+        transaction.save!
       end
-      transaction.discount_amount = 0
-
-      paid = transaction.payment_details['paid']['Tution Fees']
-      paid['discount'] = 0
-      transaction.payment_details['paid']['Tution Fees'] = paid
-
-      totals = transaction.payment_details['totals']
-      totals['discount'] = 0
-      transaction.payment_details['totals']= totals
-
-      last_remaining_amount = transaction.remaining_amount
-      transaction.save
     end
   end
 
