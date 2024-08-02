@@ -1,5 +1,5 @@
 class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
-  before_action :authorize_request, only: [:create]
+  before_action :authorize_request, only: [:create, :remove_discount]
 
   def index
     if params[:student_id].present?
