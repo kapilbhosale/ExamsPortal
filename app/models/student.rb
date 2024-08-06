@@ -101,22 +101,30 @@ class Student < ApplicationRecord
 
   # Override the destroy method
   def destroy
-    raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a record of YourModel"
+    unless org.subdomain == 'konale-exams'
+      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+    end
   end
 
   # Override the delete method
   def delete
-    raise ActiveRecord::ReadOnlyRecord, "Cannot delete a record of YourModel"
+    unless org.subdomain == 'konale-exams'
+      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+    end
   end
 
   # Prevents the record from being deleted by delete_all
   def self.delete_all
-    raise ActiveRecord::ReadOnlyRecord, "Cannot delete records of YourModel"
+    unless org.subdomain == 'konale-exams'
+      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+    end
   end
 
   # Prevents the record from being destroyed by destroy_all
   def self.destroy_all
-    raise ActiveRecord::ReadOnlyRecord, "Cannot destroy records of YourModel"
+    unless org.subdomain == 'konale-exams'
+      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+    end
   end
 
   def login
