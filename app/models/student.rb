@@ -99,33 +99,33 @@ class Student < ApplicationRecord
 
   enum access_types: { not_set: 0, mobile: 1, laptop: 2 }
 
-  # Override the destroy method
-  def destroy
-    unless org.subdomain == 'konale-exams'
-      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
-    end
-  end
+  # # Override the destroy method
+  # def destroy
+  #   unless org.subdomain == 'konale-exams'
+  #     raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+  #   end
+  # end
 
-  # Override the delete method
-  def delete
-    unless org.subdomain == 'konale-exams'
-      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
-    end
-  end
+  # # Override the delete method
+  # def delete
+  #   unless org.subdomain == 'konale-exams'
+  #     raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+  #   end
+  # end
 
-  # Prevents the record from being deleted by delete_all
-  def self.delete_all
-    unless org.subdomain == 'konale-exams'
-      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
-    end
-  end
+  # # Prevents the record from being deleted by delete_all
+  # def self.delete_all
+  #   unless org.subdomain == 'konale-exams'
+  #     raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+  #   end
+  # end
 
-  # Prevents the record from being destroyed by destroy_all
-  def self.destroy_all
-    unless org.subdomain == 'konale-exams'
-      raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
-    end
-  end
+  # # Prevents the record from being destroyed by destroy_all
+  # def self.destroy_all
+  #   unless org.subdomain == 'konale-exams'
+  #     raise ActiveRecord::ReadOnlyRecord, "Cannot destroy a student"
+  #   end
+  # end
 
   def login
     @login || self.roll_number || self.email
