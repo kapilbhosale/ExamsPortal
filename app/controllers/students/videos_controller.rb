@@ -142,11 +142,12 @@ class Students::VideosController < Students::BaseController
   end
 
   def show_lecture_vim
-    if request.headers['osType'] == 'android'
-      @video_url = "https://player.vimeo.com/video/#{params[:vimeo_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
-    else
-      render json: { error: 'Invalid request' }, status: :bad_request and return
-    end
+    # if request.headers['osType'] == 'android'
+    Rails.logger.info "===== osType ===>: #{request.headers['osType']}"
+    @video_url = "https://player.vimeo.com/video/#{params[:vimeo_id]}?autoplay=1&color=fdbc1d&byline=0&portrait=0"
+    # else
+    #   render json: { error: 'Invalid request' }, status: :bad_request and return
+    # end
   end
 
   def show_lecture_tp
