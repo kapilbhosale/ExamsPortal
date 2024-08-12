@@ -59,6 +59,7 @@ Rails.application.routes.draw do
     get 'videos' => 'videos#lectures'
     get 'lectures' => 'videos#lectures'
     get 'lectures/:video_id' => 'videos#show_lecture'
+    get 'lectures_vim/:vimeo_id' => 'videos#show_lecture_vim'
     get 'lectures_tp/:tp_streams_id' => 'videos#show_lecture_tp'
     get 'category_videos/:id' => 'videos#category_videos'
     get 'yt-player' => 'videos#play_yt'
