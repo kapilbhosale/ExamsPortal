@@ -66,6 +66,7 @@ module Fees
         .where('fees_transactions.created_at >= ?', date1)
         .where('fees_transactions.created_at <= ?', date2)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
+        .order(:created_at)
 
       if payment_type == 'online'
         fees_transactions = fees_transactions.where(mode: 'online')
