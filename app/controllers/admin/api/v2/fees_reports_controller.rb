@@ -96,8 +96,8 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
           ft.student.parent_mobile,
           ft.student.gender == 0 ? 'Male' : 'Female' ,
           ft.student.batches.joins(:fees_templates).pluck(:name).join(', '),
-          ft.remaining_amount.to_f.round(2),
-          ft.next_due_date&.strftime('%Y-%m-%d')
+          ft.next_due_date&.strftime('%Y-%m-%d'),
+          ft.remaining_amount.to_f.round(2)
         ]
       end
     end

@@ -3,7 +3,7 @@
 # SmartExamsV4 => ["vaa", "hostel", "jmc", "bhargav", "chate", "gp_dhule", "jspm", "konale-exams", "demo", "srbio", "elearning", "kcp", "lbs", "tf", "bansalclasses", "dscl"]
 # SmartExamsV5 => ["bep", "saraswati-videos", "saraswati-exams", "dep"]
 
-set :application, "SmartExamsV3"
+set :application, "SmartExamsV2"
 set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
 set :user, 'ubuntu'
 set :deploy_to,   "/home/#{fetch(:user)}/app/#{fetch(:application)}"
