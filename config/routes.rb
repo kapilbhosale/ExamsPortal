@@ -207,6 +207,7 @@ Rails.application.routes.draw do
         get  'reports/collection', to: 'fees_reports#collection'
         get  'reports/collection_csv', to: 'fees_reports#collection_csv'
         get  'reports/due_fees', to: 'fees_reports#due_fees'
+        get  'reports/due_fees_csv', to: 'fees_reports#due_fees_csv'
         get  'reports/notes', to: 'fees_reports#notes'
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
         get  'batches', to: 'batches#index'
