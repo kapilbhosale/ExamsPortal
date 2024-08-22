@@ -60,8 +60,7 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
   end
 
   def due_fees
-    # todo add payments-due permission.
-    render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('payments')
+    render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('payments-due')
 
     from_date = DateTime.parse(params[:dates][0]).in_time_zone.to_date
     to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date
@@ -78,8 +77,36 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
     render json: due_fees_data
   end
 
+  def due_fees_csv
+    render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('payments-due')
+
+    from_date = DateTime.parse(params[:dates][0]).in_time_zone.to_date
+    to_date = DateTime.parse(params[:dates][1]).in_time_zone.to_date
+    branch = params[:branch]
+    due_fees_data = {}
+
+    @fees_transactions = Fees::DueFeesReportService.new(current_org, current_admin, from_date, to_date, branch).call
+
+    csv_data = CSV.generate(headers: true) do |csv|
+      csv << ["roll_number", "name", "parent_mobile", "gender", "batch", "Due Date", "Due Amount"]
+      @fees_transactions.each do |ft|
+        csv << [
+          ft.student.roll_number,
+          ft.student.name,
+          ft.student.parent_mobile,
+          ft.student.gender == 0 ? 'Male' : 'Female' ,
+          ft.student.batches.joins(:fees_templates).pluck(:name).join(', '),
+          ft.remaining_amount.to_f.round(2),
+          ft.next_due_date&.strftime('%Y-%m-%d')
+        ]
+      end
+    end
+
+    send_data csv_data, type: 'text/csv', filename: 'due_date_report.csv'
+  end
+
   def notes
-    render json: { message: 'inalid permissions' } and return unless current_admin.roles.include?('notes')
+    render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('notes')
 
     notes_data = {}
     @notes = Note.all.index_by(&:id)
