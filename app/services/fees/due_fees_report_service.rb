@@ -33,8 +33,10 @@ module Fees
         .where('fees_transactions.next_due_date >= ?', date1)
         .where('fees_transactions.next_due_date <= ?', date2)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
-        .where('remaining_amount > 0')
         .order(:created_at)
+
+      nil_fees_student_ids = fees_transactions.where('remaining_amount > 0').pluck(:student_id)
+      fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids)
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
