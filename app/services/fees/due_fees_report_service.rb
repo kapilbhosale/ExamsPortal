@@ -35,7 +35,7 @@ module Fees
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
         .order(:created_at)
 
-      nil_fees_student_ids = fees_transactions.where('remaining_amount > 0').pluck(:student_id)
+      nil_fees_student_ids = fees_transactions.where('remaining_amount = 0').pluck(:student_id)
       fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids)
 
       fees_transactions_by_students = {}
