@@ -28,6 +28,8 @@ module Fees
         fees_transactions = fees_transactions.lt_hundred
       end
 
+      nil_fees_student_ids = fees_transactions.current_year.where(org_id: current_org.id).where('remaining_amount = 0').pluck(:student_id)
+
       fees_transactions = fees_transactions.current_year
         .where(org_id: current_org.id)
         .where('fees_transactions.next_due_date >= ?', date1)
@@ -35,15 +37,14 @@ module Fees
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
         .order(:created_at)
 
-      nil_fees_student_ids = fees_transactions.where('remaining_amount = 0').pluck(:student_id)
       fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids)
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
-        fees_transactions_by_students[ft.student_id] = ft
+        fees_transactions_by_students[ft.student_id] = ft.id
       end
 
-      return fees_transactions_by_students.values
+      return FeesTransaction.where(id: fees_transactions_by_students.values).order(:created_at)
     end
   end
 end
