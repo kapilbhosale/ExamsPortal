@@ -37,7 +37,7 @@ module Fees
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
         .order(:created_at)
 
-      fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids)
+      fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids).order(:created_at)
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
