@@ -41,12 +41,7 @@ module Fees
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
-        if fees_transactions_by_students[ft.student_id].blank?
-          fees_transactions_by_students[ft.student_id] = {
-            id: ft.id,
-            created_at: ft.created_at
-          }
-        elsif fees_transactions_by_students[ft.student_id][:created_at] < ft.created_at
+        if fees_transactions_by_students[ft.student_id].blank? || fees_transactions_by_students[ft.student_id][:created_at] < ft.created_at
           fees_transactions_by_students[ft.student_id] = {
             id: ft.id,
             created_at: ft.created_at
