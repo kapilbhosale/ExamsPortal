@@ -41,10 +41,22 @@ module Fees
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
-        fees_transactions_by_students[ft.student_id] = ft.id
+        if fees_transactions_by_students[ft.student_id].blank?
+          fees_transactions_by_students[ft.student_id] = {
+            id: ft.id,
+            created_at: ft.created_at
+          }
+        elsif fees_transactions_by_students[ft.student_id][:created_at] < ft.created_at
+          fees_transactions_by_students[ft.student_id] = {
+            id: ft.id,
+            created_at: ft.created_at
+          }
+        end
       end
 
-      return FeesTransaction.where(id: fees_transactions_by_students.values).order(:created_at)
+      ft_ids = fees_transactions_by_students.values.map { |ft| ft[:id] }
+
+      return FeesTransaction.where(id: ft_ids).order(:created_at)
     end
   end
 end
