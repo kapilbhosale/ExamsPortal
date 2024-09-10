@@ -214,11 +214,13 @@ class StudentExamScoreCalculator
     { correct_count: correct_count, in_correct_count: in_correct_count }
   end
 
-  def score(counts)
-    @exam_section = @exam_section || ExamSection.find_by(exam: exam, section: @current_section)
+    def score(counts)
+    @exam_section ||= ExamSection.find_by(exam: exam, section: @current_section)
+    input_correct_multiplier = exam.jee_paper_1? ? 4 : @exam_section.positive_marks
+
     (counts[:correct_count] * @exam_section.positive_marks) +
       (counts[:in_correct_count] * @exam_section.negative_marks) +
-      (counts[:input_correct_count] * @exam_section.positive_marks) +
+      (counts[:input_correct_count] * input_correct_multiplier) +
       counts[:multi_mark_total]
   end
 
