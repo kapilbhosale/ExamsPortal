@@ -25,8 +25,14 @@ class ExamSection < ApplicationRecord
     return _total_marks.to_i if _total_marks.present?
     if exam.neet?
       _total_marks = 45 * 4
+    elsif exam.jee_advance?
+      _total_marks = jee_advance_total_marks
+    elsif exam.jee_paper_1?
+      _total_marks = jee_paper_1_total_marks
+    elsif exam.jee_paper_2?
+      _total_marks = jee_paper_2_total_marks
     else
-      _total_marks = exam.jee_advance? ? jee_advance_total_marks : regular_total_marks
+      regular_total_marks
     end
 
     REDIS_CACHE&.set("exam-section-total-marks-#{id}", _total_marks)
@@ -40,6 +46,14 @@ class ExamSection < ApplicationRecord
     # if there are 10 input questions, considering 5 of them are optional.
     total -= 5 * 4 if input_count == 10
     total
+  end
+
+  def jee_paper_1_total_marks
+    66
+  end
+
+  def jee_paper_2_total_marks
+    60
   end
 
   def regular_total_marks

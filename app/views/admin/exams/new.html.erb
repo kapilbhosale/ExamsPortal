@@ -73,6 +73,12 @@
               <label class="custom-control custom-radio custom-control-inline">
                 <input id="radio_jee_advance" name="exam_type" type="radio" value="jee_advance" /> &nbsp; JEE Advance
               </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="radio_jee_paper_1" name="exam_type" type="radio" value="jee_paper_1" /> &nbsp; JEE Paper 1
+              </label>
+              <label class="custom-control custom-radio custom-control-inline">
+                <input id="radio_jee_paper_2" name="exam_type" type="radio" value="jee_paper_2" /> &nbsp; JEE Paper 2
+              </label>
               <p style="font-size: 10px; padding-left: 100px" class="" id="jee-instructions">
                 add [input] for input type questions, 10 input questions will make 5 optional as per new JEE pattern.
               </p>
@@ -81,6 +87,9 @@
               </p>
               <p style="font-size: 10px; padding-left: 100px" class="hidden" id="jee-advance-instructions">
                 For JEE advance, +ve and -ve Marks are only for Single Input questions. For 'Multi Input' & 'Numeric Input' marks will be calculated as per rules of JEE Advance.
+              </p>
+              <p style="font-size: 10px; padding-left: 100px" class="hidden" id="jee-papers">
+                For JEE Paper 1 and Paper 2 Format
               </p>
             </div>
           </div>
@@ -182,20 +191,25 @@
 
 <script>
   $(document).ready(function(){
+    function toggleInstructions(showId) {
+      $('#jee-advance-instructions, #jee-instructions, #neet-instructions, #jee-papers').addClass("hidden");
+      $(showId).removeClass("hidden");
+    }
+
     $('#radio_jee_advance').on("click", function(){
-      $('#jee-advance-instructions').removeClass("hidden");
-      $('#jee-instructions').addClass("hidden");
-      $('#neet-instructions').addClass("hidden");
+      toggleInstructions('#jee-advance-instructions');
     });
+
     $('#radio_regular').on("click", function(){
-      $('#jee-advance-instructions').addClass("hidden");
-      $('#jee-instructions').removeClass("hidden");
-      $('#neet-instructions').addClass("hidden");
+      toggleInstructions('#jee-instructions');
     });
+
     $('#radio_neet').on("click", function(){
-      $('#jee-advance-instructions').addClass("hidden");
-      $('#jee-instructions').addClass("hidden");
-      $('#neet-instructions').removeClass("hidden");
+      toggleInstructions('#neet-instructions');
+    });
+
+    $('#radio_jee_paper_1, #radio_jee_paper_2').on("click", function(){
+      toggleInstructions('#jee-papers');
     });
   });
 </script>

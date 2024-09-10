@@ -34,7 +34,7 @@ module Exams
           end
 
           # upload exam json to S3
-          upload_exam_json_to_s3
+          upload_exam_json_to_s3 if Rails.env.production?
 
           return {status: true, message: 'Exam added successfully'}
         end
