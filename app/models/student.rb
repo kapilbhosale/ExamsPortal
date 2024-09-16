@@ -256,7 +256,7 @@ class Student < ApplicationRecord
 
   def set_confirmation_sms(mobile_number)
     sms_user = "RCCLatur"
-    sms_password = URI.encode_www_form_component("RCC@L321$")
+    sms_password = URI.encode_www_form_component(org.data['sms_settings']['password'])
     sender_id = "RCCLtr"
     template_id = '1007665462650104735'
     entity_id = '1001545918985192145'
@@ -271,7 +271,7 @@ class Student < ApplicationRecord
 
   def rcc_admission_confirm_sms(mobile_number)
     sms_user = "RCCLatur"
-    sms_password = URI.encode_www_form_component("RCC@L321$")
+    sms_password = URI.encode_www_form_component(org.data['sms_settings']['password'])
     sender_id = "RCCLtr"
     template_id = '1007270988222216500'
     entity_id = '1001545918985192145'
@@ -286,7 +286,7 @@ class Student < ApplicationRecord
 
   def rcc_installment_sms(mobile_number)
     sms_user = "RCCLatur"
-    sms_password = URI.encode_www_form_component("RCC@L321$")
+    sms_password = URI.encode_www_form_component(org.data['sms_settings']['password'])
     sender_id = "RCCLtr"
     template_id = '1007567986910703670'
     entity_id = '1001545918985192145'
