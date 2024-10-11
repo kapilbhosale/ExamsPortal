@@ -326,20 +326,16 @@ class Students::AdmissionsController < ApplicationController
       student = Student.where(
         parent_mobile: @new_admission.parent_mobile,
         student_mobile: @new_admission.student_mobile
-      ).where('created_at > ?', Date.parse("10-dec-2023")).last
+      ).where('created_at > ?', Date.parse("11-oct-2024")).last
 
       # batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
       # batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
       test_series_batch_ids = [972, 977]
-      set_batch_ids_11th_23_24 = [986, 987]
-      set_batch_ids_12th_23_24 = [988, 989]
-      neet_saarthi_batch_ids = [1119]
+      neet_saarthi_batch_ids = [1186]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
           @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank? ||
-          @new_admission.batch == '11th_set' && (student_batch_ids & set_batch_ids_11th_23_24).blank? ||
-          @new_admission.batch == '12th_set' && (student_batch_ids & set_batch_ids_12th_23_24).blank? ||
           @new_admission.batch == 'neet_saarthi' && (student_batch_ids & neet_saarthi_batch_ids).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
