@@ -258,7 +258,7 @@ class Student < ApplicationRecord
     sms_user = "RCCLatur"
     sms_password = URI.encode_www_form_component(org.data['sms_settings']['password'])
     sender_id = "RCCLtr"
-    template_id = '1007665462650104735'
+    template_id = '1007960096327720449'
     entity_id = '1001545918985192145'
 
     msg = "Dear Students/ Parents, \nFrom RCC Welcome in the world of Motegaonkar Sirs RCC. Your RCC-SET Scholarship Entrance Test Registration is Confirmed Roll No - #{roll_number.to_s.rjust(7, '0')} Parent Mobile No - #{parent_mobile} \nDownload App from Below link- https://play.google.com/store/apps/details?id=com.at_and_a.rcc_new&pcampaignid=web_share For Any Assistance Call - 9075 40 2222, 9075 39 2222 Team RCC"
