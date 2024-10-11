@@ -174,7 +174,7 @@ class Students::AdmissionsController < ApplicationController
           student_mobile: new_admission_params[:student_mobile],
           free: true,
           batch: NewAdmission.batches[new_admission_params[:batch]]
-        ).where('created_at > ?', Date.parse("10-dec-2023")).order(id: :desc)&.last
+        ).where('created_at > ?', Date.parse("11-oct-2024")).order(id: :desc)&.last
         if new_admission.present?
           redirect_to rcc_set_path_url({id: new_admission.reference_id}) and return
         end
