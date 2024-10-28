@@ -237,6 +237,10 @@ Rails.application.routes.draw do
         end
         resources :notes
       end
+
+      namespace :v3 do
+        resources :students, only: [:index]
+      end
     end
     get :halltickets, to: 'dashboard#halltickets'
     post :import_halltickets, to: 'dashboard#import_halltickets', as: :import_halltickets

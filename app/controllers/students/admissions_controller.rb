@@ -331,6 +331,7 @@ class Students::AdmissionsController < ApplicationController
       # batches_rep_set_23_24 = ['LTR-REP-SET-2023-24', 'NED-REP-SET-2023-24', 'AUR-REP-SET-2023-24', 'PUNE-REP-SET-2023-24', 'AK-REP-SET-2023-24', 'KLH-REP-SET-2023-24', 'PMP-REP-SET-2023-24']
       # batches_set_11_p3 = ["11-SET-2-april-23-(jee)", "11-SET-2-april-23-(neet)"]
       test_series_batch_ids = [972, 977]
+      # SET_BATCH_ID_MARKER
       neet_saarthi_batch_ids = [1186]
 
       student_batch_ids = student&.batches&.ids || []

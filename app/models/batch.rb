@@ -173,6 +173,7 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, id: batch_id)
   end
 
+  # SET_BATCH_ID_MARKER
   def self.get_neet_saarthi_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
     Batch.where(org_id: org.id, id: 1186)
