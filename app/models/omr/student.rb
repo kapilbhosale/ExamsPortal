@@ -33,3 +33,23 @@ class Omr::Student < ApplicationRecord
   has_many :omr_tests, through: :omr_student_tests
 
 end
+
+
+# Omr::BatchTest.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
+
+# Omr::StudentBatch.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
+
+# Omr::StudentTest.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
+
+# Omr::Batch.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
+
+# Omr::Student.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
+
+# Omr::Test.delete_all
+# ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
+
