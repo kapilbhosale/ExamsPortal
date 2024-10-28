@@ -15,7 +15,7 @@
 #
 
 class Omr::StudentBatch < ApplicationRecord
-  belongs_to :omr_student, class_name: 'Omr::Student'
+  belongs_to :omr_student, class_name: 'Omr::Student', optional: true
   belongs_to :omr_batch, class_name: 'Omr::Batch'
 
   validates :omr_student_id, uniqueness: { scope: :omr_batch_id }
