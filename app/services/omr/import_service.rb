@@ -65,7 +65,7 @@ class Omr::ImportService
     file_path = "#{get_base_file_path}/Student_Master.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       student_id = csv_row['Student_ID']
       # next if student_id is not a number or its greater than 50000
       next if student_id.to_i.to_s != student_id || student_id.to_i >= 50000
@@ -97,7 +97,7 @@ class Omr::ImportService
     file_path = "#{get_base_file_path}/Batch_Master.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       batch = Omr::Batch.find_by(id: csv_row['Batch_ID'])
       unless batch.present?
         Omr::Batch.create(
@@ -116,7 +116,7 @@ class Omr::ImportService
     csv_file = File.open(file_path, "r:ISO-8859-1")
     @subjects = {}
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       @subjects[csv_row['Subject_ID'].to_i] = csv_row['Subject_Name']
     end
   end
@@ -127,7 +127,7 @@ class Omr::ImportService
     existing_student_batches = Omr::StudentBatch.pluck(:omr_student_id, :omr_batch_id)
     new_student_batches = []
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       student_batch_key = [csv_row['Student_ID'].to_i, csv_row['Batch_ID'].to_i]
       next if existing_student_batches.include?(student_batch_key)
 
@@ -149,7 +149,7 @@ class Omr::ImportService
     file_path = "#{get_base_file_path}/Batch_Test_Detail.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       Omr::BatchTest.find_or_create_by(
         omr_batch_id: csv_row['Batch_ID'].to_i,
         omr_test_id: csv_row['Test_ID'].to_i
@@ -179,7 +179,7 @@ class Omr::ImportService
     csv_file = File.open(file_path, "r:ISO-8859-1")
     @tests_counts = 0
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       @tests_counts += 1
       test_id = csv_row['Test_ID'].to_i
       test_name = csv_row['Test_Name'].to_s.strip
@@ -246,7 +246,7 @@ class Omr::ImportService
     csv_file = File.open(file_path, "r:ISO-8859-1")
     test_subject_data = {}
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       test_subject_data[csv_row['Test_ID'].to_i] ||= {}
       test_subject_data[csv_row['Test_ID'].to_i][@subjects[csv_row['Subject_ID'].to_i]] = {
         from: csv_row['C_From'].to_i,
@@ -267,7 +267,7 @@ class Omr::ImportService
     file_path = "#{get_base_file_path}/bookletDetail.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       child_test_id = csv_row['ChildTestID'].to_i
       parent_test_id = csv_row['TestID'].to_i
       test = Omr::Test.find_by(id: child_test_id)
@@ -284,7 +284,7 @@ class Omr::ImportService
     return if data_imported && tests_to_process.empty?
 
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      next if csv_row['Is_Delete'] == 'True'
+      # next if csv_row['Is_Delete'] == 'True'
       test_id = csv_row['Test_ID'].to_i
 
       next if data_imported && !tests_to_process.include?(test_id)
