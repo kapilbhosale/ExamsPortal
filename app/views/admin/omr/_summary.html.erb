@@ -1,5 +1,7 @@
-<div style="border: 1px solid black; background-color: #F0F0F0; border-radius: 10px; margin-bottom: 10px; margin-top: 10px">
-  <h5 style="text-align: center; padding: 4px">RCC Smart Summary Report</h5>
+<div style="border: 1px solid black; background-color: #F0F0F0; margin-bottom: 10px; margin-top: 10px">
+<div class="print-background" style="padding: 8px;">
+  <h5 class="white-color" style="text-align: center;">RCC SMART SUMMARY</h5>
+</div>
   <table class="table table-bordered">
     <thead style="padding: 10px">
       <tr>
@@ -41,8 +43,8 @@
         <% if @student_summary_per_subject['Bio'].present? %>
           <td><%= @student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score] %></td>
         <% end %>
-        <td><%= @graph_data[:average]/100.0 * 720%> (<%=(@graph_data[:average])%> %)</td>
-        <td><%= @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %></td>
+        <td><%= (@graph_data[:average]/100.0 * 720).round(2) %> (<%=(@graph_data[:average])%> %)</td>
+        <td><%= @student.omr_student_tests.pluck(:rank).count == 0 ? '-' : @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %></td>
       </tr>
       <tr>
         <td>Avg. Accuracy</td>
@@ -112,3 +114,24 @@
     </tbody>
   </table>
 </div>
+
+<style>
+  .white-color {
+    color: white;
+  }
+
+  .print-background {
+    background-color: #274696 !important;
+  }
+
+  @media print {
+    .print-background {
+      background-color: #274696 !important;
+      -webkit-print-color-adjust: exact; /* For WebKit browsers */
+      color-adjust: exact; /* For other browsers */
+    }
+    .white-color {
+      color: white !important;
+    }
+  }
+</style>

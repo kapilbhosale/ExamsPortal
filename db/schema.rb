@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_22_115159) do
+ActiveRecord::Schema.define(version: 2024_10_28_054625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"

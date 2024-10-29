@@ -4,7 +4,7 @@
     <%= image_tag("rcc-logo.png", alt: "Logo", width: "150", height: "80") %>
     </td>
     <td class="text-center" style="padding-top: 20px">
-      <h3><%= org.name %> </h3>
+      <h3 class="red-color" ><%= org.name %> </h3>
       <p>
         XI &#8226 XII &#8226 NEET &#8226 IIT-JEE &#8226 MHT-CET
       </p>
@@ -17,3 +17,15 @@
     </td>
   </tr>
 </table>
+
+<style>
+  .red-color {
+    color: red;
+  }
+
+  @media print {
+    .red-color {
+      color: red !important;
+    }
+  }
+</style>

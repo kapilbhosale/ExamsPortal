@@ -3,3 +3,14 @@
 <%= render partial: 'class_header', locals: { org: @student.org } %>
 <%= render partial: 'student', locals: { student: @student } %>
 <%= render partial: 'graph', locals: { student: @student } %>
+
+
+<style>
+  @media print {
+    .print-background {
+      background-color: #274696 !important;
+      -webkit-print-color-adjust: exact; /* For WebKit browsers */
+      color-adjust: exact; /* For other browsers */
+    }
+  }
+</style>

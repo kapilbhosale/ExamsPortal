@@ -39,10 +39,10 @@
         <td><%= test_data[:sr_no] %></td>
         <td><%= test_data[:roll_number] %></td>
         <td><%= test_data[:name] %></td>
-        <td><%= test_data[:data]["Phy"]["score"] %></td>
-        <td><%= test_data[:data]["Chem"]["score"] %></td>
-        <td><%= test_data[:data]["Bot"]["score"] %></td>
-        <td><%= test_data[:data]["Zoo"]["score"] %></td>
+        <td><%= test_data[:data].dig("Phy", "score") %></td>
+        <td><%= test_data[:data].dig("Chem", "score") %></td>
+        <td><%= test_data[:data].dig("Bot", "score") %></td>
+        <td><%= test_data[:data].dig("Zoo", "score") %></td>
         <td><%= test_data[:score] %></td>
         <td><%= test_data[:rank] %></td>
       </tr>

@@ -30,59 +30,72 @@ class Admin::OmrController < Admin::BaseController
     @batches = @test.omr_batches
   end
 
+  # deepak+kapil report
   def test_report_print
     @test = Omr::Test.find(params[:test_id])
     selected_batches = Omr::Batch.find(params[:batches])
-    # if (params["commit"] == "detailed_report")
-      exclude_absents = params[:exclude_absents].present?
-      report_type = params[:report_type]
-      report_format = params[:report_format]
-      @report_data = Omr::TestReportService.new(@test, selected_batches.pluck(:id), exclude_absents, report_type).call
-    # else
-    #   Omr::TestSummaryReportService.new(@test, @selected_batches.pluck(:id)).call
-    # end
+
+    include_absents = params[:include_absents].present?
+    report_type = params[:report_type]
+    report_format = params[:report_format]
+    @report_data = Omr::TestReportService.new(@test, selected_batches.pluck(:id), include_absents, report_type).call
   end
 
   def progress_report
     @student = Omr::Student.find(params[:student_id])
     @attempted_tests = @student.omr_student_tests.index_by(&:omr_test_id)
+    student_batches = @student.omr_batches.pluck(:name)
 
     @all_tests, exam_names, percent_score, colors, toppers = [], [], [], [], []
     @subjects = []
     average_scores = []
     @subject_scores_per_test = {}
 
-    @student.omr_batches.each do |batch|
-      batch.omr_tests.includes(:parent_test).order(id: :desc).each do |test|
-        next if test.parent_test.present?
+    # omr_tests = Omr::Test.includes(:omr_batches, :parent_test).where(omr_batches: {id: @student.omr_batches.ids}).order(test_date: :desc)
 
-        @all_tests << {id: test.id, name: test.test_name, qcount: test.no_of_questions, total_marks: test.total_marks, date: test.test_date.strftime("%d-%b-%Y")}
-        exam_names << "Test-#{test.id}"
-        student_test = @attempted_tests[test.id]
-        toppers << test.toppers['ALL'].to_i * 100 / test.total_marks
-        @subject_scores_per_test[test.id] = {}
-        @avg_per_test = {}
+    omr_tests = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).includes(:parent_test, :omr_batches).order(test_date: :desc)
 
-        if student_test.present?
-          percent = student_test.score.to_i * 100 / test.total_marks
-          average_scores << percent
-          percent_score << percent
-          colors << get_color(percent)
-          @subject_scores_per_test[test.id]['rank'] = student_test.rank
+    omr_tests.each do |test|
+      next if test.parent_test.present?
 
-          student_test.data.each do |subject, score_data|
-            next if subject == 'single_subject'
+      @all_tests << {id: test.id, name: test.test_name, qcount: test.no_of_questions, total_marks: test.total_marks, date: test.test_date.strftime("%d-%b-%y"), is_single_subject: test.single_subject? }
+      exam_names << "Test-#{test.id}"
+      student_test = @attempted_tests[test.id]
+      topper_percentage = test.toppers['ALL'].to_i * 100 / test.total_marks
+      toppers << topper_percentage
+      @subject_scores_per_test[test.id] = {}
+      @avg_per_test = {}
+      percentile = 0
 
-            @subjects << subject if @subjects.exclude?(subject)
-            @subject_scores_per_test[test.id][subject] = score_data['score']
-            @avg_per_test[subject] ||= []
-            @avg_per_test[subject] << score_data['score']
-          end
+      # binding.pry if test.id == 387
+      if student_test.present?
+        percent = student_test.score.to_i * 100 / test.total_marks
+        average_scores << percent
+        percent_score << percent
+        colors << get_color(percent)
+        percentile = percent * 100 / topper_percentage.to_f
+        @subject_scores_per_test[test.id]['rank'] = student_test.rank
+        @subject_scores_per_test[test.id]['percentage'] = (student_test.score.to_i * 100 / test.total_marks.to_f).round(2)
+        @subject_scores_per_test[test.id]['percentile'] = percentile.round(2)
 
-        else
-          percent_score << 0
-          colors << 'gray'
+        student_test.data.each do |subject, score_data|
+          next if subject == 'single_subject'
+          sub_code = get_subject_code(subject)
+
+          @subjects << sub_code if @subjects.exclude?(sub_code)
+          @subject_scores_per_test[test.id][sub_code] ||= {}
+          @subject_scores_per_test[test.id][sub_code]['score'] = score_data['score']
+          @subject_scores_per_test[test.id][sub_code]['A'] = score_data['correct_count'] + score_data['wrong_count']
+          @subject_scores_per_test[test.id][sub_code]['C'] = score_data['correct_count']
+          @subject_scores_per_test[test.id][sub_code]['W'] = score_data['wrong_count']
+          @subject_scores_per_test[test.id][sub_code]['S'] = score_data['skip_count']
+          @avg_per_test[sub_code] ||= []
+          @avg_per_test[sub_code] << score_data['score']
         end
+
+      else
+        percent_score << 0
+        colors << 'gray'
       end
     end
 
@@ -104,6 +117,14 @@ class Admin::OmrController < Admin::BaseController
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
     end
+  end
+
+  def get_subject_code(subject)
+    return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
+    return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
+    return 'Bio' if ['bio', 'biology'].include?(subject.downcase)
+    return 'Bot' if ['bot', 'botany', 'botony'].include?(subject.downcase)
+    return 'Zoo' if ['zoo', 'zoology'].include?(subject.downcase)
   end
 
   def create

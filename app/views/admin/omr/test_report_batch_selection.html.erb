@@ -36,7 +36,7 @@
         <h5 style="flex-grow: 1; text-align: left;">Report Sorting By</h5>
         <div style="display: flex; justify-content: flex-start;">
           <div>
-            <%= radio_button_tag 'report_type', 'roll_number', true %>
+            <%= radio_button_tag 'report_type', 'roll_number' %>
             <%= label_tag 'report_type_roll_number', 'Roll Number', style: "font-weight: normal;" %>
           </div>
 
@@ -46,7 +46,7 @@
           </div>
 
           <div class="ml-4">
-            <%= radio_button_tag 'report_type', 'rank' %>
+            <%= radio_button_tag 'report_type', 'rank', true %>
             <%= label_tag 'report_type_rank', 'Rank', style: "font-weight: normal;" %>
           </div>
         </div>
@@ -70,17 +70,13 @@
 
     <div class="p-2 pt-3" style="background-color: #fac9c9; border-radius: 10px">
       <div>
-        <%= check_box_tag 'exclude_absents' %>
-        <%= label_tag 'exclude_absents', 'Exclude Absents', style: "font-weight: normal;" %>
+        <%= check_box_tag 'include_absents' %>
+        <%= label_tag 'include_absents', 'Include Absents Students', style: "font-weight: normal;" %>
       </div>
     </div>
   </div>
 
   <div class="mt-4" style="display: flex; justify-content: flex-end">
-    <div style="text-align: right;" class="print-link">
-      <button type="submit" name="commit" value="summary_report" class="btn btn-danger">Print Test Summary</button>
-    </div>
-
     <div style="text-align: right;" class="print-link ml-4">
       <button type="submit" name="commit" value="detailed_report" class="btn btn-primary">Generate Report</button>
     </div>

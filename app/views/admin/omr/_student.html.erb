@@ -1,27 +1,51 @@
-
-<table class="table table-bordered">
+<table class="table table-bordered" style="margin-top: 20px; margin-bottom: 10px">
   <tbody>
-    <tr>
-      <td><strong>Student name:</strong></td>
-      <td><%= student.name %></td>
-      <td><strong>Roll Number:</strong></td>
-      <td><%= student.roll_number %></td>
+    <tr style="vertical-align: middle;">
+      <td rowspan="2" style="text-align: center;">
+        <%= image_tag 'student_new.png', alt: 'New Student', height: '150' %>
+      </td>
+      <td>
+        <strong>Roll Number</strong><br>
+        <%= student.roll_number %>
+      </td>
+      <td>
+        <strong>Student name</strong><br>
+        <%= student.name %>
+      </td>
+      <td>
+        <strong>Batches</strong><br>
+        <ul>
+          <% student.omr_batches.each do |batch| %>
+            <li style="margin-left: -21px"><%= batch.name %></li>
+          <% end %>
+        </ul>
+      </td>
     </tr>
-    <tr>
-      <td><strong>Parent Contact:</strong></td>
-      <td><%= student.parent_contact %></td>
-      <td><strong>Batches:</strong></td>
-      <% if student.omr_batches.count == 1 %>
-        <td><%= student.omr_batches.first.name %> </td>
-      <% else %>
-        <td>
-          <ul>
-            <% student.omr_batches.each do |batch| %>
-              <li><%= batch.name %></li>
-            <% end %>
-          </ul>
-        </td>
-      <% end %>
+    <tr style="vertical-align: middle;">
+      <td>
+        <strong>Parent Contact</strong><br>
+        <%= student.parent_contact %>
+      </td>
+      <td>
+        <strong>Stream</strong><br>
+        NEET 2025
+      </td>
+      <td>
+        <strong>Academic Center</strong><br>
+        Latur
+      </td>
     </tr>
   </tbody>
 </table>
+
+<style>
+  strong {
+    color: #274696;
+  }
+
+  @media print {
+    strong {
+      color: #274696 !important;
+    }
+  }
+</style>

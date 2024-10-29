@@ -56,6 +56,13 @@ class Omr::Test < ApplicationRecord
     end
   end
 
+  def neet_new_pattern?
+    sub_data = self.data['subjects']
+    return false unless sub_data.is_a?(Hash) && sub_data.size == 4
+
+    sub_data.all? { |_, subject| subject["count"] == 50 }
+  end
+
   def calculate_subject_scores
     return if self.omr_student_tests.blank?
 
@@ -75,7 +82,13 @@ class Omr::Test < ApplicationRecord
         sub_correct, sub_wrong, sub_skip = 0, 0, 0
         sub_correct_score, sub_wrong_score = 0, 0
 
+        counter = 1
+        neet_b_counter = 0
+        neet_b_skip_counter = 0
+
         from.upto(to) do |q_index|
+          next if neet_new_pattern? && neet_b_counter >= 10
+
           model_ans = test.answer_key[(q_index).to_s]
           std_ans = ans[q_index - 1]
 
@@ -87,6 +100,10 @@ class Omr::Test < ApplicationRecord
 
           if std_ans == '@'
             sub_skip += 1
+            if neet_new_pattern?
+              counter += 1
+              neet_b_skip_counter += 1 if counter > 35
+            end
             next
           end
 
@@ -105,6 +122,16 @@ class Omr::Test < ApplicationRecord
             sub_wrong += 1
             sub_wrong_score += model_ans['nm']
           end
+
+          if neet_new_pattern?
+            neet_b_counter += 1 if counter > 35 && std_ans != '@'
+            counter += 1
+          end
+        end
+
+        # binding.pry if student_test.omr_student_id == 3825 && student_test.omr_test_id == 314
+        if neet_new_pattern? && neet_b_counter <= 10
+          sub_skip = sub_skip - (neet_b_skip_counter - (10 - neet_b_counter))
         end
 
         subject_scores[sub_name] = {
@@ -138,5 +165,10 @@ class Omr::Test < ApplicationRecord
 
     self.data['subjects'] = self.data['subjects'].sort_by { |_, inner_hash| inner_hash["from"] }.to_h
     self.save
+  end
+
+  def single_subject?
+    return true if self.data['subjects'].blank?
+    self.data['subjects'].keys.size == 1 && self.data['subjects'].keys.first == 'single_subject'
   end
 end

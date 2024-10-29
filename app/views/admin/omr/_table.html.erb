@@ -1,9 +1,14 @@
 <table class="table table-bordered">
+  <div style="text-align: right">
+    <p>Note: A: Attempted, C: Correct, W: Wrong, S: Skip</p>
+  </div>
   <thead>
+    <div class="bg-detailed-header" style="padding: 8px;">
+      <h5 class="white-color" style="text-align: center;">DETAILED REPORT</h5>
+    </div>
     <tr>
-      <th>Sr.no.</th>
       <th>Exam name</th>
-      <th>Date</th>
+      <th>Date/Mode</th>
       <th>Marks</th>
       <% if @subjects.include?("Phy") %>
         <th>Phy</th>
@@ -17,12 +22,14 @@
       <% if @subjects.include?("Zoo") %>
         <th>Zoo</th>
       <% end %>
-      <% if @subjects.include?("Bio") %>
+      <% if @subjects.include?("Bio") || @subjects.include?("Bot")%>
         <th>Bio</th>
       <% end %>
       <% if @subjects.include?("Math") %>
         <th>Math</th>
       <% end %>
+      <th>%tage</th>
+      <th>%tile</th>
       <th>Rank</th>
     </tr>
   </thead>
@@ -33,30 +40,175 @@
         <% student_marks = @attempted_tests[test_id] %>
         <% if student_marks.present? %>
           <% if @subject_scores_per_test[test_id]['Bio'].present? %>
-            <% bio = @subject_scores_per_test[test_id]['Bio'] %>
+            <% bio = @subject_scores_per_test[test_id]['Bio']['score'] %>
           <% elsif @subject_scores_per_test[test_id]['Bot'].present? %>
-            <% bio = @subject_scores_per_test[test_id]['Bot'] + @subject_scores_per_test[test_id]['Zoo'] %>
+            <% bio = @subject_scores_per_test[test_id]['Bot']['score'] + @subject_scores_per_test[test_id]['Zoo']['score'] %>
+            <% bio_A = @subject_scores_per_test[test_id]['Bot']['A'] + @subject_scores_per_test[test_id]['Zoo']['A'] %>
+            <% bio_C = @subject_scores_per_test[test_id]['Bot']['C'] + @subject_scores_per_test[test_id]['Zoo']['C'] %>
+            <% bio_W = @subject_scores_per_test[test_id]['Bot']['W'] + @subject_scores_per_test[test_id]['Zoo']['W'] %>
+            <% bio_S = @subject_scores_per_test[test_id]['Bot']['S'] + @subject_scores_per_test[test_id]['Zoo']['S'] %>
           <% end %>
         <% end %>
         <tr style="<%= 'background-color: #FFCCCC;' if student_marks.blank? %>">
-          <td><%= "Test-#{test_id}" %></td>
-          <td><%= test[:name] %></td>
-          <td><%= test[:date] %></td>
-          <td><%= student_marks.present? ? "#{student_marks.score}/#{test[:total_marks]}" : "-" %></td>
-          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Phy'] : "-" %></td>
-          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Chem'] : "-" %></td>
-          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Bot'] : "-"%></td>
-          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['Zoo'] : "-"%></td>
-          <td><%= student_marks.present? ? bio : "-"%></td>
-          <td><%= student_marks.present? ? @subject_scores_per_test[test_id]['rank'] : "AB"%></td>
+          <td>
+            <p style="font-size: 16px; color: black; width: 240px; word-wrap: break-word;">
+              <%= test[:name] %>
+            </p>
+            <p style="font-size: 14px"><%= "Test-#{test_id}" %></p>
+          </td>
+          <td>
+            <%= test[:date] %>
+            <p style="font-size: 14px">OFFLINE</p>
+          </td>
+          <% if student_marks.blank? %>
+            <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>AB</td>
+          <% elsif test[:is_single_subject] %>
+            <td class="text-center"><%= "#{student_marks.score}/#{test[:total_marks]}" %></td>
+            <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentage']%></td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentile']%></td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['rank']%></td>
+          <% else %>
+            <td class="text-center"><%= "#{student_marks.score}/#{test[:total_marks]}" %></td>
+            <td class="text-center">
+                <%= @subject_scores_per_test[test_id]['Phy']['score']%>
+                <table class="compact-table">
+                  <tr>
+                    <td>A: <%= @subject_scores_per_test[test_id]['Phy']['A'] %>, <span >C: <%= @subject_scores_per_test[test_id]['Phy']['C'] %><span></td>
+                  </tr>
+                  <tr>
+                    <td>W: <%= @subject_scores_per_test[test_id]['Phy']['W'] %>, <span >S: <%= @subject_scores_per_test[test_id]['Phy']['S'] %><span></td>
+                  </tr>
+                </table>
+            </td>
+            <td class="text-center">
+                <%= @subject_scores_per_test[test_id]['Chem']['score']%>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A: <%= @subject_scores_per_test[test_id]['Chem']['A'] %>, <span >C: <%= @subject_scores_per_test[test_id]['Chem']['C'] %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W: <%= @subject_scores_per_test[test_id]['Chem']['W'] %>, <span >S: <%= @subject_scores_per_test[test_id]['Chem']['S'] %><span></td>
+                    </tr>
+                  </table>
+            </td>
+            <td class="text-center">
+              <% if @subject_scores_per_test[test_id]['Bot'].present?%>
+                <%= @subject_scores_per_test[test_id]['Bot']['score']%>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A: <%= @subject_scores_per_test[test_id]['Bot']['A'] %>, <span >C: <%= @subject_scores_per_test[test_id]['Bot']['C'] %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W: <%= @subject_scores_per_test[test_id]['Bot']['W'] %>, <span >S: <%= @subject_scores_per_test[test_id]['Bot']['S'] %><span></td>
+                    </tr>
+                  </table>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td class="text-center">
+              <% if @subject_scores_per_test[test_id]['Zoo'].present? %>
+                <%= @subject_scores_per_test[test_id]['Zoo']['score']%>
+                <table class="compact-table">
+                  <tr>
+                    <td>A: <%= @subject_scores_per_test[test_id]['Zoo']['A'] %>, <span >C: <%= @subject_scores_per_test[test_id]['Zoo']['C'] %><span></td>
+                  </tr>
+                  <tr>
+                    <td>W: <%= @subject_scores_per_test[test_id]['Zoo']['W'] %>, <span >S: <%= @subject_scores_per_test[test_id]['Zoo']['S'] %><span></td>
+                  </tr>
+                </table>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td class="text-center">
+            <% if @subject_scores_per_test[test_id]['Bot'].present? ||  @subject_scores_per_test[test_id]['Bio'].present? %>
+              <%= bio %>
+                <table class="compact-table">
+                  <tr>
+                    <td>A: <%= bio_A %>, <span >C: <%= bio_C %><span></td>
+                  </tr>
+                  <tr>
+                    <td>W: <%= bio_W %>, <span >S: <%= bio_S %><span></td>
+                  </tr>
+                </table>
+              <% else %>
+                -
+              <% end %>
+            </td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentage']%></td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentile']%></td>
+            <td class="text-center"><%= @subject_scores_per_test[test_id]['rank']%></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
   </tbody>
 </table>
 
+
 <style>
+  .white-color {
+    color: white;
+    padding-top: 8px;
+  }
+
+  p {
+    margin: 0;
+  }
+
   th {
+    background-color: #d2e8f8;
     color: black !important;
+  }
+
+  .table-cell {
+    padding: 0;
+    margin: 0;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .bg-detailed-header {
+    background-color: #45aaf2 !important;
+  }
+
+  .compact-table {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.compact-table td {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+}
+
+  @media print {
+    .bg-detailed-header {
+      background-color: #45aaf2 !important;
+      -webkit-print-color-adjust: exact; /* For WebKit browsers */
+      color-adjust: exact; /* For other browsers */
+    }
+    .white-color {
+      color: white !important;
+      padding-top: 8px;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .compact-table {
+      border-collapse: collapse;
+      margin: 0;
+      padding: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 </style>
