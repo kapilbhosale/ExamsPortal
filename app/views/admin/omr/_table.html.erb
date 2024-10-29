@@ -7,30 +7,30 @@
       <h5 class="white-color" style="text-align: center;">DETAILED REPORT</h5>
     </div>
     <tr>
-      <th>Exam name</th>
-      <th>Date/Mode</th>
-      <th>Marks</th>
+      <th class="black">Exam name</th>
+      <th class="black">Date/Mode</th>
+      <th class="black">Marks</th>
       <% if @subjects.include?("Phy") %>
-        <th>Phy</th>
+      <th class="black">Phy</th>
       <% end %>
       <% if @subjects.include?("Chem") %>
-        <th>Chem</th>
+        <th class="black">Chem</th>
       <% end %>
       <% if @subjects.include?("Bot") %>
-        <th>Bot</th>
+        <th class="black">Bot</th>
       <% end %>
       <% if @subjects.include?("Zoo") %>
-        <th>Zoo</th>
+        <th class="black">Zoo</th>
       <% end %>
       <% if @subjects.include?("Bio") || @subjects.include?("Bot")%>
-        <th>Bio</th>
+        <th class="black">Bio</th>
       <% end %>
       <% if @subjects.include?("Math") %>
-        <th>Math</th>
+        <th class="black">Math</th>
       <% end %>
-      <th>%tage</th>
-      <th>%tile</th>
-      <th>Rank</th>
+      <th class="black">%tage</th>
+      <th class="black">%tile</th>
+      <th class="black">Rank</th>
     </tr>
   </thead>
   <tbody>
@@ -158,11 +158,6 @@
     margin: 0;
   }
 
-  th {
-    background-color: #d2e8f8;
-    color: black !important;
-  }
-
   .table-cell {
     padding: 0;
     margin: 0;
@@ -184,11 +179,17 @@
     margin-right: auto;
   }
 
-.compact-table td {
-  margin: 0;
-  padding: 0;
-  font-size: 11px;
-}
+  .compact-table td {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+  }
+
+  .black {
+    color: black !important;
+    background-color: #79c3f79c;
+    font-weight: bold;
+  }
 
   @media print {
     .bg-detailed-header {
@@ -209,6 +210,11 @@
       padding: 0;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    .black {
+      color: black !important;
+      font-weight: bold;
     }
   }
 </style>

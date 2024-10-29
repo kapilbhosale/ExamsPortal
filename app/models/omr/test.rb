@@ -56,6 +56,35 @@ class Omr::Test < ApplicationRecord
     end
   end
 
+  def self.get_subject_code(subject)
+    return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
+    return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
+    return 'Bio' if ['bio', 'biology'].include?(subject.downcase)
+    return 'Bot' if ['bot', 'botany', 'botony'].include?(subject.downcase)
+    return 'Zoo' if ['zoo', 'zoology'].include?(subject.downcase)
+    return 'Math' if ['maths', 'math', 'mathematics'].include?(subject.downcase)
+    return subject
+  end
+
+  def get_subject_max_marks
+    max_marks = {}
+    data["subjects"].each do |sub_name, sub_data|
+      if neet_new_pattern?
+        max_marks[self.class.get_subject_code(sub_name)] = 180
+      else
+        from = sub_data['from'] + 1
+        to = sub_data['from'] + sub_data['count']
+        total_marks = 0
+        from.upto(to) do |q_index|
+          model_ans = answer_key[(q_index).to_s]
+          total_marks += model_ans['pm']
+        end
+        max_marks[self.class.get_subject_code(sub_name)] = total_marks
+      end
+    end
+    return max_marks
+  end
+
   def neet_new_pattern?
     sub_data = self.data['subjects']
     return false unless sub_data.is_a?(Hash) && sub_data.size == 4

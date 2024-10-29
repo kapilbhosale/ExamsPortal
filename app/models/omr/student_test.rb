@@ -29,14 +29,6 @@ class Omr::StudentTest < ApplicationRecord
     return 1
   end
 
-  def self.get_subject_code(subject)
-    return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
-    return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
-    return 'Bio' if ['bio', 'biology'].include?(subject.downcase)
-    return 'Bot' if ['bot', 'botany', 'botony'].include?(subject.downcase)
-    return 'Zoo' if ['zoo', 'zoology'].include?(subject.downcase)
-  end
-
   def self.get_student_summary(student_id)
     student_tests = Omr::StudentTest.where(omr_student_id: student_id)
     scores = []
@@ -53,7 +45,7 @@ class Omr::StudentTest < ApplicationRecord
 
       student_test.data.each do |sub, sub_data|
         next if sub == 'single_subject'
-        sub = get_subject_code(sub)
+        sub = Omr::Test.get_subject_code(sub)
 
         data_per_subject[sub] ||= {
           scores: [],

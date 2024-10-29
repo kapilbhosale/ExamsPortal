@@ -3,59 +3,176 @@
 </div>
 
 <%= render partial: 'class_header', locals: { org: @test.org } %>
+<%= render partial: 'test_report_header', locals: { test: @test } %>
 
 <table class="table table-bordered">
-  <tr>
-    <td>Exam Name</th>
-    <td colspan="3"><%= @test.test_name%></th>
-  </tr>
-  <tr>
-    <td>Exam Date</th>
-    <td><%= @test.test_date.strftime("%d-%b-%Y")%></th>
-  </tr>
-</table>
-
-<h4 style="text-align: center">Test Report</h4>
-
-<table class="table table-bordered">
+  <div class="topper-container">
+    <div class="topper-title">
+      <%= image_tag 'winner.png', alt: 'Winner', width: 16 %>
+      Topper 30 students Badge</div>
+    <div class="topper-note">Note: A: Attempted, C: Correct, W: Wrong, S: Skip, ACC: Accuracy</div>
+  </div>
+  <div class="print-background">
+    <h5 class="white-color" style="text-align: center;">Detailed Exam Report</h5>
+  </div>
   <thead>
     <tr>
-      <th>Sr.No</th>
-      <th>Roll No</th>
-      <th>Name</th>
-      <th>Phy</th>
-      <th>Chem</th>
-      <th>Bot</th>
-      <th>Zoo</th>
-      <th>Total</th>
-      <th>Rank</th>
+      <th style="color: black">Sr.No</th>
+      <th style="color: black">Name/Roll No</th>
+      <% @subjects.each do |subject| %>
+        <th class="text-center" style="color: black">
+        <%= subject %>
+         <%= " (#{@sub_max_marks[subject]})" %>
+        </th>
+      <% end %>
+      <th class="text-center" style="color: black">Total (<%= @sub_max_marks.values.sum %>)</th>
+      <th class="text-center" style="color: black">Rank</th>
     </tr>
   </thead>
 
 
   <tbody>
     <% @report_data[:test_data].each do |test_data| %>
+      <% acc = 0 %>
       <tr>
         <td><%= test_data[:sr_no] %></td>
-        <td><%= test_data[:roll_number] %></td>
-        <td><%= test_data[:name] %></td>
-        <td><%= test_data[:data].dig("Phy", "score") %></td>
-        <td><%= test_data[:data].dig("Chem", "score") %></td>
-        <td><%= test_data[:data].dig("Bot", "score") %></td>
-        <td><%= test_data[:data].dig("Zoo", "score") %></td>
-        <td><%= test_data[:score] %></td>
-        <td><%= test_data[:rank] %></td>
+        <td>
+          <%= test_data[:name] %><br/>
+          <div style="position: relative">  
+            <%= test_data[:roll_number] %>
+            <% if test_data[:rank] <= 30 %>
+              <%= image_tag 'winner.png', alt: 'Winner', class: 'winner-icon' %>
+            <% end %>
+          </div>
+        </td>
+        <% @subjects.each do |subject| %>
+          <% w = test_data[:data].dig(subject, "wrong_count") %>
+          <% c = test_data[:data].dig(subject, "correct_count") %>
+          <% s = test_data[:data].dig(subject, "skip_count") %>
+          <% a = (c + w) %>
+          <% acc += a.zero? ? 0 : (c * 100/a.to_f) %>
+          <td class="text-center">
+            <%= test_data[:data].dig(subject, "score") %>
+            <table class="compact-table">
+              <tr>
+                <td>
+                  A: <%= a %>, 
+                  C: <%= c %>, 
+                  W: <%= w %>, 
+                  S: <%= s %>
+                </td>
+              </tr>
+            </table>
+          </td>
+        <% end %>
+        <td class="text-center">
+          <%= test_data[:score] %>
+          <table class="compact-table">
+            <tr>
+              <td>
+                ACC: <%= (acc/@subjects.count.to_f).round(2) %> %
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td class="text-center">
+          <%= test_data[:rank] %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 <%= render partial: 'footer', locals: { student: nil } %>
 
+
 <style>
+  .white-color {
+    color: white;
+  }
+
+  .winner-icon {
+    width: 18px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .print-background {
+    background-color: #274696 !important;
+    padding: 2px;
+    padding-top: 16px;
+  }
+
+  .print-background-toppers {
+    background-color: #45aaf2 !important;
+    padding: 2px;
+    padding-top: 16px;
+  }
+
+  .compact-table {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .compact-table td {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .topper-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .topper-title {
+    text-align: left;
+  }
+
+  .topper-note {
+    text-align: right;
+  }
+
   @media print {
     .print-link {
       display: none;
     }
     thead {display: table-header-group;}
+
+    .print-background {
+      background-color: #274696 !important;
+      -webkit-print-color-adjust: exact; /* For WebKit browsers */
+      color-adjust: exact; /* For other browsers */
+    }
+    .print-background-toppers {
+      background-color: #45aaf2 !important;
+      -webkit-print-color-adjust: exact; /* For WebKit browsers */
+      color-adjust: exact; /* For other browsers */
+    }
+    }
+    .white-color {
+      color: white !important;
+    }
+    .compact-table {
+      border-collapse: collapse;
+      margin: 0;
+      padding: 0;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .compact-table td {
+      margin: 0;
+      padding: 0;
+      font-size: 11px;
+    }
+  
   }
 </style>

@@ -1,0 +1,49 @@
+
+<table class="table table-bordered" style="margin-top: 20px; margin-bottom: 10px">
+  <tbody>
+    <tr style="vertical-align: middle;">
+      <td>
+        <strong>Exam Name</strong><br>
+        <%= test.test_name %>
+      </td>
+      <td>
+        <strong>Exam Date</strong><br>
+        <%= @test.test_date.strftime("%d-%b-%Y") %>
+      </td>
+      <td>
+        <strong>Batches</strong><br>
+        <ul>
+          <% @selected_batches.each do |batch| %>
+            <li style="margin-left: -21px"><%= batch.name %></li>
+          <% end %>
+        </ul>
+      </td>
+    </tr>
+    <tr style="vertical-align: middle;">
+      <td>
+        <strong>Maximum Marks</strong><br>
+        <%= @test.total_marks %>
+      </td>
+      <td>
+        <strong>No of Questions</strong><br>
+        <%= @test.no_of_questions %>
+      </td>
+      <td>
+        <strong>Academic Center</strong><br>
+        NEET 2025 / Latur
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<style>
+  strong {
+    color: #274696;
+  }
+
+  @media print {
+    strong {
+      color: #274696 !important;
+    }
+  }
+</style>

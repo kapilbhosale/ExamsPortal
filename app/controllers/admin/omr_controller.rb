@@ -33,12 +33,16 @@ class Admin::OmrController < Admin::BaseController
   # deepak+kapil report
   def test_report_print
     @test = Omr::Test.find(params[:test_id])
-    selected_batches = Omr::Batch.find(params[:batches])
+    @selected_batches = Omr::Batch.find(params[:batches])
+    @subjects = @test.data['subjects'].keys.map do |sub|
+      Omr::Test.get_subject_code(sub)
+    end
+    @sub_max_marks = @test.get_subject_max_marks
 
     include_absents = params[:include_absents].present?
     report_type = params[:report_type]
     report_format = params[:report_format]
-    @report_data = Omr::TestReportService.new(@test, selected_batches.pluck(:id), include_absents, report_type).call
+    @report_data = Omr::TestReportService.new(@test, @selected_batches.pluck(:id), include_absents, report_type).call
   end
 
   def progress_report
@@ -67,7 +71,6 @@ class Admin::OmrController < Admin::BaseController
       @avg_per_test = {}
       percentile = 0
 
-      # binding.pry if test.id == 387
       if student_test.present?
         percent = student_test.score.to_i * 100 / test.total_marks
         average_scores << percent
@@ -80,7 +83,7 @@ class Admin::OmrController < Admin::BaseController
 
         student_test.data.each do |subject, score_data|
           next if subject == 'single_subject'
-          sub_code = get_subject_code(subject)
+          sub_code = Omr::Test.get_subject_code(subject)
 
           @subjects << sub_code if @subjects.exclude?(sub_code)
           @subject_scores_per_test[test.id][sub_code] ||= {}
@@ -117,14 +120,6 @@ class Admin::OmrController < Admin::BaseController
                footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
       end
     end
-  end
-
-  def get_subject_code(subject)
-    return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
-    return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
-    return 'Bio' if ['bio', 'biology'].include?(subject.downcase)
-    return 'Bot' if ['bot', 'botany', 'botony'].include?(subject.downcase)
-    return 'Zoo' if ['zoo', 'zoology'].include?(subject.downcase)
   end
 
   def create

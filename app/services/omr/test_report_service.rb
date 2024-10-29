@@ -135,16 +135,8 @@ class Omr::TestReportService
   def clean_data(data)
     cleaned_data = {}
     data.each do |key, value|
-      cleaned_data[get_subject_code(key)] = value
+      cleaned_data[Omr::Test.get_subject_code(key)] = value
     end
     cleaned_data
-  end
-
-  def get_subject_code(subject)
-    return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
-    return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
-    return 'Bio' if ['bio', 'biology'].include?(subject.downcase)
-    return 'Bot' if ['bot', 'botany', 'botony'].include?(subject.downcase)
-    return 'Zoo' if ['zoo', 'zoology'].include?(subject.downcase)
   end
 end
