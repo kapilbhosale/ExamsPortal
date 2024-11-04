@@ -2,108 +2,214 @@
   <div class="print-background" style="padding: 8px;">
     <h5 class="white-color" style="text-align: center;">RCC Smart AI Summary</h5>
   </div>
-  <table class="table table-bordered">
+  <table class="table table-bordered black-border">
     <thead style="padding: 10px">
       <tr>
         <th></th>
         <% if @student_summary_per_subject['Phy'].present? %>
-          <th>Phy</th>
+          <th style="color: black">Phy</th>
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
-          <th>Chem</th>
+          <th style="color: black">Chem</th>
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
-          <th>Bot</th>
+          <th style="color: black">Bot</th>
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
-          <th>Zoo</th>
+          <th style="color: black">Zoo</th>
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
-          <th>Bio</th>
+          <th style="color: black">Bio</th>
         <% end %>
-        <th>Total</th>
-        <th>Rank</th>
+          <th style="color: black">Total</th>
+          <th style="color: black">Rank</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>Average Score</td>
         <% if @student_summary_per_subject['Phy'].present? %>
-          <td><%= @student_summary_per_subject['Phy'][:avg_score] %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Phy'][:avg_score] %>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
-          <td><%= @student_summary_per_subject['Chem'][:avg_score] %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Chem'][:avg_score] %>
+            </span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_score] %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_score] %>
+            </span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
-          <td><%= @student_summary_per_subject['Zoo'][:avg_score] %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Zoo'][:avg_score] %>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score] %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score] %>
+            <span>
+          </td>
         <% end %>
-        <td><%= (@graph_data[:average]/100.0 * 720).round(2) %> (<%=(@graph_data[:average])%> %)</td>
-        <td><%= @student.omr_student_tests.pluck(:rank).count == 0 ? '-' : @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %></td>
+        <td>
+          <span style="font-size: 17px; font-weight: bold;">
+            <%= (@graph_data[:average]/100.0 * 720).round(2) %> (<%=(@graph_data[:average])%> %)
+          </span>
+        </td>
+        <td>
+          <span style="font-size: 17px; font-weight: bold;">
+            <%= @student.omr_student_tests.pluck(:rank).count == 0 ? '-' : @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %>
+          
+        </td>
       </tr>
       <tr>
         <td>Avg. Accuracy</td>
         <% if @student_summary_per_subject['Phy'].present? %>
-          <td><%= @student_summary_per_subject['Phy'][:avg_accuracy].round(2)%>%</td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Phy'][:avg_accuracy].round(2)%>%
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
-          <td><%= @student_summary_per_subject['Chem'][:avg_accuracy].round(2)%>%</td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Chem'][:avg_accuracy].round(2)%>%
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_accuracy].round(2)%>%</td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_accuracy].round(2)%>%
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
-          <td><%= @student_summary_per_subject['Zoo'][:avg_accuracy].round(2)%>%</td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Zoo'][:avg_accuracy].round(2)%>%
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
-          <td><%= ((@student_summary_per_subject['Bot'][:avg_accuracy] +  @student_summary_per_subject['Zoo'][:avg_accuracy])/2.0).round(2)%>%</td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= ((@student_summary_per_subject['Bot'][:avg_accuracy] +  @student_summary_per_subject['Zoo'][:avg_accuracy])/2.0).round(2)%>%
+            <span>
+          </td>
         <% end %>
-        <td><%= @student_summary_per_subject[:accuracy].round(2)%>%</td>
+        <td>
+          <span style="font-size: 17px; font-weight: bold;">
+            <%= @student_summary_per_subject[:accuracy].round(2)%>%
+          <span>
+        </td>
         <td>-</td>
       </tr>
       <tr>
         <td>Avg. Wrong Per test </td>
         <% if @student_summary_per_subject['Phy'].present? %>
-          <td><%= @student_summary_per_subject['Phy'][:avg_wrong].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Phy'][:avg_wrong].round(2)%>
+            <span>
+          </td>
+
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
-          <td><%= @student_summary_per_subject['Chem'][:avg_wrong].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Chem'][:avg_wrong].round(2)%>
+            <span>
+          </td>
+
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_wrong].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_wrong].round(2)%>
+            <span>
+          </td>
+
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
-          <td><%= @student_summary_per_subject['Zoo'][:avg_wrong].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Zoo'][:avg_wrong].round(2)%>
+            <span>
+          </td>
+
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_wrong].round(2) + @student_summary_per_subject['Zoo'][:avg_wrong].round(2) %></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_wrong].round(2) + @student_summary_per_subject['Zoo'][:avg_wrong].round(2) %>
+            <span>
+          </td>
+
         <% end %>
-        <td><%= @student_summary_per_subject[:wrong].round(2)%></td>
+        <td>
+          <span style="font-size: 17px; font-weight: bold;">
+            <%= @student_summary_per_subject[:wrong].round(2)%>
+          <span>
+        </td>
+
         <td>-</td>
       </tr>
       <tr>
         <td>Avg. Skip Per test </td>
         <% if @student_summary_per_subject['Phy'].present? %>
-          <td><%= @student_summary_per_subject['Phy'][:avg_skip].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Phy'][:avg_skip].round(2)%>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
-          <td><%= @student_summary_per_subject['Chem'][:avg_skip].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Chem'][:avg_skip].round(2)%>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
-          <td><%= @student_summary_per_subject['Bot'][:avg_skip].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Bot'][:avg_skip].round(2)%>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
-          <td><%= @student_summary_per_subject['Zoo'][:avg_skip].round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= @student_summary_per_subject['Zoo'][:avg_skip].round(2)%>
+            <span>
+          </td>
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
-          <td><%= (@student_summary_per_subject['Bot'][:avg_skip] + @student_summary_per_subject['Zoo'][:avg_skip]).round(2)%></td>
+          <td>
+            <span style="font-size: 17px; font-weight: bold;">
+              <%= (@student_summary_per_subject['Bot'][:avg_skip] + @student_summary_per_subject['Zoo'][:avg_skip]).round(2)%>
+            <span>
+          </td>
         <% end %>
-        <td><%= @student_summary_per_subject[:skip].round(2)%></td>
+        <td>
+          <span style="font-size: 17px; font-weight: bold;">
+            <%= @student_summary_per_subject[:skip].round(2)%>
+          <span>
+        </td>
         <td>-</td>
       </tr>
 
@@ -118,6 +224,15 @@
 <style>
   .white-color {
     color: white;
+  }
+
+  .compact-table td {
+    border: 1px solid gray !important;
+    padding: 0px;
+  }
+
+  .black-border th {
+    border: 1px solid black !important;
   }
 
   .print-background {

@@ -1,4 +1,4 @@
-<table class="table table-bordered" style="margin-top: 20px; margin-bottom: 10px">
+<table class="table table-bordered black-border" style="margin-top: 20px; margin-bottom: 10px;">
   <tbody>
     <tr style="vertical-align: middle;">
       <td rowspan="2" style="text-align: center;">
@@ -6,17 +6,21 @@
       </td>
       <td>
         <strong>Roll Number</strong><br>
-        <%= student.roll_number %>
+        <span style="font-size: 17px; font-weight: bold;">
+          <%= student.roll_number %>
+        </span>
       </td>
       <td>
         <strong>Student name</strong><br>
-        <%= student.name %>
+        <span style="font-size: 17px; font-weight: bold;">
+          <%= student.name %>
+        </span>
       </td>
       <td>
         <strong>Batches</strong><br>
         <ul>
           <% student.omr_batches.each do |batch| %>
-            <li style="margin-left: -21px"><%= batch.name %></li>
+            <li style="margin-left: -21px; font-size: 17px; font-weight: bold;"><%= batch.name %></li>
           <% end %>
         </ul>
       </td>
@@ -24,25 +28,37 @@
     <tr style="vertical-align: middle;">
       <td>
         <strong>Parent Contact</strong><br>
-        <%= student.parent_contact %>
+        <span style="font-size: 17px; font-weight: bold;">
+          <%= student.parent_contact %>
+        </span>
       </td>
       <td>
         <strong>Stream</strong><br>
-        NEET 2025
+        <span style="font-size: 17px; font-weight: bold;">
+          NEET 2025
+        </span>
       </td>
       <td>
         <strong>Academic Center</strong><br>
-        Latur
+        <span style="font-size: 17px; font-weight: bold;">
+          Latur
+        </span>
       </td>
     </tr>
   </tbody>
 </table>
 
 <style>
+  .black-border {
+    border: 1px solid black !important;
+  }
+
+  .black-border td {
+    border: 1px solid black !important;
+  }
   strong {
     color: #274696;
   }
-
   @media print {
     strong {
       color: #274696 !important;
