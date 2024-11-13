@@ -138,9 +138,9 @@ class Omr::ImportService
       test = Omr::Test.find_by(id: test_id)
       if test
         test.calculate_rank
-        puts "-"
+        puts "Rank-#{test_id}"
         test.calculate_subject_scores
-        puts "+"
+        puts "Score-#{test_id}"
       end
     end
   end
