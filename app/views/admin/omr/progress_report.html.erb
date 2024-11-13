@@ -3,6 +3,16 @@
 </div>
 <%= render partial: 'class_header', locals: { org: @student.org } %>
 <%= render partial: 'student', locals: { student: @student } %>
+<div style="text-align: right;">
+    <svg height="15" width="15">
+      <circle cx="7.5" cy="7.5" r="5" stroke="red" stroke-width="2" fill="none" />
+    </svg>
+    Toppers
+    <svg height="10" width="20">
+      <line x1="0" y1="5" x2="20" y2="5" style="stroke:blue;stroke-width:2" />
+    </svg>
+    Your Avg Score
+</div>
 <%= render partial: 'graph', locals: { student: @student } %>
 <%= render partial: 'summary', locals: { student: @student } %>
 <%= render partial: 'table', locals: { student: @student } %>
