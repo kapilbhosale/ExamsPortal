@@ -1,28 +1,6 @@
-<table style="width: 100%;">
-  <tr>
-    <td style="padding-bottom: 10px">
-    <%= image_tag("rcc-logo.png", alt: "Logo", width: "250", height: "150") %>
-    </td>
-    <td class="text-center" style="padding-top: 20px">
-      <h1 class="red-color" style="font-size: 60px"><%= org.name %> </h1>
-      <h4>
-        XI &#8226 XII &#8226 NEET &#8226 IIT-JEE &#8226 MHT-CET
-      </h4>
-    </td>
-    <td style="text-align: right; padding-top: 24px">
-      <p>.</p>
-      <p style="font-size: 18px">
-        <%= Date.today.strftime("%d-%b-%Y") %>
-      </p>
-    </td>
-  </tr>
-</table>
+<%= image_tag 'rcc_letter_head.jpg', style: 'width: 100%;' %>
 
 <style>
-  .red-color {
-    color: red;
-  }
-
   @media print {
     .red-color {
       color: red !important;

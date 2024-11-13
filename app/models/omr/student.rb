@@ -10,12 +10,14 @@
 #  student_contact :string
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  old_id          :integer
 #  org_id          :bigint(8)
 #  student_id      :integer
 #
 # Indexes
 #
-#  index_omr_students_on_org_id  (org_id)
+#  index_omr_students_on_org_id                          (org_id)
+#  index_omr_students_on_roll_number_and_parent_contact  (roll_number,parent_contact) UNIQUE
 #
 # Foreign Keys
 #
@@ -33,7 +35,6 @@ class Omr::Student < ApplicationRecord
   has_many :omr_tests, through: :omr_student_tests
 
 end
-
 
 # Omr::BatchTest.delete_all
 # ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_28_054625) do
+ActiveRecord::Schema.define(version: 2024_11_12_103856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -545,6 +545,8 @@ ActiveRecord::Schema.define(version: 2024_10_28_054625) do
     t.string "branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "old_id"
+    t.index ["name", "branch"], name: "index_omr_batches_on_name_and_branch", unique: true
     t.index ["org_id"], name: "index_omr_batches_on_org_id"
   end
 
@@ -581,7 +583,9 @@ ActiveRecord::Schema.define(version: 2024_10_28_054625) do
     t.string "branch"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "old_id"
     t.index ["org_id"], name: "index_omr_students_on_org_id"
+    t.index ["roll_number", "parent_contact"], name: "index_omr_students_on_roll_number_and_parent_contact", unique: true
   end
 
   create_table "omr_tests", force: :cascade do |t|
@@ -601,6 +605,7 @@ ActiveRecord::Schema.define(version: 2024_10_28_054625) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "toppers", default: {}
+    t.integer "old_id"
     t.index ["org_id"], name: "index_omr_tests_on_org_id"
   end
 
