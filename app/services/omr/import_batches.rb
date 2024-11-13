@@ -38,3 +38,22 @@ class Omr::ImportBatches
     )
   end
 end
+
+
+# def process_batch_master
+#   file_path = "#{get_base_file_path}/Batch_Master.csv"
+#   csv_file = File.open(file_path, "r:ISO-8859-1")
+#   CSV.foreach(csv_file, :headers => true).each do |csv_row|
+#     # next if csv_row['Is_Delete'] == 'True'
+#     batch = Omr::Batch.find_by(id: csv_row['Batch_ID'])
+#     unless batch.present?
+#       Omr::Batch.create(
+#         id: csv_row['Batch_ID'].to_i,
+#         name: csv_row['Batch_Name'],
+#         org_id: 1,
+#         db_modified_date: csv_row['Date_Of_Modification'],
+#         branch: branch
+#       )
+#     end
+#   end
+# end

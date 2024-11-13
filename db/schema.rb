@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_12_103856) do
+ActiveRecord::Schema.define(version: 2024_11_13_100009) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -535,6 +535,7 @@ ActiveRecord::Schema.define(version: 2024_11_12_103856) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["omr_batch_id"], name: "index_omr_batch_tests_on_omr_batch_id"
+    t.index ["omr_test_id", "omr_batch_id"], name: "index_omr_batch_tests_on_omr_test_id_and_omr_batch_id", unique: true
     t.index ["omr_test_id"], name: "index_omr_batch_tests_on_omr_test_id"
   end
 
@@ -556,6 +557,7 @@ ActiveRecord::Schema.define(version: 2024_11_12_103856) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["omr_batch_id"], name: "index_omr_student_batches_on_omr_batch_id"
+    t.index ["omr_student_id", "omr_batch_id"], name: "index_omr_student_batches_on_omr_student_id_and_omr_batch_id", unique: true
     t.index ["omr_student_id"], name: "index_omr_student_batches_on_omr_student_id"
   end
 
@@ -569,6 +571,7 @@ ActiveRecord::Schema.define(version: 2024_11_12_103856) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "data", default: {}
+    t.index ["omr_student_id", "omr_test_id"], name: "index_omr_student_tests_on_omr_student_id_and_omr_test_id", unique: true
     t.index ["omr_student_id"], name: "index_omr_student_tests_on_omr_student_id"
     t.index ["omr_test_id"], name: "index_omr_student_tests_on_omr_test_id"
   end

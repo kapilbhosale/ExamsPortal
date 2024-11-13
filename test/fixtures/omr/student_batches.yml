@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_omr_student_batches_on_omr_batch_id    (omr_batch_id)
-#  index_omr_student_batches_on_omr_student_id  (omr_student_id)
+#  index_omr_student_batches_on_omr_batch_id                     (omr_batch_id)
+#  index_omr_student_batches_on_omr_student_id                   (omr_student_id)
+#  index_omr_student_batches_on_omr_student_id_and_omr_batch_id  (omr_student_id,omr_batch_id) UNIQUE
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html

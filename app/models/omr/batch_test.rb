@@ -10,8 +10,9 @@
 #
 # Indexes
 #
-#  index_omr_batch_tests_on_omr_batch_id  (omr_batch_id)
-#  index_omr_batch_tests_on_omr_test_id   (omr_test_id)
+#  index_omr_batch_tests_on_omr_batch_id                  (omr_batch_id)
+#  index_omr_batch_tests_on_omr_test_id                   (omr_test_id)
+#  index_omr_batch_tests_on_omr_test_id_and_omr_batch_id  (omr_test_id,omr_batch_id) UNIQUE
 #
 
 class Omr::BatchTest < ApplicationRecord

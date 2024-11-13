@@ -15,8 +15,9 @@
 #
 # Indexes
 #
-#  index_omr_student_tests_on_omr_student_id  (omr_student_id)
-#  index_omr_student_tests_on_omr_test_id     (omr_test_id)
+#  index_omr_student_tests_on_omr_student_id                  (omr_student_id)
+#  index_omr_student_tests_on_omr_student_id_and_omr_test_id  (omr_student_id,omr_test_id) UNIQUE
+#  index_omr_student_tests_on_omr_test_id                     (omr_test_id)
 #
 
 class Omr::StudentTest < ApplicationRecord

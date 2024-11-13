@@ -125,9 +125,9 @@ class Admin::OmrController < Admin::BaseController
   def create
     temp_file = params["omr_zip"].tempfile rescue nil
 
-    # "/home/ubuntu/app/SmartExams/current/public/rcc_latur_z.zip"
     if temp_file.present?
       OmrImportWorker.perform_async(temp_file.path, params[:branch])
+      REDIS_CACHE.set("omr-import-info-status", "in-progress")
       flash[:success] = "Importing data..."
     else
       flash[:error] = "Failed to import data. Please try again."
