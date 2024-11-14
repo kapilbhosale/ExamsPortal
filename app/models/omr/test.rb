@@ -110,76 +110,14 @@ class Omr::Test < ApplicationRecord
 
       test.data['subjects'].each do |sub_name, sub_data|
         subject_toppers[sub_name] ||= 0
-
-        from = sub_data['from'] + 1
-        to = sub_data['from'] + sub_data['count']
-        sub_correct, sub_wrong, sub_skip = 0, 0, 0
-        sub_correct_score, sub_wrong_score = 0, 0
-
-        counter = 1
-        neet_b_counter = 0
-        neet_b_skip_counter = 0
-
-        from.upto(to) do |q_index|
-          next if neet_new_pattern? && neet_b_counter >= 10
-
-          model_ans = test.answer_key[(q_index).to_s]
-          std_ans = ans[q_index - 1]
-
-          if model_ans['ans'].include?("M")
-            sub_correct += 1
-            sub_correct_score += model_ans['pm']
-            next
-          end
-
-          if std_ans == '@'
-            sub_skip += 1
-            if neet_new_pattern?
-              counter += 1
-              neet_b_skip_counter += 1 if counter > 35
-            end
-            next
-          end
-
-          if model_ans['is_num']
-            numeric_ans = model_ans['ans'].first.to_f.round(2)
-            std_ans = std_ans.to_f.round(2)
-            is_correct = (numeric_ans == std_ans)
-          else
-            is_correct = model_ans['ans'].include?(std_ans)
-          end
-
-          if is_correct
-            sub_correct += 1
-            sub_correct_score += model_ans['pm']
-          else
-            sub_wrong += 1
-            sub_wrong_score += model_ans['nm']
-          end
-
-          if neet_new_pattern?
-            neet_b_counter += 1 if counter > 35 && std_ans != '@'
-            counter += 1
-          end
+        if neet_new_pattern?
+          sub_scores = neet_calculations(sub_name, sub_data, ans, test, student_test)
+        else
+          sub_scores = non_neet_calculations(sub_data, ans, test, student_test)
         end
 
-        # binding.pry if student_test.omr_student_id == 3825 && student_test.omr_test_id == 314
-        if neet_new_pattern? && neet_b_counter <= 10
-          sub_skip = sub_skip - (neet_b_skip_counter - (10 - neet_b_counter))
-        end
-
-        subject_scores[sub_name] = {
-          score: sub_correct_score - sub_wrong_score,
-          correct_count: sub_correct,
-          wrong_count: sub_wrong,
-          skip_count: sub_skip,
-          correct_score: sub_correct_score,
-          wrong_score: sub_wrong_score
-        }
-
-        if (sub_correct_score - sub_wrong_score) > subject_toppers[sub_name]
-          subject_toppers[sub_name] = sub_correct_score - sub_wrong_score
-        end
+        subject_scores[sub_name] = sub_scores
+        subject_toppers[sub_name] = sub_scores[:score] if sub_scores[:score] > subject_toppers[sub_name]
       end
 
       student_test.update(data: subject_scores)
@@ -204,5 +142,122 @@ class Omr::Test < ApplicationRecord
   def single_subject?
     return true if self.data['subjects'].blank?
     self.data['subjects'].keys.size == 1 && self.data['subjects'].keys.first == 'single_subject'
+  end
+
+
+  def non_neet_calculations(sub_data, ans, test, student_test)
+    from = sub_data['from'] + 1
+    to = sub_data['from'] + sub_data['count']
+    sub_correct, sub_wrong, sub_skip = 0, 0, 0
+    sub_correct_score, sub_wrong_score = 0, 0
+
+    from.upto(to) do |q_index|
+      model_ans = test.answer_key[(q_index).to_s]
+      std_ans = ans[q_index - 1]
+
+      if model_ans['ans'].include?("M")
+        sub_correct += 1
+        sub_correct_score += model_ans['pm']
+        next
+      end
+
+      if std_ans == '@'
+        sub_skip += 1
+        next
+      end
+
+      if model_ans['is_num']
+        numeric_ans = model_ans['ans'].first.to_f.round(2)
+        std_ans = std_ans.to_f.round(2)
+        is_correct = (numeric_ans == std_ans)
+      else
+        is_correct = model_ans['ans'].include?(std_ans)
+      end
+
+      if is_correct
+        sub_correct += 1
+        sub_correct_score += model_ans['pm']
+      else
+        sub_wrong += 1
+        sub_wrong_score += model_ans['nm']
+      end
+    end
+
+    return {
+      score: sub_correct_score - sub_wrong_score,
+      correct_count: sub_correct,
+      wrong_count: sub_wrong,
+      skip_count: sub_skip,
+      correct_score: sub_correct_score,
+      wrong_score: sub_wrong_score
+    }
+  end
+
+  def neet_calculations(sub_name, sub_data, ans, test, student_test)
+    from = sub_data['from'] + 1
+    to = sub_data['from'] + sub_data['count']
+    sub_correct, sub_wrong, sub_skip = 0, 0, 0
+    neet_correct, neet_wrong, neet_skip = 0, 0, 0
+    sub_correct_score, sub_wrong_score = 0, 0
+    neet_correct_score, neet_wrong_score = 0, 0
+    counter = 0
+
+
+    from.upto(to) do |q_index|
+      counter += 1
+      break if neet_correct + neet_wrong >= 10
+
+      model_ans = test.answer_key[(q_index).to_s]
+      std_ans = ans[q_index - 1]
+
+      if model_ans['ans'].include?("M")
+        if counter <= 35
+          sub_correct += 1
+          sub_correct_score += model_ans['pm']
+        else
+          neet_correct += 1
+          neet_correct_score += model_ans['pm']
+        end
+        next
+      end
+
+      if std_ans == '@'
+        counter <= 35 ? sub_skip += 1 : neet_skip += 1
+        next
+      end
+
+      if model_ans['ans'].include?(std_ans)
+        if counter <= 35
+          sub_correct += 1
+          sub_correct_score += model_ans['pm']
+        else
+          neet_correct += 1
+          neet_correct_score += model_ans['pm']
+        end
+      else
+        if counter <= 35
+          sub_wrong += 1
+          sub_wrong_score += model_ans['nm']
+        else
+          neet_wrong += 1
+          neet_wrong_score += model_ans['nm']
+        end
+      end
+    end
+
+    if neet_correct + neet_wrong >= 10
+      adjusted_neet_skip = 0
+    else
+      adjusted_neet_skip = 10 - (neet_correct + neet_wrong)
+    end
+
+    return {
+      score: sub_correct_score + neet_correct_score,
+      correct_count: sub_correct + neet_correct,
+      wrong_count: sub_wrong + neet_wrong,
+      skip_count: sub_skip + adjusted_neet_skip,
+      correct_score: sub_correct_score + neet_correct_score,
+      wrong_score: sub_wrong_score + neet_wrong_score
+    }
   end
 end

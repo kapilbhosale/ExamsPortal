@@ -61,7 +61,7 @@
               </p>
               <p style="font-size: 14px"><%= "Test-#{test_id}" %></p>
               <p style="font-size: 14px color: black"><%= test[:desc] %></p>
-              <% if true || @subject_scores_per_test[test_id]['rank'] <= 30 %>
+              <% if @subject_scores_per_test[test_id].present? && @subject_scores_per_test[test_id]['rank'] <= 30 %>
                 <%= image_tag 'winner.png', alt: 'Winner', class: 'winner-icon' %>
               <% end %>
             </div>
