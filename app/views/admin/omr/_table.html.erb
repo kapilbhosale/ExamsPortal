@@ -1,6 +1,6 @@
 <table class="table table-bordered black-border">
   <div style="text-align: right">
-    <p>Note: A: Attempted, C: Correct, W: Wrong, S: Skip</p>
+    <p>Note: A: Attempted, C: Correct, W: Wrong, S: Skip, <%= image_tag 'winner.png', alt: 'Winner', width: 16 %> Topper 30</p>
   </div>
   <thead>
     <div class="bg-detailed-header" style="padding: 4px 0px 2px 0px">
@@ -41,6 +41,10 @@
         <% if student_marks.present? %>
           <% if @subject_scores_per_test[test_id]['Bio'].present? %>
             <% bio = @subject_scores_per_test[test_id]['Bio']['score'] %>
+            <% bio_A = @subject_scores_per_test[test_id]['Bio']['A'] %>
+            <% bio_C = @subject_scores_per_test[test_id]['Bio']['C'] %>
+            <% bio_W = @subject_scores_per_test[test_id]['Bio']['W'] %>
+            <% bio_S = @subject_scores_per_test[test_id]['Bio']['S'] %>
           <% elsif @subject_scores_per_test[test_id]['Bot'].present? %>
             <% bio = @subject_scores_per_test[test_id]['Bot']['score'] + @subject_scores_per_test[test_id]['Zoo']['score'] %>
             <% bio_A = @subject_scores_per_test[test_id]['Bot']['A'] + @subject_scores_per_test[test_id]['Zoo']['A'] %>
@@ -51,10 +55,16 @@
         <% end %>
         <tr style="<%= 'background-color: #FFCCCC;' if student_marks.blank? %>">
           <td>
-            <p style="font-size: 16px; color: black; width: 240px; word-wrap: break-word;">
-              <%= test[:name] %>
-            </p>
-            <p style="font-size: 16px"><%= "Test-#{test_id}" %></p>
+            <div style="position: relative">
+              <p style="font-size: 16px; color: black; width: 240px; word-wrap: break-word;">
+                <%= test[:name] %>
+              </p>
+              <p style="font-size: 14px"><%= "Test-#{test_id}" %></p>
+              <p style="font-size: 14px color: black"><%= test[:desc] %></p>
+              <% if true || @subject_scores_per_test[test_id]['rank'] <= 30 %>
+                <%= image_tag 'winner.png', alt: 'Winner', class: 'winner-icon' %>
+              <% end %>
+            </div>
           </td>
           <td>
             <span style="font-size: 16px;"><%= test[:date] %><span>
@@ -63,11 +73,27 @@
           <% if student_marks.blank? %>
             <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>AB</td>
           <% elsif test[:is_single_subject] %>
-            <td class="text-center"><%= "#{student_marks.score}/#{test[:total_marks]}" %></td>
+            <td class="text-center">
+              <span style="font-size: 17px; font-weight: bold;">
+                <%= "#{student_marks.score}/#{test[:total_marks]}" %>
+              </span>
+            </td>
             <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
-            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentage']%></td>
-            <td class="text-center"><%= @subject_scores_per_test[test_id]['percentile']%></td>
-            <td class="text-center"><%= @subject_scores_per_test[test_id]['rank']%></td>
+            <td class="text-center">
+              <span style="font-size: 17px; font-weight: bold;">
+                <%= @subject_scores_per_test[test_id]['percentage']%>
+              </span>
+            </td>
+            <td class="text-center">
+              <span style="font-size: 17px; font-weight: bold;">
+                <%= @subject_scores_per_test[test_id]['percentile']%>
+              </span>
+            </td>
+            <td class="text-center">
+              <span style="font-size: 17px; font-weight: bold;">
+                <%= @subject_scores_per_test[test_id]['rank']%>
+              </span>
+            </td>
           <% else %>
             <td class="text-center">
               <span style="font-size: 17px; font-weight: bold;">
@@ -161,6 +187,13 @@
 <style>
   .black-border {
     border: 1px solid black !important;
+  }
+
+  .winner-icon {
+    width: 18px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 
   .black-border td {
