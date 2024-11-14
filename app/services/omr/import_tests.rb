@@ -58,6 +58,11 @@ class Omr::ImportTests
           })
         end
 
+        if csv_row['Is_Delete'] == 'True'
+          test.destroy
+          next
+        end
+
         tests_to_process << test.id
         unless is_booklet
           answer_key = {}

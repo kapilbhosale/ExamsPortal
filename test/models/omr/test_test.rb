@@ -7,6 +7,7 @@
 #  branch           :string
 #  data             :jsonb
 #  db_modified_date :string
+#  deleted_at       :datetime
 #  description      :string
 #  is_booklet       :boolean          default(FALSE)
 #  is_combine       :boolean          default(FALSE)
@@ -23,7 +24,8 @@
 #
 # Indexes
 #
-#  index_omr_tests_on_org_id  (org_id)
+#  index_omr_tests_on_deleted_at  (deleted_at)
+#  index_omr_tests_on_org_id      (org_id)
 #
 # Foreign Keys
 #

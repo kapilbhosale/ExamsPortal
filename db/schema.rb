@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_11_13_100009) do
+ActiveRecord::Schema.define(version: 2024_11_14_073224) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -609,6 +609,8 @@ ActiveRecord::Schema.define(version: 2024_11_13_100009) do
     t.datetime "updated_at", null: false
     t.jsonb "toppers", default: {}
     t.integer "old_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_omr_tests_on_deleted_at"
     t.index ["org_id"], name: "index_omr_tests_on_org_id"
   end
 
