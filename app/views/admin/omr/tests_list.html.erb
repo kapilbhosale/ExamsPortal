@@ -4,6 +4,7 @@
       <div class="card-header">
         <div class="col-md-6">
           <h5 class="pt-3">OMR Tests List</h5>
+          <h4>Total Tests: <%= @count %></h4>
         </div>
       </div>
       <div class="card-body">
@@ -27,6 +28,7 @@
                     <th>Test Date</th>
                     <th>Students</th>
                     <th>Branch</th>
+                    <th>Marks</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -39,6 +41,7 @@
                       <td><%= test.test_date.strftime("%d-%b-%y") %></td>
                       <td><%= test.omr_students.count %></td>
                       <td><%= test.branch %></td>
+                      <td><%= test.total_marks%> <%= test.neet_new_pattern? ? '(NEET)' : ''%></td>
                       <td>
                         <%= link_to '<i class="fa fa-print"></i> Print Report'.html_safe, test_report_batch_selection_admin_omr_index_path({test_id: test.id}), class: 'btn btn-primary btn-sm' %>
                       </td>

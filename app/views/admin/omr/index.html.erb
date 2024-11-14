@@ -14,6 +14,11 @@
         <%= link_to "Refresh", admin_omr_index_path, class: "btn btn-primary" %>
       <div>
     <% else %>
+      <% if REDIS_CACHE.get("omr-import-info-error").present? %>
+        <div class="alert alert-danger">
+          <p><%= REDIS_CACHE.get("omr-import-info-error") %></p>
+        </div>
+      <% end %>
       <%= form_tag(admin_omr_index_path, method: "post", multipart: true, role: 'form') do %>
         <div class="card-body">
           <div class="table-responsive">

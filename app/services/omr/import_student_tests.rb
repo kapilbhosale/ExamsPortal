@@ -13,9 +13,7 @@ class Omr::ImportStudentTests
 
   def call
     csv_file = File.open(file_path, "r:ISO-8859-1")
-
-    data_imported = Omr::StudentTest.count > 0
-    return if data_imported && tests_to_process.empty?
+    return if tests_to_process.empty?
 
     new_student_tests = []
     batch_size = 10000
@@ -27,7 +25,7 @@ class Omr::ImportStudentTests
         test_id = test_id_mapping[csv_row['Test_ID'].to_i]
         student_id = student_id_mapping[csv_row['Student_ID'].to_i]
         next if test_id.nil? || student_id.nil?
-        next if data_imported && !tests_to_process.include?(test_id)
+        next unless tests_to_process.include?(test_id)
 
         student_ans = csv_row['Student_ans_key']
         score = csv_row['Student_Marks'].to_i

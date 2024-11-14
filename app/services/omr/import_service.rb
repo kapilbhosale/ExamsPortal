@@ -1,6 +1,6 @@
 class Omr::ImportService
   attr_reader :file_path, :branch
-  attr_accessor :subjects, :tests_to_process
+  attr_accessor :subjects
 
   # file_path = "/Users/kapilbhosale/Downloads/z_final.zip"
   # Omr::ImportService.new(file_path, 'latur').call
@@ -40,26 +40,23 @@ class Omr::ImportService
 
   rescue StandardError => ex
     Rails.logger.error ex.message
+    REDIS_CACHE.set("omr-import-info-error", ex.message)
+    puts "------------------========ERROR==========--------------------------- #{ex.message}"
     return {status: false, message: ex.message}
   end
 
   private
 
-  def extract_zip(temp_file)
-    zip_name = "zip_#{Time.now.to_i}"
-    zip_file_path = "#{Rails.root}/zip_data/#{zip_name}.zip"
-    FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.csv"))
-    FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.zip"))
-
-    FileUtils.mv temp_file, zip_file_path
-
-    Zip::ZipFile.open(zip_file_path) do |zip_file|
+  def extract_zip(zip_file_file)
+    Zip::ZipFile.open(zip_file_file) do |zip_file|
       zip_file.each do |f|
         f_path=File.join("#{Rails.root}/zip_data/", f.name)
         FileUtils.mkdir_p(File.dirname(f_path))
         zip_file.extract(f, f_path) {true}
       end
     end
+    rescue StandardError => ex
+    puts "---=zip ERROR=---- #{ex.message}"
   end
 
 
@@ -92,18 +89,12 @@ class Omr::ImportService
 
 
   def process_combine_master
-    if  Omr::Test.where(branch: branch).count > 0
-      relevant_test_ids = Omr::Test.where(test_date: (DateTime.now - 1.month)..DateTime.now).pluck(:id)
-    else
-      relevant_test_ids = Omr::Test.pluck(:id)
-    end
-
     file_path = "#{get_base_file_path}/Combine_Master.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     test_subject_data = {}
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
       test_id = csv_row['Test_ID'].to_i
-      next unless relevant_test_ids.include?(test_id)
+      puts "Test_ID: #{test_id}"
 
       test_subject_data[test_id] ||= {}
       test_subject_data[test_id][@subjects[csv_row['Subject_ID'].to_i]] = {

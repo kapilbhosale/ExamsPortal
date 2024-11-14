@@ -1,4 +1,4 @@
-# file_path = '/Users/kapilbhosale/Downloads/test_zip/Test_Master.csv'
+# file_path = '/Users/kapilbhosale/Downloads/z_11th/Test_Master.csv'
 # Omr::ImportTests.new(1, 'latur', file_path).call
 class Omr::ImportTests
   attr_reader :org_id, :branch, :file_path
@@ -29,7 +29,7 @@ class Omr::ImportTests
         is_combine = csv_row['Is_Combine'] == 'True'
         db_modified_date = csv_row['Date_Of_Modification']
 
-        test = Omr::Test.find_by(old_id: test_id)
+        test = Omr::Test.find_by(old_id: test_id, branch: branch)
         if test.present?
           next if test.db_modified_date == db_modified_date
           test.update!(

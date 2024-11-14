@@ -2,11 +2,12 @@ class Admin::OmrController < Admin::BaseController
   before_action :check_permissions
 
   def index
-    @branches = current_org.data['branches']
+    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
+    REDIS_CACHE.del("omr-import-info-error")
   end
 
   def students_list
-    @branches = current_org.data['branches']
+    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
     @search = Omr::Student.where(org: current_org)
     @branch = params[:branch]
     @search = @search.where(branch: @branch) if @branch.present?
@@ -16,10 +17,11 @@ class Admin::OmrController < Admin::BaseController
   end
 
   def tests_list
-    @branches = current_org.data['branches']
+    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
     @branch = params[:branch]
     @search = Omr::Test.where(org: current_org).where(parent_id: nil)
     @search = @search.where(branch: @branch) if @branch.present?
+    @count = @search.count
     @search = @search.search(test_search_params)
     @tests = @search.result.order(created_at: :desc)
     @tests = @tests.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
@@ -124,9 +126,20 @@ class Admin::OmrController < Admin::BaseController
 
   def create
     temp_file = params["omr_zip"].tempfile rescue nil
+    # cleanup old files.
+    FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.csv"))
+    FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.zip"))
 
     if temp_file.present?
-      OmrImportWorker.perform_async(temp_file.path, params[:branch])
+      temp_file_path = temp_file.path
+      permanent_file_path = Rails.root.join("zip_data", "upload_#{Time.now.to_i}.zip")
+
+      # Move the file to a permanent location
+      FileUtils.mv(temp_file_path, permanent_file_path)
+
+      OmrImportWorker.perform_async(permanent_file_path, params[:branch])
+      # OmrImportWorker.new.perform(temp_file.path, params[:branch])
+
       REDIS_CACHE.set("omr-import-info-status", "in-progress")
       flash[:success] = "Importing data..."
     else
