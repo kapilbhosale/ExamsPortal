@@ -59,7 +59,6 @@ class Omr::ImportService
     puts "---=zip ERROR=---- #{ex.message}"
   end
 
-
   def initialize_subjects
     file_path = "#{get_base_file_path}/Subject_Master.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
@@ -74,7 +73,7 @@ class Omr::ImportService
     file_path = "#{get_base_file_path}/Test_Option.csv"
     csv_file = File.open(file_path, "r:ISO-8859-1")
     CSV.foreach(csv_file, :headers => true).each do |csv_row|
-      test = Omr::Test.find_by(id: csv_row['Test_ID'].to_i)
+      test = Omr::Test.find_by(branch: branch, id: csv_row['Test_ID'].to_i)
       next if test.blank?
 
       ans_data = test.answer_key[csv_row['Question_Number']]
@@ -86,7 +85,6 @@ class Omr::ImportService
       test.save
     end
   end
-
 
   def process_combine_master
     file_path = "#{get_base_file_path}/Combine_Master.csv"
@@ -104,7 +102,7 @@ class Omr::ImportService
     end
 
     test_subject_data.each do |test_id, subject_data|
-      test = Omr::Test.find_by(id: test_id)
+      test = Omr::Test.find_by(branch: branch, id: test_id)
       next unless test
 
       test.data['subjects'] = subject_data
@@ -119,14 +117,14 @@ class Omr::ImportService
       # next if csv_row['Is_Delete'] == 'True'
       child_test_id = csv_row['ChildTestID'].to_i
       parent_test_id = csv_row['TestID'].to_i
-      test = Omr::Test.find_by(id: child_test_id)
+      test = Omr::Test.find_by(branch: branch, id: child_test_id)
       test.update(parent_id: parent_test_id) if test.present?
     end
   end
 
   def calculate_ranks_and_subject_scores(tests_to_process)
     tests_to_process.each do |test_id|
-      test = Omr::Test.find_by(id: test_id)
+      test = Omr::Test.find_by(branch: branch, id: test_id)
       if test
         test.calculate_rank
         puts "Rank-#{test_id}"

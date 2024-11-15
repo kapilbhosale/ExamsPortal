@@ -1,5 +1,7 @@
 # file_path = '/Users/kapilbhosale/Downloads/test_zip/Test_Detail.csv'
-# Omr::ImportStudentTests.new(1, 'latur', file_path, Omr::Test.all.pluck(:id)).call
+# branch = 'Latur-12+rep'
+# Omr::ImportStudentTests.new(1, branch, file_path, Omr::Test.where(branch: branch).pluck(:id)).call
+
 
 class Omr::ImportStudentTests
   attr_reader :org_id, :branch, :file_path, :tests_to_process
@@ -45,6 +47,7 @@ class Omr::ImportStudentTests
           Omr::StudentTest.import new_student_tests, on_duplicate_key_ignore: true
           new_student_tests.clear
         end
+        puts "--Adding StudentTest-- #{new_student_tests.size}"
       end
 
       # Insert any remaining entries

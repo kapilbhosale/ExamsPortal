@@ -1,13 +1,14 @@
 class Admin::OmrController < Admin::BaseController
   before_action :check_permissions
+  BRANCHES = ['Latur-11', 'Latur-12+rep', 'Nanded'].freeze
 
   def index
-    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
+    @branches = BRANCHES
     REDIS_CACHE.del("omr-import-info-error")
   end
 
   def students_list
-    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
+    @branches = BRANCHES
     @search = Omr::Student.where(org: current_org)
     @branch = params[:branch]
     @search = @search.where(branch: @branch) if @branch.present?
@@ -17,7 +18,7 @@ class Admin::OmrController < Admin::BaseController
   end
 
   def tests_list
-    @branches = ['Latur-11', 'Latur-12+rep', 'Nanded']
+    @branches = BRANCHES
     @branch = params[:branch]
     @search = Omr::Test.where(org: current_org).where(parent_id: nil)
     @search = @search.where(branch: @branch) if @branch.present?

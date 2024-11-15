@@ -1,5 +1,5 @@
-# file_path = '/Users/kapilbhosale/Downloads/z_11th/Test_Master.csv'
-# Omr::ImportTests.new(1, 'latur', file_path).call
+# file_path = '/Users/kapilbhosale/Downloads/test_zip/Test_Master.csv'
+# Omr::ImportTests.new(1, 'Latur-12+rep', file_path).call
 class Omr::ImportTests
   attr_reader :org_id, :branch, :file_path
 

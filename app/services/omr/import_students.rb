@@ -1,5 +1,5 @@
 # file_path = '/Users/kapilbhosale/Downloads/test_zip/Student_Master.csv'
-# Omr::ImportStudents.new(1, 'latur', file_path).call
+# Omr::ImportStudents.new(1, 'Latur-12+rep', file_path).call
 class Omr::ImportStudents
   attr_reader :org_id, :branch, :file_path
 

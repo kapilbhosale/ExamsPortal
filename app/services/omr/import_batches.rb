@@ -1,5 +1,6 @@
 # file_path = '/Users/kapilbhosale/Downloads/test_zip/Batch_Master.csv'
-# Omr::ImportBatches.new(1, 'latur', file_path).call
+# Omr::ImportBatches.new(1, 'Latur-12+rep', file_path).call
+
 class Omr::ImportBatches
   attr_reader :org_id, :branch, :file_path
 
