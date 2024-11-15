@@ -141,7 +141,7 @@ class Omr::Test < ApplicationRecord
 
   def single_subject?
     return true if self.data['subjects'].blank?
-    self.data['subjects'].keys.size == 1 && self.data['subjects'].keys.first == 'single_subject'
+    self.data['subjects'].keys.size == 1
   end
 
 

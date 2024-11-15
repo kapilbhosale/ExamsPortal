@@ -140,6 +140,7 @@ class Admin::OmrController < Admin::BaseController
       FileUtils.mv(temp_file_path, permanent_file_path)
 
       OmrImportWorker.perform_async(permanent_file_path, params[:branch])
+      # OmrImportWorker.new.perform(permanent_file_path, branch)
 
       REDIS_CACHE.set("omr-import-info-status", "in-progress")
       flash[:success] = "Importing data..."
