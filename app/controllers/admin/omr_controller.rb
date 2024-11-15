@@ -131,6 +131,7 @@ class Admin::OmrController < Admin::BaseController
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.csv"))
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.zip"))
 
+    Rails.logger.info "===========  Temp file: #{temp_file}"
     if temp_file.present?
       temp_file_path = temp_file.path
       permanent_file_path = Rails.root.join("zip_data", "upload_#{Time.now.to_i}.zip")
@@ -139,7 +140,6 @@ class Admin::OmrController < Admin::BaseController
       FileUtils.mv(temp_file_path, permanent_file_path)
 
       OmrImportWorker.perform_async(permanent_file_path, params[:branch])
-      # OmrImportWorker.new.perform(temp_file.path, params[:branch])
 
       REDIS_CACHE.set("omr-import-info-status", "in-progress")
       flash[:success] = "Importing data..."
