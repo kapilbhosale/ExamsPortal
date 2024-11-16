@@ -30,6 +30,18 @@ class Omr::StudentTest < ApplicationRecord
     return 1
   end
 
+  def self.get_sub_m_factor(marks)
+    return (180/marks.to_f).round(2)
+  end
+
+  def self.get_test_sub_m_factor(test)
+    sub_m_factor = {}
+    test.get_subject_max_marks.each do |sub, max_marks|
+      sub_m_factor[sub] = get_sub_m_factor(max_marks)
+    end
+    return sub_m_factor
+  end
+
   def self.get_student_summary(student_id)
     student_tests = Omr::StudentTest.where(omr_student_id: student_id)
     scores = []
@@ -42,11 +54,12 @@ class Omr::StudentTest < ApplicationRecord
       next if student_test.data.blank?
 
       scores << (student_test.score * 100)/student_test.omr_test.total_marks.to_f
-      m_factor = get_m_factor(student_test.omr_test.total_marks)
+      sub_m_factor = get_test_sub_m_factor(student_test.omr_test)
 
       student_test.data.each do |sub, sub_data|
         next if sub == 'single_subject'
         sub = Omr::Test.get_subject_code(sub)
+        m_factor = sub_m_factor[sub]
 
         data_per_subject[sub] ||= {
           scores: [],
