@@ -31,35 +31,35 @@
         <% if @student_summary_per_subject['Phy'].present? %>
           <td>
             <span style="font-size: 17px; font-weight: bold;">
-              <%= @student_summary_per_subject['Phy'][:avg_score] %>
+              <%= @student_summary_per_subject['Phy'][:avg_score].round %>
             <span>
           </td>
         <% end %>
         <% if @student_summary_per_subject['Chem'].present? %>
           <td>
             <span style="font-size: 17px; font-weight: bold;">
-              <%= @student_summary_per_subject['Chem'][:avg_score] %>
+              <%= @student_summary_per_subject['Chem'][:avg_score].round %>
             </span>
           </td>
         <% end %>
         <% if @student_summary_per_subject['Bot'].present? %>
           <td>
             <span style="font-size: 17px; font-weight: bold;">
-              <%= @student_summary_per_subject['Bot'][:avg_score] %>
+              <%= @student_summary_per_subject['Bot'][:avg_score].round %>
             </span>
           </td>
         <% end %>
         <% if @student_summary_per_subject['Zoo'].present? %>
           <td>
             <span style="font-size: 17px; font-weight: bold;">
-              <%= @student_summary_per_subject['Zoo'][:avg_score] %>
+              <%= @student_summary_per_subject['Zoo'][:avg_score].round %>
             <span>
           </td>
         <% end %>
         <% if @student_summary_per_subject['Bio'].present? %>
           <td>
             <span style="font-size: 17px; font-weight: bold;">
-              <%= @student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score] %>
+              <%= (@student_summary_per_subject['Bot'][:avg_score] + @student_summary_per_subject['Zoo'][:avg_score]).round %>
             <span>
           </td>
         <% end %>
@@ -71,7 +71,6 @@
         <td>
           <span style="font-size: 17px; font-weight: bold;">
             <%= @student.omr_student_tests.pluck(:rank).count == 0 ? '-' : @student.omr_student_tests.pluck(:rank).sum / @student.omr_student_tests.pluck(:rank).count %>
-          
         </td>
       </tr>
       <tr>
