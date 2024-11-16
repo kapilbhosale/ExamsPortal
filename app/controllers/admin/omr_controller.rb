@@ -65,7 +65,14 @@ class Admin::OmrController < Admin::BaseController
     omr_tests.each do |test|
       next if test.parent_test.present?
 
-      @all_tests << {id: test.id, name: test.test_name, desc: test.description, qcount: test.no_of_questions, total_marks: test.total_marks, date: test.test_date.strftime("%d-%b-%y"), is_single_subject: test.single_subject? }
+      @all_tests << {
+        id: test.id,
+        name: test.test_name,
+        desc: test.description,
+        qcount: test.no_of_questions,
+        total_marks: test.total_marks,
+        date: test.test_date.strftime("%d-%b-%y")
+      }
       exam_names << "Test-#{test.id}"
       student_test = @attempted_tests[test.id]
       topper_percentage = test.toppers['ALL'].to_i * 100 / test.total_marks
