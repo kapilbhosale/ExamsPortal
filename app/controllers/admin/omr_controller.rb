@@ -134,11 +134,12 @@ class Admin::OmrController < Admin::BaseController
 
   def create
     temp_file = params["omr_zip"].tempfile rescue nil
-    # cleanup old files.
+
+    # Cleanup old files
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.csv"))
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.zip"))
 
-    Rails.logger.info "===========  Temp file: #{temp_file}"
+    Rails.logger.info "=========== Temp file: #{temp_file.path}"
     if temp_file.present?
       temp_file_path = temp_file.path
       permanent_file_path = Rails.root.join("zip_data", "upload_#{Time.now.to_i}.zip")
@@ -146,8 +147,9 @@ class Admin::OmrController < Admin::BaseController
       # Move the file to a permanent location
       FileUtils.mv(temp_file_path, permanent_file_path)
 
+      Rails.logger.info "=========== Enqueuing OmrImportWorker with file: #{permanent_file_path} and branch: #{params[:branch]}"
       OmrImportWorker.perform_async(permanent_file_path, params[:branch])
-      # OmrImportWorker.new.perform(permanent_file_path, branch)
+      # OmrImportWorker.new.perform(permanent_file_path, params[:branch]) # Uncomment for synchronous execution
 
       REDIS_CACHE.set("omr-import-info-status", "in-progress")
       flash[:success] = "Importing data..."
