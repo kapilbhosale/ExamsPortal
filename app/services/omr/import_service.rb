@@ -118,7 +118,8 @@ class Omr::ImportService
       child_test_id = csv_row['ChildTestID'].to_i
       parent_test_id = csv_row['TestID'].to_i
       test = Omr::Test.find_by(branch: branch, old_id: child_test_id)
-      test.update(parent_id: parent_test_id) if test.present?
+      parent_test = Omr::Test.find_by(branch: branch, old_id: parent_test_id)
+      test.update(parent_id: parent_test.id) if test.present? && parent_test.present?
     end
   end
 

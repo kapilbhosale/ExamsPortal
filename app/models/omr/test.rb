@@ -73,18 +73,26 @@ class Omr::Test < ApplicationRecord
 
   def get_subject_max_marks
     max_marks = {}
-    data["subjects"].each do |sub_name, sub_data|
-      if neet_new_pattern?
-        max_marks[self.class.get_subject_code(sub_name)] = 180
-      else
-        from = sub_data['from'] + 1
-        to = sub_data['from'] + sub_data['count']
-        total_marks = 0
-        from.upto(to) do |q_index|
-          model_ans = answer_key[(q_index).to_s]
-          total_marks += model_ans['pm']
+    if data["subjects"].blank?
+      total_marks = 0
+      answer_key.each do |q_index, model_ans|
+        total_marks += model_ans['pm']
+      end
+      max_marks['single_subject'] = total_marks
+    else
+      data["subjects"].each do |sub_name, sub_data|
+        if neet_new_pattern?
+          max_marks[self.class.get_subject_code(sub_name)] = 180
+        else
+          from = sub_data['from'] + 1
+          to = sub_data['from'] + sub_data['count']
+          total_marks = 0
+          from.upto(to) do |q_index|
+            model_ans = answer_key[(q_index).to_s]
+            total_marks += model_ans['pm']
+          end
+          max_marks[self.class.get_subject_code(sub_name)] = total_marks
         end
-        max_marks[self.class.get_subject_code(sub_name)] = total_marks
       end
     end
     return max_marks

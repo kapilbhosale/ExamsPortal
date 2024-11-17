@@ -54,7 +54,13 @@ class Omr::StudentTest < ApplicationRecord
       next if student_test.data.blank?
 
       scores << (student_test.score * 100)/student_test.omr_test.total_marks.to_f
-      sub_m_factor = get_test_sub_m_factor(student_test.omr_test)
+
+      if student_test.child_test_id.present?
+        child_test = Omr::Test.find_by(id: student_test.child_test_id)
+        sub_m_factor = get_test_sub_m_factor(child_test)
+      else
+        sub_m_factor = get_test_sub_m_factor(student_test.omr_test)
+      end
 
       student_test.data.each do |sub, sub_data|
         next if sub == 'single_subject'
