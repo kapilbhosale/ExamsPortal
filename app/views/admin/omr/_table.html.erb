@@ -1,6 +1,6 @@
 <table class="table table-bordered black-border">
   <div style="text-align: right">
-    <p>Note: A: Attempted, C: Correct, W: Wrong, S: Skip, <%= image_tag 'winner.png', alt: 'Winner', width: 16 %> Topper 30</p>
+    <p>Note: Acc: Accuracy, A: Attempted, C: Correct, W: Wrong, S: Skip, <%= image_tag 'winner.png', alt: 'Winner', width: 16 %> Topper 30</p>
   </div>
   <thead>
     <div class="bg-detailed-header" style="padding: 4px 0px 2px 0px">
@@ -36,7 +36,6 @@
   <tbody>
     <tbody>
       <% @all_tests.each_with_index do |test, index| %>
-        <% sr_number = @all_tests.count - index %>
         <% test_id = test[:id] %>
         <% student_marks = @attempted_tests[test_id] %>
         <% if student_marks.present? %>
@@ -58,7 +57,7 @@
           <td>
             <div style="position: relative">
               <p style="font-size: 16px; color: black; width: 240px; word-wrap: break-word;">
-                <%= "#{sr_number}. #{test[:name]}" %>
+                <%= "#{test[:sr_number]}. #{test[:name]}" %>
               </p>
               <p style="font-size: 14px color: black"><%= test[:desc] %></p>
               <% if @subject_scores_per_test[test_id].present? && @subject_scores_per_test[test_id]['rank'] <= 30 %>
@@ -77,6 +76,11 @@
               <span style="font-size: 17px; font-weight: bold;">
                 <%= "#{student_marks.score}/#{test[:total_marks]}" %>
               <span>
+              <table class="compact-table">
+                  <tr>
+                    <td>Acc: <%= @subject_scores_per_test[test_id]['accuracy']%>%</td>
+                  </tr>
+                </table>
             </td>
             <td class="text-center">
               <% if @subject_scores_per_test[test_id]['Phy'].present? %>

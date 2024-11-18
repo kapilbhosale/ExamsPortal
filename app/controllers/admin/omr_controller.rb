@@ -59,13 +59,13 @@ class Admin::OmrController < Admin::BaseController
     average_scores = []
     @subject_scores_per_test = {}
 
-    omr_tests = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).includes(:parent_test, :omr_batches).order(test_date: :desc)
-
+    omr_tests = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).includes(:parent_test, :omr_batches).order(:test_date)
+    sr_number = 1
     omr_tests.each_with_index do |test, index|
-      sr_number = omr_tests.count - index
       next if test.parent_test.present?
 
       @all_tests << {
+        sr_number: sr_number,
         id: test.id,
         name: test.test_name,
         desc: test.description,
@@ -90,6 +90,7 @@ class Admin::OmrController < Admin::BaseController
         @subject_scores_per_test[test.id]['rank'] = student_test.rank
         @subject_scores_per_test[test.id]['percentage'] = (student_test.score.to_i * 100 / test.total_marks.to_f).round(2)
         @subject_scores_per_test[test.id]['percentile'] = percentile.round(2)
+        accuracies = []
 
         student_test.data.each do |subject, score_data|
           next if subject == 'single_subject'
@@ -104,12 +105,15 @@ class Admin::OmrController < Admin::BaseController
           @subject_scores_per_test[test.id][sub_code]['S'] = score_data['skip_count']
           @avg_per_test[sub_code] ||= []
           @avg_per_test[sub_code] << score_data['score']
+          accuracies << (score_data['correct_count'] * 100 / (score_data['correct_count'] + score_data['wrong_count']).to_f).round(2)
         end
+        @subject_scores_per_test[test.id]['accuracy'] = (accuracies.sum / accuracies.size.to_f).round(2)
         @present_count += 1
       else
         percent_score << 0
         colors << 'gray'
       end
+      sr_number += 1
     end
 
     @graph_data = {
