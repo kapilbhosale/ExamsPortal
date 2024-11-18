@@ -157,32 +157,41 @@ class Admin::OmrController < Admin::BaseController
   end
 
   def create
-    temp_file = params["omr_zip"].tempfile rescue nil
+    temp_file = params["omr_zip"]&.tempfile
+    unless temp_file
+      Rails.logger.error "File upload failed or missing."
+      flash[:error] = "No file uploaded. Please try again."
+      redirect_to admin_omr_index_path and return
+    end
 
     # Cleanup old files
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.csv"))
     FileUtils.rm_rf(Dir.glob("#{Rails.root}/zip_data/*.zip"))
 
-    Rails.logger.info "=========== Temp file: #{temp_file.path}"
-    if temp_file.present?
-      temp_file_path = temp_file.path
+    begin
       permanent_file_path = Rails.root.join("zip_data", "upload_#{Time.now.to_i}.zip")
+      FileUtils.mv(temp_file.path, permanent_file_path)
 
-      # Move the file to a permanent location
-      FileUtils.mv(temp_file_path, permanent_file_path)
+      unless params[:branch].present?
+        Rails.logger.error "Branch parameter is missing."
+        flash[:error] = "Branch information is required."
+        redirect_to admin_omr_index_path and return
+      end
 
-      Rails.logger.info "=========== Enqueuing OmrImportWorker with file: #{permanent_file_path} and branch: #{params[:branch]}"
-      OmrImportWorker.perform_async(permanent_file_path, params[:branch])
-      # OmrImportWorker.new.perform(permanent_file_path, params[:branch]) # Uncomment for synchronous execution
+      Rails.logger.info "Enqueuing OmrImportWorker with file: #{permanent_file_path} and branch: #{params[:branch]}"
+      result = OmrImportWorker.perform_async(permanent_file_path, params[:branch])
+      Rails.logger.info "Job enqueued with ID: #{result}"
 
       REDIS_CACHE.set("omr-import-info-status", "in-progress")
-      flash[:success] = "Importing data..."
-    else
+      flash[:success] = "Importing data.......++"
+    rescue StandardError => e
+      Rails.logger.error "Error processing OMR import: #{e.message}"
       flash[:error] = "Failed to import data. Please try again."
     end
 
     redirect_to admin_omr_index_path
   end
+
 
   def make_absent_entries
     # make absent tests entires here.
