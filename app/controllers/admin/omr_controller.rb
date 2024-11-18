@@ -156,6 +156,7 @@ class Admin::OmrController < Admin::BaseController
     end
   end
 
+
   def create
     temp_file = params["omr_zip"]&.tempfile
     unless temp_file
@@ -171,6 +172,26 @@ class Admin::OmrController < Admin::BaseController
     begin
       permanent_file_path = Rails.root.join("zip_data", "upload_#{Time.now.to_i}.zip")
       FileUtils.mv(temp_file.path, permanent_file_path)
+
+      # Wait for file to be fully written (max 5 seconds)
+      wait_time = 5
+      wait_interval = 1
+      attempts = 3
+
+      file_ready = false
+      attempts.times do
+        sleep wait_interval
+        if File.exist?(permanent_file_path) && File.size(permanent_file_path) > 0
+          file_ready = true
+          break
+        end
+      end
+
+      unless file_ready
+        raise "File not copied successfully after #{wait_time} seconds"
+      end
+
+      Rails.logger.info "File successfully copied. Size: #{File.size(permanent_file_path)} bytes"
 
       unless params[:branch].present?
         Rails.logger.error "Branch parameter is missing."
