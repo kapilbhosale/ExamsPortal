@@ -36,6 +36,7 @@
   <tbody>
     <tbody>
       <% @all_tests.each_with_index do |test, index| %>
+        <% sr_number = @all_tests.count - index %>
         <% test_id = test[:id] %>
         <% student_marks = @attempted_tests[test_id] %>
         <% if student_marks.present? %>
@@ -57,9 +58,8 @@
           <td>
             <div style="position: relative">
               <p style="font-size: 16px; color: black; width: 240px; word-wrap: break-word;">
-                <%= test[:name] %>
+                <%= "#{sr_number}. #{test[:name]}" %>
               </p>
-              <p style="font-size: 14px"><%= "Test-#{test_id}" %></p>
               <p style="font-size: 14px color: black"><%= test[:desc] %></p>
               <% if @subject_scores_per_test[test_id].present? && @subject_scores_per_test[test_id]['rank'] <= 30 %>
                 <%= image_tag 'winner.png', alt: 'Winner', class: 'winner-icon' %>

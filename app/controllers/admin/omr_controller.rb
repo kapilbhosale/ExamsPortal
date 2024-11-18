@@ -51,6 +51,7 @@ class Admin::OmrController < Admin::BaseController
   def progress_report
     @student = Omr::Student.find(params[:student_id])
     @attempted_tests = @student.omr_student_tests.index_by(&:omr_test_id)
+    @present_count = 0
     student_batches = @student.omr_batches.pluck(:name)
 
     @all_tests, exam_names, percent_score, colors, toppers = [], [], [], [], []
@@ -58,11 +59,10 @@ class Admin::OmrController < Admin::BaseController
     average_scores = []
     @subject_scores_per_test = {}
 
-    # omr_tests = Omr::Test.includes(:omr_batches, :parent_test).where(omr_batches: {id: @student.omr_batches.ids}).order(test_date: :desc)
-
     omr_tests = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).includes(:parent_test, :omr_batches).order(test_date: :desc)
 
-    omr_tests.each do |test|
+    omr_tests.each_with_index do |test, index|
+      sr_number = omr_tests.count - index
       next if test.parent_test.present?
 
       @all_tests << {
@@ -73,7 +73,7 @@ class Admin::OmrController < Admin::BaseController
         total_marks: test.total_marks,
         date: test.test_date.strftime("%d-%b-%y")
       }
-      exam_names << "Test-#{test.id}"
+      exam_names << sr_number
       student_test = @attempted_tests[test.id]
       topper_percentage = test.toppers['ALL'].to_i * 100 / test.total_marks
       toppers << topper_percentage
@@ -105,7 +105,7 @@ class Admin::OmrController < Admin::BaseController
           @avg_per_test[sub_code] ||= []
           @avg_per_test[sub_code] << score_data['score']
         end
-
+        @present_count += 1
       else
         percent_score << 0
         colors << 'gray'
