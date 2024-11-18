@@ -1,0 +1,159 @@
+<h4>Student OMR Progress Report Printer</h4>
+
+<div class="student-info">
+  <h3>Student Information</h3>
+  <table>
+    <tr>
+      <th>ID</th>
+      <td><%= @student.id %></td>
+    </tr>
+    <tr>
+      <th>Roll Number</th>
+      <td><%= @student.roll_number %></td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td><%= @student.name %></td>
+    </tr>
+    <tr>
+      <th>Batches</th>
+      <td><%= @student.omr_batches.pluck(:name).join(', ') %></td>
+    </tr>
+  </table>
+</div>
+
+<%= form_with url: progress_report_admin_omr_index_path, method: :post, local: true, class: 'form-container' do %>
+  <%= hidden_field_tag :student_id, @student.id %>
+
+  <div class="form-group">
+    <p>Choose the date range for which you want to generate the report.</p>
+    <label for="from_date">From Date:</label>
+    <input type="date" id="from_date" name="from_date">
+    &nbsp;&nbsp;
+    <label for="to_date">To Date:</label>
+    <input type="date" id="to_date" name="to_date" value="<%= Date.today.strftime('%Y-%m-%d') %>" required>
+  </div>
+
+  <div class="form-group">
+    <p>Choose the test order for the report.</p>
+    <label>Test Order:</label>
+    <div class="toggle-buttons">
+      <input type="radio" id="ascending" name="test_order" value="ascending" checked>
+      <label for="ascending" class="toggle-label">Ascending</label>
+      <input type="radio" id="descending" name="test_order" value="descending">
+      <label for="descending" class="toggle-label">Descending</label>
+    </div>
+  </div>
+
+  <div class="form-group submit-group">
+    <%= submit_tag 'Submit', class: 'btn-submit' %>
+  </div>
+<% end %>
+
+<script>
+  document.getElementById('from_date').addEventListener('change', function() {
+    var fromDate = this.value;
+    document.getElementById('to_date').setAttribute('min', fromDate);
+  });
+
+  document.getElementById('to_date').addEventListener('change', function() {
+    var toDate = this.value;
+    var fromDate = document.getElementById('from_date').value;
+    if (toDate < fromDate) {
+      alert('To Date cannot be less than From Date');
+      this.value = '';
+    }
+  });
+</script>
+
+
+<style>
+  h2 {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .form-container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .submit-group {
+    text-align: right;
+  }
+
+  .btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-submit:hover {
+    background-color: #45a049;
+  }
+
+  .student-info {
+    border: 1px solid #ccc;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    max-width: 600px;
+    margin: 20px auto;
+  }
+
+  .student-info table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .student-info th, .student-info td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  .student-info th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+
+  .toggle-buttons {
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-buttons input[type="radio"] {
+    display: none;
+  }
+
+  .toggle-buttons .toggle-label {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: -1px;
+    background-color: #f9f9f9;
+  }
+
+  .toggle-buttons input[type="radio"]:checked + .toggle-label {
+    background-color: #1DA1F2;
+    color: white;
+  }
+
+  .toggle-buttons .toggle-label:first-of-type {
+    border-radius: 5px 0 0 5px;
+  }
+
+  .toggle-buttons .toggle-label:last-of-type {
+    border-radius: 0 5px 5px 0;
+  }
+</style>

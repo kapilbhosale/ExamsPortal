@@ -48,9 +48,16 @@ class Admin::OmrController < Admin::BaseController
     @report_data = Omr::TestReportService.new(@test, @selected_batches.pluck(:id), include_absents, report_type).call
   end
 
+  def progress_report_dates
+    @student = Omr::Student.find(params[:student_id])
+  end
+
   def progress_report
     @student = Omr::Student.find(params[:student_id])
-    @attempted_tests = @student.omr_student_tests.index_by(&:omr_test_id)
+    from_date = params[:from_date]
+    to_date = params[:to_date]
+    test_order = params[:test_order] == 'descending' ? :desc : :asc
+
     @present_count = 0
     student_batches = @student.omr_batches.pluck(:name)
 
@@ -59,8 +66,21 @@ class Admin::OmrController < Admin::BaseController
     average_scores = []
     @subject_scores_per_test = {}
 
-    omr_tests = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).includes(:parent_test, :omr_batches).order(:test_date)
-    sr_number = 1
+    omr_tests = Omr::Test.joins(:omr_batches)
+                      .where(omr_batches: { id: @student.omr_batches.pluck(:id) })
+                      .where('omr_tests.test_date <= ?', to_date)
+                      .includes(:parent_test, :omr_batches)
+                      .order(test_date: test_order)
+
+    omr_tests = omr_tests.where('omr_tests.test_date >= ?', from_date) if from_date.present?
+
+    @attempted_tests = @student.omr_student_tests
+                          .includes(:omr_test)
+                          .where(omr_tests: { id: omr_tests.ids })
+                          .index_by(&:omr_test_id)
+
+
+    sr_number = test_order == :asc ? 1 : omr_tests.where(parent_id: nil).size
     omr_tests.each_with_index do |test, index|
       next if test.parent_test.present?
 
@@ -113,7 +133,8 @@ class Admin::OmrController < Admin::BaseController
         percent_score << 0
         colors << 'gray'
       end
-      sr_number += 1
+
+      sr_number = test_order == :asc ? sr_number + 1 : sr_number - 1
     end
 
     @graph_data = {

@@ -174,7 +174,8 @@ Rails.application.routes.draw do
       get 'tests_list', on: :collection
       get 'test_report_batch_selection', on: :collection
       post 'test_report_print', on: :collection
-      get 'progress_report', on: :collection
+      post 'progress_report', on: :collection
+      get 'progress_report_dates', on: :collection
     end
     resources :attendance do
       get :overview_report, on: :collection

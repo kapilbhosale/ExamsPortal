@@ -48,7 +48,7 @@
                       <td><%= student.parent_contact %></td>
                       <td><%= student.branch %></td>
                       <td>
-                        <%= link_to ' Report', progress_report_admin_omr_index_path({student_id: student.id}), class: "fa fa-file" %>&nbsp;
+                        <%= link_to ' Report', progress_report_dates_admin_omr_index_path({student_id: student.id}), class: "fa fa-file" %>&nbsp;
                       </td>
                     </tr>
                   <% end %>
