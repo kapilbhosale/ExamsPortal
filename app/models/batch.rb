@@ -179,17 +179,17 @@ class Batch < ApplicationRecord
     Batch.where(org_id: org.id, id: 1186)
   end
 
-  def self.get_test_series_batches_23_24(rcc_branch, course, batch, na=nil)
+  def self.get_test_series_batches_24_25(rcc_branch, course, batch, na=nil)
     org = Org.first
 
     course_type = na.course_type&.upcase || 'NEET'
     course_name = course.name == 'pcm' ? 'PCM' : 'PCB'
 
-    batch_name = "Test-Series-#{course_type}-#{course_name}-23-24"
+    batch_name = "Test-Series-#{course_type}-#{course_name}-24-25"
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
-      batch_group = BatchGroup.find_or_create_by(name: "TestSeries-2023-24", org_id: org.id)
+      batch_group = BatchGroup.find_or_create_by(name: "TestSeries-2024-25", org_id: org.id)
       _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
       Admin.where(org_id: org.id).each do |admin|
         AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
@@ -227,7 +227,7 @@ class Batch < ApplicationRecord
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == 'test-series'
-      get_test_series_batches_23_24(rcc_branch, course, batch, na)
+      get_test_series_batches_24_25(rcc_branch, course, batch, na)
     elsif batch == 'repeater'
       get_repeater_batches(rcc_branch, course, batch, na)
     elsif batch == '11th_set'
