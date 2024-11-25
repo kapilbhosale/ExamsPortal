@@ -2,7 +2,7 @@
   <tbody>
     <tr style="vertical-align: middle;">
       <td rowspan="2" style="text-align: center;">
-        <%= image_tag 'student_new.png', alt: 'New Student', height: '150' %>
+        <%= image_tag(@online_student&.photo? ? @online_student.photo.url(:profile) : 'student_new.png', alt: 'Student Photo', height: '150') %>
       </td>
       <td>
         <strong>Roll Number</strong><br>

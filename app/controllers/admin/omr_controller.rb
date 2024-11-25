@@ -53,6 +53,7 @@ class Admin::OmrController < Admin::BaseController
 
   def progress_report
     @student = Omr::Student.find(params[:student_id])
+    @online_student = Student.find_by(org_id: current_org.id, roll_number: @student.roll_number)
     from_date = params[:from_date]
     to_date = params[:to_date]
     test_order = params[:test_order] == 'descending' ? :desc : :asc
