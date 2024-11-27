@@ -1,4 +1,4 @@
-# SmartExamsV2 => ["stark", "kcp", "hostel", "jmc", "bhargav", "gp_dhule", "jspm", "vaa", "sri-gosalites", "demo", "srbio", "elearning", "dscl", "tf", "bansalclasses", "annapurnaacademy", "sstl", "lbs", "chate", "mps", "infinity", "kota", "konale-exams", "pis"]
+# SmartExamsV2 => ["stark", "kcp", "hostel", "jmc", "bhargav", "gp_dhule", "jspm", "vaa", "sri-gosalites", "demo", "srbio", "elearning", "dscl", "tf", "bansalclasses", "annapurnaacademy", "sstl", "lbs", "chate", "mps", "infinity", "kota", "konale-exams", "pis", "pe"]
 # SmartExamsV3 => ["dayanand", "munde", "yashwant-clg-backup", "wagaj", "scholars", "ganesh", "bhosale"]
 # SmartExamsV4 => ["vaa", "hostel", "jmc", "bhargav", "chate", "gp_dhule", "jspm", "konale-exams", "demo", "srbio", "elearning", "kcp", "lbs", "tf", "bansalclasses", "dscl"]
 # SmartExamsV5 => ["bep", "saraswati-videos", "saraswati-exams", "dep"]
