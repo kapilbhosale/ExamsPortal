@@ -13,7 +13,7 @@
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)
 #  payment_details      :jsonb
-#  receipt_number       :integer          not null
+#  receipt_number       :string           not null
 #  received_by          :string
 #  remaining_amount     :decimal(, )      default(0.0)
 #  token_of_the_day     :integer
@@ -327,19 +327,21 @@ class FeesTransaction < ApplicationRecord
 
     if org.rcc?
       # resetting RCC receipt numbers from 2nd July 2024
-      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
+      # fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
+      # returning alpha-numeric receipt numbers from 4rd Dec 2024
+      self.receipt_number = SecureRandom.alphanumeric(10)
     else
       fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
+
+      db_receipt_number = fees_transactions
+        .where(org_id: org_id)
+        .where(imported: false)
+        .where('created_at <= ?', Time.now)
+        .order(:created_at)
+        .last&.receipt_number
+
+      self.receipt_number = ((db_receipt_number.to_i || 0) + 1).to_s
     end
-
-    db_receipt_number = fees_transactions
-      .where(org_id: org_id)
-      .where(imported: false)
-      .where('created_at <= ?', Time.now)
-      .order(:created_at)
-      .last&.receipt_number
-
-    self.receipt_number = (db_receipt_number || 0) + 1
   end
 
   def update_token_of_the_day
