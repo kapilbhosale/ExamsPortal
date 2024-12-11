@@ -18,6 +18,9 @@ class Omr::ImportBatchStudents
     student_id_mapping = Omr::Student.where(org_id: org_id, branch: branch).pluck(:old_id, :id).to_h
     batch_id_mapping = Omr::Batch.where(org_id: org_id, branch: branch).pluck(:old_id, :id).to_h
 
+    student_ids_to_delete = Omr::Student.where(org_id: org_id, branch: branch).ids
+    Omr::StudentBatch.where(omr_student_id: student_ids_to_delete).delete_all
+
     begin
       CSV.foreach(csv_file, headers: true).each do |csv_row|
         old_student_id = csv_row['Student_ID'].to_i

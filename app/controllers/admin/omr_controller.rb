@@ -49,6 +49,9 @@ class Admin::OmrController < Admin::BaseController
 
   def progress_report_dates
     @student = Omr::Student.find(params[:student_id])
+    appeared_test_ids = Omr::StudentTest.where(omr_student_id: @student.id).ids
+    batch_test_ids = Omr::BatchTest.where(omr_batch_id: @student.omr_batches.pluck(:id)).pluck(:omr_test_id)
+    @tests = Omr::Test.where(id: appeared_test_ids + batch_test_ids).order(test_date: :desc)
   end
 
   def progress_report
@@ -58,6 +61,13 @@ class Admin::OmrController < Admin::BaseController
     to_date = params[:to_date]
     test_order = params[:test_order] == 'descending' ? :desc : :asc
 
+    selected_test_ids = params[:selected_tests]
+
+    if selected_test_ids.blank?
+      flash[:error] = "No tests selected. Please select at least one test."
+      redirect_to progress_report_dates_admin_omr_index_path(student_id: @student.id) and return
+    end
+
     @present_count = 0
     student_batches = @student.omr_batches.pluck(:name)
 
@@ -66,8 +76,9 @@ class Admin::OmrController < Admin::BaseController
     average_scores = []
     @subject_scores_per_test = {}
 
+    # .where(omr_batches: { id: @student.omr_batches.pluck(:id) })
     omr_tests = Omr::Test.joins(:omr_batches)
-                      .where(omr_batches: { id: @student.omr_batches.pluck(:id) })
+                      .where(id: selected_test_ids)
                       .where('omr_tests.test_date <= ?', to_date)
                       .includes(:parent_test, :omr_batches)
                       .order(test_date: test_order)

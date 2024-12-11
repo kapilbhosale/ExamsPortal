@@ -6,16 +6,12 @@
     <tr>
       <th>ID</th>
       <td><%= @student.id %></td>
-    </tr>
-    <tr>
       <th>Roll Number</th>
       <td><%= @student.roll_number %></td>
     </tr>
     <tr>
       <th>Name</th>
       <td><%= @student.name %></td>
-    </tr>
-    <tr>
       <th>Batches</th>
       <td><%= @student.omr_batches.pluck(:name).join(', ') %></td>
     </tr>
@@ -25,7 +21,7 @@
 <%= form_with url: progress_report_admin_omr_index_path, method: :post, local: true, class: 'form-container' do %>
   <%= hidden_field_tag :student_id, @student.id %>
 
-  <div class="form-group">
+  <div class="pull-left">
     <p>Choose the date range for which you want to generate the report.</p>
     <label for="from_date">From Date:</label>
     <input type="date" id="from_date" name="from_date">
@@ -34,7 +30,7 @@
     <input type="date" id="to_date" name="to_date" value="<%= Date.today.strftime('%Y-%m-%d') %>" required>
   </div>
 
-  <div class="form-group">
+  <div class="pull-right">
     <p>Choose the test order for the report.</p>
     <label>Test Order:</label>
     <div class="toggle-buttons">
@@ -45,9 +41,34 @@
     </div>
   </div>
 
-  <div class="form-group submit-group">
+  <div class="row form-group submit-group">
     <%= submit_tag 'Submit', class: 'btn-submit' %>
   </div>
+
+  <table class="table card-table table-striped  table-bordered table-hover table-vcenter text-nowrap">
+    <thead>
+      <tr>
+        <th><input type="checkbox" id="select_all"></th>
+        <th>Id</th>
+        <th>Test Name</th>
+        <th>Test Description</th>
+        <th>Date</th>
+        <th>Batches</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @tests.each do |test| %>
+      <tr>
+        <td><%= check_box_tag 'selected_tests[]', test.id %></td>
+        <td><%= test.id %></td>
+        <td><%= test.test_name %></td>
+        <td><%= test.description %></td>
+        <td><%= test.test_date.strftime("%d/%b/%y") %> </td>
+        <td class="wrap-cell"><%= test.omr_batches.pluck(:name).join(', ') %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% end %>
 
 <script>
@@ -64,6 +85,29 @@
       this.value = '';
     }
   });
+
+  document.getElementById('select_all').addEventListener('change', function() {
+    var checkboxes = document.querySelectorAll('input[name="selected_tests[]"]');
+    for (var checkbox of checkboxes) {
+      checkbox.checked = this.checked;
+    }
+  });
+
+  function validateForm() {
+    const checkboxes = document.querySelectorAll('input[name="selected_tests[]"]');
+    let isChecked = false;
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        isChecked = true;
+      }
+    });
+
+    if (!isChecked) {
+      alert('Please select at least one test.');
+      return false;
+    }
+    return true;
+  }
 </script>
 
 
@@ -78,7 +122,7 @@
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 5px;
-    max-width: 600px;
+    max-width: "90%";
     margin: 20px auto;
   }
 
@@ -108,7 +152,7 @@
     padding: 20px;
     background-color: #f1f1f1;
     border-radius: 5px;
-    max-width: 600px;
+    max-width: "90%";
     margin: 20px auto;
   }
 
@@ -155,5 +199,27 @@
 
   .toggle-buttons .toggle-label:last-of-type {
     border-radius: 0 5px 5px 0;
+  }
+
+  .wrap-cell {
+    max-width: '50%';
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .pull-left {
+  float: left;
+  width: 60%;
+  }
+
+  .pull-right {
+    float: right;
+    width: 40%;
+  }
+
+  .submit-group {
+    clear: both;
+    text-align: right;
+    margin-top: 20px;
   }
 </style>
