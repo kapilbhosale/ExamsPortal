@@ -4,6 +4,7 @@
 #
 #  id              :bigint(8)        not null, primary key
 #  branch          :string
+#  deleted_at      :datetime
 #  name            :string
 #  parent_contact  :string
 #  roll_number     :integer
@@ -16,6 +17,7 @@
 #
 # Indexes
 #
+#  index_omr_students_on_deleted_at                      (deleted_at)
 #  index_omr_students_on_org_id                          (org_id)
 #  index_omr_students_on_roll_number_and_parent_contact  (roll_number,parent_contact) UNIQUE
 #
@@ -25,6 +27,8 @@
 #
 
 class Omr::Student < ApplicationRecord
+  acts_as_paranoid
+
   belongs_to :student, optional: true
   belongs_to :org
 

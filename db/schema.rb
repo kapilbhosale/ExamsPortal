@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_04_160056) do
+ActiveRecord::Schema.define(version: 2024_12_11_143344) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -587,6 +587,8 @@ ActiveRecord::Schema.define(version: 2024_12_04_160056) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "old_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_omr_students_on_deleted_at"
     t.index ["org_id"], name: "index_omr_students_on_org_id"
     t.index ["roll_number", "parent_contact"], name: "index_omr_students_on_roll_number_and_parent_contact", unique: true
   end
