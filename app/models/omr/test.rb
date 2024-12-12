@@ -260,7 +260,7 @@ class Omr::Test < ApplicationRecord
     end
 
     return {
-      score: sub_correct_score + neet_correct_score,
+      score: sub_correct_score + neet_correct_score - (sub_wrong_score + neet_wrong_score),
       correct_count: sub_correct + neet_correct,
       wrong_count: sub_wrong + neet_wrong,
       skip_count: sub_skip + adjusted_neet_skip,
