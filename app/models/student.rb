@@ -371,21 +371,21 @@ class Student < ApplicationRecord
   end
 
   # path = "/Users/kapilbhosale/Downloads/SET-2024-Halltickets-backend.xlsx"
+  # path = "/home/ubuntu/ht-24.xlsx"
   def import_xls(path)
     imported_count = 0
     xls = Roo::Spreadsheet.open(path)
     header = xls.row(1)
     xls.each_row_streaming(offset: 1) do |row|
-      parent_mobile = row[header.index("Parent mobile")]&.to_i
-      roll_number = row[header.index("Roll Number")]&.to_i
-
+      parent_mobile = row[header.index("Parent mobile")]&.to_s&.to_i
+      roll_number = row[header.index("Roll Number")]&.to_s&.to_i
       student = Student.where(parent_mobile: parent_mobile, roll_number: roll_number)
       if student.present?
         student.update_all(data: {
-          center: row[header.index("Exam Center")],
-          address: row[header.index("Address")],
-          board: row[header.index("Board")]&.upcase,
-          exam_time: row[header.index("Exam Date & Time")],
+          center: row[header.index("Exam Center")].is_a?(Hash) ? row[header.index("Exam Center")]["value"] : row[header.index("Exam Center")],
+          address: row[header.index("Address")].is_a?(Hash) ? row[header.index("Address")]["value"] : row[header.index("Address")],
+          board: row[header.index("Board")].is_a?(Hash) ? row[header.index("Board")]["value"]&.to_s&.upcase : row[header.index("Board")]&.to_s&.upcase,
+          exam_time: row[4].is_a?(Hash) ? row[4]["value"] : row[4],
           tag: '2024-25'
         })
         putc "."
