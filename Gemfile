@@ -73,6 +73,7 @@ gem 'zip-zip' # will load compatibility for old rubyzip API.
 gem 'aws-sdk-s3'
 gem 'file_validators'
 gem "roo", "~> 2.8.0"
+gem "axlsx"
 
 gem 'jquery-rails'
 

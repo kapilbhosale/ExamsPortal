@@ -395,6 +395,28 @@ class Student < ApplicationRecord
 
     imported_count
   end
+
+  def self.export_set_xls
+    students = Student.all
+    package = Axlsx::Package.new
+    workbook = package.workbook
+
+    # Create a CSV file in the public folder
+    workbook.add_worksheet(name: "Students") do |sheet|
+      # Add the headers (columns)
+      sheet.add_row ["Roll Number", "Name", "Parent Mob", "Student Mob", "Center", "Address", "Link"]
+
+      students.find_each do |student|
+        roll_number = student.roll_number
+        parent_mobile = student.parent_mobile
+        sheet.add_row [student.roll_number, student.name, student.parent_mobile, student.student_mobile, student.data['center'], student.data['address'], AuthenticatedUrl.encoded_url(roll_number: roll_number, mobile_number: parent_mobile)]
+        putc "."
+      end
+    end
+    # Save the file to the public folder
+    file_path = Rails.root.join('public', 'CET-2024025.xlsx')
+    package.serialize(file_path.to_s)
+  end
 end
 
 # code to revemo duplicates.
