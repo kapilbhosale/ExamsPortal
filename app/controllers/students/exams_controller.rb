@@ -5,51 +5,39 @@ class Students::ExamsController < Students::BaseController
 
 
   def print_hall_ticket
-    # respond_to do |format|
-    #   format.html
-    #   format.pdf do
-    #     render pdf: "Exam Hall Ticket",
-    #           template: "students/exams/print_hall_ticket.pdf.erb",
-    #           locals: {current_student: current_student },
-    #           footer: { font_size: 9, left: DateTime.now.strftime("%d-%B-%Y %I:%M%p"), right: 'Page [page] of [topage]' }
-    #   end
-    # end
-      # Create a new Prawn document
+    pdf = Prawn::Document.new(:left_margin => 50)
 
-      pdf = Prawn::Document.new(:left_margin => 50)
-      # Set the background image for the first page
+    table_data = [
+            [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
+            [{content: 'Name', font_style: :bold}, current_student.name],
+            [{content: 'Date & Time', font_style: :bold}, current_student.data['exam_time']],
+            [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
+            [{content: 'Course', font_style: :bold}, "#{current_student.data['course']} (#{current_student.data['board']})"],
+            [{content: 'Exam Center', font_style: :bold}, current_student.data['center'].split[0..4]&.join(' ')],
+            [{content: '', font_style: :bold}, current_student.data['center'].split[5..-1]&.join(' ') || '-']
+          ]
 
-      table_data = [
-              [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
-              [{content: 'Name', font_style: :bold}, current_student.name],
-              [{content: 'Date & Time', font_style: :bold}, current_student.data['exam_time']],
-              [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
-              [{content: 'Course', font_style: :bold}, "#{current_student.data['course']} (#{current_student.data['board']})"],
-              [{content: 'Exam Center', font_style: :bold}, current_student.data['center'].split[0..4]&.join(' ')],
-              [{content: '', font_style: :bold}, current_student.data['center'].split[5..-1]&.join(' ') || '-']
-            ]
+    if current_student&.data['address'].present?
+      table_data << [{content: 'Address', font_style: :bold}, current_student.data['address'].split[0..6]&.join(' ')]
+      table_data << [{content: '', font_style: :bold}, current_student.data['address'].split[7..-1]&.join(' ')]
+    end
 
-      if current_student&.data['address'].present?
-        table_data << [{content: 'Address', font_style: :bold}, current_student.data['address'].split[0..6]&.join(' ')]
-        table_data << [{content: '', font_style: :bold}, current_student.data['address'].split[7..-1]&.join(' ')]
+    pdf.canvas do
+      pdf.image("app/assets/images/ht-page-1.jpeg", scale: 0.48, at: pdf.bounds.top_left)
+      pdf.move_down 150
+    end
+    pdf.table table_data, row_colors: ["ffffff", "eeeeee"], cell_style: {height: 22, border_width: 0, width: 210, padding: [5, 0, 5, 20], text_color: '373737', inline_format: true} do
+      # Aligning a specific column cells' text to right
+      # columns(1).style = :bold
+      column(0).width = 110
+      column(-1).width = 310
       end
 
-      pdf.canvas do
-        pdf.image("app/assets/images/ht-page1.jpg", scale: 0.24, at: pdf.bounds.top_left)
-        pdf.move_down 150
-      end
-      pdf.table table_data, row_colors: ["ffffff", "eeeeee"], cell_style: {height: 22, border_width: 0, width: 210, padding: [5, 0, 5, 20], text_color: '373737', inline_format: true} do
-        # Aligning a specific column cells' text to right
-        # columns(1).style = :bold
-        column(0).width = 110
-        column(-1).width = 310
-       end
-
-      pdf.start_new_page
-      pdf.canvas do
-        pdf.image("app/assets/images/ht-page2.jpg", scale: 0.24, at: pdf.bounds.top_left)
-      end
-      send_data pdf.render, filename: "hallticket.pdf", type: "application/pdf"
+    pdf.start_new_page
+    pdf.canvas do
+      pdf.image("app/assets/images/ht-page-2.jpeg", scale: 0.48, at: pdf.bounds.top_left)
+    end
+    send_data pdf.render, filename: "SET-Hall-Ticket-2024-25.pdf", type: "application/pdf"
   end
 
   def is_exam_valid

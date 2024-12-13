@@ -345,18 +345,11 @@ class Student < ApplicationRecord
   end
 
   def self.import_hallticket_csv(path)
-    if CSV.foreach(path, col_sep: "\t", headers: true).first.headers != ["Roll Number",
-      "Name",
-      "Exam Date & Time",
-      "Parent mobile",
-      "Student mobile",
-      "course",
-      "Board",
-      "Exam Center",
-      "Adress"]
-      return {error: "Invalid CSV Headers"}
-    end
+    imported_count = import_xls(path)
+    return {imported_count: imported_count}
+  end
 
+  def import_csv(path)
     imported_count = 0
     CSV.foreach(path, col_sep: "\t", headers: true) do |row|
       student = Student.where(parent_mobile: row["Parent mobile"], roll_number: row["Roll Number"])
@@ -364,11 +357,10 @@ class Student < ApplicationRecord
         student.update_all(data: {
           center: row["Exam Center"],
           course: row["course"]&.upcase,
-          school_name: "-",
-          address: row["Adress"],
+          address: row["Address"],
           board: row["Board"]&.upcase,
           exam_time: row["Exam Date & Time"],
-          tag: '2023-24'
+          tag: '2024-25'
         })
         putc "."
         imported_count += 1
@@ -376,6 +368,32 @@ class Student < ApplicationRecord
     end
 
     return {imported_count: imported_count}
+  end
+
+  # path = "/Users/kapilbhosale/Downloads/SET-2024-Halltickets-backend.xlsx"
+  def import_xls(path)
+    imported_count = 0
+    xls = Roo::Spreadsheet.open(path)
+    header = xls.row(1)
+    xls.each_row_streaming(offset: 1) do |row|
+      parent_mobile = row[header.index("Parent mobile")]&.to_i
+      roll_number = row[header.index("Roll Number")]&.to_i
+
+      student = Student.where(parent_mobile: parent_mobile, roll_number: roll_number)
+      if student.present?
+        student.update_all(data: {
+          center: row[header.index("Exam Center")],
+          address: row[header.index("Address")],
+          board: row[header.index("Board")]&.upcase,
+          exam_time: row[header.index("Exam Date & Time")],
+          tag: '2024-25'
+        })
+        putc "."
+        imported_count += 1
+      end
+    end
+
+    imported_count
   end
 end
 
