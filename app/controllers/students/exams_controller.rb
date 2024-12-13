@@ -1,8 +1,51 @@
 class Students::ExamsController < Students::BaseController
   before_action :authenticate_student!, except: [:tests]
-  skip_before_action :verify_authenticity_token, only: [:sync, :submit]
+  skip_before_action :verify_authenticity_token, only: [:ht, :sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 
+  def ht
+    token = params[:token]
+    render json: { error: 'Invalid token' } and return if token.blank?
+    data = AuthenticatedUrl.decode_data(token)
+    current_student = Student.find_by(roll_number: data[:roll_number], parent_mobile: data[:mobile_number])
+    if current_student.blank?
+      flash[:error] = 'Invalid token'
+      render json: { error: 'Invalid token' } and return
+    end
+
+    pdf = Prawn::Document.new(:left_margin => 50)
+    table_data = [
+            [{content: 'Seat Number', font_style: :bold}, current_student.roll_number],
+            [{content: 'Name', font_style: :bold}, current_student.name],
+            [{content: 'Date & Time', font_style: :bold}, current_student.data['exam_time']],
+            [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
+            [{content: 'Board', font_style: :bold}, "#{current_student.data['board']}"],
+            [{content: 'Exam Center', font_style: :bold}, current_student.data['center'].split[0..4]&.join(' ')],
+            [{content: '', font_style: :bold}, current_student.data['center'].split[5..-1]&.join(' ') || '-']
+          ]
+
+    if current_student&.data['address'].present?
+      table_data << [{content: 'Address', font_style: :bold}, current_student.data['address'].split[0..6]&.join(' ')]
+      table_data << [{content: '', font_style: :bold}, current_student.data['address'].split[7..-1]&.join(' ')]
+    end
+
+    pdf.canvas do
+      pdf.image("app/assets/images/ht-page-1.jpeg", scale: 0.48, at: pdf.bounds.top_left)
+      pdf.move_down 150
+    end
+    pdf.table table_data, row_colors: ["ffffff", "eeeeee"], cell_style: {height: 22, border_width: 0, width: 210, padding: [5, 0, 5, 20], text_color: '373737', inline_format: true} do
+      # Aligning a specific column cells' text to right
+      # columns(1).style = :bold
+      column(0).width = 110
+      column(-1).width = 310
+      end
+
+    pdf.start_new_page
+    pdf.canvas do
+      pdf.image("app/assets/images/ht-page-2.jpeg", scale: 0.48, at: pdf.bounds.top_left)
+    end
+    send_data pdf.render, filename: "SET-Hall-Ticket-2024-25.pdf", type: "application/pdf"
+  end
 
   def print_hall_ticket
     pdf = Prawn::Document.new(:left_margin => 50)
@@ -12,7 +55,7 @@ class Students::ExamsController < Students::BaseController
             [{content: 'Name', font_style: :bold}, current_student.name],
             [{content: 'Date & Time', font_style: :bold}, current_student.data['exam_time']],
             [{content: 'Mobile Number', font_style: :bold}, "#{current_student.parent_mobile}, #{current_student.student_mobile}"],
-            [{content: 'Course', font_style: :bold}, "#{current_student.data['course']} (#{current_student.data['board']})"],
+            [{content: 'Board', font_style: :bold}, "#{current_student.data['course']} (#{current_student.data['board']})"],
             [{content: 'Exam Center', font_style: :bold}, current_student.data['center'].split[0..4]&.join(' ')],
             [{content: '', font_style: :bold}, current_student.data['center'].split[5..-1]&.join(' ') || '-']
           ]

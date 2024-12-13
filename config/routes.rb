@@ -84,6 +84,7 @@ Rails.application.routes.draw do
     get :exam_data_s3, to: 'exams#exam_data_s3'
     get :is_exam_valid, to: 'exams#is_exam_valid'
     get :print_hall_ticket, to: 'exams#print_hall_ticket'
+    get :ht, to: 'exams#ht'
     get "exam/:id", to: 'home#exam'
     put "sync/:exam_id/", to: 'home#sync'
     put "submit/:exam_id/", to: 'home#submit'
