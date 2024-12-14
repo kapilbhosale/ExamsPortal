@@ -19,7 +19,7 @@ class Students::LoginController < Students::BaseController
     if student&.valid_password?(login_params[:password])
       student.remember_me = login_params[:remember_me]
 
-      if (student.batches.ids & [986, 987]).present?
+      if request.subdomain == 'exams' && (student.batches.ids & [1186]).present?
         sign_in_and_redirect(student, event: :authentication) and return
       end
 
