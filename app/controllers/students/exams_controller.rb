@@ -1,5 +1,5 @@
 class Students::ExamsController < Students::BaseController
-  before_action :authenticate_student!, except: [:tests]
+  before_action :authenticate_student!, except: [:tests, :ht]
   skip_before_action :verify_authenticity_token, only: [:ht, :sync, :submit]
   layout 'student_exam_layout', only: [:exam]
 

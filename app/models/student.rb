@@ -397,7 +397,7 @@ class Student < ApplicationRecord
   end
 
   def self.export_set_xls
-    students = Student.all
+    students = Student.where("data ->> 'tag' = ?", '2024-25')
     package = Axlsx::Package.new
     workbook = package.workbook
 
