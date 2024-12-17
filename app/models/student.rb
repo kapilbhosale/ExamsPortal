@@ -371,7 +371,7 @@ class Student < ApplicationRecord
   end
 
   # path = "/Users/kapilbhosale/Downloads/SET-2024-Halltickets-backend.xlsx"
-  # path = "/home/ubuntu/ht-24.xlsx"
+  # path = "/home/ubuntu/h-24-1412.xlsx"
   def import_xls(path)
     imported_count = 0
     xls = Roo::Spreadsheet.open(path)
@@ -396,6 +396,18 @@ class Student < ApplicationRecord
     imported_count
   end
 
+  def  cleanup_ht_data
+    Student.where("data ->> 'tag' = ?", '2024-25').each do |student|
+      ["board", "center", "address", "exam_time"].each do |key|
+        if student.data[key].is_a?(Hash)
+          student.data[key] = student.data[key]['value']
+        end
+      end
+      student.save
+      putc "."
+    end
+  end
+
   def self.export_set_xls
     students = Student.where("data ->> 'tag' = ?", '2024-25')
     package = Axlsx::Package.new
@@ -414,10 +426,11 @@ class Student < ApplicationRecord
       end
     end
     # Save the file to the public folder
-    file_path = Rails.root.join('public', 'CET-2024025.xlsx')
+    file_path = Rails.root.join('public', 'CET-20240251.xlsx')
     package.serialize(file_path.to_s)
   end
 end
+
 
 # code to revemo duplicates.
 # duplicates = Student.group(:roll_number, :parent_mobile).having('count(*) > 1').pluck(:roll_number, :parent_mobile)
