@@ -28,10 +28,19 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     subject = Subject.find_by(id: params[:id])
     page = (params[:page] || 1).to_i
 
-    folders = Genre
+    folder_ids = Genre
       .where(org_id: current_org.id)
       .where(subject_id: subject&.id)
       .where(hidden: false)
+      .ids
+
+    special_folder_ids = StudentVideoFolder
+      .where(student_id: current_student.id)
+      .where(subject_id: subject&.id)
+      .where('show_till_date >= ?', Time.current)
+      .pluck(:genre_id)
+
+    folders = Genre.where(id: folder_ids + special_folder_ids)
 
     if params[:type] == 'pdfs'
       genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
@@ -61,9 +70,12 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
       pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     else
-      fodler_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
-      videos_all_count_by_ids = fodler_videos.group(:genre_id).count
-      videos_new_count_by_ids = fodler_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
+      folder_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
+      if special_folder_ids.present?
+        folder_videos += VideoLecture.where(genre_id: special_folder_ids)
+      end
+      videos_all_count_by_ids = folder_videos.group(:genre_id).count
+      videos_new_count_by_ids = folder_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     end
 
     folders.each do |folder|
@@ -111,14 +123,29 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       } and return
     end
 
-    videos = VideoLecture
-      .includes(:batches)
-      .where(org_id: current_org.id)
-      .where(batches: {id: current_student.batches.ids})
+    is_folder_special_access = StudentVideoFolder
+      .where(student_id: current_student.id)
       .where(genre_id: folder&.id)
-      .where(enabled: true)
-      .where('publish_at <= ?', Time.current)
-      .where('hide_at IS NULL or hide_at >= ?', Time.current)
+      .where('show_till_date >= ?', Time.current)
+      .present?
+
+    if is_folder_special_access
+      videos = VideoLecture
+        .where(org_id: current_org.id)
+        .where(genre_id: folder&.id)
+        .where(enabled: true)
+        .where('publish_at <= ?', Time.current)
+        .where('hide_at IS NULL or hide_at >= ?', Time.current)
+    else
+      videos = VideoLecture
+        .includes(:batches)
+        .where(org_id: current_org.id)
+        .where(batches: {id: current_student.batches.ids})
+        .where(genre_id: folder&.id)
+        .where(enabled: true)
+        .where('publish_at <= ?', Time.current)
+        .where('hide_at IS NULL or hide_at >= ?', Time.current)
+    end
 
     if videos.blank?
       render json: {
