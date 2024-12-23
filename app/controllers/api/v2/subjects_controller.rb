@@ -36,7 +36,6 @@ class Api::V2::SubjectsController < Api::V2::ApiController
 
     special_folder_ids = StudentVideoFolder
       .where(student_id: current_student.id)
-      .where(subject_id: subject&.id)
       .where('show_till_date >= ?', Time.current)
       .pluck(:genre_id)
 
