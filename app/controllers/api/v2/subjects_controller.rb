@@ -28,18 +28,16 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     subject = Subject.find_by(id: params[:id])
     page = (params[:page] || 1).to_i
 
-    folder_ids = Genre
+    folders = Genre
       .where(org_id: current_org.id)
       .where(subject_id: subject&.id)
       .where(hidden: false)
-      .ids
 
     special_folder_ids = StudentVideoFolder
       .where(student_id: current_student.id)
+      .where(genre_id: folder.ids)
       .where('show_till_date >= ?', Time.current)
       .pluck(:genre_id)
-
-    folders = Genre.where(id: folder_ids + special_folder_ids)
 
     if params[:type] == 'pdfs'
       genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
