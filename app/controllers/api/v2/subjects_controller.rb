@@ -78,6 +78,11 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       videos_new_count_by_ids = folder_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     end
 
+    if special_folder_ids.present?
+      special_folders = Genre.where(id: special_folder_ids)
+      folders += special_folders
+    end
+
     folders.each do |folder|
       if params[:type] == 'pdfs'
         pdf = {
