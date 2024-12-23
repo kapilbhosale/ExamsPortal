@@ -333,11 +333,13 @@ class Students::AdmissionsController < ApplicationController
       test_series_batch_ids = [972, 977]
       # SET_BATCH_ID_MARKER
       neet_saarthi_batch_ids = [1186]
+      set_batch_ids = [1216, 1217]
 
       student_batch_ids = student&.batches&.ids || []
       if student.blank? ||
           @new_admission.batch == 'test-series' && (student_batch_ids & test_series_batch_ids).blank? ||
-          @new_admission.batch == 'neet_saarthi' && (student_batch_ids & neet_saarthi_batch_ids).blank?
+          @new_admission.batch == 'neet_saarthi' && (student_batch_ids & neet_saarthi_batch_ids).blank? ||
+          @new_admission.batch == '12th_set' && (student_batch_ids & set_batch_ids).blank?
         student = Student.add_student(@new_admission) rescue nil
       end
 

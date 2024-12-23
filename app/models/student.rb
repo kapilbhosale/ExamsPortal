@@ -301,7 +301,7 @@ class Student < ApplicationRecord
 
   def send_sms(is_installment=false)
     # SET_BATCH_ID_MARKER
-    if (batches.ids & [1186]).present?
+    if (batches.ids & [1186, 1216, 1217]).present?
       set_confirmation_sms(parent_mobile.to_s) if parent_mobile.present?
       set_confirmation_sms(student_mobile.to_s) if student_mobile.present?
     else
