@@ -210,7 +210,7 @@ class Batch < ApplicationRecord
     org = Org.first
     course_type = na.course_type&.upcase || 'NEET'
     course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
-    batch_name = "12-SET-#{course_name}-23-24"
+    batch_name = "12-SET-#{course_name}-24-25"
     Batch.where(org_id: org.id, name: batch_name)
   end
 

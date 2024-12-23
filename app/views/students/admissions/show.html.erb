@@ -240,6 +240,7 @@
         $('input[name="course[]"]').on('change', showFeesDetails);
 
         const BATCHES = [
+          {val: "12th_set", text: "11th Moving 12th (Non RCC) Scholarship Exam 2025"},
           {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2025)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
           {val: "12th", text: "12th Regular Online (2024-25)"},
@@ -248,6 +249,7 @@
         ]
 
         const AUR_BATCHES = [
+          {val: "12th_set", text: "11th Moving 12th (Non RCC) Scholarship Exam 2025"},
           {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2025)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
           {val: "12th", text: "12th Regular Online (2024-25)"},
@@ -256,6 +258,7 @@
         ]
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
+          {val: "12th_set", text: "11th Moving 12th (Non RCC) Scholarship Exam 2025"},
           {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2025)"},
           {val: "11th_new", text: "11th Regular Online (2024-25)"},
           {val: "12th", text: "12th Regular Online (2024-25)"},
@@ -264,6 +267,7 @@
         ]
 
         const NASHIK_HADAPSAR_BATCHES = [
+          {val: "12th_set", text: "11th Moving 12th (Non RCC) Scholarship Exam 2025"},
           {val: "neet_saarthi", text: "11th RCC SET (Scholarship Exam 2025)"},
           {val: "repeater", text: "Rept Online Batch (2024-25)"},
           {val: "test-series", text: "Vijaypath Test Series (Only Online)"}
@@ -541,6 +545,7 @@
               <% if @student.present? %>
                 <option value="12th">12th</option>
               <% else %>
+                <option id="12th_set" value="12th_set">11th Moving 12th (Non RCC) Scholarship Exam 2025</option>
                 <option id="neet_saarthi" value="neet_saarthi">11th RCC SET (Scholarship Exam 2025)</option>
                 <option id="11th_new" value="11th_new">11th Regular Online (2024-25)</option>
                 <option id="12th" value="12th">12th Regular Online (2024-25)</option>
