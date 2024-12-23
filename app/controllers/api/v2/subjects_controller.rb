@@ -67,9 +67,11 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
       pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     else
-      folder_videos = VideoLecture.includes(:batches).where(batches: {id: current_student.batches.ids}).where(genre_id: folders.ids)
+      folder_videos = VideoLecture.includes(:batches)
+                                  .where(batches: { id: current_student.batches.ids })
+                                  .where(genre_id: folders.ids)
       if special_folder_ids.present?
-        folder_videos += VideoLecture.where(genre_id: special_folder_ids)
+        folder_videos = folder_videos.or(VideoLecture.where(genre_id: special_folder_ids))
       end
       videos_all_count_by_ids = folder_videos.group(:genre_id).count
       videos_new_count_by_ids = folder_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
