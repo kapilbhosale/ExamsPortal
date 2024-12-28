@@ -21,6 +21,9 @@
           <input type="checkbox" name="filter[pdf]" <%= @pdf ? 'checked' : ''%>>
           <span style="margin-right: 10px">PDFs</span>
         </span>
+        <% if @student.present? %>
+          <input type="hidden" name="student_id" value="<%= @student&.id %>">
+        <% end %>
         <%= f.submit "Search", class: 'btn btn-outline-success', style: 'font-size: 0.75em;'%>
       <% end %>
     </div>
