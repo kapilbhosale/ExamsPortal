@@ -59,7 +59,7 @@ class FeesTransaction < ApplicationRecord
   audited
 
   CURRENT_ACADEMIC_YEAR = "2025-26"
-  scope :current_year, ->() { where(academic_year: [CURRENT_ACADEMIC_YEAR, '2024-25']) }
+  scope :current_year, ->() { where(academic_year: [CURRENT_ACADEMIC_YEAR, '2024-25', '2023-24']) }
   # avaialbe to all devs, less is always good
   scope :lt_hundred, ->() { where('token_of_the_day < 100') }
   # available only to kapil, more is not good
