@@ -27,6 +27,7 @@
                 <th>Name</th>
                 <th>Branch</th>
                 <th>Created</th>
+                <th>Year</th>
                 <th>Group</th>
                 <th>Class</th>
                 <% if !@current_org.rcc? %>
@@ -55,6 +56,9 @@
                   </td>
                   <td>
                     <%= batch.created_at.strftime("%d-%b-%Y") %>
+                  </td>
+                  <td>
+                    <%= batch.edu_year %>
                   </td>
                   <td>
                     <%= batch.batch_group&.name || '-' %>
