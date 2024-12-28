@@ -58,7 +58,9 @@
                     <%= batch.created_at.strftime("%d-%b-%Y") %>
                   </td>
                   <td>
-                    <%= batch.edu_year %>
+                    <span class="badge badge-pill badge-<%= batch.edu_year == @current_org.data['current_academic_year'] ? 'success' : 'secondary' %>">
+                      <%= batch.edu_year %>
+                    </span>
                   </td>
                   <td>
                     <%= batch.batch_group&.name || '-' %>
