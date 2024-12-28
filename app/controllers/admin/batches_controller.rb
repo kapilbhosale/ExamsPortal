@@ -5,7 +5,7 @@ class Admin::BatchesController < Admin::BaseController
     @q = Batch.ransack(params[:q])
     @batches = @q.result.includes(:batch_group, :fees_templates).where(org: current_org, id: current_admin.batches&.ids).order(:created_at)
 
-    @branches = ['all'] + Batch.where(org: current_org, id: current_admin.batches&.ids).pluck(:branch).uniq
+    @branches = Batch.where(org: current_org, id: current_admin.batches&.ids).pluck(:branch).uniq
   end
 
   def new
