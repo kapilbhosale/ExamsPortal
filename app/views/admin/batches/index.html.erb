@@ -2,16 +2,19 @@
   <div class="col-12">
     <div class="card">
       <div class="card-header">
-        <div class="col-md-6">
+        <div class="col-md-5">
           <h5>Batches</h5>
         </div>
-        <div class="col-md-6 text-right">
-          <% if @current_admin.can_manage(:batches) %>
-            <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Batch'.html_safe, new_admin_batch_path %>
-          <% end %>
-          &nbsp;
-          <% if @current_admin.can_manage(:batches) %>
-            <%= link_to '<i class="glyphicon glyphicon-circle-arrow-right"> </i> Bulk Student Batch change'.html_safe, change_batches_admin_batches_path %>
+        <div class="col-md-7">
+          <%= search_form_for @q, url: admin_batches_path, method: :get, class: "form-inline" do |f| %>
+            <%= f.select :branch_eq, options_for_select(@branches, params.dig(:q, :branch_eq)), prompt: "Select Branch", class: "form-control form-select mr-2" %>
+            <%= f.submit "Filter", class: "btn btn-primary btn-sm ml-2" %>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <% if @current_admin.can_manage(:batches) %>
+              <%= link_to '<i class="glyphicon glyphicon-plus"> </i> Add New Batch'.html_safe, new_admin_batch_path %>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <%= link_to '<i class="glyphicon glyphicon-circle-arrow-right"> </i> Bulk Student Batch change'.html_safe, change_batches_admin_batches_path %>
+            <% end %>
           <% end %>
         </div>
       </div>
