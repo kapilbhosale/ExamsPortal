@@ -26,7 +26,8 @@ module Batches
         org: org,
         batch_group_id: batch_group_id,
         klass: klass,
-        branch: branch
+        branch: branch,
+        edu_year: org.data['current_academic_year']
       )
       batch.fees_templates << FeesTemplate.where(id: fees_template_ids)
 
