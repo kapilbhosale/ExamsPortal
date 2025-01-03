@@ -149,6 +149,7 @@ export function updateExamSummary(examID) {
                 score += modelAns.pm;
               } else {
                 incorrect_input_questions++;
+                score += modelAns.nm;
               }
             } else {
               if (examType === 'neet' && index >= 35) {
@@ -423,56 +424,22 @@ export function initialize() {
       return;
     }
 
-    let student_ans = null;
-    let time_data = null;
-    let s3_url = null;
     let shuffle = false;
 
     $.ajax({
       type: 'GET',
-      url: '/students/exam_data_s3',
+      url: '/students/exam_data',
       dataType: 'json',
       data: { id: store.get('examId') },
       success: (data) => {
-        student_ans = data.student_ans
-        time_data = data.time_data
-        s3_url = data.s3_url
-        shuffle = data.shuffle
-
-        $.ajax({
-          type: 'GET',
-          url: s3_url,
-          dataType: 'json',
-          crossDomain: true,
-          success: (data) => {
-            const preparedData = {
-              student_ans: student_ans,
-              time_data: time_data,
-              questions: (shuffle ? shuffleQuestions(data.questions) : data.questions),
-              model_ans: data.model_ans,
-              exam_type: data.exam_type,
-            }
-            processExamData(preparedData, store, dispatch);
-          }
-        }).fail(function() {
-          $.ajax({
-            type: 'GET',
-            url: '/students/exam_data',
-            dataType: 'json',
-            data: { id: store.get('examId') },
-            success: (data) => {
-              const preparedData = {
-                student_ans: data.student_ans,
-                time_data: data.time_data,
-                questions: (shuffle? shuffleQuestions(data.questions) : data.questions),
-                model_ans: data.model_ans,
-                exam_type: data.exam_type,
-              }
-              processExamData(preparedData, store, dispatch);
-            }
-          })
-        });
-        // data processing ends here.
+        const preparedData = {
+          student_ans: data.student_ans,
+          time_data: data.time_data,
+          questions: (shuffle? shuffleQuestions(data.questions) : data.questions),
+          model_ans: data.model_ans,
+          exam_type: data.exam_type,
+        }
+        processExamData(preparedData, store, dispatch);
       }
     })
   };

@@ -215,6 +215,7 @@ class StudentExamScoreCalculator
     (counts[:correct_count] * @exam_section.positive_marks) +
       (counts[:in_correct_count] * @exam_section.negative_marks) +
       (counts[:input_correct_count] * @exam_section.positive_marks) +
+      (counts[:input_incorrect_count] * @exam_section.negative_marks) +
       counts[:multi_mark_total]
   end
 
