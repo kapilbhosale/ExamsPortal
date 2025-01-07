@@ -17,7 +17,12 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
       collection_data[key] << ft.as_json
     end
 
-    render json: collection_data
+    final_data = {}
+    from_date.upto(to_date) do |date|
+      final_data[date.strftime('%Y-%m-%d')] = collection_data[date.strftime('%Y-%m-%d')] || []
+    end
+
+    render json: final_data
   end
 
   def collection_csv

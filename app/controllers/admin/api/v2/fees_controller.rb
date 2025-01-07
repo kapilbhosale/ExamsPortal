@@ -2,6 +2,11 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
   before_action :authorize_request, only: [:create_fees_transaction]
 
   def details
+    # if time in IST is between 9:00 am to 08:00 pm, then only allow to create fees transaction.
+    if Time.current.in_time_zone('Asia/Kolkata').hour < 9 || Time.current.in_time_zone('Asia/Kolkata').hour >= 20
+      render json: { message: 'fees time error' } and return
+    end
+
     student = Student.find_by(org_id: current_org.id, id: params[:student_id])
     # adding this token so, one request is processed only once.
     fees_transaction_token = SecureRandom.uuid

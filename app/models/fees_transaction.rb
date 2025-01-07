@@ -126,7 +126,8 @@ class FeesTransaction < ApplicationRecord
       remaining_amount: remaining_amount.to_f,
       discount_amount: discount_amount.to_f,
       discount_comment: comment,
-      next_due_date: next_due_date&.strftime('%Y-%m-%d')
+      next_due_date: next_due_date&.strftime('%Y-%m-%d'),
+      receipt_time: created_at.strftime('%I:%M %p')
     }
   end
 
