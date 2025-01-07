@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< Updated upstream
 ActiveRecord::Schema.define(version: 2024_12_11_143344) do
+=======
+ActiveRecord::Schema.define(version: 2025_01_03_141925) do
+>>>>>>> Stashed changes
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -1009,6 +1013,17 @@ ActiveRecord::Schema.define(version: 2024_12_11_143344) do
     t.index ["genre_id"], name: "index_video_lectures_on_genre_id"
     t.index ["org_id"], name: "index_video_lectures_on_org_id"
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
+  end
+
+  create_table "whats_apps", force: :cascade do |t|
+    t.string "phone_number"
+    t.string "message"
+    t.string "var_1"
+    t.string "var_2"
+    t.string "var_3"
+    t.string "var_4"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "zoom_meetings", force: :cascade do |t|

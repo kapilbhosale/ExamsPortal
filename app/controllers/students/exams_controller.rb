@@ -132,6 +132,9 @@ class Students::ExamsController < Students::BaseController
   end
 
   def exam_data_s3
+    # abandoning S3 support
+    # render json: { error: 'S3 No longer supported' }, status: 422 and return
+
     exam_id = params[:id]
     exam = Exam.find_by(id: exam_id)
     if exam.blank? || exam.show_exam_at > Time.current
