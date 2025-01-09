@@ -117,7 +117,7 @@ class Attendance < ApplicationRecord
   end
 
   def build_msg
-    org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', Date.today.strftime('%d-%B-%Y'))
+    org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', time_entry.strftime('%d-%B-%Y %I:%M %p'))
   end
 end
 
