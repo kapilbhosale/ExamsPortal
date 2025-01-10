@@ -10,38 +10,25 @@ class Omr::ImportStudents
   end
 
   def call
-    csv_file = File.open(file_path, "r:ISO-8859-1")
-
-    students_to_insert = []
-    batch_size = 1000
-    max_student_id = 50000
-    students_to_mark = []
-
     begin
+      csv_file = File.open(file_path, "r:ISO-8859-1")
+      max_student_id = 50000
+
       CSV.foreach(csv_file, headers: true).each do |csv_row|
         student_id = csv_row['Student_ID']
-        next if csv_row['Is_Delete'] == 'True'
         # next if student_id is not a number or its greater than max_student_id
         next if student_id.to_i.to_s != student_id || student_id.to_i >= max_student_id
-        students_to_insert << {
+        Student.create({
           org_id: org_id,
           roll_number: csv_row['Student_Roll_No'],
           name: csv_row['FName'],
           parent_contact: csv_row['Parent_Contact'].to_s.strip,
           student_contact: csv_row['Contact'].to_s.strip,
           branch: branch,
-          old_id: csv_row['Student_ID'].to_i
-        }
-
-        if students_to_insert.size >= batch_size
-          insert_students(students_to_insert)
-          students_to_insert.clear
-        end
+          old_id: csv_row['Student_ID'].to_i,
+          deleted_at: csv_row['Is_Delete'] == 'True' ? Time.current : nil
+        })
       end
-
-      # Insert any remaining students
-      insert_students(students_to_insert) unless students_to_insert.empty?
-
     ensure
       csv_file.close
     end
