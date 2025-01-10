@@ -19,7 +19,7 @@ class Omr::ImportStudents
         # next if student_id is not a number or its greater than max_student_id
         next if student_id.to_i.to_s != student_id || student_id.to_i >= max_student_id
 
-        student = Student.find_by(
+        student = OMR::Student.find_by(
           roll_number: csv_row['Student_Roll_No'],
           org_id: org_id,
           parent_mobile: csv_row['Parent_Contact'].to_s.strip,
@@ -27,7 +27,7 @@ class Omr::ImportStudents
         )
         next if student.present?
 
-        Student.create({
+        Omr::Student.create({
           org_id: org_id,
           roll_number: csv_row['Student_Roll_No'],
           name: csv_row['FName'],
