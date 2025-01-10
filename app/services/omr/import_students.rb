@@ -20,6 +20,7 @@ class Omr::ImportStudents
     begin
       CSV.foreach(csv_file, headers: true).each do |csv_row|
         student_id = csv_row['Student_ID']
+        next if csv_row['Is_Delete'] == 'True'
         # next if student_id is not a number or its greater than max_student_id
         next if student_id.to_i.to_s != student_id || student_id.to_i >= max_student_id
         students_to_insert << {
@@ -32,10 +33,6 @@ class Omr::ImportStudents
           old_id: csv_row['Student_ID'].to_i
         }
 
-        if csv_row['Is_Delete'] == 'True'
-          students_to_mark << csv_row['Student_ID'].to_i
-        end
-
         if students_to_insert.size >= batch_size
           insert_students(students_to_insert)
           students_to_insert.clear
@@ -44,11 +41,6 @@ class Omr::ImportStudents
 
       # Insert any remaining students
       insert_students(students_to_insert) unless students_to_insert.empty?
-
-      # Mark students as deleted
-      Omr::Student
-        .where(org_id: org_id, branch: branch, old_id: students_to_mark)
-        .update_all(deleted_at: Time.current)
 
     ensure
       csv_file.close

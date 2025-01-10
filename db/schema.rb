@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
-ActiveRecord::Schema.define(version: 2024_12_11_143344) do
-=======
-ActiveRecord::Schema.define(version: 2025_01_03_141925) do
->>>>>>> Stashed changes
+ActiveRecord::Schema.define(version: 2025_01_10_114006) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -594,7 +590,7 @@ ActiveRecord::Schema.define(version: 2025_01_03_141925) do
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_omr_students_on_deleted_at"
     t.index ["org_id"], name: "index_omr_students_on_org_id"
-    t.index ["roll_number", "parent_contact"], name: "index_omr_students_on_roll_number_and_parent_contact", unique: true
+    t.index ["roll_number", "parent_contact", "deleted_at"], name: "index_omr_students_unique", unique: true
   end
 
   create_table "omr_tests", force: :cascade do |t|

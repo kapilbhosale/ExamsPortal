@@ -17,9 +17,9 @@
 #
 # Indexes
 #
-#  index_omr_students_on_deleted_at                      (deleted_at)
-#  index_omr_students_on_org_id                          (org_id)
-#  index_omr_students_on_roll_number_and_parent_contact  (roll_number,parent_contact) UNIQUE
+#  index_omr_students_on_deleted_at  (deleted_at)
+#  index_omr_students_on_org_id      (org_id)
+#  index_omr_students_unique         (roll_number,parent_contact,deleted_at) UNIQUE
 #
 # Foreign Keys
 #
