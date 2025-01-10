@@ -22,7 +22,7 @@ class Omr::ImportStudents
         student = Omr::Student.find_by(
           roll_number: csv_row['Student_Roll_No'],
           org_id: org_id,
-          parent_mobile: csv_row['Parent_Contact'].to_s.strip,
+          parent_contact: csv_row['Parent_Contact'].to_s.strip,
           branch: branch
         )
         next if student.present?
