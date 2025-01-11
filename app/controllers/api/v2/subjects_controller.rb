@@ -3,8 +3,10 @@ class Api::V2::SubjectsController < Api::V2::ApiController
   def index
     if params[:type] == 'video'
       genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
-      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: {id: genre_ids, video_lectures_count: 1..Float::INFINITY }).all
-      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where(id: genre_ids).where('video_lectures_count > 0').group(:subject_id).count
+      special_genre_ids = StudentVideoFolder.where(student_id: current_student.id).pluck(:genre_id)
+      all_genre_ids = genre_ids + special_genre_ids
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: {id: all_genre_ids, video_lectures_count: 1..Float::INFINITY }).all
+      topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where(id: all_genre_ids).where('video_lectures_count > 0').group(:subject_id).count
     else
       genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
       subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: { id: genre_ids, study_pdfs_count: 1..Float::INFINITY }).all

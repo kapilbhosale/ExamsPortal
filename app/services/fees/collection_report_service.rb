@@ -63,8 +63,8 @@ module Fees
 
       fees_transactions = fees_transactions.current_year
         .where(org_id: current_org.id)
-        .where('fees_transactions.created_at >= ?', date1)
-        .where('fees_transactions.created_at <= ?', date2)
+        .where('fees_transactions.created_at >= ?', date1.beginning_of_day)
+        .where('fees_transactions.created_at <= ?', date2.end_of_day)
         .where(students: { student_batches: { batch_id: valid_batch_ids }})
         .order(:created_at)
 
