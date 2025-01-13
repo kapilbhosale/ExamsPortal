@@ -120,6 +120,7 @@ class Attendance < ApplicationRecord
     org.data.dig('sms_settings', 'present_sms', 'msg').gsub('<STUDENT_NAME>', student.name).gsub('<TODAY>', time_entry.strftime('%d-%B-%Y %I:%M %p'))
   end
 end
+# deploy test.
 
 # # script to create attendance
 # student_ids = [1,2,3,5,6,7]
