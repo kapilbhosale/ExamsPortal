@@ -13,7 +13,7 @@
 #  next_due_date        :date
 #  paid_amount          :decimal(, )      default(0.0)
 #  payment_details      :jsonb
-#  receipt_number       :integer          not null
+#  receipt_number       :string           not null
 #  received_by          :string
 #  remaining_amount     :decimal(, )      default(0.0)
 #  token_of_the_day     :integer

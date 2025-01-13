@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_22_115159) do
+ActiveRecord::Schema.define(version: 2025_01_13_074321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -388,7 +388,7 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
 
   create_table "fees_transactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "org_id"
-    t.integer "receipt_number", null: false
+    t.string "receipt_number", null: false
     t.bigint "student_id"
     t.string "academic_year"
     t.decimal "paid_amount", default: "0.0"
@@ -529,6 +529,93 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
     t.index ["org_id"], name: "index_notifications_on_org_id"
   end
 
+  create_table "omr_batch_tests", force: :cascade do |t|
+    t.bigint "omr_batch_id"
+    t.bigint "omr_test_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["omr_batch_id"], name: "index_omr_batch_tests_on_omr_batch_id"
+    t.index ["omr_test_id", "omr_batch_id"], name: "index_omr_batch_tests_on_omr_test_id_and_omr_batch_id", unique: true
+    t.index ["omr_test_id"], name: "index_omr_batch_tests_on_omr_test_id"
+  end
+
+  create_table "omr_batches", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name"
+    t.string "db_modified_date"
+    t.string "branch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "old_id"
+    t.index ["name", "branch"], name: "index_omr_batches_on_name_and_branch", unique: true
+    t.index ["org_id"], name: "index_omr_batches_on_org_id"
+  end
+
+  create_table "omr_student_batches", force: :cascade do |t|
+    t.bigint "omr_student_id"
+    t.bigint "omr_batch_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["omr_batch_id"], name: "index_omr_student_batches_on_omr_batch_id"
+    t.index ["omr_student_id", "omr_batch_id"], name: "index_omr_student_batches_on_omr_student_id_and_omr_batch_id", unique: true
+    t.index ["omr_student_id"], name: "index_omr_student_batches_on_omr_student_id"
+  end
+
+  create_table "omr_student_tests", force: :cascade do |t|
+    t.bigint "omr_student_id"
+    t.bigint "omr_test_id"
+    t.integer "score", default: 0
+    t.jsonb "student_ans", default: []
+    t.integer "rank"
+    t.integer "child_test_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "data", default: {}
+    t.index ["omr_student_id", "omr_test_id"], name: "index_omr_student_tests_on_omr_student_id_and_omr_test_id", unique: true
+    t.index ["omr_student_id"], name: "index_omr_student_tests_on_omr_student_id"
+    t.index ["omr_test_id"], name: "index_omr_student_tests_on_omr_test_id"
+  end
+
+  create_table "omr_students", force: :cascade do |t|
+    t.bigint "org_id"
+    t.integer "student_id"
+    t.integer "roll_number"
+    t.string "parent_contact"
+    t.string "student_contact"
+    t.string "name"
+    t.string "branch"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "old_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_omr_students_on_deleted_at"
+    t.index ["org_id"], name: "index_omr_students_on_org_id"
+    t.index ["roll_number", "parent_contact", "deleted_at"], name: "index_omr_students_unique", unique: true
+  end
+
+  create_table "omr_tests", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "test_name", null: false
+    t.string "description"
+    t.integer "no_of_questions", default: 0
+    t.integer "total_marks", default: 0
+    t.datetime "test_date"
+    t.jsonb "answer_key", default: {}
+    t.integer "parent_id"
+    t.string "db_modified_date"
+    t.boolean "is_booklet", default: false
+    t.boolean "is_combine", default: false
+    t.string "branch"
+    t.jsonb "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "toppers", default: {}
+    t.integer "old_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_omr_tests_on_deleted_at"
+    t.index ["org_id"], name: "index_omr_tests_on_org_id"
+  end
+
   create_table "options", force: :cascade do |t|
     t.bigint "question_id"
     t.text "data"
@@ -657,6 +744,18 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
     t.datetime "updated_at", null: false
     t.boolean "is_jee", default: false
     t.text "description"
+  end
+
+  create_table "sms_logs", force: :cascade do |t|
+    t.string "mobile"
+    t.string "message"
+    t.bigint "org_id"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mobile"], name: "index_sms_logs_on_mobile"
+    t.index ["org_id"], name: "index_sms_logs_on_org_id"
+    t.index ["student_id"], name: "index_sms_logs_on_student_id"
   end
 
   create_table "student_batches", force: :cascade do |t|
@@ -812,7 +911,7 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
     t.index ["name"], name: "index_students_on_name"
     t.index ["org_id"], name: "index_students_on_org_id"
     t.index ["parent_mobile"], name: "index_students_on_parent_mobile"
-    t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile"
+    t.index ["roll_number", "parent_mobile"], name: "index_students_on_roll_number_and_parent_mobile", unique: true
     t.index ["roll_number"], name: "index_students_on_roll_number"
   end
 
@@ -924,6 +1023,17 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
     t.index ["subject_id"], name: "index_video_lectures_on_subject_id"
   end
 
+  create_table "whats_apps", force: :cascade do |t|
+    t.string "phone_number"
+    t.string "message"
+    t.string "var_1"
+    t.string "var_2"
+    t.string "var_3"
+    t.string "var_4"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "zoom_meetings", force: :cascade do |t|
     t.string "zoom_meeting_id"
     t.string "password"
@@ -940,5 +1050,8 @@ ActiveRecord::Schema.define(version: 2024_06_22_115159) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "omr_batches", "orgs"
+  add_foreign_key "omr_students", "orgs"
+  add_foreign_key "omr_tests", "orgs"
   add_foreign_key "study_pdfs", "subjects"
 end

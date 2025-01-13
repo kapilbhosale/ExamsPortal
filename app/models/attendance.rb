@@ -118,6 +118,13 @@ class Attendance < ApplicationRecord
     template_id = org.data.dig('sms_settings', 'present_sms', 'template_id')
     entity_id = org.data.dig('sms_settings', 'present_sms', 'entity_id')
 
+    SmsLog.create({
+      mobile: student.parent_mobile,
+      message: build_msg,
+      org_id: org.id,
+      student_id: student.id
+    })
+
     msg = URI.encode_www_form_component(build_msg)
     encoded_msg = "#{BASE_URL}?UserID=#{sms_user}&Password=#{sms_password}&SenderID=#{sender_id}&Phno=#{student.parent_mobile}&Msg=#{msg}&EntityID=#{entity_id}&TemplateID=#{template_id}"
 
