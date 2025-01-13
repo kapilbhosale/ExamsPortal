@@ -43,6 +43,14 @@ class Attendance < ApplicationRecord
     end
   end
 
+  def send_test_message
+    puts "-----working....."
+    if org[:data]["auto_present_sms"] == true && time_entry.to_date == Date.current
+      puts "send message to #{student.parent_mobile}"
+      puts "MSG --> #{build_msg}"
+    end
+  end
+
   # org.data['sms_settings'] ||= {}
   #
   # org.data['sms_settings']['present_sms'] = {
