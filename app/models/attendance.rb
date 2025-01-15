@@ -37,7 +37,7 @@ class Attendance < ApplicationRecord
   def send_sms
     return if REDIS_CACHE.get("oid_#{org_id}_sid_#{student_id}_sms") == 'true'
 
-    REDIS_CACHE.set("oid_#{org_id}_sid_#{student_id}_sms", 'true', { ex: 1.hours })
+    REDIS_CACHE.set("oid_#{org_id}_sid_#{student_id}_sms", 'true', { ex: 1.hour })
     if org[:data]["auto_present_sms"] == true && time_entry.to_date == Date.current
       Thread.new { send_present_sms }
     end
