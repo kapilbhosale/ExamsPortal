@@ -146,7 +146,8 @@ class FeesTransaction < ApplicationRecord
       remaining_amount: remaining_amount.to_f,
       discount_amount: discount_amount.to_f,
       discount_comment: comment,
-      next_due_date: next_due_date&.strftime('%Y-%m-%d')
+      next_due_date: next_due_date&.strftime('%Y-%m-%d'),
+      receipt_time: created_at.strftime('%I:%M %p')
     }
   end
 
@@ -345,15 +346,23 @@ class FeesTransaction < ApplicationRecord
       fees_transactions = FeesTransaction.gt_hundred
     end
 
-    db_receipt_number = fees_transactions
-      .where(org_id: org_id)
-      .where(imported: false)
-      .where('created_at >= ?', Date.parse("03-Dec-2023"))
-      .where('created_at <= ?', Time.now)
-      .order(:created_at)
-      .last&.receipt_number
+    if org.rcc?
+      # resetting RCC receipt numbers from 2nd July 2024
+      # fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
+      # returning alpha-numeric receipt numbers from 4rd Dec 2024
+      self.receipt_number = SecureRandom.alphanumeric(10)
+    else
+      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
 
-    self.receipt_number = (db_receipt_number || 0) + 1
+      db_receipt_number = fees_transactions
+        .where(org_id: org_id)
+        .where(imported: false)
+        .where('created_at <= ?', Time.now)
+        .order(:created_at)
+        .last&.receipt_number
+
+      self.receipt_number = ((db_receipt_number.to_i || 0) + 1).to_s
+    end
   end
 
   def update_token_of_the_day
@@ -395,7 +404,7 @@ class FeesTransaction < ApplicationRecord
     end
   end
 
-  # student = Student.find 630763
+  # student = Student.find 701016
   # remove_discount(student)
   # ft = FeesTransaction.where(student: student).order(:created_at).last
   # ft.remaining_amount = 120000
