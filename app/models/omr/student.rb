@@ -38,6 +38,26 @@ class Omr::Student < ApplicationRecord
   has_many :omr_student_tests, class_name: 'Omr::StudentTest', foreign_key: 'omr_student_id'
   has_many :omr_tests, through: :omr_student_tests
 
+
+  def delete_branch_data(branch)
+    puts "==== deleting batch data for branch: #{branch} ===="
+    Omr::Batch.where(branch: branch).each do |batch|
+      Omr::BatchTest.where(omr_batch_id: batch.id).delete_all
+      Omr::StudentBatch.where(omr_batch_id: batch.id).delete_all
+      batch.delete
+      putc"."
+    end
+
+    puts "==== deleting test data for branch: #{branch} ===="
+    Omr::Test.where(branch: branch).each do |test|
+      Omr::StudentTest.where(omr_test_id: test.id).delete_all
+      test.delete
+      putc"."
+    end
+
+    puts "==== deleting students for branch: #{branch} ===="
+    Omr::Student.where(branch: branch).delete_all
+  end
 end
 
 # Omr::BatchTest.delete_all
@@ -57,4 +77,13 @@ end
 
 # Omr::Test.delete_all
 # ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
+
+
+
+
+
+
+
+
+
 
