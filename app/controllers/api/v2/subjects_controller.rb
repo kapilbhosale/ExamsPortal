@@ -33,18 +33,22 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     folders = Genre.where(org_id: current_org.id).where(subject_id: subject&.id).where(hidden: false)
     special_folder_ids = StudentVideoFolder.where(student_id: current_student.id).where(genre_id: folders.ids).where('show_till_date >= ?', Time.current).pluck(:genre_id)
 
-    if params[:type] == 'pdfs'
-      genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
-      folders = folders.where(id: genre_ids).where('study_pdfs_count > 0')
-    else
-      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
-      folders = folders.where(id: genre_ids).where('video_lectures_count > 0')
-    end
+    # if params[:type] == 'pdfs'
+    #   genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
+    #   folders = folders.where(id: genre_ids).where('study_pdfs_count > 0')
+    # else
+    #   genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
+    #   folders = folders.where(id: genre_ids).where('video_lectures_count > 0')
+    # end
 
     topics = []
 
     if params[:type] == 'pdfs'
       folder_pdfs = StudyPdf.includes(:batches).where(batches: { id: current_student.batches.ids}).where(genre_id: folders.ids )
+      if special_folder_ids.present?
+        reg_folder_ids = folder_pdfs.pluck(:genre_id)
+        folder_pdfs = folder_pdfs.where(genre_id: special_folder_ids + reg_folder_ids)
+      end
       pdfs_all_count_by_ids = folder_pdfs.group(:genre_id).count
       pdfs_new_count_by_ids = folder_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     else
@@ -57,6 +61,8 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       videos_new_count_by_ids = folder_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     end
 
+    all_genre_ids = folder_pdfs.pluck(:genre_id) + folder_videos.pluck(:genre_id)
+    folders = Genre.where(org_id: current_org.id).where(subject_id: subject&.id).where(id:all_genre_ids)
     total = folders.count
 
     if folders.blank?
