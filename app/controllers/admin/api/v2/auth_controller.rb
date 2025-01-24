@@ -25,7 +25,8 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
       render json: {
         token: token,
         admin: admin,
-        roles: admin.roles
+        roles: admin.roles,
+        branches: (['all'] + admin.org.data['branches']),
         }, status: :ok and return
     end
 
