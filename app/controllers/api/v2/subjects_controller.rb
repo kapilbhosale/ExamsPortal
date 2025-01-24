@@ -5,7 +5,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
       special_genre_ids = StudentVideoFolder.where(student_id: current_student.id).pluck(:genre_id)
       all_genre_ids = genre_ids + special_genre_ids
-      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: {id: all_genre_ids, video_lectures_count: 1..Float::INFINITY }).all
+      subjects = Subject.where(org_id: current_org.id).includes(:genres).where(genres: {id: all_genre_ids, video_lectures_count: 1..Float::INFINITY })
       topic_counts_by_subject_id = Genre.where(org_id: current_org.id).where(id: all_genre_ids).where('video_lectures_count > 0').group(:subject_id).count
     else
       genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
@@ -41,31 +41,21 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       .where('show_till_date >= ?', Time.current)
       .pluck(:genre_id)
 
-    if params[:type] == 'pdfs'
-      genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
-      folders = folders.where(id: genre_ids).where('study_pdfs_count > 0')
-    else
-      genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
-      folders = folders.where(id: genre_ids).where('video_lectures_count > 0')
-    end
+    # if params[:type] == 'pdfs'
+    #   genre_ids = StudyPdf.includes(:batches, :subject).where(batches: {id: current_student.batches}).pluck(:genre_id).uniq
+    #   folders = folders.where(id: genre_ids).where('study_pdfs_count > 0')
+    # else
+    #   genre_ids = VideoLecture.includes(:batches, :subject).where(batches: {id: current_student.batches}).where(enabled: true).pluck(:genre_id).uniq
+    #   folders = folders.where(id: genre_ids).where('video_lectures_count > 0')
+    # end
 
-    total = folders.count
-    folders = folders.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
-
-    if folders.blank?
-      render json: {
-        page: page,
-        page_size: ITEMS_PER_PAGE,
-        total_page: 0,
-        count: 0,
-        data: []
-      } and return
-    end
+    # total = folders.count
+    # folders = folders.order(id: :desc).page(page).per(params[:limit] || ITEMS_PER_PAGE)
 
     topics = []
 
     if params[:type] == 'pdfs'
-      fodler_pdfs = StudyPdf.includes(:batches).where(batches: { id: current_student.batches.ids}).where(genre_id: folders.ids )
+      folder_pdfs = StudyPdf.includes(:batches).where(batches: { id: current_student.batches.ids}).where(genre_id: folders.ids )
       pdfs_all_count_by_ids = fodler_pdfs.group(:genre_id).count
       pdfs_new_count_by_ids = fodler_pdfs.where('study_pdfs.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     else
@@ -83,6 +73,18 @@ class Api::V2::SubjectsController < Api::V2::ApiController
     if special_folder_ids.present?
       special_folders = Genre.where(id: special_folder_ids)
       folders += special_folders
+    end
+
+    total = folders.count
+
+    if folders.blank?
+      render json: {
+        page: page,
+        page_size: ITEMS_PER_PAGE,
+        total_page: 0,
+        count: 0,
+        data: []
+      } and return
     end
 
     folders.each do |folder|
