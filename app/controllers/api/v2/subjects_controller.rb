@@ -61,7 +61,7 @@ class Api::V2::SubjectsController < Api::V2::ApiController
       videos_new_count_by_ids = folder_videos.where('video_lectures.created_at >=?', Time.current.beginning_of_day).group(:genre_id).count
     end
 
-    all_genre_ids = folder_pdfs.pluck(:genre_id) + folder_videos.pluck(:genre_id)
+    all_genre_ids = (folder_pdfs&.pluck(:genre_id) || []) + (folder_videos&.pluck(:genre_id) || [])
     folders = Genre.where(org_id: current_org.id).where(subject_id: subject&.id).where(id:all_genre_ids)
     total = folders.count
 
