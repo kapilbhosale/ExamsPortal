@@ -61,6 +61,14 @@ class Omr::Test < ApplicationRecord
     end
   end
 
+  def subjects
+    if self.child_tests.present?
+      return self.child_tests.first.data['subjects']
+    else
+      return self.data['subjects']
+    end
+  end
+
   def self.get_subject_code(subject)
     return 'Phy' if ['phy', 'physics'].include?(subject.downcase)
     return 'Chem' if ['chem', 'chemistry'].include?(subject.downcase)
@@ -73,14 +81,14 @@ class Omr::Test < ApplicationRecord
 
   def get_subject_max_marks
     max_marks = {}
-    if data["subjects"].blank?
+    if subjects.blank?
       total_marks = 0
       answer_key.each do |q_index, model_ans|
         total_marks += model_ans['pm']
       end
       max_marks['single_subject'] = total_marks
     else
-      data["subjects"].each do |sub_name, sub_data|
+      subjects.each do |sub_name, sub_data|
         if neet_new_pattern?
           max_marks[self.class.get_subject_code(sub_name)] = 180
         else
@@ -98,8 +106,9 @@ class Omr::Test < ApplicationRecord
     return max_marks
   end
 
+  # need to consider as this method is not returning proper data is parent test i.e. booklet
   def neet_new_pattern?
-    sub_data = self.data['subjects']
+    sub_data = subjects
     return false unless sub_data.is_a?(Hash) && sub_data.size == 4
 
     sub_data.all? { |_, subject| subject["count"] == 50 }
@@ -148,8 +157,8 @@ class Omr::Test < ApplicationRecord
   end
 
   def single_subject?
-    return true if self.data['subjects'].blank?
-    self.data['subjects'].keys.size == 1
+    return true if subjects.blank?
+    subjects.keys.size == 1
   end
 
 

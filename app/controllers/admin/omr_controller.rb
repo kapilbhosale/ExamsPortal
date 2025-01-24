@@ -36,15 +36,75 @@ class Admin::OmrController < Admin::BaseController
   def test_report_print
     @test = Omr::Test.find(params[:test_id])
     @selected_batches = Omr::Batch.find(params[:batches])
-    @subjects = @test.data['subjects'].keys.map do |sub|
-      Omr::Test.get_subject_code(sub)
+
+    if @test.child_tests.present?
+      @subjects = @test.child_tests.first.data['subjects'].keys.map do |sub|
+        Omr::Test.get_subject_code(sub)
+      end
+    else
+      @subjects = @test.data['subjects'].keys.map do |sub|
+        Omr::Test.get_subject_code(sub)
+      end
     end
+
     @sub_max_marks = @test.get_subject_max_marks
 
     include_absents = params[:include_absents].present?
     report_type = params[:report_type]
-    report_format = params[:report_format]
     @report_data = Omr::TestReportService.new(@test, @selected_batches.pluck(:id), include_absents, report_type).call
+
+    if report_format = params[:report_format] == 'xls'
+      if @report_data[:status]
+        sub_order = ['Phy', 'Chem', 'Bot', 'Zoo']
+        sub_headers = []
+        (sub_order + ["total"]).each do |sub|
+          sub_headers << "#{sub.upcase} Marks"
+          sub_headers << "#{sub.upcase} Attempt"
+          sub_headers << "#{sub.upcase} Correct"
+          sub_headers << "#{sub.upcase} Wrong"
+          sub_headers << "#{sub.upcase} Skip"
+          sub_headers << "#{sub.upcase} Accuracy"
+        end
+        csv_data = CSV.generate(headers: true) do |csv|
+          csv << ["sr. no", "roll Number", "Name", "Score", "Rank"] + sub_headers
+
+          @report_data[:test_data].each do |student_data|
+            sub_data = []
+            if student_data[:data].present?
+              total_a, total_c, total_w, total_s, total_acc = 0, 0, 0, 0, 0
+              sub_order.each do |sub|
+                attempt = student_data[:data][sub]["wrong_count"] + student_data[:data][sub]["correct_count"]
+                correct = student_data[:data][sub]["correct_count"]
+                wrong = student_data[:data][sub]["wrong_count"]
+                skip = student_data[:data][sub]["skip_count"]
+                accuracy = (correct * 100/attempt.to_f).round(2)
+
+                sub_data << student_data[:data][sub]["score"]
+                sub_data << attempt
+                sub_data << correct
+                sub_data << wrong
+                sub_data << skip
+                sub_data << accuracy
+                total_a += attempt
+                total_c += correct
+                total_w += wrong
+                total_s += skip
+                total_acc += accuracy
+              end
+            end
+            csv << [
+              student_data[:sr_no],
+              student_data[:roll_number],
+              student_data[:name],
+              student_data[:score],
+              student_data[:rank],
+            ] + sub_data + [student_data[:score], total_a, total_c, total_w, total_s, total_acc.present? ? (total_acc/sub_order.count).round(2): "-"]
+          end
+        end
+
+        send_data csv_data, type: 'text/csv', filename: "TestReport-#{@test.id}.csv", disposition: 'attachment' and return
+      end
+    end
   end
 
   def progress_report_dates

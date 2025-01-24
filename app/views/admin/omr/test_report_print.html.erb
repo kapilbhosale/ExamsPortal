@@ -38,9 +38,9 @@
         <td><%= test_data[:sr_no] %></td>
         <td>
           <%= test_data[:name] %><br/>
-          <div style="position: relative">  
+          <div style="position: relative">
             <%= test_data[:roll_number] %>
-            <% if test_data[:rank] <= 30 %>
+            <% if test_data[:rank] != 'AB' &&  test_data[:rank] <= 30 %>
               <%= image_tag 'winner.png', alt: 'Winner', class: 'winner-icon' %>
             <% end %>
           </div>
@@ -49,8 +49,10 @@
           <% w = test_data[:data].dig(subject, "wrong_count") %>
           <% c = test_data[:data].dig(subject, "correct_count") %>
           <% s = test_data[:data].dig(subject, "skip_count") %>
-          <% a = (c + w) %>
-          <% acc += a.zero? ? 0 : (c * 100/a.to_f) %>
+          <% if test_data[:rank] != 'AB' %>
+            <% a = (c + w) %>
+            <% acc += a.zero? ? 0 : (c * 100/a.to_f) %>
+          <% end %>
           <td class="text-center">
             <%= test_data[:data].dig(subject, "score") %>
             <table class="compact-table">
