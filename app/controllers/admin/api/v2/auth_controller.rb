@@ -26,7 +26,7 @@ class Admin::Api::V2::AuthController < Admin::Api::V2::ApiController
         token: token,
         admin: admin,
         roles: admin.roles,
-        branches: (['all'] + admin.org.data['branches']),
+        branches: (['all'] + (admin.org.data['branches'] || [])),
         }, status: :ok and return
     end
 
