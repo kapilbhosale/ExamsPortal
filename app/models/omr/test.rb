@@ -125,6 +125,7 @@ class Omr::Test < ApplicationRecord
       test = student_test.child_test_id.present? ? Omr::Test.find(student_test.child_test_id) : self
       test.data['subjects'] ||= {'single_subject' => { 'from' => 0, 'count' => test.no_of_questions }}
 
+      total_score = 0
       test.data['subjects'].each do |sub_name, sub_data|
         subject_toppers[sub_name] ||= 0
         if neet_new_pattern?
@@ -132,12 +133,12 @@ class Omr::Test < ApplicationRecord
         else
           sub_scores = non_neet_calculations(sub_data, ans, test, student_test)
         end
-
+        total_score += sub_scores[:score]
         subject_scores[sub_name] = sub_scores
         subject_toppers[sub_name] = sub_scores[:score] if sub_scores[:score] > subject_toppers[sub_name]
       end
 
-      student_test.update(data: subject_scores)
+      student_test.update(data: subject_scores, score: total_score)
     end
 
     self.toppers['ALL'] = omr_student_tests.maximum(:score)
@@ -218,7 +219,6 @@ class Omr::Test < ApplicationRecord
     sub_correct_score, sub_wrong_score = 0, 0
     neet_correct_score, neet_wrong_score = 0, 0
     counter = 0
-
 
     from.upto(to) do |q_index|
       counter += 1
