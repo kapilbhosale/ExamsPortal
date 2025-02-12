@@ -33,38 +33,13 @@ class RollNumberSuggestor < ApplicationRecord
     'repeater_22_23' => 10_000,
     'neet_23_24' => 50_000,
     'test_series' => 1_000_000,
-    '11th_set_24_' => 1_000_000,
-    '11th_set_24_latur' => 10_10_000,
-    '11th_set_24_nanded' => 10_30_000,
-    '11th_set_24_beed' => 10_50_000,
-    '11th_set_24_parbhani' => 10_60_000,
-    '11th_set_24_hingoli' => 10_70_000,
-    '11th_set_24_yavatmal' => 10_80_000,
-    '11th_set_24_solapur' => 10_90_000,
-    '11th_set_24_kolhapur' => 11_00_000,
-    '11th_set_24_buldhana' => 11_10_000,
-    '11th_set_24_jalna' => 11_20_000,
-    '11th_set_24_pune' => 11_30_000,
-    '11th_set_24_pimpri' => 11_40_000,
-    '11th_set_24_akola' => 11_50_000,
-    '11th_set_24_sambhaji_nagar' => 11_60_000,
-    '11th_set_24_jalgaon' => 11_70_000,
-    '11th_set_24_nashik' => 11_80_000,
-    '11th_set_24_satara' => 11_90_000,
-    '11th_set_24_ahmadnagar' => 12_00_000,
-    '11th_set_24_amravati' => 12_10_000,
-    '11th_set_24_nagpur' => 12_20_000,
-    '11th_set_24_washim' => 12_30_000,
-    '11th_set_24_dharashiv' => 12_40_000,
-    '11th_set_24_mumbai' => 12_50_000,
-    '11th_set_24_hadapsar' => 13_00_000,
     'neet_saarthi_new' => 1_00_000,
-    '11th_set_2025' => 1000000
+    '11th_set_25_26' => 1000000
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
     batch_name = '12th_22_23' if batch_name == '12th'
-    batch_name = "11th_set_24_#{na.extra_data['set_center_11th']}" if batch_name == '11th_set'
+    batch_name = "11th_set_25_26" if batch_name == '11th_set'
 
     return Student.random_roll_number if batch_name == 'test-series'
     return Student.random_roll_number if batch_name == '12th_set'

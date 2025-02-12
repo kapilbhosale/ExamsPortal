@@ -132,20 +132,13 @@ class Batch < ApplicationRecord
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)
     org = Org.first
 
-    case rcc_branch
-      when 'latur'
-        batch_name = "11th-REG-#{course.name.upcase}-Online-2024-25"
-      when 'nanded'
-        batch_name = "11th-REG-#{course.name.upcase}-Online-2024-25"
-      when 'aurangabad'
-        batch_name = "11th-REG-#{course.name.upcase}-Online-2024-25"
-      else
-        batch_name = "11th-REG-#{course.name.upcase}-Online-2024-25"
-    end
+    course_type = na.course_type&.upcase || 'NEET'
+    course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
+    batch_name = "11th-#{course_name}-ONLINE[2025-26]"
 
     _batch = Batch.find_by(org_id: org.id, name: batch_name)
     if _batch.blank?
-      batch_group = BatchGroup.find_or_create_by(name: "11th-REG-ONLINE-2024-25", org_id: org.id)
+      batch_group = BatchGroup.find_or_create_by(name: "ALL ONLINE [2025-26] Batches", org_id: org.id)
       _batch = Batch.create(org_id: org.id, name: batch_name, batch_group_id: batch_group.id)
       Admin.where(org_id: org.id).each do |admin|
         AdminBatch.create(admin_id: admin.id, batch_id: _batch.id)
@@ -167,9 +160,9 @@ class Batch < ApplicationRecord
   end
 
 
-  def self.get_12th_batches_23_24(rcc_branch, course, batch, na=nil)
+  def self.get_12th_batches_25_26(rcc_branch, course, batch, na=nil)
     org = Org.first
-    batch_id = course.name == 'pcm' ? 1086 : 1085
+    batch_id = course.name == 'pcm' ? 1293 : 1292
     Batch.where(org_id: org.id, id: batch_id)
   end
 
@@ -200,10 +193,8 @@ class Batch < ApplicationRecord
 
   def self.get_11th_set_batches(course, batch, na=nil)
     org = Org.first
-    course_type = na.course_type&.upcase || 'NEET'
-    course_name = course_type == 'NEET' ? 'PCB' : 'PCM'
-    batch_name = "11-SET-#{course_name}-phase2-(23-24)"
-    Batch.where(org_id: org.id, name: batch_name)
+    batch_id = course.name == 'pcm' ? 1295 : 1294
+    Batch.where(org_id: org.id, id: batch_id)
   end
 
   def self.get_12th_set_batches(rcc_branch, course, batch, na=nil)
@@ -223,7 +214,7 @@ class Batch < ApplicationRecord
     return Batch.where(name: '10th-A') if batch == '10th'
 
     if batch == '12th'
-      get_12th_batches_23_24(rcc_branch, course, batch, na)
+      get_12th_batches_25_26(rcc_branch, course, batch, na)
     elsif batch == '11th_new'
       get_11th_new_batches(rcc_branch, course, batch, na)
     elsif batch == 'test-series'

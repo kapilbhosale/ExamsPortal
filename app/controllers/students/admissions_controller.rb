@@ -274,30 +274,12 @@ class Students::AdmissionsController < ApplicationController
 
     if batch == '12th'
       return 25_000 if new_admission.extra_data.dig('pay_type') == 'installment'
-      return 55_000
+      return 58_000
     end
 
     if batch == '11th_new'
-      if new_admission.extra_data.dig('pay_type') == 'installment'
-        return 30_000
-      else
-        return 55_000
-        # if ['pc'].include?(course.name)
-        #   return 50_000
-        # end
-
-        # if ['pcb', 'pcm'].include?(course.name)
-        #   if rcc_branch == 'nanded'
-        #     return(course.name == 'pcm' ? 60_000 : 55_000)
-        #   end
-        #   return 60_000 if rcc_branch == 'latur'
-        #   return 75_000 if rcc_branch == 'aurangabad'
-        #   return 60_000
-        # end
-
-        # return 80_000 if ['pcbm'].include?(course.name)
-        # return 60_000
-      end
+      return 25_000 if new_admission.extra_data.dig('pay_type') == 'installment'
+      return 60_000
     end
 
     if batch == 'crash_course'
