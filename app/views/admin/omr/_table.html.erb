@@ -70,7 +70,11 @@
             <p style="font-size: 14px">OFFLINE</p>
           </td>
           <% if student_marks.blank? %>
-            <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>AB</td>
+            <td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td>
+            <% if @subjects.include?("Bot") || @subjects.include?("ZOO") || @subjects.include?("Bio") %>
+             <td>-</td><td>-</td>
+            <% end %>
+            <td>AB</td>
           <% else %>
             <td class="text-center">
               <span style="font-size: 17px; font-weight: bold;">
@@ -112,51 +116,74 @@
                 <span>-</span>
               <% end %>
             </td>
-            <td class="text-center">
-              <% if @subject_scores_per_test[test_id]['Bot'].present?%>
-                <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['Bot']['score']%></span>
-                <table class="compact-table">
-                  <tr>
-                    <td>A:<%= @subject_scores_per_test[test_id]['Bot']['A'] %>,<span >C:<%= @subject_scores_per_test[test_id]['Bot']['C'] %><span></td>
-                  </tr>
-                  <tr>
-                    <td>W:<%= @subject_scores_per_test[test_id]['Bot']['W'] %>,<span >S:<%= @subject_scores_per_test[test_id]['Bot']['S'] %><span></td>
-                  </tr>
-                </table>
-              <% else %>
-                -
-              <% end %>
-            </td>
-            <td class="text-center">
-              <% if @subject_scores_per_test[test_id]['Zoo'].present? %>
-                <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['Zoo']['score']%></span>
-                <table class="compact-table">
-                  <tr>
-                    <td>A:<%= @subject_scores_per_test[test_id]['Zoo']['A'] %>,<span >C:<%= @subject_scores_per_test[test_id]['Zoo']['C'] %><span></td>
-                  </tr>
-                  <tr>
-                    <td>W:<%= @subject_scores_per_test[test_id]['Zoo']['W'] %>,<span >S:<%= @subject_scores_per_test[test_id]['Zoo']['S'] %><span></td>
-                  </tr>
-                </table>
-              <% else %>
-                -
-              <% end %>
-            </td>
-            <td class="text-center">
-            <% if @subject_scores_per_test[test_id]['Bot'].present? ||  @subject_scores_per_test[test_id]['Bio'].present? %>
-              <span style="font-size: 17px; font-weight: bold;"><%= bio %></span>
-                <table class="compact-table">
-                  <tr>
-                    <td>A:<%= bio_A %>,<span >C:<%= bio_C %><span></td>
-                  </tr>
-                  <tr>
-                    <td>W:<%= bio_W %>, <span >S:<%= bio_S %><span></td>
-                  </tr>
-                </table>
-              <% else %>
-                -
-              <% end %>
-            </td>
+            <% if @subjects.include?("Bot") || @subjects.include?("Bio") %>
+              <td class="text-center">
+                <% if @subject_scores_per_test[test_id]['Bot'].present?%>
+                  <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['Bot']['score']%></span>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A:<%= @subject_scores_per_test[test_id]['Bot']['A'] %>,<span >C:<%= @subject_scores_per_test[test_id]['Bot']['C'] %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W:<%= @subject_scores_per_test[test_id]['Bot']['W'] %>,<span >S:<%= @subject_scores_per_test[test_id]['Bot']['S'] %><span></td>
+                    </tr>
+                  </table>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+            <% end %>
+            <% if @subjects.include?("Zoo") || @subjects.include?("Bio") %>
+              <td class="text-center">
+                <% if @subject_scores_per_test[test_id]['Zoo'].present? %>
+                  <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['Zoo']['score']%></span>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A:<%= @subject_scores_per_test[test_id]['Zoo']['A'] %>,<span >C:<%= @subject_scores_per_test[test_id]['Zoo']['C'] %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W:<%= @subject_scores_per_test[test_id]['Zoo']['W'] %>,<span >S:<%= @subject_scores_per_test[test_id]['Zoo']['S'] %><span></td>
+                    </tr>
+                  </table>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+            <% end %>
+            <% if @subjects.include?("Bot") || @subjects.include?("Zoo") ||@subjects.include?("Bio") %>
+              <td class="text-center">
+                <% if @subject_scores_per_test[test_id]['Bot'].present? ||  @subject_scores_per_test[test_id]['Bio'].present? %>
+                  <span style="font-size: 17px; font-weight: bold;"><%= bio %></span>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A:<%= bio_A %>,<span >C:<%= bio_C %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W:<%= bio_W %>, <span >S:<%= bio_S %><span></td>
+                    </tr>
+                  </table>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+            <% end %>
+            <% if @subjects.include?("Math") %>
+              <td class="text-center">
+                <% if @subject_scores_per_test[test_id]['Math'].present? %>
+                  <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['Math']['score']%></span>
+                  <table class="compact-table">
+                    <tr>
+                      <td>A:<%= @subject_scores_per_test[test_id]['Math']['A'] %>,<span >C:<%= @subject_scores_per_test[test_id]['Math']['C'] %><span></td>
+                    </tr>
+                    <tr>
+                      <td>W:<%= @subject_scores_per_test[test_id]['Math']['W'] %>,<span >S:<%= @subject_scores_per_test[test_id]['Math']['S'] %><span></td>
+                    </tr>
+                  </table>
+                <% else %>
+                <span>-</span>
+                <% end %>
+              </td>
+            <% end %>
             <td class="text-center">
               <span style="font-size: 17px; font-weight: bold;"><%= @subject_scores_per_test[test_id]['percentage']%><span>
             </td>

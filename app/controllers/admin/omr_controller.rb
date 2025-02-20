@@ -216,6 +216,7 @@ class Admin::OmrController < Admin::BaseController
       average: average_scores.present? ? (average_scores.sum / average_scores.size) : 0
     }
 
+    # this summary is not taking care of tests selected.
     @student_summary_per_subject = Omr::StudentTest.get_student_summary(@student.id)
 
     respond_to do |format|
