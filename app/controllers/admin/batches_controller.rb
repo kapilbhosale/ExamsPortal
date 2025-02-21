@@ -78,7 +78,15 @@ class Admin::BatchesController < Admin::BaseController
   end
 
   def destroy
-    @response = Batches::DeleteBatchService.new(params[:id], current_org).call
+    if current_admin.roles.include? 'batch_delete'
+      @response = Batches::DeleteBatchService.new(params[:id], current_org).call
+    else
+      @response = {
+        status: false,
+        message: "You dont have permissions to delete batches"
+      }
+    end
+
     set_flash
     redirect_to admin_batches_path
   end
