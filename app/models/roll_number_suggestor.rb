@@ -44,6 +44,8 @@ class RollNumberSuggestor < ApplicationRecord
     return Student.random_roll_number if batch_name == 'test-series'
     return Student.random_roll_number if batch_name == '12th_set'
     return Student.random_roll_number if batch_name == 'repeater'
+    return Student.random_roll_number if batch_name == '12th'
+    return Student.random_roll_number if batch_name == '11th_new'
 
     batch_name = '11th_set_2025' if batch_name == 'neet_saarthi'
 
