@@ -3,13 +3,15 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
   def details
     # if time in IST is between 9:00 am to 08:00 pm, then only allow to create fees transaction.
-    if [8, 10].include?(current_admin.id)
-      if Time.current.in_time_zone('Asia/Kolkata').hour < 7 || Time.current.in_time_zone('Asia/Kolkata').hour >= 21
-        render json: { message: 'fees time error' } and return
-      end
-    else
-      if Time.current.in_time_zone('Asia/Kolkata').hour < 9 || Time.current.in_time_zone('Asia/Kolkata').hour >= 20
-        render json: { message: 'fees time error' } and return
+    if current_org.rcc? && Rails.env.production?
+      if [8, 10].include?(current_admin.id)
+        if Time.current.in_time_zone('Asia/Kolkata').hour < 7 || Time.current.in_time_zone('Asia/Kolkata').hour >= 21
+          render json: { message: 'fees time error' } and return
+        end
+      else
+        if Time.current.in_time_zone('Asia/Kolkata').hour < 9 || Time.current.in_time_zone('Asia/Kolkata').hour >= 20
+          render json: { message: 'fees time error' } and return
+        end
       end
     end
 
