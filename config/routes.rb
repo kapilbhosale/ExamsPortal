@@ -208,6 +208,7 @@ Rails.application.routes.draw do
       resources :students
       resources :attendance
       resources :demo_logins
+      post 'send-whatsapp-message', to: 'whatsapp_messages#send_message'
 
       # new admin api's for admin react front end.
       namespace :v2 do

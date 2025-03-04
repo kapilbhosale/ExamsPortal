@@ -71,4 +71,38 @@ class WhatsApp < ApplicationRecord
       puts "--------------------------------"
     end
   end
+
+  def self.deeper_msg(template, phone_number, values)
+    uri = URI.parse('https://graph.facebook.com/v22.0/563928240139707/messages')
+    request = Net::HTTP::Post.new(uri)
+    request['Authorization'] = "Bearer #{ENV.fetch('DEEPER_WA_TOKEN')}"
+    request['Content-Type'] = 'application/json'
+
+    parameters = values.map do |value|
+      { type: 'text', text: value }
+    end
+
+    request.body = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: phone_number,
+      type: 'template',
+      template: {
+        name: template,
+        language: { code: 'en' },
+        components: [
+          {
+            type: 'body',
+            parameters: parameters
+          }
+        ]
+      }
+    }.to_json
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      http.request(request)
+    end
+
+    return response.body
+  end
 end
