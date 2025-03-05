@@ -105,4 +105,18 @@ class WhatsApp < ApplicationRecord
 
     return response.body
   end
+
+  # the id used here is account id, different than phone number ID.
+  def self.get_templates
+    uri = URI.parse('https://graph.facebook.com/v22.0/1574803653301356/message_templates')
+    request = Net::HTTP::Get.new(uri)
+    request['Authorization'] = "Bearer #{ENV.fetch('DEEPER_WA_TOKEN')}"
+    request['Content-Type'] = 'application/json'
+
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+      http.request(request)
+    end
+
+    JSON.parse(response.body)
+  end
 end

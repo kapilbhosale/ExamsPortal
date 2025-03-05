@@ -2,8 +2,10 @@ class Omr::ImportService
   attr_reader :file_path, :branch
   attr_accessor :subjects
 
-  # file_path = "/Users/kapilbhosale/Downloads/z_final.zip"
-  # Omr::ImportService.new(file_path, 'latur').call
+  # file_path = "/home/ubuntu/11_zip_4_march.zip"
+  # file_path = "/home/ubuntu/12_zip_4_march.zip"
+  # Omr::ImportService.new(file_path, "Latur-11").call
+  # Omr::ImportService.new(file_path, "Latur-12+rep").call
   def initialize(file_path, branch)
     @file_path = file_path
     @branch = branch
