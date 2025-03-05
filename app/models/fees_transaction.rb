@@ -80,6 +80,7 @@ class FeesTransaction < ApplicationRecord
 
   before_create :update_token_of_the_day
   before_create :update_receipt_number
+  after_create :set_batch_id
 
 
   def self.student_pending_fees(student_id)
@@ -323,6 +324,18 @@ class FeesTransaction < ApplicationRecord
     })
   end
 
+  def self.populate_batch_id
+    FeesTransaction.where(batch_id: nil).find_each do |transaction|
+      student = transaction.student
+      next if student.blank? || student.batches.blank?
+      batch = student.batches.joins(:fees_templates).first
+      if batch
+        transaction.update(batch_id: batch.id)
+        putc "."
+      end
+    end
+  end
+
   private
   def update_receipt_number
     return if self.receipt_number.present?
@@ -359,6 +372,17 @@ class FeesTransaction < ApplicationRecord
     end
 
     self.token_of_the_day = student.intel_score
+  end
+
+  def set_batch_id
+    return if self.batch_id.present?
+
+    student = self.student
+    return if student.blank? || student.batches.blank?
+
+    # check which batch template matches with the transaction template
+    batch = student.batches.joins(:fees_templates).first
+    self.update(batch_id: batch.id) if batch
   end
 
   def self.remove_discount(student)

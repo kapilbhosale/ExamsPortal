@@ -34,7 +34,7 @@ module Fees
         .where(org_id: current_org.id)
         .where('fees_transactions.next_due_date >= ?', date1.beginning_of_day)
         .where('fees_transactions.next_due_date <= ?', date2.end_of_day)
-        .where(students: { student_batches: { batch_id: valid_batch_ids }})
+        .where(batch_id: valid_batch_ids)
         .order(:created_at)
 
       fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids).order(:created_at)
