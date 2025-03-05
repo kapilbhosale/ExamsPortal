@@ -31,16 +31,20 @@ module Fees
     private
 
     def valid_batch_ids
-      return current_admin.batches.joins(:fees_templates).ids if branch.blank? || branch == 'all'
-
-      Batch.where(branch: branch).ids & current_admin.batches.joins(:fees_templates).ids
+      if current_admin.roles.include?('all_fees')
+        return Batch.all.ids if branch.blank? || branch == 'all'
+        return Batch.where(branch: branch).ids
+      else
+        return current_admin.batches.joins(:fees_templates).ids if branch.blank? || branch == 'all'
+        return Batch.where(branch: branch).ids & current_admin.batches.joins(:fees_templates).ids
+      end
     end
 
     def today_transactions
       transactions = FeesTransaction.with_deleted.includes(:admin, student: [:batches ,:student_batches])
         .current_year.today
         .where(org_id: current_org.id)
-        .where(students: { student_batches: { batch_id: valid_batch_ids }})
+        .where(batch_id: valid_batch_ids)
 
       if payment_type == 'online'
         transactions = transactions.where(is_headless: false).where(mode: 'online')
@@ -65,7 +69,8 @@ module Fees
         .where(org_id: current_org.id)
         .where('fees_transactions.created_at >= ?', date1.beginning_of_day)
         .where('fees_transactions.created_at <= ?', date2.end_of_day)
-        .where(students: { student_batches: { batch_id: valid_batch_ids }})
+        .where(batch_id: valid_batch_ids)
+        .order(:created_at)
 
       if payment_type == 'online'
         fees_transactions = fees_transactions.where(mode: 'online')

@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="col-md-6">
+          <h5 class="pt-3">OMR Tests List</h5>
+          <h4>Total Tests: <%= @count %></h4>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="padding: 10px 0; border: 1px solid #ccc; background-color: #f8f9fa; height: 60px; margin-bottom: 10px">
+          <%= search_form_for @search, url: tests_list_avg_admin_omr_index_path, class:"form-inline my-2 my-lg-0 col-md-12" do |f| %>
+            <%= f.text_field :test_name, value: params&.[](:q)&.[](:test_name), placeholder: 'Search Test Name', class: 'form-control mr-sm-2 col-md-6', style: 'font-size: 1em; padding: 18px' %>
+            <%= select_tag :branch, options_for_select(@branches.map { |b| [b, b] }, @branch), class: 'form-control col-md-3' %>
+            <%= f.submit "Search", class: 'ml-4 btn btn-outline-success col-md-2', style: 'font-size: 0.75em;'%>
+          <% end %>
+        </div>
+
+        <div class="form-group">
+          <div>
+            <label for="student_count">Count of Students:</label>
+            <%= text_field_tag :student_count, params[:student_count], class: 'form-control' %>
+          <div>
+          <div>
+            <label>Student Type:</label>
+            <%= radio_button_tag :student_type, 'topper', true, class: 'form-check-input' %>
+            <%= label_tag :student_type_topper, 'Topper', class: 'form-check-label' %>
+            <%= radio_button_tag :student_type, 'bottom', false, class: 'form-check-input' %>
+            <%= label_tag :student_type_bottom, 'Bottom', class: 'form-check-label' %>
+          <div>
+          <%= submit_tag 'Submit', class: 'btn btn-primary' %>
+        </div>
+
+        <div class="table-responsive">
+          <% if @tests.present? %>
+            <%= form_for :student, url: download_average_report_admin_omr_index_path, method: :get, id: 'tests_form' do |form| %>
+              <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
+                <thead>
+                  <tr>
+                    <th><input type="checkbox" id="select_all"></th>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Test Date</th>
+                    <th>Students</th>
+                    <th>Branch</th>
+                    <th>Marks</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @tests.each do |test| %>
+                    <tr>
+                      <td><input type="checkbox" class="select_test" name="selected_tests[]" value="<%= test.id %>"></td>
+                      <td><%= test.id %></td>
+                      <td><%= test.test_name %></td>
+                      <td><%= test.description %></td>
+                      <td><%= test.test_date.strftime("%d-%b-%y") %></td>
+                      <td><%= test.omr_students.count %></td>
+                      <td><%= test.branch %></td>
+                      <td><%= test.total_marks%> <%= test.neet_new_pattern? ? '(NEET)' : ''%></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            <% end %>
+          <% else %>
+            <div class="alert alert-info">No Tests were found.</div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" >
+  $(function(){
+    $('#limit').change(
+      function() {
+        $('#limit_form').submit();
+      });
+
+    $('#select_all').click(function() {
+      $('.select_test').prop('checked', this.checked);
+    });
+  });
+</script>

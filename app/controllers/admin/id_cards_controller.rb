@@ -25,9 +25,9 @@ class Admin::IdCardsController < Admin::BaseController
       fees_transactions = FeesTransaction.includes(student: [:batches, :student_batches])
       @fees_transactions = fees_transactions.current_year
         .where(org_id: current_org.id)
+        .where(batch_id: @selected_batch.id)
         .where('fees_transactions.created_at >= ?', Date.parse(params[:from_date]).beginning_of_day)
         .where('fees_transactions.created_at <= ?', Date.parse(params[:to_date]).end_of_day)
-        .where(students: { student_batches: { batch_id: params[:batch_id] }})
         .where(remaining_amount: 0)
     else
       @fees_transactions = []
