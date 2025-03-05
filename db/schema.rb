@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_10_114006) do
+ActiveRecord::Schema.define(version: 2025_03_05_130324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -406,6 +406,8 @@ ActiveRecord::Schema.define(version: 2025_01_10_114006) do
     t.boolean "imported", default: false
     t.datetime "deleted_at"
     t.boolean "is_headless", default: false
+    t.bigint "batch_id"
+    t.index ["batch_id"], name: "index_fees_transactions_on_batch_id"
     t.index ["deleted_at"], name: "index_fees_transactions_on_deleted_at"
     t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"
@@ -746,6 +748,18 @@ ActiveRecord::Schema.define(version: 2025_01_10_114006) do
     t.text "description"
   end
 
+  create_table "sms_logs", force: :cascade do |t|
+    t.string "mobile"
+    t.string "message"
+    t.bigint "org_id"
+    t.bigint "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mobile"], name: "index_sms_logs_on_mobile"
+    t.index ["org_id"], name: "index_sms_logs_on_org_id"
+    t.index ["student_id"], name: "index_sms_logs_on_student_id"
+  end
+
   create_table "student_batches", force: :cascade do |t|
     t.bigint "student_id"
     t.bigint "batch_id"
@@ -1038,6 +1052,7 @@ ActiveRecord::Schema.define(version: 2025_01_10_114006) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "fees_transactions", "batches"
   add_foreign_key "omr_batches", "orgs"
   add_foreign_key "omr_students", "orgs"
   add_foreign_key "omr_tests", "orgs"

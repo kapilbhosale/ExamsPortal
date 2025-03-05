@@ -19,15 +19,21 @@
 #  token_of_the_day     :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  batch_id             :bigint(8)
 #  org_id               :bigint(8)
 #  received_by_admin_id :integer
 #  student_id           :bigint(8)
 #
 # Indexes
 #
+#  index_fees_transactions_on_batch_id    (batch_id)
 #  index_fees_transactions_on_deleted_at  (deleted_at)
 #  index_fees_transactions_on_org_id      (org_id)
 #  index_fees_transactions_on_student_id  (student_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (batch_id => batches.id)
 #
 
 # {
@@ -70,6 +76,7 @@ class FeesTransaction < ApplicationRecord
   belongs_to :student
   belongs_to :org
   belongs_to :admin, foreign_key: :received_by_admin_id
+  belongs_to :batch, optional: true
 
   before_create :update_token_of_the_day
   before_create :update_receipt_number
