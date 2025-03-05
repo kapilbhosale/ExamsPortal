@@ -381,7 +381,9 @@ class FeesTransaction < ApplicationRecord
     return if student.blank? || student.batches.blank?
 
     # check which batch template matches with the transaction template
-    batch = student.batches.joins(:fees_templates).first
+    template_batch_id = self.payment_details["template"]["id"]
+    batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
+
     self.update(batch_id: batch.id) if batch
   end
 
