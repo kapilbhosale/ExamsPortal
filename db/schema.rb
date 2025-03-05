@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_01_13_074321) do
+ActiveRecord::Schema.define(version: 2025_03_05_130324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -406,6 +406,8 @@ ActiveRecord::Schema.define(version: 2025_01_13_074321) do
     t.boolean "imported", default: false
     t.datetime "deleted_at"
     t.boolean "is_headless", default: false
+    t.bigint "batch_id"
+    t.index ["batch_id"], name: "index_fees_transactions_on_batch_id"
     t.index ["deleted_at"], name: "index_fees_transactions_on_deleted_at"
     t.index ["org_id"], name: "index_fees_transactions_on_org_id"
     t.index ["student_id"], name: "index_fees_transactions_on_student_id"
@@ -1050,6 +1052,7 @@ ActiveRecord::Schema.define(version: 2025_01_13_074321) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "fees_transactions", "batches"
   add_foreign_key "omr_batches", "orgs"
   add_foreign_key "omr_students", "orgs"
   add_foreign_key "omr_tests", "orgs"
