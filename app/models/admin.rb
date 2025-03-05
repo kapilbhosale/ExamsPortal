@@ -96,7 +96,8 @@ class Admin < ApplicationRecord
     :delete_student,
     :ff,
     :online_pay,
-    :all_fees
+    :all_fees,
+    :change_course
   ]
 
   def login
