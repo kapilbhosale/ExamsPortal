@@ -11,6 +11,7 @@ json.array! @transactions do |transaction|
   json.mode_of_payment transaction.mode
   json.admin transaction.admin.name
   json.isHeadless transaction.is_headless
+  json.comment transaction.comment
 
   discount = nil
 
