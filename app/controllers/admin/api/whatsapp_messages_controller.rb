@@ -13,4 +13,13 @@ class Admin::Api::WhatsappMessagesController < Admin::Api::ApiController
       render json: {status: "not-accepted"}, status: :unprocessable_entity and return
     end
   end
+
+  def templates
+    if params[:username] == "WhatsAppAdmin" && params[:password] == "S0m3Pass@752063"
+      response = WhatsApp.get_templates
+      render json: {status: "ok", data: response}, status: :ok and return
+    else
+      render json: {status: "not-accepted"}, status: :unprocessable_entity and return
+    end
+  end
 end

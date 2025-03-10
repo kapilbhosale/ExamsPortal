@@ -20,10 +20,10 @@ class WhatsApp < ApplicationRecord
   require 'uri'
   require 'json'
 
-  TOKEN = "EAASzXyml6M4BO2595Qc7f4SusnuvqNRjFsLI435gMAvVc2SI3yVtTJ1W7ZAsef8EsNQmzgihQ8iZA6obZAXqc6HpI0vjXOXCgEYQ1iw74zXCza7ySRy4qHHufxuWpDMRxdWcNj8epOyZBgSfcCZAyObSUt8oGbEJu9VTk4JWZA4VScx61hmJxOTTOJupPE8ONASN0yzpBW5ZCVlWzZAwMYvKAynTOkUZD"
+  TOKEN = "EAASnLxSZCNSoBOzqlQcd797z5Y482vcL8ZCw1hznZAfKW4Rmfgkb1jARIRnEXplLQpJZAKk8w4V5FHWMzGY8ZAImV0DwWnU1cR0RFinDYL9YZBdVxPRkmghNcrxduk49sa5BkiOzSKFaxJI7YkLc8gzZCkwjUMOefPB4tgICvj1S8i3zrPonVEaBiPD65ZAyZB9K2ZAZAjQn6vcJcOmZBpW05SDnKnTXiQoZD"
 
-  def self.send_message(phone_number, student_name, exam_no, center, location)
-    uri = URI.parse('https://graph.facebook.com/v21.0/487098331157481/messages')
+  def self.send_message(phone_number, student_name, seat_no, center, location)
+    uri = URI.parse('https://graph.facebook.com/v21.0/550289711496902/messages')
     request = Net::HTTP::Post.new(uri)
     request['Authorization'] = "Bearer #{TOKEN}"
     request['Content-Type'] = 'application/json'
@@ -34,14 +34,14 @@ class WhatsApp < ApplicationRecord
       to: phone_number,
       type: 'template',
       template: {
-        name: 'kcp_testfoundation',
+        name: 'kcp_sat_march_2025',
         language: { code: 'en' },
         components: [
           {
             type: 'body',
             parameters: [
-              { type: 'text', text: " #{student_name}" },
-              { type: 'text', text: exam_no },
+              { type: 'text', text: student_name },
+              { type: 'text', text: seat_no },
               { type: 'text', text: center },
               { type: 'text', text: location }
             ]
@@ -57,18 +57,38 @@ class WhatsApp < ApplicationRecord
     puts response.body
   end
 
-  # WhatsApp.import_tsv('/Users/kapilbhosale/Downloads/kcp_day2.tsv')
-  def self.import_tsv(path)
+  # WhatsApp.import_tsv_kcp('/Users/kapilbhosale/Downloads/ksat_803.tsv')
+  def self.import_tsv_kcp(path)
     CSV.foreach(path, col_sep: "\t", headers: true) do |row|
-      phone_number = row[4]
       student_name = row[0]
-      exam_no = row[1]
-      center = row[2]
+      seat_no = row[1]
+      exam_center = row[2]
       location = row[3]
+      phone_number = row[4]
       puts "--------------------------------"
       puts "Sending message to #{phone_number}"
-      WhatsApp.send_message(phone_number, student_name, exam_no, center, location)
+      WhatsApp.send_message(phone_number, student_name, seat_no, exam_center, location)
       puts "--------------------------------"
+      # break
+    end
+  end
+
+  # WhatsApp.import_tsv('/Users/kapilbhosale/Downloads/deeper_4.tsv')
+  def self.import_tsv(path)
+    CSV.foreach(path, col_sep: "\t", headers: true) do |row|
+      student_name = row[1]
+      exam_name = row[2]
+      exam_date = row[3]
+      exam_time = row[4]
+      center_name = row[5]
+      username = row[6]
+      phone_number = row[8]
+      values = [student_name, exam_name, exam_date, exam_time, center_name, username]
+      puts "--------------------------------"
+      puts "Sending message to #{phone_number}"
+      WhatsApp.deeper_msg("deeper_exam_schedule", phone_number, values)
+      puts "--------------------------------"
+      # break
     end
   end
 
@@ -117,6 +137,6 @@ class WhatsApp < ApplicationRecord
       http.request(request)
     end
 
-    JSON.parse(response.body)
+    return response.body
   end
 end

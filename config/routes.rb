@@ -209,6 +209,7 @@ Rails.application.routes.draw do
       resources :attendance
       resources :demo_logins
       post 'send-whatsapp-message', to: 'whatsapp_messages#send_message'
+      get 'templates', to: 'whatsapp_messages#templates'
 
       # new admin api's for admin react front end.
       namespace :v2 do

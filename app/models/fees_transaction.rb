@@ -380,9 +380,18 @@ class FeesTransaction < ApplicationRecord
     student = self.student
     return if student.blank? || student.batches.blank?
 
-    # check which batch template matches with the transaction template
-    template_batch_id = self.payment_details["template"]["id"]
-    batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
+    if self.is_headless
+      transaction = FeesTransaction.where(student_id: student.id).order(:created_at).last
+      batch = transaction.batch if transaction.present?
+
+      if batch.blank?
+        batch = student.batches.joins(:fees_templates).first
+      end
+    else
+      # check which batch template matches with the transaction template
+      template_batch_id = self.payment_details["template"]["id"]
+      batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
+    end
 
     self.update(batch_id: batch.id) if batch
   end
