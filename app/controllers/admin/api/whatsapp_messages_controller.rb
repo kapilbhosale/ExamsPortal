@@ -1,23 +1,30 @@
 class Admin::Api::WhatsappMessagesController < Admin::Api::ApiController
+  before_action :set_client
 
-  # deeper_msg_1
   def send_message
-    if params[:username] == "WhatsAppAdmin" && params[:password] == "S0m3Pass@752063"
-      template = params[:template]
-      values = params[:values]
-      phone_number = params[:phone_number]
+    template = params[:template]
+    values = params[:values]
+    phone_number = params[:phone_number]
 
-      response = WhatsApp.deeper_msg(template, phone_number, values)
-      render json: {status: "ok", data: response}, status: :ok and return
-    else
-      render json: {status: "not-accepted"}, status: :unprocessable_entity and return
-    end
+    response = WhatsApp.send_msg(@client, template, phone_number, values)
+    render json: {status: "ok", data: response}, status: :ok and return
   end
 
   def templates
-    if params[:username] == "WhatsAppAdmin" && params[:password] == "S0m3Pass@752063"
-      response = WhatsApp.get_templates
-      render json: {status: "ok", data: response}, status: :ok and return
+    response = WhatsApp.get_templates(@client)
+    render json: {status: "ok", data: response}, status: :ok and return
+  end
+
+  private
+
+  def set_client
+    if params[:username] == "WhatsAppAdmin"
+      @client = "DEEPER" if params[:password] == "S0m3Pass@752063"
+      @client = "KCP" if params[:password] == "KCP@WaP@ss#10"
+
+      if @client.blank?
+        render json: {status: "not-accepted"}, status: :unprocessable_entity and return
+      end
     else
       render json: {status: "not-accepted"}, status: :unprocessable_entity and return
     end

@@ -92,10 +92,10 @@ class WhatsApp < ApplicationRecord
     end
   end
 
-  def self.deeper_msg(template, phone_number, values)
-    uri = URI.parse('https://graph.facebook.com/v22.0/563928240139707/messages')
+  def self.send_msg(client, template, phone_number, values)
+    uri = URI.parse("https://graph.facebook.com/v22.0/#{ENV.fetch("#{client}_PHONE_ID")}/messages")
     request = Net::HTTP::Post.new(uri)
-    request['Authorization'] = "Bearer #{ENV.fetch('DEEPER_WA_TOKEN')}"
+    request['Authorization'] = "Bearer #{ENV.fetch("#{client}_WA_TOKEN")}"
     request['Content-Type'] = 'application/json'
 
     parameters = values.map do |value|
@@ -127,10 +127,12 @@ class WhatsApp < ApplicationRecord
   end
 
   # the id used here is account id, different than phone number ID.
-  def self.get_templates
-    uri = URI.parse('https://graph.facebook.com/v22.0/1574803653301356/message_templates')
+  def self.get_templates(client)
+    return "Invalid client" unless ["KCP", "DEEPER"].include?(client)
+
+    uri = URI.parse("https://graph.facebook.com/v22.0/#{ENV.fetch("#{client}_APP_ID")}/message_templates")
     request = Net::HTTP::Get.new(uri)
-    request['Authorization'] = "Bearer #{ENV.fetch('DEEPER_WA_TOKEN')}"
+    request['Authorization'] = "Bearer #{ENV.fetch("#{client}_WA_TOKEN")}"
     request['Content-Type'] = 'application/json'
 
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
