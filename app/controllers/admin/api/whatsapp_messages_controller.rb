@@ -1,4 +1,5 @@
 class Admin::Api::WhatsappMessagesController < Admin::Api::ApiController
+  skip_before_action :authenticate
   before_action :set_client
 
   def send_message
@@ -20,7 +21,7 @@ class Admin::Api::WhatsappMessagesController < Admin::Api::ApiController
   def set_client
     if params[:username] == "WhatsAppAdmin"
       @client = "DEEPER" if params[:password] == "S0m3Pass@752063"
-      @client = "KCP" if params[:password] == "KCP@WaP@ss#10"
+      @client = "KCP" if params[:password] == "KCP@WaP@ss_10"
 
       if @client.blank?
         render json: {status: "not-accepted"}, status: :unprocessable_entity and return
