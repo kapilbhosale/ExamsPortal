@@ -128,7 +128,7 @@ class WhatsApp < ApplicationRecord
 
   # the id used here is account id, different than phone number ID.
   def self.get_templates(client)
-    return "Invalid client" unless ["KCP", "DEEPER"].include?(client)
+    return "Invalid client" unless ["KCP", "DEEPER", "CHATE"].include?(client)
 
     uri = URI.parse("https://graph.facebook.com/v22.0/#{ENV.fetch("#{client}_APP_ID")}/message_templates")
     request = Net::HTTP::Get.new(uri)
