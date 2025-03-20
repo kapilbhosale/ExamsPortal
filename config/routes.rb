@@ -173,6 +173,8 @@ Rails.application.routes.draw do
       get 'reports', on: :collection
       get 'students_list', on: :collection
       get 'tests_list', on: :collection
+      get 'tests_list_avg', on: :collection
+      get 'generate_average_report', on: :collection
       get 'test_report_batch_selection', on: :collection
       post 'test_report_print', on: :collection
       post 'progress_report', on: :collection
@@ -211,7 +213,6 @@ Rails.application.routes.draw do
       post 'send-whatsapp-message', to: 'whatsapp_messages#send_message'
       get 'templates', to: 'whatsapp_messages#templates'
 
-      # new admin api's for admin react front end.
       namespace :v2 do
         get 'get-token', to: 'auth#get_token'
         post 'login', to: 'auth#login'
@@ -278,7 +279,6 @@ Rails.application.routes.draw do
       resources :trackers
     end
 
-    # NEW ROUTES
     namespace :v2 do
       resources :students, only: [:index] do
         post 'login', on: :collection

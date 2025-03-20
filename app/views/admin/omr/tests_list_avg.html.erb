@@ -3,8 +3,7 @@
     <div class="card">
       <div class="card-header">
         <div class="col-md-6">
-          <h5 class="pt-3">OMR Tests List</h5>
-          <h4>Total Tests: <%= @count %></h4>
+          <h4>OMR Tests List. Total Tests: <%= @count %></h4>
         </div>
       </div>
       <div class="card-body">
@@ -16,24 +15,20 @@
           <% end %>
         </div>
 
-        <div class="form-group">
-          <div>
-            <label for="student_count">Count of Students:</label>
-            <%= text_field_tag :student_count, params[:student_count], class: 'form-control' %>
-          <div>
-          <div>
-            <label>Student Type:</label>
-            <%= radio_button_tag :student_type, 'topper', true, class: 'form-check-input' %>
-            <%= label_tag :student_type_topper, 'Topper', class: 'form-check-label' %>
-            <%= radio_button_tag :student_type, 'bottom', false, class: 'form-check-input' %>
-            <%= label_tag :student_type_bottom, 'Bottom', class: 'form-check-label' %>
-          <div>
-          <%= submit_tag 'Submit', class: 'btn btn-primary' %>
-        </div>
+        <form class="form-inline" action="<%= generate_average_report_admin_omr_index_path %>" method="get" style="background-color: #f8f9fa; padding: 10px; border: 1px solid #ccc; margin-bottom: 10px">
+          <div class="form-group">
+            <label for="student_count" class="mr-2">Count of Students:</label>
+            <%= text_field_tag :student_count, params[:student_count] || 25, class: 'form-control mr-2' %>
+            <label class="mr-4">Student Type:</label>
+            <%= radio_button_tag :student_type, 'topper', true, class: 'form-check-input mr-1' %>
+            <%= label_tag :student_type_topper, 'Topper', class: 'form-check-label mr-2' %>
+            <%= radio_button_tag :student_type, 'bottom', false, class: 'form-check-input mr-1' %>
+            <%= label_tag :student_type_bottom, 'Bottom', class: 'form-check-label mr-2' %>
+            <%= submit_tag 'Generate Average Report', class: 'btn btn-primary' %>
+          </div>
 
-        <div class="table-responsive">
-          <% if @tests.present? %>
-            <%= form_for :student, url: download_average_report_admin_omr_index_path, method: :get, id: 'tests_form' do |form| %>
+          <div class="table-responsive">
+            <% if @tests.present? %>
               <table class="table card-table table-striped tabler-hover table-vcenter text-nowrap">
                 <thead>
                   <tr>
@@ -62,11 +57,11 @@
                   <% end %>
                 </tbody>
               </table>
+            <% else %>
+              <div class="alert alert-info">No Tests were found.</div>
             <% end %>
-          <% else %>
-            <div class="alert alert-info">No Tests were found.</div>
-          <% end %>
-        </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

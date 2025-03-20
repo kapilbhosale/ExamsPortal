@@ -1,0 +1,43 @@
+<p style="color: gray;">11th SET Exam sub center selection: </p>
+<div class="form-group">
+  <select required id="set_sub_center" class="form-control" name="set_sub_center_11th">
+    <option disabled selected value>Select Exam Sub Center</option>
+    <option id="latur" value="latur">Latur</option>
+    <option id="udgir" value="udgir">Udgir</option>
+    <option id="ahamadpur" value="ahamadpur">Ahmadpur</option>
+  </select>
+</div>
+
+
+
+
+$('#batch').on('change', function (e) {
+          const selectedBatch = e.target.value;
+          if ( selectedBatch === "11th_set" || selectedBatch === "neet_saarthi" ) {
+            $('#set_center').attr('required', 'required');
+            $('#set_sub_center').attr('required', 'required');
+            $('#board').attr('required', 'required');
+            $('.11th-set-center-selection').show();
+          } else {
+            $('#set_center').removeAttr('required');
+            $('#set_sub_center').removeAttr('required');
+            $('#board').removeAttr('required');
+            $('.11th-set-center-selection').hide();
+          }
+        });
+
+
+        $('#set_center').on('change', function (e) {
+          const selectedSetCenter = e.target.value;
+          const sub_centers = SET_SUB_CENTERS[selectedSetCenter]
+          $('#set_sub_center option').remove();
+
+          $('#set_sub_center').append($("<option disabled selected value></option>")
+                .text("Select Exam Sub Center"));
+
+          sub_centers.forEach((item) => {
+            $('#set_sub_center').append($("<option></option>")
+                .attr("value", item)
+                .text(item));
+          })
+        });        

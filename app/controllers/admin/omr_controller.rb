@@ -1,5 +1,6 @@
 class Admin::OmrController < Admin::BaseController
   before_action :check_permissions
+  ITEMS_PER_PAGE = 50
 
   def index
     @branches = current_org.data['omr_branches'][current_admin.id.to_s]
@@ -25,6 +26,26 @@ class Admin::OmrController < Admin::BaseController
     @search = @search.search(test_search_params)
     @tests = @search.result.order(created_at: :desc)
     @tests = @tests.page(params[:page]).per(params[:limit] || ITEMS_PER_PAGE)
+  end
+
+  def tests_list_avg
+    @branches = current_org.data['omr_branches'][current_admin.id.to_s]
+    @branch = params[:branch] || @branches.first
+    @search = Omr::Test.where(org: current_org).where(parent_id: nil)
+    @search = @search.where(branch: @branch) if @branch.present?
+    @count = @search.count
+    @search = @search.search(test_search_params)
+    @tests = @search.result.order(created_at: :desc)
+  end
+
+  def generate_average_report
+    report_service = Omr::AvgReportService.new(params[:selected_tests], params[:student_type], params[:student_count])
+    response = report_service.call
+    if response.success?
+      send_data response.data, type: 'text/csv', filename: "AverageReport-#{Time.current.strftime("%d-%B-%y")}.csv", disposition: 'attachment' and return
+    else
+      render json: { error: response.error }, status: :unprocessable_entity
+    end
   end
 
   def test_report_batch_selection
