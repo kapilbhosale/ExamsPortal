@@ -356,7 +356,7 @@ class FeesTransaction < ApplicationRecord
     end
   end
 
-  # FeesTransaction.import_fees_tsv('/Users/kapilbhosale/Downloads/ft_import.tsv')
+  # FeesTransaction.import_fees_tsv('/home/ubuntu/ft_import.tsv')
   def self.import_fees_tsv(path)
     org = Org.find_by(subdomain: 'kcp')
 
