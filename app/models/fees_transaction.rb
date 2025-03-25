@@ -164,7 +164,7 @@ class FeesTransaction < ApplicationRecord
     # csv_file_path = "/Users/kapilbhosale/Downloads/fees-entry-1.csv"
     csv_text = File.read(csv_file_path)
     csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
-    org = Org.find_by(subdomain: "konale-exams")
+    org = Org.find_by(subdomain: "kcp")
 
     csv.each do |row|
       std = {
@@ -174,7 +174,7 @@ class FeesTransaction < ApplicationRecord
         parent_mobile: row["student_mobile"]
       }
 
-      student = Student.find_by(org_id: org.id, roll_number: std[:roll_number], parent_mobile: std[:parent_mobile], student_mobile: std[:student_mobile])
+      student = Student.find_by(org_id: org.id, roll_number: std[:roll_number])
       batch = Batch.find_by(org_id: org.id, id: row["batch_id"])
 
       if student.present? && FeesTransaction.where(student_id: student.id).present?
@@ -356,6 +356,80 @@ class FeesTransaction < ApplicationRecord
     end
   end
 
+  # FeesTransaction.import_fees_tsv('/Users/kapilbhosale/Downloads/ft_import.tsv')
+  def self.import_fees_tsv(path)
+    org = Org.find_by(subdomain: 'kcp')
+
+    CSV.foreach(path, col_sep: "\t", headers: true) do |row|
+      receipt_date = row[1]
+      roll_number = row[2]
+      student_name = row[3]
+      amount = row[9]
+      mode_of_payment = row[10]
+      discount = row[12]
+      comment = row[14]
+      final_total = row[13]
+
+      student = Student.find_by(org_id: org.id, roll_number: roll_number)
+      batch = Batch.find_by(org_id: org.id, id: 994)
+
+      if student.present?
+        batch = student.batches.joins(:fees_templates).first
+        template = batch.fees_templates.first
+      else
+        puts "Student not found: #{roll_number}"
+        next
+      end
+
+      ft = FeesTransaction.where(student_id: student.id).order(:created_at).last
+      if ft.present?
+        template_id = ft.payment_details["template"]["id"]
+        template = FeesTemplate.find(template_id)
+      end
+
+      paid = amount.to_i
+      fees = (paid * 100) / 118.0
+      cgst = (paid - fees) / 2.0
+      sgst = (paid - fees) / 2.0
+
+      paid_data = {
+        "paid" => paid,
+        "discount" => discount.to_i,
+        "cgst" => cgst,
+        "sgst" => sgst,
+        "fees" => fees,
+      }
+
+      rem_amount = final_total.to_i - paid
+
+      payment_details = {
+        'template' => template.slice(:id, :name, :heads),
+        'paid' => { "Tution Fees"=> paid_data},
+        'totals' => paid_data
+      }
+
+      FeesTransaction.create({
+        org_id: org.id,
+        student_id: student.id,
+        academic_year: self::CURRENT_ACADEMIC_YEAR,
+        comment: "imported",
+        discount_amount: discount.to_i || 0,
+        imported: true,
+        mode: mode_of_payment.downcase,
+        next_due_date: Time.now + 1.month,
+        paid_amount: paid,
+        remaining_amount: rem_amount,
+        created_at: DateTime.parse(receipt_date),
+        received_by: "import",
+        payment_details: payment_details,
+        received_by_admin_id: Admin.where(org_id: org.id).first.id,
+        comment: comment
+      })
+      putc "."
+
+    end
+  end
+
   private
   def update_receipt_number
     return if self.receipt_number.present?
@@ -371,9 +445,15 @@ class FeesTransaction < ApplicationRecord
       # fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
       # returning alpha-numeric receipt numbers from 4rd Dec 2024
       self.receipt_number = SecureRandom.alphanumeric(10)
+    elsif org.kcp?
+      ft = FeesTransaction.where("receipt_number LIKE ?", "#{branch_prefix}%").order(created_at: :desc).last
+      if ft.present?
+        last_receipt_number = ft.receipt_number.split('-').last.to_i
+        self.receipt_number = "#{branch_prefix}-#{last_receipt_number + 1}"
+      else
+        self.receipt_number = "#{branch_prefix}-001"
+      end
     else
-      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
-
       db_receipt_number = fees_transactions
         .where(org_id: org_id)
         .where(imported: false)
@@ -383,6 +463,11 @@ class FeesTransaction < ApplicationRecord
 
       self.receipt_number = ((db_receipt_number.to_i || 0) + 1).to_s
     end
+  end
+
+  def branch_prefix
+    batch = student.batches.joins(:fees_templates).last
+    batch.branch.first(3).upcase || "ICH"
   end
 
   def update_token_of_the_day
