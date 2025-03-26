@@ -16,14 +16,14 @@
       <div class="col-md-2 mt-1">
         <div class="form-group">
           <span>Form Date</span>
-          <input type="date" name="from_date" class="form-control p-2" value="<%= Date.today.strftime("%Y-%m-%d")%>">
+          <input type="date" name="from_date" class="form-control p-2" value="<%= @from_date %>">
         </div>
       </div>
 
       <div class="col-md-2 mt-1">
         <div class="form-group">
           <span>To Date</span>
-          <input type="date" name="to_date" class="form-control p-2" value="<%= Date.today.strftime("%Y-%m-%d")%>">
+          <input type="date" name="to_date" class="form-control p-2" value="<%= @to_date %>">
         </div>
       </div>
 
