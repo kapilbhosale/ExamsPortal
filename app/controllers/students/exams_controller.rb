@@ -140,7 +140,7 @@ class Students::ExamsController < Students::BaseController
   end
 
   def exam_questions_with_options(exam_id)
-    cache_key = "exam_questions_#{exam_id}"
+    cache_key = "exam_questions_#{current_org.id}_#{exam_id}"
     questions_with_options = REDIS_CACHE.get(cache_key)
     return questions_with_options if questions_with_options.present?
 
