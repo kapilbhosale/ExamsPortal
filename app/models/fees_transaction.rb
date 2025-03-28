@@ -64,8 +64,8 @@ class FeesTransaction < ApplicationRecord
   acts_as_paranoid
   audited
 
-  CURRENT_ACADEMIC_YEAR = "2023-24"
-  scope :current_year, ->() { where(academic_year: CURRENT_ACADEMIC_YEAR) }
+  CURRENT_ACADEMIC_YEAR = "2025-26"
+  scope :current_year, ->() { where(academic_year: [CURRENT_ACADEMIC_YEAR, '2024-25', '2023-24']) }
   # avaialbe to all devs, less is always good
   scope :lt_hundred, ->() { where('token_of_the_day < 100') }
   # available only to kapil, more is not good
@@ -485,9 +485,18 @@ class FeesTransaction < ApplicationRecord
     student = self.student
     return if student.blank? || student.batches.blank?
 
-    # check which batch template matches with the transaction template
-    template_batch_id = self.payment_details["template"]["id"]
-    batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
+    if self.is_headless
+      transaction = FeesTransaction.where(student_id: student.id).order(:created_at).last
+      batch = transaction.batch if transaction.present?
+
+      if batch.blank?
+        batch = student.batches.joins(:fees_templates).first
+      end
+    else
+      # check which batch template matches with the transaction template
+      template_batch_id = self.payment_details["template"]["id"]
+      batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
+    end
 
     self.update(batch_id: batch.id) if batch
   end
