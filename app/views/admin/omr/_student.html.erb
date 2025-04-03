@@ -35,7 +35,7 @@
       <td>
         <strong>Stream</strong><br>
         <span style="font-size: 20px; font-weight: bold;">
-          NEET 2025
+          <%= @subjects.join(",").include?('Math') ? 'JEE 2025' : 'NEET 2025' %>
         </span>
       </td>
       <td>
