@@ -278,8 +278,8 @@ class Students::AdmissionsController < ApplicationController
     end
 
     if batch == '11th_new'
-      return 25_000 if new_admission.extra_data.dig('pay_type') == 'installment'
-      return 60_000
+      return 40_000 if new_admission.extra_data.dig('pay_type') == 'installment'
+      return 70_000
     end
 
     if batch == 'crash_course'

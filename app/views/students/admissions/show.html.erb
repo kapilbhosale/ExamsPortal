@@ -110,8 +110,8 @@
 
         function showFeesDetails() {
           var totalFees = '₹80,000';
-          var oneTimeFees = '₹60,000';
-          var installmentFees = '₹25,000';
+          var oneTimeFees = '₹70,000';
+          var installmentFees = '₹40,000';
           var nextInstallmentFees = '₹40,000';
 
           var batch = $('#batch').find(":selected").val();
@@ -182,8 +182,8 @@
               nextInstallmentFees = '₹25,000';
             } else {
               totalFees = batch === "11th_new" ? '₹80,000' : '₹75,000' ;
-              oneTimeFees = batch === "11th_new" ? '₹60,000' : '₹58,000' ;
-              installmentFees = '₹25,000';
+              oneTimeFees = batch === "11th_new" ? '₹70,000' : '₹58,000' ;
+              installmentFees = batch === "11th_new" ? '₹40,000' : '₹25,000' ;
               nextInstallmentFees = batch === "11th_new" ? '₹40,000' : '₹35,000' ;
             }
           }
