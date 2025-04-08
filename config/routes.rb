@@ -237,6 +237,7 @@ Rails.application.routes.draw do
           collection do
             resources :discounts, only: [:index, :create] do
               post :remove_discount, on: :collection
+              get  :list_discounts, on: :collection
             end
           end
         end

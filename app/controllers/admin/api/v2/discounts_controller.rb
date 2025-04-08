@@ -28,6 +28,27 @@ class Admin::Api::V2::DiscountsController < Admin::Api::V2::ApiController
     end
   end
 
+  def list_discounts
+    if current_admin.roles.exclude?('list_discounts')
+      render json: {message: 'not permitted'}, status: :unauthorized and return
+    end
+
+    query = params[:query]
+    if query.present?
+      @discounts = Discount
+        .where(org_id: current_org.id)
+        .valid_discount.where(
+        'parent_mobile LIKE ? OR roll_number LIKE ? OR student_name ILIKE ? OR student_mobile ILIKE ?',
+        "%#{query}%",
+        "%#{query}%",
+        "%#{query}%",
+        "%#{query}%"
+      ).order('created_at DESC')
+    else
+      @discounts = Discount.where(org_id: current_org.id).valid_discount.limit(20)
+    end
+  end
+
   def create
     if current_admin.roles.exclude?('discounts')
       render json: {message: 'not permitted'}, status: :unauthorized and return
