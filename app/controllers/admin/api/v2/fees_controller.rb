@@ -19,7 +19,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
     # todo::kalpak, how if discount is present but not applied.
     discount = Discount.valid_discount.find_by(id: student.data['discount_id'])
-    academic_year = student.batches.joins(:fees_templates).first&.edu_year || FeesTransaction::CURRENT_ACADEMIC_YEAR
+    academic_year = FeesTransaction::CURRENT_ACADEMIC_YEAR
     last_year_waive_off = CourseChangeEntry.where(student_id: student.id).order(:id)&.last&.pending_amount
 
     data = {
