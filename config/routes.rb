@@ -224,6 +224,8 @@ Rails.application.routes.draw do
         get  'reports/due_fees', to: 'fees_reports#due_fees'
         get  'reports/due_fees_csv', to: 'fees_reports#due_fees_csv'
         get  'reports/notes', to: 'fees_reports#notes'
+        get  'reports/print_status', to: 'fees_reports#print_status'
+        post 'reports/set_print_status', to: 'fees_reports#set_print_status'
         get  'reports/pending-fees', to: 'fees_reports#pending_fees'
         get  'batches', to: 'batches#index'
         resources :students do

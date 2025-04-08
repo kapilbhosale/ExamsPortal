@@ -1,4 +1,5 @@
 class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
+  before_action :authorize_request
 
   def collection
     render json: { message: 'invalid permissions' } and return unless current_admin.roles.include?('payments')
@@ -125,5 +126,26 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
     end
 
     render json: notes_data
+  end
+
+  def print_status
+    branch = current_admin.branch
+    status = ReportPrintStatus.today.where(report_type: 'collection_report', branch: branch).present?
+    render json: { status: status }
+  end
+
+  def set_print_status
+    branch = current_admin.branch
+    status = ReportPrintStatus.today.where(report_type: 'collection_report', branch: branch).present?
+    if status
+      render json: {message: 'report already printed'}, status: :unprocessable_entity and return
+    end
+
+    report = ReportPrintStatus.create(report_type: 'collection_report', branch: branch, admin_id: current_admin.id)
+    if report.persisted?
+      render json: { status: 'ok' }, status: :ok
+    else
+      render json: { status: 'Error Creating record, please try again after some time.', message: report.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 end
