@@ -4,7 +4,7 @@
 # SmartExamsV5 => ["bep", "saraswati-videos", "saraswati-exams", "dep"]
 
 set :application, "SmartExamsV2"
-set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
+set :repo_url, "git@github.com:kapilbhosale/ExamsPortal.git"
 set :user, 'ubuntu'
 set :deploy_to,   "/home/#{fetch(:user)}/app/#{fetch(:application)}"
 
