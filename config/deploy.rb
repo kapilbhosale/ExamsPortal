@@ -1,5 +1,5 @@
 set :application, "SmartExams"
-set :repo_url, "git@github.com:akshaymohite/SmartExamsRails.git"
+set :repo_url, "git@github.com:kapilbhosale/ExamsPortal.git"
 set :user, 'ubuntu'
 
 set :rails_env, :production
