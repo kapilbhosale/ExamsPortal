@@ -135,10 +135,6 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
   end
 
   def change_course
-    unless current_admin.roles.include?('change_course')
-      render json: {message: "Can not change course"}, status: :unprocessable_entity
-    end
-
     student = Student.find_by(org_id: current_org.id, id: params[:student_id])
     batch = Batch.find_by(id: params[:new_batch_id])
 
