@@ -126,4 +126,9 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
 
     render json: notes_data
   end
+
+  def print_status
+    
+    ReportPrintStatus.today.where(report_type: 'collection_report', branch: params[:branch])
+  end
 end

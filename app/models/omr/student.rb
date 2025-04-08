@@ -60,23 +60,23 @@ class Omr::Student < ApplicationRecord
   end
 end
 
-# Omr::BatchTest.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
+Omr::BatchTest.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
 
-# Omr::StudentBatch.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
+Omr::StudentBatch.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
 
-# Omr::StudentTest.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
+Omr::StudentTest.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
 
-# Omr::Batch.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
+Omr::Batch.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
 
-# Omr::Student.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
+Omr::Student.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
 
-# Omr::Test.delete_all
-# ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
+Omr::Test.delete_all
+ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
 
 
 
