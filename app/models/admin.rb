@@ -19,10 +19,12 @@
 #  type                   :string           default("Teacher")
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  branch_id              :integer          default(1), not null
 #  org_id                 :integer          default(0)
 #
 # Indexes
 #
+#  index_admins_on_branch_id             (branch_id)
 #  index_admins_on_email                 (email) UNIQUE
 #  index_admins_on_id_and_type           (id,type)
 #  index_admins_on_org_id                (org_id)
@@ -62,6 +64,7 @@ class Admin < ApplicationRecord
 
   has_many :admin_batches
   has_many :batches, through: :admin_batches
+  belongs_to  :branch
 
   # Admin accounts are
   # 1. Admin

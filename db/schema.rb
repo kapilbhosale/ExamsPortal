@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_25_160140) do
+ActiveRecord::Schema.define(version: 2025_04_08_082752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -57,6 +57,8 @@ ActiveRecord::Schema.define(version: 2025_03_25_160140) do
     t.integer "org_id", default: 0
     t.string "type", default: "Teacher"
     t.jsonb "roles", default: []
+    t.integer "branch_id", default: 1, null: false
+    t.index ["branch_id"], name: "index_admins_on_branch_id"
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["id", "type"], name: "index_admins_on_id_and_type"
     t.index ["org_id"], name: "index_admins_on_org_id"
@@ -241,8 +243,20 @@ ActiveRecord::Schema.define(version: 2025_03_25_160140) do
     t.string "device_ids"
     t.string "branch", default: "home"
     t.string "edu_year", default: "2024-25"
+    t.integer "branch_id", default: 1, null: false
     t.index ["batch_group_id"], name: "index_batches_on_batch_group_id"
+    t.index ["branch_id"], name: "index_batches_on_branch_id"
     t.index ["org_id"], name: "index_batches_on_org_id"
+  end
+
+  create_table "branches", force: :cascade do |t|
+    t.bigint "org_id"
+    t.string "name", null: false
+    t.string "code", null: false
+    t.string "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["org_id"], name: "index_branches_on_org_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -731,6 +745,17 @@ ActiveRecord::Schema.define(version: 2025_03_25_160140) do
     t.index ["org_id"], name: "index_raw_attendances_on_org_id"
   end
 
+  create_table "report_print_statuses", force: :cascade do |t|
+    t.bigint "admin_id"
+    t.string "report_type"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "branch_id", default: 1, null: false
+    t.index ["admin_id"], name: "index_report_print_statuses_on_admin_id"
+    t.index ["branch_id"], name: "index_report_print_statuses_on_branch_id"
+  end
+
   create_table "roll_number_suggestors", force: :cascade do |t|
     t.string "batch_name"
     t.string "criteria"
@@ -1052,9 +1077,11 @@ ActiveRecord::Schema.define(version: 2025_03_25_160140) do
     t.index ["org_id"], name: "index_zoom_meetings_on_org_id"
   end
 
+  add_foreign_key "branches", "orgs"
   add_foreign_key "fees_transactions", "batches"
   add_foreign_key "omr_batches", "orgs"
   add_foreign_key "omr_students", "orgs"
   add_foreign_key "omr_tests", "orgs"
+  add_foreign_key "report_print_statuses", "admins"
   add_foreign_key "study_pdfs", "subjects"
 end

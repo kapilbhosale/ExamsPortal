@@ -16,11 +16,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  batch_group_id :integer
+#  branch_id      :integer          default(1), not null
 #  org_id         :integer          default(0)
 #
 # Indexes
 #
 #  index_batches_on_batch_group_id  (batch_group_id)
+#  index_batches_on_branch_id       (branch_id)
 #  index_batches_on_org_id          (org_id)
 #
 
