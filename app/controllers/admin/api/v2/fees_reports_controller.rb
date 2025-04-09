@@ -126,15 +126,15 @@ class Admin::Api::V2::FeesReportsController < Admin::Api::V2::ApiController
   def print_status
     branch = current_admin.branch
     status = ReportPrintStatus.today.where(report_type: 'collection_report', branch: branch).present?
-    render json: { status: status }
+    render json: { status: false }
   end
 
   def set_print_status
     branch = current_admin.branch
     status = ReportPrintStatus.today.where(report_type: 'collection_report', branch: branch).present?
-    if status
-      render json: {message: 'report already printed'}, status: :unprocessable_entity and return
-    end
+    # if status
+    #   render json: {message: 'report already printed'}, status: :unprocessable_entity and return
+    # end
 
     report = ReportPrintStatus.create(report_type: 'collection_report', branch: branch, admin_id: current_admin.id)
     if report.persisted?
