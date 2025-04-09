@@ -1,5 +1,5 @@
 set :rails_env, :production
-set :branch, 'master'
+set :branch, 'main'
 set :sidekiq_env, :production
 set :stage, :production
 
