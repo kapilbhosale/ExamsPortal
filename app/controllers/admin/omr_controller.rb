@@ -68,7 +68,11 @@ class Admin::OmrController < Admin::BaseController
       end
     end
 
-    @sub_max_marks = @test.get_subject_max_marks
+    if @test.child_tests.present?
+      @sub_max_marks = @test.child_tests.first.get_subject_max_marks
+    else
+      @sub_max_marks = @test..get_subject_max_marks
+    end
 
     include_absents = params[:include_absents].present?
     report_type = params[:report_type]
@@ -76,7 +80,7 @@ class Admin::OmrController < Admin::BaseController
 
     if report_format = params[:report_format] == 'xls'
       if @report_data[:status]
-        sub_order = ['Phy', 'Chem', 'Bot', 'Zoo']
+        sub_order = ['Phy', 'Chem', 'Bio']
         sub_headers = []
         (sub_order + ["total"]).each do |sub|
           sub_headers << "#{sub.upcase} Marks"

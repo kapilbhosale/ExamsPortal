@@ -58,25 +58,28 @@ class Omr::Student < ApplicationRecord
     puts "==== deleting students for branch: #{branch} ===="
     Omr::Student.where(branch: branch).delete_all
   end
+
+  def self.delete_all_data
+    Omr::BatchTest.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
+
+    Omr::StudentBatch.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
+
+    Omr::StudentTest.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
+
+    Omr::Batch.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
+
+    Omr::Student.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
+
+    Omr::Test.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
+  end
 end
 
-Omr::BatchTest.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
-
-Omr::StudentBatch.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
-
-Omr::StudentTest.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
-
-Omr::Batch.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
-
-Omr::Student.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
-
-Omr::Test.delete_all
-ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
 
 
 

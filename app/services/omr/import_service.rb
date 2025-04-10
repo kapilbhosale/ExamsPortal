@@ -8,6 +8,9 @@ class Omr::ImportService
   # Omr::ImportService.new(file_path, "Latur-12+rep").call
   # delete_branch_data("Latur-11")
 
+  # file_path = "/Users/kapilbhosale/Downloads/deeper-exam-9-april.zip"
+  # Omr::ImportService.new(file_path, "Deeper").call
+
   def initialize(file_path, branch)
     @file_path = file_path
     @branch = branch

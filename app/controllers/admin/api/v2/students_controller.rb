@@ -125,7 +125,8 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
       student_note = StudentNote.create(
         org_id: current_org.id,
         student_id: params[:student_id],
-        note_id: params[:note_id]
+        note_id: params[:note_id],
+        comment: params[:comment],
       )
 
       render json: student_note and return

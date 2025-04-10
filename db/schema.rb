@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_04_08_082752) do
+ActiveRecord::Schema.define(version: 2025_04_10_082309) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -858,6 +858,7 @@ ActiveRecord::Schema.define(version: 2025_04_08_082752) do
     t.bigint "note_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "comment"
     t.index ["note_id"], name: "index_student_notes_on_note_id"
     t.index ["org_id"], name: "index_student_notes_on_org_id"
     t.index ["student_id"], name: "index_student_notes_on_student_id"

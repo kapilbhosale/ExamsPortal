@@ -3,6 +3,7 @@
 # Table name: student_notes
 #
 #  id         :bigint(8)        not null, primary key
+#  comment    :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  note_id    :bigint(8)
