@@ -111,7 +111,8 @@ class Admin::Api::V2::StudentsController < Admin::Api::V2::ApiController
     render json: { message: "student not found" }, status: :unprocessable_entity and return if @student.blank?
 
     @pending_amount = FeesTransaction.student_pending_fees(@student.id)
-    if @pending_amount >= 2_00_000
+    @paid_percent = FeesTransaction.student_paid_percent(@student.id, @pending_amount)
+    if @pending_amount >= 4_00_000
       @message = "No Template assigned to student batch"
     end
   end

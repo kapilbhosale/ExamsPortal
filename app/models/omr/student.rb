@@ -60,23 +60,21 @@ class Omr::Student < ApplicationRecord
   end
 
   def self.delete_all_data
-    Omr::BatchTest.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('student_batches')
+    # Use transaction to ensure all operations succeed or fail together
+    ActiveRecord::Base.transaction do
+      query = <<-SQL
+        TRUNCATE TABLE
+          omr_batch_tests,
+          omr_student_tests,
+          omr_student_batches,
+          omr_batches,
+          omr_students,
+          omr_tests
+        RESTART IDENTITY CASCADE
+      SQL
 
-    Omr::StudentBatch.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_batches')
-
-    Omr::StudentTest.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('omr_student_tests')
-
-    Omr::Batch.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('omr_batches')
-
-    Omr::Student.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('omr_students')
-
-    Omr::Test.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('omr_tests')
+    ActiveRecord::Base.connection.execute(query)
+    end
   end
 end
 

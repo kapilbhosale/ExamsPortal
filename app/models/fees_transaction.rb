@@ -95,6 +95,22 @@ class FeesTransaction < ApplicationRecord
     2_00_000
   end
 
+  def self.student_paid_percent(student_id, pending_amount)
+    student = Student.find_by(id: student_id)
+    student_trans = FeesTransaction.where(student_id: student_id)
+    if student_trans.present?
+      template_id = student_trans.last.payment_details['template']["id"]
+    else
+      template_id = BatchFeesTemplate.where(batch_id: student.batches.ids).pluck(:fees_template_id).last
+    end
+
+    fees_template = FeesTemplate.find_by(id: template_id)
+    total_fees = fees_template.total_amount if fees_template
+    total_fees ||= 2_00_000
+
+    return ((total_fees - pending_amount) * 100 / total_fees).round(2)
+  end
+
   def self.student_fees_template_data(org_id, student_id)
     fees_transactions = FeesTransaction.current_year.where(org_id: org_id, student_id: student_id)
     return nil if fees_transactions.blank?

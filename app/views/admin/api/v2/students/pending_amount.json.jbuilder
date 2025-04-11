@@ -6,5 +6,6 @@ json.student do
   json.parent_mobile_number @student.parent_mobile
   json.batches @student.batches.joins(:fees_templates).pluck(:name).join(', ')
   json.pending_amount @pending_amount
+  json.paid_percent @paid_percent
   json.remark @message
 end
