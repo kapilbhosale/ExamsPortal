@@ -23,6 +23,7 @@ class Admin::Api::WhatsappMessagesController < Admin::Api::ApiController
       @client = "DEEPER" if params[:password] == "S0m3Pass@752063"
       @client = "KCP" if params[:password] == "KCP@WaP@ss_10"
       @client = "CHATE" if params[:password] == "CHATE@WAP20"
+      @client = "RCC" if params[:password] == "RCC@WA2025"
 
       if @client.blank?
         render json: {status: "not-accepted"}, status: :unprocessable_entity and return
