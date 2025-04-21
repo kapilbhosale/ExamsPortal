@@ -195,7 +195,7 @@ class Batch < ApplicationRecord
 
   def self.get_11th_set_batches(course, batch, na=nil)
     org = Org.first
-    batch_id = course.name == 'pcm' ? 1295 : 1294
+    batch_id = 1337
     Batch.where(org_id: org.id, id: batch_id)
   end
 

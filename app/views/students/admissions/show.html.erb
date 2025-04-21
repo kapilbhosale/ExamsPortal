@@ -224,7 +224,7 @@
 
         const BATCHES = [
           {val: "", text: "Please select Course", disabled: true, selected: true},
-          {val: "11th_set", text: "10th Moving 11th RCC SET Exam - 30 March 2025"},
+          {val: "11th_set", text: "FREE Mock Test Series for NEET-2025"},
           {val: "11th_new", text: "11th Regular online (2025-26)"},
           {val: "12th", text: "12th Regular online (2025-26)"},
           {val: "test-series", text: "Vijaypath Test Series (Only Online)"}
@@ -232,7 +232,7 @@
 
         const AUR_BATCHES = [
           {val: "", text: "Please select Course", disabled: true, selected: true},
-          {val: "11th_set", text: "10th Moving 11th RCC SET Exam - 30 March 2025"},
+          {val: "11th_set", text: "FREE Mock Test Series for NEET-2025"},
           {val: "11th_new", text: "11th Regular online (2025-26)"},
           {val: "12th", text: "12th Regular online (2025-26)"},
           {val: "test-series", text: "Vijaypath Test Series (Only Online)"}
@@ -240,7 +240,7 @@
 
         const AKOLA_PUNE_KOLHAPUR_PIMPRI_BATCHES = [
           {val: "", text: "Please select Course", disabled: true, selected: true},
-          {val: "11th_set", text: "10th Moving 11th RCC SET Exam - 30 March 2025"},
+          {val: "11th_set", text: "FREE Mock Test Series for NEET-2025"},
           {val: "11th_new", text: "11th Regular online (2025-26)"},
           {val: "12th", text: "12th Regular online (2025-26)"},
           {val: "test-series", text: "Vijaypath Test Series (Only Online)"}
@@ -248,7 +248,7 @@
 
         const NASHIK_HADAPSAR_BATCHES = [
           {val: "", text: "Please select Course", disabled: true, selected: true},
-          {val: "11th_set", text: "10th Moving 11th RCC SET Exam - 30 March 2025"},
+          {val: "11th_set", text: "FREE Mock Test Series for NEET-2025"},
           {val: "11th_new", text: "11th Regular online (2025-26)"},
           {val: "12th", text: "12th Regular online (2025-26)"},
           {val: "test-series", text: "Vijaypath Test Series (Only Online)"}
@@ -529,7 +529,7 @@
                 <option value="12th">12th</option>
               <% else %>
                 <option value="" disabled selected>Please select Course</option>
-                <option id="11th_set" value="11th_set">10th Moving 11th RCC SET Exam - 30 March 2025</option>
+                <option id="11th_set" value="11th_set">FREE Mock Test Series for NEET-2025</option>
                 <option id="11th_new" value="11th_new">11th Regular online (2025-26)</option>
                 <option id="12th" value="12th">12th Regular online (2025-26)</option>
                 <option id="test-series" value="test-series">Vijaypath Test Series (Only Online)</option>
@@ -544,7 +544,7 @@
               <p style="color: gray;">BUY new course or Pay installment: </p>
             <% else %>
               <p style="color: gray;">Course Selection:
-                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[RCC SET is for PCB/PCM]</span>
+                <span id="neet-saarthi" style="color: green; font-size: 12px; display: none">[This course is for PCB/PCM]</span>
               </p>
             <% end %>
           </div>
@@ -595,45 +595,6 @@
               <td> This fee structure is applicable only for Online Test Series Batch</td>
             </tr>
           </table>
-        </div>
-
-        <div class="11th-set-center-selection" style="padding: 10px; display: none">
-          <p style="color: gray;">SET Exam center selection: </p>
-          <div class="form-group">
-            <select required id="set_center" class="form-control" name="set_center_11th">
-              <option disabled selected value>Select Exam Center</option>
-              <option id="latur" value="latur">Latur (लातूर)</option>
-              <option id="nanded" value="nanded">Nanded (नांदेड)</option>
-              <option id="sambhaji_nagar" value="sambhaji_nagar">Chhatrapati Sambhaji Nagar (छ. संभाजीनगर)</option>
-              <option id="pune" value="pune">Pune (पुणे)</option>
-              <option id="pimpri" value="pimpri">Pimpri-Chinchwad (पिंपरी-चिंचवड)</option>
-              <option id="hadapsar" value="hadapsar">Hadapsar (हडपसर)</option>
-              <option id="akola" value="akola">Akola (अकोला)</option>
-              <option id="kolhapur" value="kolhapur">Kolhapur (कोल्हापूर)</option>
-              <option id="nashik" value="nashik">Nashik (नाशिक)</option>
-              <option id="solapur" value="solapur">Solapur (सोलापूर)</option>
-            </select>
-          </div>
-
-
-          <div class="form-group">
-            <p style="color: gray;">Select Board of Education</p>
-            <select required id="board" class="form-control" name="board">
-              <option id="state_board_marathi" value="state_board_marathi">State Board (Marathi)</option>
-              <option id="state_board_semi" value="state_board_semi">State Board (Semi)</option>
-              <option id="state_board_eng" value="state_board_semi">State Board (Eng)</option>
-              <option id="cbse" value="cbse">CBSE</option>
-              <option id="icse" value="icse">ICSE</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" id="taluka" placeholder="Enter Taluka" name="taluka" >
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" id="district" placeholder="Enter District" name="district" >
-          </div>
         </div>
 
         <div class="payment-selection-div-rep" style="background-color: #cdd0f1; padding: 10px; display: none">
