@@ -34,12 +34,12 @@ class RollNumberSuggestor < ApplicationRecord
     'neet_23_24' => 50_000,
     'test_series' => 1_000_000,
     'neet_saarthi_new' => 1_00_000,
-    '11th_set_25_26_new' => 3100000
+    'rep_set_25_26_new' => 5100001
   }
 
   def self.suggest_roll_number(batch_name, na=nil)
     batch_name = '12th_22_23' if batch_name == '12th'
-    batch_name = "11th_set_25_26_new" if batch_name == '11th_set'
+    batch_name = "rep_set_25_26_new" if batch_name == '11th_set'
 
     return Student.random_roll_number if batch_name == 'test-series'
     return Student.random_roll_number if batch_name == '12th_set'
