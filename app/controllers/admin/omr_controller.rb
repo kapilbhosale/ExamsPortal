@@ -98,6 +98,7 @@ class Admin::OmrController < Admin::BaseController
             if student_data[:data].present?
               total_a, total_c, total_w, total_s, total_acc = 0, 0, 0, 0, 0
               sub_order.each do |sub|
+                next if student_data[:data][sub].blank?
                 attempt = student_data[:data][sub]["wrong_count"] + student_data[:data][sub]["correct_count"]
                 correct = student_data[:data][sub]["correct_count"]
                 wrong = student_data[:data][sub]["wrong_count"]

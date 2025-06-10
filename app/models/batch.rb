@@ -128,7 +128,7 @@ class Batch < ApplicationRecord
   end
 
   def self.get_repeater_batches(rcc_branch, course, batch, na)
-    Batch.where(org_id: org.id, name: "REP-PCB-ONLINE [2024-25]")
+    Batch.where(org_id: org.id, id: 1362)
   end
 
   def self.get_11th_new_batches(rcc_branch, course, batch, na=nil)

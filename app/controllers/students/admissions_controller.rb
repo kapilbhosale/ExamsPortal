@@ -264,9 +264,8 @@ class Students::AdmissionsController < ApplicationController
       if new_admission.extra_data.dig('pay_type') == 'installment'
         return 25_000
       else
-        return 50_000 if ['pc'].include?(course.name)
-        return 55_000 if ['pcb'].include?(course.name)
-        return 55_000 if ['pcm'].include?(course.name)
+        return 40_000 if ['pcb'].include?(course.name)
+        return 40_000 if ['pcm'].include?(course.name)
       end
     end
 
