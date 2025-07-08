@@ -42,7 +42,7 @@ module Fees
           ft.receipt_number = ft.generate_receipt_number
           ft.batch_id = ft.get_batch_id
         end
-        @fees_transaction.save
+        @fees_transaction.save!
       end
 
       if @fees_transaction.errors.blank?
