@@ -19,7 +19,7 @@
 #  token_of_the_day     :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  batch_id             :bigint(8)
+#  batch_id             :integer          not null
 #  org_id               :bigint(8)
 #  received_by_admin_id :integer
 #  student_id           :bigint(8)

@@ -19,7 +19,7 @@
 #  token_of_the_day     :integer
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  batch_id             :bigint(8)
+#  batch_id             :integer          not null
 #  org_id               :bigint(8)
 #  received_by_admin_id :integer
 #  student_id           :bigint(8)
@@ -78,9 +78,9 @@ class FeesTransaction < ApplicationRecord
   belongs_to :admin, foreign_key: :received_by_admin_id
   belongs_to :batch, optional: true
 
-  before_create :update_token_of_the_day
-  before_create :update_receipt_number
-  after_create :set_batch_id
+  # before_create :update_token_of_the_day
+  # before_create :update_receipt_number
+  # after_create :set_batch_id
 
 
   def self.student_pending_fees(student_id)
@@ -352,9 +352,8 @@ class FeesTransaction < ApplicationRecord
     end
   end
 
-  private
-  def update_receipt_number
-    return if self.receipt_number.present?
+  def generate_receipt_number()
+    return self.receipt_number if self.receipt_number.present?
 
     if token_of_the_day < 100
       fees_transactions = FeesTransaction.lt_hundred
@@ -366,32 +365,36 @@ class FeesTransaction < ApplicationRecord
       # resetting RCC receipt numbers from 2nd July 2024
       # fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("02-Jul-2024"))
       # returning alpha-numeric receipt numbers from 4rd Dec 2024
-      self.receipt_number = SecureRandom.alphanumeric(10)
-    else
-      fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
-
-      db_receipt_number = fees_transactions
-        .where(org_id: org_id)
-        .where(imported: false)
-        .where('created_at <= ?', Time.now)
-        .order(:created_at)
-        .last&.receipt_number
-
-      self.receipt_number = ((db_receipt_number.to_i || 0) + 1).to_s
+      return SecureRandom.alphanumeric(10)
     end
+
+    fees_transactions = fees_transactions.where('created_at >= ?', Date.parse("03-Dec-2023"))
+
+    db_receipt_number = fees_transactions
+      .where(org_id: org_id)
+      .where(imported: false)
+      .where('created_at <= ?', Time.now)
+      .order(:created_at)
+      .last&.receipt_number
+
+    return ((db_receipt_number.to_i || 0) + 1).to_s
   end
 
-  def update_token_of_the_day
+  def update_receipt_number
+    self.receipt_number = generate_receipt_number
+  end
+
+  def get_token_of_the_day
     if student.intel_score.blank?
       count = Student.where(org_id: org_id).joins(:fees_transactions).count
       student.update(intel_score: (count % 10) < 5 ? rand(1..99) : rand(100..200))
     end
 
-    self.token_of_the_day = student.intel_score
+    return student.intel_score
   end
 
-  def set_batch_id
-    return if self.batch_id.present?
+  def get_batch_id
+    return self.batch_id if self.batch_id.present?
 
     student = self.student
     return if student.blank? || student.batches.blank?
@@ -404,12 +407,16 @@ class FeesTransaction < ApplicationRecord
         batch = student.batches.joins(:fees_templates).first
       end
     else
-      # check which batch template matches with the transaction template
-      template_batch_id = self.payment_details["template"]["id"]
+      template_batch_id = self.payment_details[:template][:id]
       batch = student.batches.joins(:fees_templates).where(fees_templates: { id: template_batch_id }).first
     end
 
-    self.update(batch_id: batch.id) if batch
+    if batch
+      return batch.id
+    else
+      batch = student.batches.joins(:fees_templates).first
+      return batch.id
+    end
   end
 
   def self.remove_discount(student)

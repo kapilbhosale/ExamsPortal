@@ -38,16 +38,10 @@ module Fees
           ft.payment_details[:paid] = @fees_data
           ft.received_by_admin_id = current_admin&.id
           ft.received_by = current_admin&.name || current_admin&.email
+          ft.token_of_the_day = ft.get_token_of_the_day
+          ft.receipt_number = ft.generate_receipt_number
+          ft.batch_id = ft.get_batch_id
         end
-
-        # if create_params[:ref].present?
-        #   na = NewAdmission.find_by(id: create_params[:ref])
-        #   if na.present?
-        #     @fees_transaction.mode = 'online'
-        #     @fees_transaction.created_at = na.created_at
-        #   end
-        # end
-
         @fees_transaction.save
       end
 
