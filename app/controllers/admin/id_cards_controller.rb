@@ -19,7 +19,7 @@ class Admin::IdCardsController < Admin::BaseController
   end
 
   def print_cards
-    @batches = Batch.where(org_id: current_org.id).where(id: current_admin.batches.ids).where('name ILIKE ?', '%[%]%').order(:name)
+    @batches = Batch.where(org_id: current_org.id).where(id: current_admin.batches.ids).order(:name)
     @from_date = Date.parse(params[:from_date]) rescue Date.today.strftime("%Y-%m-%d")
     @to_date = Date.parse(params[:to_date]) rescue Date.today.strftime("%Y-%m-%d")
 
