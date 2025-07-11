@@ -39,7 +39,8 @@ class Admin::IdCardsController < Admin::BaseController
 
   def generate_prints
     batch = Batch.find(params[:selected_batch_id])
-    batch_display_name = batch.name.match(/\[(.*?)\]/)[1]
+    # batch_display_name = batch.name.match(/\[(.*?)\]/)[1]
+    batch_display_name = batch.name
     pdf = Prawn::Document.new(page_size: [inches_to_points(12), inches_to_points(18)], page_layout: :landscape)
 
     if params[:all].present?
