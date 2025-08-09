@@ -62,7 +62,7 @@ class Admin::Api::V2::FeesController < Admin::Api::V2::ApiController
 
   def payment_history
     student = Student.find_by(org_id: current_org.id, id: params[:student_id])
-    @transactions = FeesTransaction.current_year.includes(:admin).where(org_id: current_org.id, student_id: student.id).order(created_at: :desc)
+    @transactions = FeesTransaction.with_deleted.current_year.includes(:admin).where(org_id: current_org.id, student_id: student.id).order(created_at: :desc)
     @discounts = {}
     Discount.used_discount.where(roll_number: student.roll_number, parent_mobile: student.parent_mobile).each do |discount|
       @discounts[discount.amount.to_f] = {

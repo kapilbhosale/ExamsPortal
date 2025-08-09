@@ -82,6 +82,8 @@ module Fees
           ft.received_by_admin_id = current_admin&.id
           ft.imported = true
           ft.received_by = current_admin&.name || current_admin&.email
+          ft.receipt_number = SecureRandom.alphanumeric(10)
+          ft.batch_id = ft.get_batch_id
           ft.created_at = created_at
         end
 

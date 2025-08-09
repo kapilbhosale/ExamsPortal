@@ -41,6 +41,9 @@ module Fees
           ft.received_by_admin_id = current_admin&.id
           ft.received_by = current_admin&.name || current_admin&.email
           ft.is_headless = true
+
+          ft.receipt_number = SecureRandom.alphanumeric(10)
+          ft.batch_id = ft.get_batch_id
         end
         @fees_transaction.save
       end

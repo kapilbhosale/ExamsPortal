@@ -12,6 +12,7 @@ json.array! @transactions do |transaction|
   json.admin transaction.admin.name
   json.isHeadless transaction.is_headless
   json.comment transaction.comment
+  json.isDeleted transaction.deleted_at.present?
 
   discount = nil
 
