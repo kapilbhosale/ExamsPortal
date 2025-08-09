@@ -28,16 +28,15 @@ module Fees
         fees_transactions = fees_transactions.lt_hundred
       end
 
-      nil_fees_student_ids = fees_transactions.current_year.where(org_id: current_org.id).where('remaining_amount = 0').pluck(:student_id)
-
+      # Use a subquery to avoid hitting PostgreSQL parameter limit
       fees_transactions = fees_transactions.current_year
         .where(org_id: current_org.id)
         .where('fees_transactions.next_due_date >= ?', date1.beginning_of_day)
         .where('fees_transactions.next_due_date <= ?', date2.end_of_day)
         .where(batch_id: valid_batch_ids)
-        .order(:created_at)
-
-      fees_transactions = fees_transactions.where.not(student_id: nil_fees_student_ids).order(:created_at)
+        .where.not(
+          student_id: FeesTransaction.current_year.where(org_id: current_org.id).where('remaining_amount = 0').select(:student_id)
+        ).order(:created_at)
 
       fees_transactions_by_students = {}
       fees_transactions.each do |ft|
