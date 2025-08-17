@@ -135,7 +135,7 @@ class Admin::OmrController < Admin::BaseController
 
   def progress_report_dates
     @student = Omr::Student.find(params[:student_id])
-    appeared_test_ids = Omr::StudentTest.where(omr_student_id: @student.id).ids
+    appeared_test_ids = Omr::StudentTest.where(omr_student_id: @student.id).pluck(:omr_test_id)
     batch_test_ids = Omr::BatchTest.where(omr_batch_id: @student.omr_batches.pluck(:id)).pluck(:omr_test_id)
     @tests = Omr::Test.where(id: appeared_test_ids + batch_test_ids).order(test_date: :desc)
   end

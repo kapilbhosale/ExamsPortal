@@ -10,6 +10,7 @@ class Omr::ImportService
 
   # file_path = "/Users/kapilbhosale/Downloads/deeper-exam-9-april.zip"
   # Omr::ImportService.new(file_path, "Deeper").call
+  # file_path = "/home/ubuntu/Zip-12th-Rept.zip"
   # Omr::ImportService.new(file_path, "Latur-11-2025").call
 
   def initialize(file_path, branch)
