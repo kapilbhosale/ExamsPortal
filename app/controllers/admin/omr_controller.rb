@@ -162,6 +162,7 @@ class Admin::OmrController < Admin::BaseController
     average_scores = []
     @subject_scores_per_test = {}
 
+    @test_count = Omr::Test.joins(:omr_batches).where(omr_batches: { id: @student.omr_batches.pluck(:id) }).count
     # .where(omr_batches: { id: @student.omr_batches.pluck(:id) })
     omr_tests = Omr::Test.joins(:omr_batches)
                       .where(id: selected_test_ids)

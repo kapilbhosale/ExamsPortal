@@ -260,7 +260,8 @@
 
       <tr>
         <td colspan="2"> Attendance Summary:  <%= (@present_count * 100 / @all_tests.count.to_f).round(2) %> %</td>
-        <td colspan="3"> <%= "Present: #{@present_count} / Total: #{@all_tests.count}" %></td>
+        <td colspan="2"> <%= "Present: #{@present_count} / Total: #{@all_tests.count}" %></td>
+        <td colspan="4"> <%= "Total Batch Tests : #{@test_count}" %></td>
       </tr>
     </tbody>
   </table>
