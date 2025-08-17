@@ -20,7 +20,7 @@
             <div class="container-fluid">
               <% videos.each do |video| %>
                 <% # video_url = video[:tp_streams_id].present? ? "/students/lectures_tp/#{video[:tp_streams_id]}" : "/students/lectures/#{video[:laptop_vimeo_id]}" %>
-                <% video_url = "/students/lectures/#{video[:laptop_vimeo_id]}" %>
+                <% video_url = "https://fees-app.eduaakar.com/youtube-player?url=#{video[:url]}" %>
                 <a href="<%= video_url %>">
                   <div class="row" style="padding: 8px 0px; margin-bottom: -25px;">
                       <div class="col-sm-12 col-md-6">
