@@ -13,7 +13,6 @@ class Students::VideosController < Students::BaseController
       .where(org_id: current_org.id)
       .where(batches: {id: current_student.batches.ids})
       .where(genre_id: params[:id].to_i)
-      .where.not(laptop_vimeo_id: nil)
 
     lectures = all_vls.where(enabled: true).order(id: :desc)
 
@@ -54,7 +53,6 @@ class Students::VideosController < Students::BaseController
       .includes(:genre, :subject, :batches)
       .where(org_id: current_org.id)
       .where(batches: { id: current_student.batches.ids })
-      .where.not(laptop_vimeo_id: nil)
 
     video_lectures = all_vls.where(enabled: true)
     @categories_data = {}
